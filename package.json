@@ -8,6 +8,10 @@
     {
       "name": "Kostiantyn Wandalen",
       "email": "wtory.net@domainsbyproxy.com>"
+    },
+    {
+      "name": "Volodymyr M.",
+      "email": "volodymyr.migdal@gmail.com"
     }
   ],
   "license": "MIT",
@@ -30,7 +34,7 @@
   "dependencies": {
     "wTools": "",
     "wProto": "",
-    "wscalar": ""
+    "wmathscalar": ""
   },
   "devDependencies": {
     "wTesting": "",

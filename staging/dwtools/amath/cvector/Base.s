@@ -4,33 +4,28 @@
 
 if( typeof module !== 'undefined' )
 {
+
   if( typeof wBase === 'undefined' )
   try
   {
     try
     {
-      require.resolve( '../../../../dwtools/Base.s' )/*fff*/;
+      require.resolve( '../../../dwtools/Base.s' )/*fff*/;
     }
     finally
     {
-      require( '../../../../dwtools/Base.s' )/*fff*/;
+      require( '../../../dwtools/Base.s' )/*fff*/;
     }
   }
   catch( err )
   {
     require( 'wTools' );
   }
-var _ = wTools;
-  _.include( 'wProto' );
 
-  try
-  {
-    require( '../arithmetic/cScalar.s' );
-  }
-  catch( err )
-  {
-    require( 'wscalar' );
-  }
+  var _ = wTools;
+
+  _.include( 'wProto' );
+  _.include( 'wMathScalar' )
 
 }
 
