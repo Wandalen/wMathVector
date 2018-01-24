@@ -1,0 +1,46 @@
+{
+  "name": "wmathvector",
+  "version": "0.3.0",
+  "engine": "node >= 6.0.0",
+  "description": "Collection of routines for vector math",
+  "author": "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
+  "contributors": [
+    {
+      "name": "Kostiantyn Wandalen",
+      "email": "wtory.net@domainsbyproxy.com>"
+    }
+  ],
+  "license": "MIT",
+  "main": "staging/dwtools/amath/cvector/vArray.s",
+  "files": [
+    "staging/dwtools/amath",
+    "production"
+  ],
+  "scripts": {
+    "test": "wtest staging",
+    "make_doc": "x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wandalen/wMathVector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Wandalen/wMathVector/issues"
+  },
+  "dependencies": {
+    "wTools": "",
+    "wProto": "",
+    "wscalar": ""
+  },
+  "devDependencies": {
+    "wTesting": "",
+    "wmathvector": "."
+  },
+  "keywords": [
+    "wTools",
+    "math",
+    "vector",
+    "dot product",
+    "convolution"
+  ]
+}
