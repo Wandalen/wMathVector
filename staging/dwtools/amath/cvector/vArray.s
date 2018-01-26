@@ -4,6 +4,7 @@
 
 if( typeof module !== 'undefined' )
 {
+
   if( typeof wBase === 'undefined' )
   try
   {
@@ -20,7 +21,8 @@ if( typeof module !== 'undefined' )
   {
     require( 'wTools' );
   }
-require( './Base.s' );
+
+  require( './Base.s' );
 
 }
 

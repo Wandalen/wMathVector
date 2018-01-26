@@ -1,6 +1,6 @@
 {
   "name": "wmathvector",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "engine": "node >= 6.0.0",
   "description": "Collection of routines for vector math",
   "author": "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
@@ -15,9 +15,9 @@
     }
   ],
   "license": "MIT",
-  "main": "staging/dwtools/amath/cvector/vArray.s",
+  "main": "staging/dwtools/amath/cvector/Base.s",
   "files": [
-    "staging/dwtools/amath",
+    "staging/dwtools/amath/cvector",
     "production"
   ],
   "scripts": {
