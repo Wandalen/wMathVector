@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _ = wTools;
+var _ = _global_.wTools;
 var _hasLength = _.hasLength;
 var _arraySlice = _.arraySlice;
 var _sqr = _.sqr;
@@ -19,8 +19,8 @@ var EPS = _.EPS;
 var EPS2 = _.EPS2;
 
 var Parent = null;
-var Self = wTools.Vector;
-var vector = wTools.vector;
+var Self = _.Vector;
+var vector = _.vector;
 
 // --
 // etc

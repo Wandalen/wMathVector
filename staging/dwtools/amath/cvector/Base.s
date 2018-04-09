@@ -5,31 +5,32 @@
 if( typeof module !== 'undefined' )
 {
 
-  if( typeof wBase === 'undefined' )
-  try
+  if( typeof _global_ === 'undefined' || !_global_.wBase )
   {
+    let toolsPath = '../../../dwtools/Base.s';
+    let toolsExternal = 0;
     try
     {
-      require.resolve( '../../../dwtools/Base.s' )/*fff*/;
+      require.resolve( toolsPath )/*hhh*/;
     }
-    finally
+    catch( err )
     {
-      require( '../../../dwtools/Base.s' )/*fff*/;
+      toolsExternal = 1;
+      require( 'wTools' );
     }
-  }
-  catch( err )
-  {
-    require( 'wTools' );
+    if( !toolsExternal )
+    require( toolsPath )/*hhh*/;
   }
 
-  var _ = wTools;
+
+  var _ = _global_.wTools;
 
   _.include( 'wProto' );
   _.include( 'wMathScalar' )
 
 }
 
-var _ = wTools;
+var _ = _global_.wTools;
 var _hasLength = _.hasLength;
 var _min = Math.min;
 var _max = Math.max;
@@ -520,9 +521,8 @@ Self.constructor = function Vector(){};
 /*Object.setPrototypeOf( VectorPrototype,Self );*/
 // VectorPrototype.constructor = function Vector(){};
 
-wTools.vector = Self;
-wTools.Vector = Vector;
-// wTools.VectorPrototype = VectorPrototype;
+_.vector = Self;
+_.Vector = Vector;
 
 _.assert( Self.withWrapper );
 /* _.assert( Self.arrayFromCoercing ); */

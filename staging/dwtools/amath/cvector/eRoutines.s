@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _ = wTools;
+var _ = _global_.wTools;
 var _hasLength = _.hasLength;
 var _arraySlice = _.arraySlice;
 var _sqr = _.sqr;
@@ -22,7 +22,7 @@ var EPS2 = _.EPS2;
 var sqrt2 = sqrt( 2 );
 var sqrt2Inv = 1 / sqrt2;
 
-var vector = wTools.vector;
+var vector = _.vector;
 var operations = vector.operations;
 var Parent = null;
 var Self = vector;
@@ -1200,13 +1200,13 @@ dop.modifying = false;
 
 function slicedArray( src,first,last )
 {
-  var length = src.length;
-  var f = f !== undefined ? first : 0;
-  var l = l !== undefined ? last : src.length;
-
+  _.assert( src );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
   _.assert( src._vectorBuffer,'expects vector as argument' );
 
+  var length = src.length;
+  var f = first !== undefined ? first : 0;
+  var l = last !== undefined ? last : src.length;
   var result;
   if( src.stride !== 1 || src.offset !== 0 || src._vectorBuffer.length !== l || f !== 0 )
   {
@@ -1258,8 +1258,8 @@ dop.modifying = false;
 function resizedArray( src,first,last,val )
 {
   var length = src.length;
-  var f = f !== undefined ? first : 0;
-  var l = l !== undefined ? last : src.length;
+  var f = first !== undefined ? first : 0;
+  var l = last !== undefined ? last : src.length;
 
   if( l < f )
   l = f;
