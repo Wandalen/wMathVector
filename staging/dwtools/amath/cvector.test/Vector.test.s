@@ -75,17 +75,17 @@ function vectorIs( test )
   test.shouldBe( _.vectorIs( v4 ) );
   test.shouldBe( _.vectorIs( v5 ) );
 
-  test.description = 'clsIsVector'; //
+  test.description = 'constructorIsVector'; //
 
-  test.shouldBe( !_.clsIsVector( a.constructor ) );
-  test.shouldBe( !_.clsIsVector( n3.constructor ) );
-  test.shouldBe( !_.clsIsVector( n4.constructor ) );
+  test.shouldBe( !_.constructorIsVector( a.constructor ) );
+  test.shouldBe( !_.constructorIsVector( n3.constructor ) );
+  test.shouldBe( !_.constructorIsVector( n4.constructor ) );
 
-  test.shouldBe( _.clsIsVector( v1.constructor ) );
-  test.shouldBe( _.clsIsVector( v2.constructor ) );
-  test.shouldBe( _.clsIsVector( v3.constructor ) );
-  test.shouldBe( _.clsIsVector( v4.constructor ) );
-  test.shouldBe( _.clsIsVector( v5.constructor ) );
+  test.shouldBe( _.constructorIsVector( v1.constructor ) );
+  test.shouldBe( _.constructorIsVector( v2.constructor ) );
+  test.shouldBe( _.constructorIsVector( v3.constructor ) );
+  test.shouldBe( _.constructorIsVector( v4.constructor ) );
+  test.shouldBe( _.constructorIsVector( v5.constructor ) );
 
 }
 

@@ -70,7 +70,7 @@ for( var r in routines )
   {
     var op = theRoutine.operation;
 
-    if( op.returningAtomic && _.atomicIs( result ) )
+    if( op.returningAtomic && _.primitiveIs( result ) )
     {
       return result;
     }

@@ -488,7 +488,7 @@ function _vectorizeDst( o )
   if( dst === undefined )
   return dst;
 
-  if( !_.atomicIs( dst ) )
+  if( !_.primitiveIs( dst ) )
   return dst;
 
   /* */
@@ -558,7 +558,7 @@ function _vectorsCallBegin( o,dop )
 {
 
   var minimalCall = o.args.length === dop.takingArguments[ 0 ];
-  var dstProvided = !_.atomicIs( o.dstContainer );
+  var dstProvided = !_.primitiveIs( o.dstContainer );
   var dstIsNumber = _.numberIs( o.dstContainer );
 
   if( Config.debug )

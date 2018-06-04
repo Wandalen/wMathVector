@@ -33,7 +33,7 @@ function to( cls )
 
   _.assert( arguments.length === 1 );
 
-  if( _.clsLikeArray( cls ) )
+  if( _.constructorLikeArray( cls ) )
   {
     result = new cls( self.length );
     array = result;
@@ -41,11 +41,11 @@ function to( cls )
     array[ i ] = self.eGet( i );
     return result;
   }
-  else if( _.clsIsVector( cls ) )
+  else if( _.constructorIsVector( cls ) )
   {
     return this;
   }
-  else if( _.clsIsSpace( cls ) )
+  else if( _.constructorIsSpace( cls ) )
   {
     return _.Space.makeCol( this )
   }
