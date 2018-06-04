@@ -5913,7 +5913,7 @@ experiment.experimental = 1;
 var Self =
 {
 
-  name : 'VectorTest',
+  name : 'Math.Vector.test',
   silencing : 1,
 
   // routine : 'abs',
