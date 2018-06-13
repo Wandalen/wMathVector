@@ -4997,7 +4997,7 @@ for( var r in RoutinesMathematical )
 _routineAdjust( RoutinesMathematical[ r ],r );
 
 // --
-// proto
+// define class
 // --
 
 var Proto =

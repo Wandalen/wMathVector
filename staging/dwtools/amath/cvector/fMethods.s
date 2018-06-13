@@ -317,7 +317,7 @@ hasShape.returningNew = false;
 hasShape.modifying = false;
 
 // --
-// proto
+// define class
 // --
 
 var Proto =

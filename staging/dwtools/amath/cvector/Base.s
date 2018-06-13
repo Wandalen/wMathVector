@@ -501,7 +501,7 @@ var routineFrom =
 }
 
 // --
-// proto
+// define class
 // --
 
 var Proto =
