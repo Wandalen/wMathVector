@@ -39,7 +39,7 @@ var Parent = null;
 var Self = Object.create( null );
 
 // --
-// proto
+// define class
 // --
 
 var Proto =
@@ -100,7 +100,7 @@ for( var r in routines )
 }
 
 // --
-// proto extension
+// define class extension
 // --
 
 Object.setPrototypeOf( Self,wTools );
@@ -109,14 +109,11 @@ _.mapExtend( Self,Proto );
 
 _.avector = Self;
 
-// debugger;
-_._arrayDescriptorsApplyTo( Self );
-// debugger;
+_._arrayNameSpaceApplyTo( Self,'Float32' );
 _.assert( _.mapOwnKey( _.avector,'withArray' ) );
 _.assert( _.avector.withArray );
 _.assert( _.avector.withArray.Array );
 _.assert( _.avector.withArray.Float32 );
-// debugger;
 
 _.assert( Object.getPrototypeOf( Self ) === wTools );
 _.assert( _.objectIs( _row.RoutinesMathematical ) );
