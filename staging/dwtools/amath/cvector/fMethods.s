@@ -67,7 +67,7 @@ function eGet( index )
 function eSet( index,val )
 {
   var self = this;
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   return vector.eGet( self,index,val );
 }
 
@@ -215,7 +215,7 @@ function toStr( o )
 function _equalWith( src2, it )
 {
   var src1 = this;
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   debugger; xxx
   return vector._equalAre( src1, src2, it );
 }
@@ -233,7 +233,7 @@ function equalWith( src2, it )
 {
   var src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  debugger; 
+  debugger;
   return vector.equalAre( src1, src2, it );
 }
 

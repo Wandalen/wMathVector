@@ -90,7 +90,7 @@ function operationSupplement( operation,atomOperation )
 {
   var operation = _.mapSupplement( operation,atomOperation );
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   /* */
 
@@ -372,7 +372,7 @@ function _onAtomGenBegin( dop )
 function _onAtomGenEnd( dop,onAtom )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   onAtom.own = { onAtom : dop.onAtom };
 
@@ -1462,7 +1462,7 @@ function gather( dst,srcs )
   var atomsPerElement = srcs.length;
   var l = dst.length / srcs.length;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.vectorIs( dst ) );
   _.assert( _.arrayIs( srcs ) );
   _.assert( _.numberIsInt( l ) );
@@ -1823,7 +1823,7 @@ dop.modifying = true;
 function eulerApply( v,e )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   throw _.err( 'not implemented' )
 
@@ -1844,7 +1844,7 @@ dop.modifying = true;
 function reflect( v,normal )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.vectorIs( v ) );
   _.assert( _.vectorIs( normal ) );
 
@@ -1870,7 +1870,7 @@ dop.modifying = true;
 
 function matrixApplyTo( dst,srcMatrix )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.spaceIs( srcMatrix ) );
   debugger;
   return _.space.mul( dst,[ srcMatrix,dst ] );
@@ -1891,7 +1891,7 @@ dop.modifying = true;
 
 function matrixHomogenousApply( dst,srcMatrix )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.spaceIs( srcMatrix ) );
   return srcMatrix.matrixHomogenousApply( dst );
 }
@@ -2999,7 +2999,7 @@ function _normalizeOperationFunctions( operationMake,operation )
 
   var atomDefaults = operationMake.atomDefaults;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectIs( atomDefaults ) );
 
   function normalize( name )
