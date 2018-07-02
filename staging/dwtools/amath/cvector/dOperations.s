@@ -715,20 +715,17 @@ var polynomApply = dop = Object.create( null );
 
 polynomApply.onAtom = function polynomApply( o )
 {
-  debugger;
   var x = o.args[ 1 ];
   o.result += o.element * _pow( x,o.key );
 }
 
 polynomApply.onAtomsBegin = function( o )
 {
-  debugger;
   o.result = 0;
 }
 
 polynomApply.onAtomsEnd = function( o )
 {
-  debugger;
 }
 
 polynomApply.takingArguments = [ 2,2 ];

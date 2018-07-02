@@ -31,7 +31,7 @@ function to( cls )
   var self = this;
   var result,array;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( _.constructorLikeArray( cls ) )
   {
@@ -58,7 +58,7 @@ function to( cls )
 function eGet( index )
 {
   var self = this;
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   return vector.eGet( self,index );
 }
 
@@ -67,7 +67,7 @@ function eGet( index )
 function eSet( index,val )
 {
   var self = this;
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   return vector.eGet( self,index,val );
 }
 
@@ -86,7 +86,7 @@ function assign()
 function copy( src )
 {
   var self = this;
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   return vector.assign( self,src );
 }
 
@@ -212,12 +212,12 @@ function toStr( o )
 
 //
 
-function _equalWith( src2,iterator )
+function _equalWith( src2, it )
 {
   var src1 = this;
-  _.assert( arguments.length === 2 );
-  debugger;
-  return vector._equalAre( src1,src2,iterator );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  debugger; xxx
+  return vector._equalAre( src1, src2, it );
 }
 
 equalWith.takingArguments = 2;
@@ -229,11 +229,12 @@ equalWith.modifying = false;
 
 //
 
-function equalWith( src2,iterator )
+function equalWith( src2, it )
 {
   var src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return vector.equalAre( src1,src2,iterator );
+  debugger; 
+  return vector.equalAre( src1, src2, it );
 }
 
 equalWith.takingArguments = 2;
@@ -245,12 +246,12 @@ equalWith.modifying = false;
 
 //
 
-function identicalWith( src2,iterator )
+function identicalWith( src2, it )
 {
   var src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  debugger;
-  return vector.identicalAre( src1,src2,iterator );
+  debugger; xxx
+  return vector.identicalAre( src1, src2, it );
 }
 
 identicalWith.takingArguments = 2;
@@ -262,12 +263,12 @@ identicalWith.modifying = false;
 
 //
 
-function equivalentWith( src2,iterator )
+function equivalentWith( src2, it )
 {
   var src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  debugger;
-  return vector.equivalentAre( src1,src2,iterator );
+  debugger; xxx
+  return vector.equivalentAre( src1, src2, it );
 }
 
 equivalentWith.takingArguments = [ 2,3 ];
@@ -282,7 +283,7 @@ equivalentWith.modifying = false;
 function sameWith( src2 )
 {
   var src1 = this;
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   if( src1._vectorBuffer !== src2._vectorBuffer )
   return false;
   if( src1.offset !== src2.offset )
@@ -410,7 +411,7 @@ function declareTwoArgumentsRoutine( routine, r )
 
   Self.prototype[ r ] = function scalarRoutine( scalar )
   {
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
     _.assert( _.vectorIs( this ) );
     return routine.call( vector,this,scalar );
   }

@@ -61,14 +61,14 @@ Vector.prototype._vectorBuffer = null;
 
 function makeArrayOfLength( length )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   var srcArray = new this.ArrayType( length );
   return fromArray( srcArray );
 }
 
 function makeArrayOfLengthWithValue( length,value )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   var srcArray = new this.ArrayType( length );
   for( var i = 0 ; i < length ; i++ )
   srcArray[ i ] = value;
@@ -98,7 +98,7 @@ _.constant( VectorFromNumber.prototype,
 function fromMaybeNumber( number,length )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( length >= 0 );
 
   var numberIs = _.numberIs( number );
@@ -174,7 +174,7 @@ _.constant( VectorFromArray.prototype,
 function fromArray( srcArray )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.vectorIs( srcArray ) || _.arrayLike( srcArray ) );
 
   if( srcArray._vectorBuffer )
@@ -304,7 +304,7 @@ function fromSubArrayWithStride( srcArray,offset,length,stride )
 
 function fromArrayWithStride( srcArray,stride )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   return this.fromSubArrayWithStride( srcArray,0,Math.ceil( srcArray.length / stride ),stride );
 }
 
@@ -315,7 +315,7 @@ function variants( variants )
   var result = _.arraySlice( variants );
   var length;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.arrayLike( variants );
 
   /* */

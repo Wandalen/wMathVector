@@ -90,7 +90,7 @@ function operationSupplement( operation,atomOperation )
 {
   var operation = _.mapSupplement( operation,atomOperation );
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   /* */
 
@@ -172,7 +172,7 @@ function operationSupplement( operation,atomOperation )
 function _operationLogicalReducerAdjust( operation )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var def =
   {
@@ -361,7 +361,7 @@ function _routinesDeclare()
 function _onAtomGenBegin( dop )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayIs( dop.input ) );
   _.assert( _.routineIs( dop.onAtom ) || _.arrayIs( dop.onAtom ) );
 
@@ -372,7 +372,7 @@ function _onAtomGenBegin( dop )
 function _onAtomGenEnd( dop,onAtom )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   onAtom.own = { onAtom : dop.onAtom };
 
@@ -387,7 +387,7 @@ function _onAtomGenEnd( dop,onAtom )
 function _onAtomForRoutine_functor( dop )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( !dop.onAtom_functor );
 
   var handleAtom = null;
@@ -694,7 +694,7 @@ function _vectorsGenBegin( dop )
   var takingArguments = dop.takingArguments;
   var onAtom = dop.onAtom[ 0 ];
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( takingArguments.length === 2 );
   _.assert( dop.handleAtom === undefined );
   _.assert( _.arrayIs( dop.onAtom ) );
@@ -715,7 +715,7 @@ function _vectorsGenEnd( dop,onVectors,onVectorsBegin )
   var takingArguments = dop.takingArguments;
   var onAtom = dop.onAtom[ 0 ];
 
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( _.arrayIs( dop.onVectors ) && dop.onVectors.length === 0 );
   _.assert( _.routineIs( onAtom ) );
   _.assert( dop.onAtom.length > 1 );
@@ -749,7 +749,7 @@ function _onVectorsForRoutine_functor( dop )
   var onVectorsBegin0 = dop.onVectorsBegin[ 0 ];
   var onAtom0 = dop.onAtom[ 0 ];
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   /* */
 
@@ -961,7 +961,7 @@ function _routineForOperation_functor( dop )
   _.assert( dop.onAtom.length === 1 );
 
   _.assert( _.arrayIs( dop.takingArguments ) );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   _.assert( dop.input );
   _.assert( _.strIsNotEmpty( dop.name ) );
@@ -1462,7 +1462,7 @@ function gather( dst,srcs )
   var atomsPerElement = srcs.length;
   var l = dst.length / srcs.length;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.vectorIs( dst ) );
   _.assert( _.arrayIs( srcs ) );
   _.assert( _.numberIsInt( l ) );
@@ -1678,7 +1678,7 @@ dop.modifying = true;
 function cross3( dst, src1, src2 )
 {
 
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( dst.length === 3,'implemented only for 3D' );
   _.assert( src1.length === 3,'implemented only for 3D' );
   _.assert( src2.length === 3,'implemented only for 3D' );
@@ -1702,10 +1702,10 @@ function cross( dst )
   {
     dst = _.vector.from( arguments[ 1 ].slice() );
     firstSrc = 2;
-    _.assert( arguments.length >= 3 );
+    _.assert( arguments.length >= 3, 'expects at least three arguments' );
   }
 
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
   _.assert( dst.length === 3,'implemented only for 3D' );
 
   for( var a = firstSrc ; a < arguments.length ; a++ )
@@ -1823,7 +1823,7 @@ dop.modifying = true;
 function eulerApply( v,e )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   throw _.err( 'not implemented' )
 
@@ -1844,7 +1844,7 @@ dop.modifying = true;
 function reflect( v,normal )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.vectorIs( v ) );
   _.assert( _.vectorIs( normal ) );
 
@@ -1870,7 +1870,7 @@ dop.modifying = true;
 
 function matrixApplyTo( dst,srcMatrix )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.spaceIs( srcMatrix ) );
   debugger;
   return _.space.mul( dst,[ srcMatrix,dst ] );
@@ -1891,7 +1891,7 @@ dop.modifying = true;
 
 function matrixHomogenousApply( dst,srcMatrix )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.spaceIs( srcMatrix ) );
   return srcMatrix.matrixHomogenousApply( dst );
 }
@@ -2550,7 +2550,7 @@ function _onAtomAtomwise_functor( dop )
   var handleAtom = null;
 
   _.assert( !dop.interruptible || onContinue );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayIs( dop.onContinue ) );
   _.assert( _.routineIs( onAtom0 ) );
   _.assert( _.routineIs( onContinue ) || !onContinue );
@@ -2689,7 +2689,7 @@ function _onVectorsAtomwise_functor( dop )
   var onVectorsBegin0 = dop.onVectorsBegin[ 0 ];
   var onAtom0 = dop.onAtom[ 0 ];
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   /* */
 
@@ -2999,7 +2999,7 @@ function _normalizeOperationFunctions( operationMake,operation )
 
   var atomDefaults = operationMake.atomDefaults;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.objectIs( atomDefaults ) );
 
   function normalize( name )
@@ -3096,7 +3096,7 @@ function __operationReduceToScalar_functor( operation )
   function onVectorsBegin( o )
   {
 
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
 
     var op = Object.create( null );
     _.mapExtend( op , atomDefaults );
@@ -3984,7 +3984,7 @@ function _declareLogic1SinglerRoutine( operation,atomOperation,routineName )
   var operation = operationSupplement( operation,atomOperation );
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
 
   var def =
   {
@@ -4015,7 +4015,7 @@ function _declareLogic1ReducingSinglerRoutine( operation,atomOperation,routineNa
   var operation = operationSupplement( operation,atomOperation );
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
 
   _operationLogicalReducerAdjust( operation );
 
@@ -4167,11 +4167,15 @@ declareLogic1Routines();
 // interruptible reductor with bool result
 // --
 
-function _equalAre( src1,src2,iterator )
+function _equalAre( src1, src2, it )
 {
   var length = src2.length;
 
-  _assert( arguments.length === 3 );
+  _.assert( arguments.length === 3 );
+  _.assert( it.context.strictTyping !== undefined );
+  _.assert( it.context.contain !== undefined );
+
+  it.looking = false;
 
   if( !( src1.length >= 0 ) )
   return false;
@@ -4184,11 +4188,11 @@ function _equalAre( src1,src2,iterator )
   if( !_.vectorIs( src2 ) )
   return false;
 
-  if( iterator.strict )
+  if( it.context.strictTyping )
   if( src1._vectorBuffer.constructor !== src2._vectorBuffer.constructor )
   return false;
 
-  if( !iterator.contain )
+  if( !it.context.contain )
   if( src1.length !== length )
   return false;
 
@@ -4197,7 +4201,7 @@ function _equalAre( src1,src2,iterator )
 
   for( var i = 0 ; i < length ; i++ )
   {
-    if( !iterator.onSameNumbers( src1.eGet( i ),src2.eGet( i ) ) )
+    if( !it.context.onNumbersAreEqual( src1.eGet( i ),src2.eGet( i ) ) )
     return false;
   }
 
@@ -4216,12 +4220,19 @@ dop.homogeneous = true;
 
 //
 
-function equalAre( src1,src2,iterator )
+function equalAre( src1, src2, it )
 {
-  var iterator = _._entityEqualIteratorMake( iterator );
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  return this._equalAre( src1,src2,iterator )
+  var it = equalAre.lookContinue( equalAre, arguments );
+  var result = this._equalAre( src1, src2, it );
+  return result;
+  // _entityEqualIteratorMake
 }
+
+_.routineSupplement( equalAre, _._entityEqual );
+
+_.assert( equalAre.defaults );
+_.assert( equalAre.body );
+_.assert( equalAre.lookContinue );
 
 var dop = equalAre.operation = Object.create( null );
 dop.takingArguments = [ 2,3 ];
@@ -4237,12 +4248,14 @@ dop.homogeneous = true;
 
 function identicalAre( src1,src2,iterator )
 {
-  iterator = iterator || Object.create( null );
-  iterator.strict = 1;
-  iterator = _._entityEqualIteratorMake( iterator );
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  return this._equalAre( src1,src2,iterator )
+  debugger;
+  var it = identicalAre.lookContinue( identicalAre, arguments );
+  var result = this._equalAre( src1, src2, it );
+  return result;
+  // _entityEqualIteratorMake
 }
+
+_.routineSupplement( identicalAre, _.entityIdentical );
 
 var dop = identicalAre.operation = Object.create( null );
 dop.takingArguments = [ 2,3 ];
@@ -4258,12 +4271,14 @@ dop.homogeneous = true;
 
 function equivalentAre( src1,src2,iterator )
 {
-  iterator = iterator || Object.create( null );
-  iterator.strict = 0;
-  iterator = _._entityEqualIteratorMake( iterator );
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  return this._equalAre( src1,src2,iterator );
+  debugger;
+  var it = equivalentAre.lookContinue( identicalAre, arguments );
+  var result = this._equalAre( src1, src2, it );
+  return result;
+  // _entityEqualIteratorMake
 }
+
+_.routineSupplement( equivalentAre, _.entityIdentical );
 
 var dop = equivalentAre.operation = Object.create( null );
 dop.takingArguments = [ 2,3 ];
@@ -4277,10 +4292,10 @@ dop.homogeneous = true;
 
 //
 
-function areParallel( src1,src2,eps )
+function areParallel( src1,src2,/*eps*/accuracy )
 {
   var length = src1.length;
-  var eps = ( eps !== undefined ) ? eps : EPS;
+  var /*eps*/accuracy = ( /*eps*/accuracy !== undefined ) ? /*eps*/accuracy : EPS;
 
   _.assert( src1.length === src2.length,'vector.distanceSqr :','src1 and src2 should have same length' );
 
@@ -4315,7 +4330,7 @@ function areParallel( src1,src2,eps )
 
     var r = src1.eGet( s ) / src2.eGet( s );
 
-    if( abs( r - ratio ) > eps )
+    if( abs( r - ratio ) > /*eps*/accuracy )
     return false;
 
     s += 1;
