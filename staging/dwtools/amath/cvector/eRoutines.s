@@ -4167,33 +4167,34 @@ declareLogic1Routines();
 // interruptible reductor with bool result
 // --
 
-function _equalAre( src1, src2, it )
+// function _equalAre( src1, src2, it )
+function _equalAre( it )
 {
-  var length = src2.length;
+  var length = it.src2.length;
 
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 1 );
   _.assert( it.context.strictTyping !== undefined );
-  _.assert( it.context.contain !== undefined );
+  _.assert( it.context.containing !== undefined );
 
   it.looking = false;
 
-  if( !( src1.length >= 0 ) )
+  if( !( it.src.length >= 0 ) )
   return false;
 
-  if( !( src2.length >= 0 ) )
+  if( !( it.src2.length >= 0 ) )
   return false;
 
-  if( !_.vectorIs( src1 ) )
+  if( !_.vectorIs( it.src ) )
   return false;
-  if( !_.vectorIs( src2 ) )
+  if( !_.vectorIs( it.src2 ) )
   return false;
 
   if( it.context.strictTyping )
-  if( src1._vectorBuffer.constructor !== src2._vectorBuffer.constructor )
+  if( it.src._vectorBuffer.constructor !== it.src2._vectorBuffer.constructor )
   return false;
 
-  if( !it.context.contain )
-  if( src1.length !== length )
+  if( !it.context.containing )
+  if( it.src.length !== length )
   return false;
 
   if( !length )
@@ -4201,7 +4202,7 @@ function _equalAre( src1, src2, it )
 
   for( var i = 0 ; i < length ; i++ )
   {
-    if( !it.context.onNumbersAreEqual( src1.eGet( i ),src2.eGet( i ) ) )
+    if( !it.context.onNumbersAreEqual( it.src.eGet( i ),it.src2.eGet( i ) ) )
     return false;
   }
 
@@ -4223,7 +4224,7 @@ dop.homogeneous = true;
 function equalAre( src1, src2, it )
 {
   var it = equalAre.lookContinue( equalAre, arguments );
-  var result = this._equalAre( src1, src2, it );
+  var result = this._equalAre( it );
   return result;
   // _entityEqualIteratorMake
 }
@@ -4250,7 +4251,7 @@ function identicalAre( src1,src2,iterator )
 {
   debugger;
   var it = identicalAre.lookContinue( identicalAre, arguments );
-  var result = this._equalAre( src1, src2, it );
+  var result = this._equalAre( it );
   return result;
   // _entityEqualIteratorMake
 }
@@ -4273,7 +4274,7 @@ function equivalentAre( src1,src2,iterator )
 {
   debugger;
   var it = equivalentAre.lookContinue( identicalAre, arguments );
-  var result = this._equalAre( src1, src2, it );
+  var result = this._equalAre( it );
   return result;
   // _entityEqualIteratorMake
 }

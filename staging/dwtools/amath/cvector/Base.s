@@ -221,7 +221,7 @@ function fromSubArray( srcArray,offset,length )
   if( length === undefined )
   length = srcArray.length-offset;
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( srcArray );
   _.assert( offset+length <= srcArray.length );
 
