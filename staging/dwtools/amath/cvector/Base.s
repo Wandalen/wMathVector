@@ -1,4 +1,4 @@
-(function _cVector_s_() {
+(function _Base_s_() {
 
 'use strict';
 
@@ -43,10 +43,10 @@ var _assertMapHasOnly = _.assertMapHasOnly;
 var _routineIs = _.routineIs;
 
 if( _.EPS === undefined )
-_.EPS = 1e-5;
+_.EPS = 1e-7;
 
 if( _.EPS2 === undefined )
-_.EPS2 = 1e-10;
+_.EPS2 = 1e-15;
 
 var Parent = null;
 var Self = Object.create( null );
