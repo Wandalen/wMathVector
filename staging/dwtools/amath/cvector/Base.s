@@ -42,11 +42,13 @@ var _assert = _.assert;
 var _assertMapHasOnly = _.assertMapHasOnly;
 var _routineIs = _.routineIs;
 
-if( _.EPS === undefined )
-_.EPS = 1e-7;
-
-if( _.EPS2 === undefined )
-_.EPS2 = 1e-15;
+// debugger;
+//
+// if( _.accuracy === undefined )
+// _.accuracy = 1e-7;
+//
+// if( _.accuracySqr === undefined )
+// _.accuracySqr = 1e-15;
 
 var Parent = null;
 var Self = Object.create( null );
@@ -529,6 +531,9 @@ _.assert( Self.withWrapper );
 _.assert( Self.array );
 _.assert( Self.array.arrayFromCoercing );
 _.assert( Self.array.makeArrayOfLength );
+
+_.assert( _.numberIs( _.accuracy ) );
+_.assert( _.numberIs( _.accuracySqr ) );
 
 //
 

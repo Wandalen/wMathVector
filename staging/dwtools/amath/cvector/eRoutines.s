@@ -17,8 +17,8 @@ var _pow = Math.pow;
 var sqrt = Math.sqrt;
 var abs = Math.abs;
 
-var EPS = _.EPS;
-var EPS2 = _.EPS2;
+// var accuracy = _.accuracy;
+// var accuracySqr = _.accuracySqr;
 var sqrt2 = sqrt( 2 );
 var sqrt2Inv = 1 / sqrt2;
 
@@ -4293,11 +4293,12 @@ dop.homogeneous = true;
 
 //
 
-function areParallel( src1,src2,/*eps*/accuracy )
+function areParallel( src1, src2, accuracy )
 {
   var length = src1.length;
-  var /*eps*/accuracy = ( /*eps*/accuracy !== undefined ) ? /*eps*/accuracy : EPS;
+  var accuracy = ( accuracy !== undefined ) ? accuracy : Self.accuracy;
 
+  _.assert( _.numberIs( accuracy ) );
   _.assert( src1.length === src2.length,'vector.distanceSqr :','src1 and src2 should have same length' );
 
   if( !length ) return true;
@@ -4331,7 +4332,7 @@ function areParallel( src1,src2,/*eps*/accuracy )
 
     var r = src1.eGet( s ) / src2.eGet( s );
 
-    if( abs( r - ratio ) > /*eps*/accuracy )
+    if( abs( r - ratio ) > accuracy )
     return false;
 
     s += 1;
@@ -5021,8 +5022,8 @@ var Proto =
 
   RoutinesMathematical : RoutinesMathematical,
 
-  EPS : EPS,
-  EPS2 : EPS2,
+  // accuracy : _.accuracy,
+  // accuracySqr : _.accuracySqr,
 
   Forbidden : Forbidden,
 
@@ -5047,8 +5048,11 @@ _.assert( _.vector.round );
 _.assert( _.vector.allIdentical );
 _.assert( _.arrayIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
-_.assert( _.vector.EPS >= 0 );
-_.assert( _.vector.EPS2 >= 0 );
+_.assert( _.vector.accuracy >= 0 );
+_.assert( _.vector.accuracySqr >= 0 );
+
+_.assert( _.numberIs( Self.accuracy ) );
+_.assert( _.numberIs( Self.accuracySqr ) );
 
 _.accessorForbid
 ({

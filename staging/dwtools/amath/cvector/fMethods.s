@@ -15,8 +15,8 @@ var _max = Math.max;
 var _sqrt = Math.sqrt;
 var _abs = Math.abs;
 
-var EPS = _.EPS;
-var EPS2 = _.EPS2;
+var accuracy = _.accuracy;
+var accuracySqr = _.accuracySqr;
 
 var Parent = null;
 var Self = _.Vector;
@@ -233,7 +233,6 @@ function equalWith( src2, it )
 {
   var src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  debugger;
   return vector.equalAre( src1, src2, it );
 }
 

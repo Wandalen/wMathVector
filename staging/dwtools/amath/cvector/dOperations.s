@@ -20,8 +20,8 @@ var _floor = Math.floor;
 var _ceil = Math.ceil;
 var _round = Math.round;
 
-var EPS = _.EPS;
-var EPS2 = _.EPS2;
+var accuracy = _.accuracy;
+var accuracySqr = _.accuracySqr;
 
 var Parent = null;
 var vector = _.vector;
