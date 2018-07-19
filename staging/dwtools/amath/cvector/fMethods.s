@@ -4,7 +4,7 @@
 
 var _ = _global_.wTools;
 var _hasLength = _.hasLength;
-var _arraySlice = _.arraySlice;
+var _arraySlice = _.longSlice;
 var _sqr = _.sqr;
 var _assert = _.assert;
 var _assertMapHasOnly = _.assertMapHasOnly;
@@ -76,7 +76,7 @@ function eSet( index,val )
 function assign()
 {
   var self = this;
-  var args = _.arraySlice( arguments );
+  var args = _.longSlice( arguments );
   args.unshift( self );
   return vector.assign.apply( vector,args );
 }

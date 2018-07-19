@@ -4,7 +4,7 @@
 
 var _ = _global_.wTools;
 var _hasLength = _.hasLength;
-var _arraySlice = _.arraySlice;
+var _arraySlice = _.longSlice;
 var _sqr = _.sqr;
 var _sqrt = _.sqrt;
 var _assert = _.assert;
@@ -770,7 +770,7 @@ function _onVectorsForRoutine_functor( dop )
       o.srcElement = null;
       o.srcContainer = dst;
       o.srcContainerIndex = -1;
-      o.srcContainers = _.arraySlice( arguments,1,arguments.length );
+      o.srcContainers = _.longSlice( arguments,1,arguments.length );
       Object.preventExtensions( o );
 
       if( onVectorsBegin0 )
@@ -1156,7 +1156,7 @@ dop.special = true;
   var f = f !== undefined ? f : 0;
   var l = l !== undefined ? l : array.length;
 
-  _.assert( _.arrayLike( array ) );
+  _.assert( _.longIs( array ) );
   _.assert( _.numberIs( f ) );
   _.assert( _.numberIs( l ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
@@ -1381,15 +1381,15 @@ function toArray( src )
   var result;
   var length = src.length;
 
-  _assert( _.vectorIs( src ) || _.arrayLike( src ), 'expects vector as a single argument' );
+  _assert( _.vectorIs( src ) || _.longIs( src ), 'expects vector as a single argument' );
   _assert( arguments.length === 1 );
 
-  if( _.arrayLike( src ) )
+  if( _.longIs( src ) )
   return src;
 
   if( src.stride !== 1 || src.offset !== 0 || src.length !== src._vectorBuffer.length )
   {
-    result = _.arrayMakeSimilar( src._vectorBuffer,src.length );
+    result = _.longMakeSimilar( src._vectorBuffer,src.length );
     for( var i = 0 ; i < src.length ; i++ )
     result[ i ] = src.eGet( i );
   }
@@ -1474,10 +1474,10 @@ function gather( dst,srcs )
   for( var s = 0 ; s < srcs.length ; s++ )
   {
     var src = srcs[ s ];
-    _.assert( _.numberIs( src ) || _.vectorIs( src ) || _.arrayLike( src ) );
+    _.assert( _.numberIs( src ) || _.vectorIs( src ) || _.longIs( src ) );
     if( _.numberIs( src ) )
     continue;
-    if( _.arrayLike( src ) )
+    if( _.longIs( src ) )
     src = srcs[ s ] = _.vector.fromArray( src );
     _.assert( src.length === l );
   }
@@ -2703,7 +2703,7 @@ function _onVectorsAtomwise_functor( dop )
 
       var o = Object.create( null );
       o.key = -1;
-      o.args = _.arraySlice( arguments );;
+      o.args = _.longSlice( arguments );;
       o.dstElement = null
       o.dstContainer = dst;
       o.srcElements = [];
@@ -2771,7 +2771,7 @@ function _onVectorsAtomwise_functor( dop )
       o.srcContainers = null;
       o.srcElement = null;
       o.key = -1;
-      o.args = _.arraySlice( arguments,0,arguments.length );
+      o.args = _.longSlice( arguments,0,arguments.length );
       o.unwrapping = 0;
       o.result = null;
       Object.preventExtensions( o );

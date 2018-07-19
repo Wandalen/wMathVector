@@ -34,7 +34,7 @@ var _ = _global_.wTools;
 var _hasLength = _.hasLength;
 var _min = Math.min;
 var _max = Math.max;
-var _arraySlice = _.arraySlice;
+var _arraySlice = _.longSlice;
 var _sqrt = Math.sqrt;
 var _abs = Math.abs;
 var _sqr = _.sqr;
@@ -105,7 +105,7 @@ function fromMaybeNumber( number,length )
 
   var numberIs = _.numberIs( number );
 
-  _.assert( numberIs || _.arrayLike( number ) || _.vectorIs( number ) );
+  _.assert( numberIs || _.longIs( number ) || _.vectorIs( number ) );
 
   if( !numberIs )
   {
@@ -129,7 +129,7 @@ function from( srcArray )
 
   if( _.vectorIs( srcArray ) )
   return srcArray;
-  else if( _.arrayLike( srcArray ) )
+  else if( _.longIs( srcArray ) )
   return fromArray( srcArray );
   else if( _.spaceIs( srcArray ) )
   {
@@ -177,7 +177,7 @@ function fromArray( srcArray )
 {
 
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.vectorIs( srcArray ) || _.arrayLike( srcArray ) );
+  _.assert( _.vectorIs( srcArray ) || _.longIs( srcArray ) );
 
   if( srcArray._vectorBuffer )
   return srcArray;
@@ -314,11 +314,11 @@ function fromArrayWithStride( srcArray,stride )
 
 function variants( variants )
 {
-  var result = _.arraySlice( variants );
+  var result = _.longSlice( variants );
   var length;
 
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.arrayLike( variants );
+  _.longIs( variants );
 
   /* */
 
@@ -326,7 +326,7 @@ function variants( variants )
   {
     var variant = result[ v ];
 
-    _.assert( _.numberIs( variant ) || _.arrayLike( variant ) || _.vectorIs( variant ) );
+    _.assert( _.numberIs( variant ) || _.longIs( variant ) || _.vectorIs( variant ) );
 
     if( _.numberIs( variant ) )
     continue;
@@ -350,7 +350,7 @@ function variants( variants )
     if( _.vectorIs( variant ) )
     continue;
 
-    if( _.arrayLike( variant ) )
+    if( _.longIs( variant ) )
     variant = result[ v ] = _.vector.fromArray( variant );
     else
     variant = result[ v ] = _.vector.fromMaybeNumber( variant,length );
@@ -429,7 +429,7 @@ function withWrapper( o )
     return arg;
 
     // if( _hasLength( arg ) && ( !_.Space || !( arg instanceof _.Space ) ) )
-    if( _.arrayLike( arg ) )
+    if( _.longIs( arg ) )
     return Self.fromArray( arg );
     return arg;
   }
