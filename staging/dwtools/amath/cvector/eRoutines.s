@@ -4272,7 +4272,6 @@ dop.homogeneous = true;
 
 function equivalentAre( src1,src2,iterator )
 {
-  debugger;
   var it = equivalentAre.lookContinue( identicalAre, arguments );
   var result = this._equalAre( it );
   return result;
