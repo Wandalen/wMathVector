@@ -1070,7 +1070,7 @@ function assignVector( dst,src )
 {
   var length = dst.length;
 
-  _assert( dst && src,'vector :','expects ( src ) and ( dst )' );
+  _assert( dst && src,'vector :','expects {-src-} and ( dst )' );
   _assert( dst.length === src.length,'vector :','src and dst should have same length' );
   _assert( _.vectorIs( dst ) );
   _assert( _.vectorIs( src ) );
