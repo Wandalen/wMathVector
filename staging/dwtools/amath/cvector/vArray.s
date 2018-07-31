@@ -111,13 +111,13 @@ _.avector = Self;
 
 _._arrayNameSpaceApplyTo( Self,'Float32' );
 _.assert( _.mapOwnKey( _.avector,'withArray' ) );
-_.assert( _.avector.withArray );
-_.assert( _.avector.withArray.Array );
-_.assert( _.avector.withArray.Float32 );
+_.assert( _.objectIs( _.avector.withArray ) );
+_.assert( _.objectIs( _.avector.withArray.Array ) );
+_.assert( _.objectIs( _.avector.withArray.Float32 ) );
 
 _.assert( Object.getPrototypeOf( Self ) === wTools );
 _.assert( _.objectIs( _row.RoutinesMathematical ) );
 _.assert( !_.avector.isValid );
-_.assert( _.avector.allFinite );
+_.assert( _.routineIs( _.avector.allFinite ) );
 
 })();

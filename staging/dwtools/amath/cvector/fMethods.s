@@ -6,7 +6,7 @@ var _ = _global_.wTools;
 var _hasLength = _.hasLength;
 var _arraySlice = _.longSlice;
 var _sqr = _.sqr;
-var _assert = _.assert;
+// var __assert = _.assert;
 var _assertMapHasOnly = _.assertMapHasOnly;
 var _routineIs = _.routineIs;
 
@@ -431,16 +431,16 @@ for( var r in routines )
 
 }
 
-_.assert( Self.prototype.mag );
-_.assert( Self.prototype.magSqr );
+_.assert( _.routineIs( Self.prototype.mag ) );
+_.assert( _.routineIs( Self.prototype.magSqr ) );
 
-_.assert( Self.prototype.toArray );
+_.assert( _.routineIs( Self.prototype.toArray ) );
 
-_.assert( Self.prototype.abs );
-_.assert( Self.prototype.makeSimilar );
-_.assert( Self.prototype.assign );
-_.assert( Self.prototype.slice );
+_.assert( _.routineIs( Self.prototype.abs ) );
+_.assert( _.routineIs( Self.prototype.makeSimilar ) );
+_.assert( _.routineIs( Self.prototype.assign ) );
+_.assert( _.routineIs( Self.prototype.slice ) );
 
-_.assert( Self.prototype.allZero );
+_.assert( _.routineIs( Self.prototype.allZero ) );
 
 })();

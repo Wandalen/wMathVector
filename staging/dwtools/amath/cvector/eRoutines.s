@@ -7,7 +7,7 @@ var _hasLength = _.hasLength;
 var _arraySlice = _.longSlice;
 var _sqr = _.sqr;
 var _sqrt = _.sqrt;
-var _assert = _.assert;
+// var __assert = _.assert;
 var _assertMapHasOnly = _.assertMapHasOnly;
 var _routineIs = _.routineIs;
 
@@ -34,7 +34,7 @@ var Routines = Object.create( null );
 
 */
 
-_.assert( operations );
+_.assert( _.objectIs( operations ) );
 
 // --
 // structure
@@ -721,7 +721,7 @@ function _vectorsGenEnd( dop,onVectors,onVectorsBegin )
   _.assert( dop.onAtom.length > 1 );
   _.assert( _.routineIs( onVectors ) );
   _.assert( _.routineIs( onVectorsBegin ) );
-  _.assert( dop.generator );
+  _.assert( _.routineIs( dop.generator ) );
 
   onVectors.own = { onAtom : onAtom };
   onVectors.operation = dop;
@@ -956,14 +956,14 @@ function _routineForOperation_functor( dop )
   /* */
 
   _.assertMapHasOnly( dop,_routineForOperation_functor.defaults );
-  _.assert( dop.atomOperation );
+  _.assert( _.objectIs( dop.atomOperation ) );
   _.assert( _.routineIs( onAtom ) );
   _.assert( dop.onAtom.length === 1 );
 
   _.assert( _.arrayIs( dop.takingArguments ) );
   _.assert( arguments.length === 1, 'expects single argument' );
 
-  _.assert( dop.input );
+  _.assert( _.arrayIs( dop.input ) );
   _.assert( _.strIsNotEmpty( dop.name ) );
   _.assert( _.arrayIs( dop.input ) || _.arrayIs( dop.input ) );
   _.assert( _.boolIs( dop.homogeneous ) || _.boolIs( dop.homogeneous ) );
@@ -1070,10 +1070,10 @@ function assignVector( dst,src )
 {
   var length = dst.length;
 
-  _assert( dst && src,'vector :','expects {-src-} and ( dst )' );
-  _assert( dst.length === src.length,'vector :','src and dst should have same length' );
-  _assert( _.vectorIs( dst ) );
-  _assert( _.vectorIs( src ) );
+  _.assert( !!dst && !!src,'vector :','expects {-src-} and ( dst )' );
+  _.assert( dst.length === src.length,'vector :','src and dst should have same length' );
+  _.assert( _.vectorIs( dst ) );
+  _.assert( _.vectorIs( src ) );
 
   for( var s = 0 ; s < length ; s++ )
   {
@@ -1200,9 +1200,9 @@ dop.modifying = false;
 
 function slicedArray( src,first,last )
 {
-  _.assert( src );
+  _.assert( !!src );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( src._vectorBuffer,'expects vector as argument' );
+  _.assert( !!src._vectorBuffer,'expects vector as argument' );
 
   var length = src.length;
   var f = first !== undefined ? first : 0;
@@ -1267,7 +1267,7 @@ function resizedArray( src,first,last,val )
   var lsrc = Math.min( src.length,l );
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  _.assert( src._vectorBuffer,'expects vector as argument' );
+  _.assert( !!src._vectorBuffer,'expects vector as argument' );
 
   var result;
   if( src.stride !== 1 || src.offset !== 0 || src._vectorBuffer.length !== l || f !== 0 )
@@ -1348,9 +1348,9 @@ function subarray( src,first,last )
   if( first > last )
   first = last;
 
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( src._vectorBuffer,'expects vector as argument' );
-  _assert( src.offset >= 0 );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( !!src._vectorBuffer,'expects vector as argument' );
+  _.assert( src.offset >= 0 );
 
   if( src.stride !== 1 )
   {
@@ -1381,8 +1381,8 @@ function toArray( src )
   var result;
   var length = src.length;
 
-  _assert( _.vectorIs( src ) || _.longIs( src ), 'expects vector as a single argument' );
-  _assert( arguments.length === 1 );
+  _.assert( _.vectorIs( src ) || _.longIs( src ), 'expects vector as a single argument' );
+  _.assert( arguments.length === 1 );
 
   if( _.longIs( src ) )
   return src;
@@ -1585,7 +1585,7 @@ function randomInRadius( dst,radius )
   if( o.attempts === undefined )
   o.attempts = 32;
 
-  _assert( _.numberIs( radius ) );
+  _.assert( _.numberIs( radius ) );
 
   var radiusSqrt = sqrt( radius );
   var radiusSqr = _sqr( radius );
@@ -1618,7 +1618,7 @@ function crossWithPoints( a, b, c, result )
 {
   throw _.err( 'not tested' );
 
-  _assert( a.length === 3 && b.length === 3 && c.length === 3,'implemented only for 3D' );
+  _.assert( a.length === 3 && b.length === 3 && c.length === 3,'implemented only for 3D' );
 
   debugger;
   var result = result || this.array.makeArrayOfLength( 3 );
@@ -1733,7 +1733,7 @@ dop.modifying = true;
 function quaternionApply( dst,q )
 {
 
-  _assert( dst.length === 3 && q.length === 4,'quaternionApply :','expects vector and quaternion as arguments' );
+  _.assert( dst.length === 3 && q.length === 4,'quaternionApply :','expects vector and quaternion as arguments' );
 
   var x = dst.eGet( 0 );
   var y = dst.eGet( 1 );
@@ -1791,7 +1791,7 @@ v' = v + q.w * t + cross(q.xyz, t)
 function quaternionApply2( dst,q )
 {
 
-  _assert( dst.length === 3 && q.length === 4,'quaternionApply :','expects vector and quaternion as arguments' );
+  _.assert( dst.length === 3 && q.length === 4,'quaternionApply :','expects vector and quaternion as arguments' );
   throw _.err( 'not tested' );
   var qvector = this.fromSubArray( dst,0,3 );
 
@@ -1930,8 +1930,8 @@ dop.modifying = true;
 function swapVectors( v1,v2 )
 {
 
-  _assert( arguments.length === 2 );
-  _assert( v1.length === v2.length );
+  _.assert( arguments.length === 2 );
+  _.assert( v1.length === v2.length );
 
   for( var i = 0 ; i < v1.length ; i++ )
   {
@@ -1957,11 +1957,11 @@ dop.modifying = true;
 function swapAtoms( v,i1,i2 )
 {
 
-  _assert( arguments.length === 3 );
-  _assert( 0 <= i1 && i1 < v.length );
-  _assert( 0 <= i2 && i2 < v.length );
-  _assert( _.numberIs( i1 ) );
-  _assert( _.numberIs( i2 ) );
+  _.assert( arguments.length === 3 );
+  _.assert( 0 <= i1 && i1 < v.length );
+  _.assert( 0 <= i2 && i2 < v.length );
+  _.assert( _.numberIs( i1 ) );
+  _.assert( _.numberIs( i2 ) );
 
   var val = v.eGet( i1 );
   v.eSet( i1,v.eGet( i2 ) );
@@ -2035,11 +2035,11 @@ function _operationTakingDstSrcReturningSelfComponentWise_functor( o )
   var onVectorsBegin0 = o.onVectorsBegin || function(){};
   var onVectorsEnd0 = o.onVectorsEnd || function(){};
 
-  _assert( _.objectIs( o ) );
-  _assert( _.routineIs( onEach ) );
-  _assert( _.routineIs( onVectorsBegin0 ) );
-  _assert( _.routineIs( onVectorsEnd0 ) );
-  _assert( arguments.length === 1 );
+  _.assert( _.objectIs( o ) );
+  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routineIs( onVectorsBegin0 ) );
+  _.assert( _.routineIs( onVectorsEnd0 ) );
+  _.assert( arguments.length === 1 );
 
   var routine = function _operationTakingDstSrcReturningSelfComponentWise( dst,src )
   {
@@ -2048,8 +2048,8 @@ function _operationTakingDstSrcReturningSelfComponentWise_functor( o )
     if( !src )
     src = dst;
 
-    _assert( arguments.length <= 2 );
-    _assert( dst.length === src.length,'src and dst must have same length' );
+    _.assert( arguments.length <= 2 );
+    _.assert( dst.length === src.length,'src and dst must have same length' );
 
     onVectorsBegin0.call( this,dst,src );
 
@@ -2203,13 +2203,13 @@ _operationReturningSelfTakingVariantsComponentWise_functor.defaults =
 function _operationReturningSelfTakingVariantsComponentWiseAct_functor( operation )
 {
 
-  _assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 );
   _.routineOptions( _operationReturningSelfTakingVariantsComponentWiseAct_functor,operation );
-  _assert( _.objectIs( operation ) );
-  _assert( _.routineIs( operation.onEach ) );
-  _assert( _.routineIs( operation.onVectorsBegin ) );
-  _assert( _.routineIs( operation.onVectorsEnd ) );
-  _assert( _.arrayIs( operation.takingArguments ) );
+  _.assert( _.objectIs( operation ) );
+  _.assert( _.routineIs( operation.onEach ) );
+  _.assert( _.routineIs( operation.onVectorsBegin ) );
+  _.assert( _.routineIs( operation.onVectorsEnd ) );
+  _.assert( _.arrayIs( operation.takingArguments ) );
 
   var onVectorsBegin = operation.onVectorsBegin;
   var onEach = operation.onEach;
@@ -2498,7 +2498,7 @@ function declareHomogeneousTakingVectorsRoutines()
 
   }
 
-  _.assert( Routines.addVectors );
+  _.assert( _.routineIs( Routines.addVectors ) );
 
 }
 
@@ -2531,7 +2531,7 @@ function declareHomogeneousTakingScalarRoutines()
 
   }
 
-  _.assert( Routines.addScalar );
+  _.assert( _.routineIs( Routines.addScalar ) );
   _.assert( Routines.addScalar.operation.onAtom.length >= 2 );
 
 }
@@ -2549,7 +2549,7 @@ function _onAtomAtomwise_functor( dop )
   var onContinue = dop.onContinue[ 0 ];
   var handleAtom = null;
 
-  _.assert( !dop.interruptible || onContinue );
+  _.assert( !dop.interruptible || _.routineIs( onContinue ) );
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayIs( dop.onContinue ) );
   _.assert( _.routineIs( onAtom0 ) );
@@ -2913,11 +2913,11 @@ function routinesHomogeneousDeclare()
 
   /* */
 
-  _.assert( Routines.add );
+  _.assert( _.routineIs( Routines.add ) );
   _.assert( Routines.add.operation.usingDstAsSrc );
   _.assert( _.arrayIdentical( Routines.add.operation.takingVectors,[ 0,Infinity ] ) );
-  _.assert( Routines.min );
-  _.assert( Routines.max );
+  _.assert( _.routineIs( Routines.min ) );
+  _.assert( _.routineIs( Routines.max ) );
 
 }
 
@@ -2954,7 +2954,7 @@ function routinesHeterogeneousDeclare()
   for( var routineName in operations.atomWiseHeterogeneous )
   _routinesHeterogeneousDeclare( operations.atomWiseHeterogeneous[ routineName ],routineName );
 
-  _.assert( Routines.addScaled );
+  _.assert( _.routineIs( Routines.addScaled ) );
 
 }
 
@@ -3103,7 +3103,7 @@ function __operationReduceToScalar_functor( operation )
     Object.preventExtensions( op );
 
     _.mapExtend( op,o );
-    _.assert( op.args );
+    _.assert( !!op.args );
 
     if( onVectorsBegin0 )
     {
@@ -3116,7 +3116,7 @@ function __operationReduceToScalar_functor( operation )
 
     if( Config.debug && takingArguments )
     {
-      _assert( takingArguments[ 0 ] <= o.args.length && o.args.length <= takingArguments[ 1 ] );
+      _.assert( takingArguments[ 0 ] <= o.args.length && o.args.length <= takingArguments[ 1 ] );
     }
 
     op.filter = null;
@@ -3852,11 +3852,11 @@ function declareHomogeneousLogical2Routines()
 
   /* */
 
-  _.assert( Routines.isIdentical );
-  _.assert( Routines.allIdentical );
-  _.assert( Routines.anyIdentical );
-  _.assert( Routines.noneIdentical );
-  _.assert( Routines.isGreater );
+  _.assert( _.routineIs( Routines.isIdentical ) );
+  _.assert( _.routineIs( Routines.allIdentical ) );
+  _.assert( _.routineIs( Routines.anyIdentical ) );
+  _.assert( _.routineIs( Routines.noneIdentical ) );
+  _.assert( _.routineIs( Routines.isGreater ) );
 
   _.assert( _.arrayIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
   _.assert( _.arrayIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
@@ -3873,7 +3873,7 @@ function gt( dst,src )
 }
 
 var dop = gt.operation = Routines.isGreater.operation;
-_.assert( dop );
+_.assert( _.objectIs( dop ) );
 
 //
 
@@ -3883,7 +3883,7 @@ function ge( dst,src )
 }
 
 var dop = ge.operation = Routines.isGreaterEqual.operation;
-_.assert( dop );
+_.assert( _.objectIs( dop ) );
 
 //
 
@@ -3893,7 +3893,7 @@ function lt( dst,src )
 }
 
 var dop = lt.operation = Routines.isLess.operation;
-_.assert( dop );
+_.assert( _.objectIs( dop ) );
 
 //
 
@@ -3903,7 +3903,7 @@ function le( dst,src )
 }
 
 var dop = le.operation = Routines.isLessEqual.operation;
-_.assert( dop );
+_.assert( _.objectIs( dop ) );
 
 //
 
@@ -3912,10 +3912,10 @@ function dot( dst,src )
   var result = 0;
   var length = dst.length;
 
-  _assert( _.vectorIs( dst ) );
-  _assert( _.vectorIs( src ) );
-  _assert( dst.length === src.length,'src and dst should have same length' );
-  _assert( arguments.length === 2 );
+  _.assert( _.vectorIs( dst ) );
+  _.assert( _.vectorIs( src ) );
+  _.assert( dst.length === src.length,'src and dst should have same length' );
+  _.assert( arguments.length === 2 );
 
   for( var s = 0 ; s < length ; s++ )
   {
@@ -3957,7 +3957,7 @@ function distanceSqr( src1,src2 )
   var result = 0;
   var length = src1.length;
 
-  _assert( src1.length === src2.length,'vector.distanceSqr :','src1 and src2 should have same length' );
+  _.assert( src1.length === src2.length,'vector.distanceSqr :','src1 and src2 should have same length' );
 
   for( var s = 0 ; s < length ; s++ )
   {
@@ -4151,10 +4151,10 @@ function declareLogic1Routines()
 
   /* */
 
-  _.assert( Routines.isZero );
-  _.assert( Routines.allZero );
-  _.assert( Routines.anyZero );
-  _.assert( Routines.noneZero );
+  _.assert( _.routineIs( Routines.isZero ) );
+  _.assert( _.routineIs( Routines.allZero ) );
+  _.assert( _.routineIs( Routines.anyZero ) );
+  _.assert( _.routineIs( Routines.noneZero ) );
 
   _.assert( _.arrayIdentical( Routines.isZero.operation.takingArguments,[ 1,2 ] ) );
   _.assert( _.arrayIdentical( Routines.allZero.operation.takingArguments,[ 1,1 ] ) );
@@ -4231,9 +4231,9 @@ function equalAre( src1, src2, it )
 
 _.routineSupplement( equalAre, _._entityEqual );
 
-_.assert( equalAre.defaults );
-_.assert( equalAre.body );
-_.assert( equalAre.lookContinue );
+_.assert( _.objectIs( equalAre.defaults ) );
+_.assert( _.routineIs( equalAre.body ) );
+_.assert( _.routineIs( equalAre.lookContinue ) );
 
 var dop = equalAre.operation = Object.create( null );
 dop.takingArguments = [ 2,3 ];
@@ -4364,7 +4364,7 @@ _routinesDeclare();
 function mag( v )
 {
 
-  _assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 );
 
   return this.reduceToMag( v );
 }
@@ -4378,7 +4378,7 @@ dop.takingVectors = [ 1,1 ];
 function magSqr( v )
 {
 
-  _assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 );
 
   return this.reduceToMagSqr( v );
 }
@@ -4406,7 +4406,7 @@ var dop = median.operation = _.mapExtend( null , distributionRangeSummary.trivia
 
 function momentCentral( v,degree,mean )
 {
-  _assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
   if( mean === undefined || mean === null )
   mean = _.avector.mean( v );
@@ -4421,11 +4421,11 @@ dop.takingArguments = [ 2,3 ];
 
 function momentCentralConditional( v,degree,mean,filter )
 {
-  _assert( arguments.length === 3 || arguments.length === 4 );
+  _.assert( arguments.length === 3 || arguments.length === 4 );
 
   if( _.routineIs( mean ) )
   {
-    _assert( filter === undefined );
+    _.assert( filter === undefined );
     filter = mean;
     mean = null;
   }
@@ -4466,7 +4466,7 @@ dop.takingArguments = [ 1,1 ];
 
 function variance( v,mean )
 {
-  _assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   var degree = 2;
   return this.momentCentral( v,degree,mean );
 }
@@ -4478,11 +4478,11 @@ dop.takingArguments = [ 1,2 ];
 
 function varianceConditional( v,mean,filter )
 {
-  _assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
   if( _.routineIs( mean ) )
   {
-    _assert( filter === undefined );
+    _.assert( filter === undefined );
     filter = mean;
     mean = null;
   }
@@ -4992,7 +4992,7 @@ var RoutinesMathematical =
 //
 
 for( var r in Routines )
-_.assert( RoutinesMathematical[ r ],'routine',r,'was not declared explicitly in the proto map as it should' );
+_.assert( _.routineIs( RoutinesMathematical[ r ] ),'routine',r,'was not declared explicitly in the proto map as it should' );
 
 //
 
@@ -5005,9 +5005,9 @@ var Forbidden =
 // after
 // --
 
-_.assert( RoutinesMathematical.assign );
-_.assert( RoutinesMathematical.assign.operation );
-_.assert( RoutinesMathematical.assign.operation.takingArguments );
+_.assert( _.routineIs( RoutinesMathematical.assign ) );
+_.assert( _.objectIs( RoutinesMathematical.assign.operation ) );
+_.assert( _.arrayIs( RoutinesMathematical.assign.operation.takingArguments ) );
 
 for( var r in RoutinesMathematical )
 _routineAdjust( RoutinesMathematical[ r ],r );
@@ -5033,18 +5033,18 @@ _.mapExtend( Self,Proto );
 
 //
 
-_.assert( _.vector.reduceToMean );
+_.assert( _.routineIs( _.vector.reduceToMean ) );
 _.assert( !_.vector.isValid );
-_.assert( _.vector.allFinite );
-_.assert( _.vector.reduceToMaxValue );
-_.assert( RoutinesMathematical.reduceToMaxValue );
+_.assert( _.routineIs( _.vector.allFinite ) );
+_.assert( _.routineIs( _.vector.reduceToMaxValue ) );
+_.assert( _.routineIs( RoutinesMathematical.reduceToMaxValue ) );
 
-_.assert( _.vector.floor );
-_.assert( _.vector.ceil );
-_.assert( _.vector.abs );
-_.assert( _.vector.round );
+_.assert( _.routineIs( _.vector.floor ) );
+_.assert( _.routineIs( _.vector.ceil ) );
+_.assert( _.routineIs( _.vector.abs ) );
+_.assert( _.routineIs( _.vector.round ) );
 
-_.assert( _.vector.allIdentical );
+_.assert( _.routineIs( _.vector.allIdentical ) );
 _.assert( _.arrayIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
 _.assert( _.vector.accuracy >= 0 );

@@ -38,7 +38,7 @@ var _arraySlice = _.longSlice;
 var _sqrt = Math.sqrt;
 var _abs = Math.abs;
 var _sqr = _.sqr;
-var _assert = _.assert;
+// var __assert = _.assert;
 var _assertMapHasOnly = _.assertMapHasOnly;
 var _routineIs = _.routineIs;
 
@@ -224,7 +224,7 @@ function fromSubArray( srcArray,offset,length )
   length = srcArray.length-offset;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( srcArray );
+  _.assert( !!srcArray );
   _.assert( offset+length <= srcArray.length );
 
   if( srcArray._vectorBuffer )
@@ -520,17 +520,13 @@ _.mapExtend( Self,Proto );
 Object.setPrototypeOf( Self,wTools );
 Self.constructor = function Vector(){};
 
-/*Object.setPrototypeOf( VectorPrototype,Self );*/
-// VectorPrototype.constructor = function Vector(){};
-
 _.vector = Self;
 _.Vector = Vector;
 
-_.assert( Self.withWrapper );
-/* _.assert( Self.arrayFromCoercing ); */
-_.assert( Self.array );
-_.assert( Self.array.arrayFromCoercing );
-_.assert( Self.array.makeArrayOfLength );
+_.assert( _.routineIs( Self.withWrapper ) );
+_.assert( _.objectIs( Self.array ) );
+_.assert( _.routineIs( Self.array.arrayFromCoercing ) );
+_.assert( _.routineIs( Self.array.makeArrayOfLength ) );
 
 _.assert( _.numberIs( _.accuracy ) );
 _.assert( _.numberIs( _.accuracySqr ) );

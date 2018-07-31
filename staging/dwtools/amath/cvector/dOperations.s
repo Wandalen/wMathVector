@@ -6,7 +6,7 @@ var _ = _global_.wTools;
 var _hasLength = _.hasLength;
 var _arraySlice = _.longSlice;
 var _sqr = _.sqr;
-var _assert = _.assert;
+// var __assert = _.assert;
 var _assertMapHasOnly = _.assertMapHasOnly;
 var _routineIs = _.routineIs;
 
@@ -64,7 +64,7 @@ function operationNormalize2( operation )
   _.assert( _.boolIs( operation.usingExtraSrcs ) );
   _.assert( _.boolIs( operation.usingDstAsSrc ) );
 
-  _.assert( operation.kind );
+  _.assert( _.strIs( operation.kind ) );
 
 }
 
@@ -694,7 +694,7 @@ function operationHeterogeneousAdjust()
 
     _.assert( _.arrayIs( operation.takingArguments ) );
     _.assert( operation.takingArguments.length === 2 );
-    _.assert( operation.input );
+    _.assert( !!operation.input );
     _.assert( !Self.atomWiseHeterogeneous[ dop ] );
 
     operationNormalize2( operation );
