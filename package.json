@@ -1,6 +1,6 @@
 {
   "name": "wmathvector",
-  "version": "0.3.26",
+  "version": "0.3.27",
   "engine": "node >= 6.0.0",
   "description": "Collection of routines for vector math",
   "author": "Kostiantyn Wandalen <wanalen@willbe.so>",
