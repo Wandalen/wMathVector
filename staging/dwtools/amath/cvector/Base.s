@@ -22,24 +22,24 @@ if( typeof module !== 'undefined' )
     require( toolsPath );
   }
 
-  var _ = _global_.wTools;
+  let _ = _global_.wTools;
 
   _.include( 'wProto' );
   _.include( 'wMathScalar' )
 
 }
 
-var _ = _global_.wTools;
-var _hasLength = _.hasLength;
-var _min = Math.min;
-var _max = Math.max;
-var _arraySlice = _.longSlice;
-var _sqrt = Math.sqrt;
-var _abs = Math.abs;
-var _sqr = _.sqr;
-// var __assert = _.assert;
-var _assertMapHasOnly = _.assertMapHasOnly;
-var _routineIs = _.routineIs;
+let _ = _global_.wTools;
+let _hasLength = _.hasLength;
+let _min = Math.min;
+let _max = Math.max;
+let _arraySlice = _.longSlice;
+let _sqrt = Math.sqrt;
+let _abs = Math.abs;
+let _sqr = _.sqr;
+// let __assert = _.assert;
+let _assertMapHasOnly = _.assertMapHasOnly;
+let _routineIs = _.routineIs;
 
 // debugger;
 //
@@ -49,8 +49,8 @@ var _routineIs = _.routineIs;
 // if( _.accuracySqr === undefined )
 // _.accuracySqr = 1e-15;
 
-var Parent = null;
-var Self = Object.create( null );
+let Parent = null;
+let Self = Object.create( null );
 
 function Vector(){ throw _.err( 'should not be called' ) };
 Vector.prototype = Object.create( null );
@@ -63,15 +63,15 @@ Vector.prototype._vectorBuffer = null;
 function makeArrayOfLength( length )
 {
   _.assert( arguments.length === 1, 'expects single argument' );
-  var srcArray = new this.ArrayType( length );
+  let srcArray = new this.ArrayType( length );
   return fromArray( srcArray );
 }
 
 function makeArrayOfLengthWithValue( length,value )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  var srcArray = new this.ArrayType( length );
-  for( var i = 0 ; i < length ; i++ )
+  let srcArray = new this.ArrayType( length );
+  for( let i = 0 ; i < length ; i++ )
   srcArray[ i ] = value;
   return fromArray( srcArray );
 }
@@ -102,7 +102,7 @@ function fromMaybeNumber( number,length )
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( length >= 0 );
 
-  var numberIs = _.numberIs( number );
+  let numberIs = _.numberIs( number );
 
   _.assert( numberIs || _.longIs( number ) || _.vectorIs( number ) );
 
@@ -112,7 +112,7 @@ function fromMaybeNumber( number,length )
     return this.fromArray( number );
   }
 
-  var result = new VectorFromNumber();
+  let result = new VectorFromNumber();
   result._vectorBuffer = [ number ];
   _.constant( result,{ length : length } );
 
@@ -181,7 +181,7 @@ function fromArray( srcArray )
   if( srcArray._vectorBuffer )
   return srcArray;
 
-  var result = new VectorFromArray();
+  let result = new VectorFromArray();
   result._vectorBuffer = srcArray;
 
   Object.freeze( result );
@@ -241,7 +241,7 @@ function fromSubArray( srcArray,offset,length )
 
   }
 
-  var result = new VectorSub();
+  let result = new VectorSub();
   result._vectorBuffer = srcArray;
   result.length = length;
   result.offset = offset;
@@ -257,14 +257,14 @@ VectorSubArrayWithStride.prototype =
 {
   eGet : function( index )
   {
-    var i = this.offset+index*this.stride;
+    let i = this.offset+index*this.stride;
     _.assert( index < this.length );
     _.assert( i < this._vectorBuffer.length );
     return this._vectorBuffer[ i ];
   },
   eSet : function( index,src )
   {
-    var i = this.offset+index*this.stride;
+    let i = this.offset+index*this.stride;
     _.assert( index < this.length );
     _.assert( i < this._vectorBuffer.length );
     this._vectorBuffer[ i ] = src;
@@ -291,7 +291,7 @@ function fromSubArrayWithStride( srcArray,offset,length,stride )
     throw _.err( 'not implemented' );
   }
 
-  var result = new VectorSubArrayWithStride();
+  let result = new VectorSubArrayWithStride();
   result._vectorBuffer = srcArray;
   result.length = length;
   result.offset = offset;
@@ -313,17 +313,17 @@ function fromArrayWithStride( srcArray,stride )
 
 function variants( variants )
 {
-  var result = _.longSlice( variants );
-  var length;
+  let result = _.longSlice( variants );
+  let length;
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.longIs( variants );
 
   /* */
 
-  for( var v = 0 ; v < result.length ; v++ )
+  for( let v = 0 ; v < result.length ; v++ )
   {
-    var variant = result[ v ];
+    variant = result[ v ];
 
     _.assert( _.numberIs( variant ) || _.longIs( variant ) || _.vectorIs( variant ) );
 
@@ -342,9 +342,9 @@ function variants( variants )
 
   /* */
 
-  for( var v = 0 ; v < result.length ; v++ )
+  for( let v = 0 ; v < result.length ; v++ )
   {
-    var variant = result[ v ];
+    let variant = result[ v ];
 
     if( _.vectorIs( variant ) )
     continue;
@@ -368,10 +368,10 @@ function withWrapper( o )
 
   if( _.objectIs( o.routine ) )
   {
-    var result = Object.create( null );
-    for( var r in o.routine )
+    let result = Object.create( null );
+    for( let r in o.routine )
     {
-      var optionsForWrapper = _.mapExtend( null,o );
+      let optionsForWrapper = _.mapExtend( null,o );
       optionsForWrapper.routine = o.routine[ r ];
       result[ r ] = withWrapper( optionsForWrapper );
     }
@@ -380,19 +380,19 @@ function withWrapper( o )
 
   /* */
 
-  var onReturn = o.onReturn;
-  var usingThisAsFirstArgument = o.usingThisAsFirstArgument ? 1 : 0;
-  var theRoutine = o.routine;
+  let onReturn = o.onReturn;
+  let usingThisAsFirstArgument = o.usingThisAsFirstArgument ? 1 : 0;
+  let theRoutine = o.routine;
 
-  var op = theRoutine.operation;
-  var takingArguments = op.takingArguments;
-  var takingVectors = op.takingVectors;
-  var takingVectorsOnly = op.takingVectorsOnly;
-  var returningSelf = op.returningSelf;
-  var returningNew = op.returningNew;
-  var returningArray = op.returningArray;
-  var modifying = op.modifying;
-  var notMethod = op.notMethod;
+  let op = theRoutine.operation;
+  let takingArguments = op.takingArguments;
+  let takingVectors = op.takingVectors;
+  let takingVectorsOnly = op.takingVectorsOnly;
+  let returningSelf = op.returningSelf;
+  let returningNew = op.returningNew;
+  let returningArray = op.returningArray;
+  let modifying = op.modifying;
+  let notMethod = op.notMethod;
 
   /* verification */
 
@@ -418,7 +418,7 @@ function withWrapper( o )
   takingVectors = Object.freeze([ takingVectors,takingVectors ]);
   else
   takingVectors = Object.freeze( takingVectors.slice() );
-  var hasOptionalVectors = takingVectors[ 0 ] !== takingVectors[ 1 ];
+  let hasOptionalVectors = takingVectors[ 0 ] !== takingVectors[ 1 ];
 
   /* */
 
@@ -437,13 +437,13 @@ function withWrapper( o )
 
   function vectorWrap()
   {
-    var l = arguments.length + usingThisAsFirstArgument;
-    var args = new Array( l );
+    let l = arguments.length + usingThisAsFirstArgument;
+    let args = new Array( l );
 
     _.assert( takingArguments[ 0 ] <= l && l <= takingArguments[ 1 ] );
 
-    var s = 0;
-    var d = 0;
+    let s = 0;
+    let d = 0;
     if( usingThisAsFirstArgument )
     {
       args[ d ] = this;
@@ -456,18 +456,19 @@ function withWrapper( o )
       _.assert( _.vectorIs( args[ d ] ) || ( d === 0 && returningNew ) );
     }
 
+    let optionalLength;
     if( hasOptionalVectors )
     {
-      var optionalLength = _min( takingVectors[ 1 ],l );
+      optionalLength = _min( takingVectors[ 1 ],l );
       for( ; d < optionalLength ; d++, s++ )
       args[ d ] = makeVector( arguments[ s ] );
     }
 
-    var optionalLength = _min( takingArguments[ 1 ],l );
+    optionalLength = _min( takingArguments[ 1 ],l );
     for( ; d < optionalLength ; d++, s++ )
     args[ d ] = arguments[ s ];
 
-    var result = theRoutine.apply( Self,args );
+    let result = theRoutine.apply( Self,args );
 
     return onReturn.call( this,result,theRoutine );
   }
@@ -482,7 +483,7 @@ function withWrapper( o )
 // from
 // --
 
-var routineFrom =
+let routineFrom =
 {
 
   makeArrayOfLength : makeArrayOfLength,
@@ -505,7 +506,7 @@ var routineFrom =
 // define class
 // --
 
-var Proto =
+let Proto =
 {
 
 
