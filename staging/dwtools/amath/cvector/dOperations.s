@@ -2,31 +2,31 @@
 
 'use strict';
 
-var _ = _global_.wTools;
-var _hasLength = _.hasLength;
-var _arraySlice = _.longSlice;
-var _sqr = _.sqr;
-// var __assert = _.assert;
-var _assertMapHasOnly = _.assertMapHasOnly;
-var _routineIs = _.routineIs;
+let _ = _global_.wTools;
+let _hasLength = _.hasLength;
+let _arraySlice = _.longSlice;
+let _sqr = _.sqr;
+// let __assert = _.assert;
+let _assertMapHasOnly = _.assertMapHasOnly;
+let _routineIs = _.routineIs;
 
-var _min = Math.min;
-var _max = Math.max;
-var _sqrt = Math.sqrt;
-var _abs = Math.abs;
-var _pow = Math.pow;
+let _min = Math.min;
+let _max = Math.max;
+let _sqrt = Math.sqrt;
+let _abs = Math.abs;
+let _pow = Math.pow;
 
-var _floor = Math.floor;
-var _ceil = Math.ceil;
-var _round = Math.round;
+let _floor = Math.floor;
+let _ceil = Math.ceil;
+let _round = Math.round;
 
-var accuracy = _.accuracy;
-var accuracySqr = _.accuracySqr;
+let accuracy = _.accuracy;
+let accuracySqr = _.accuracySqr;
 
-var Parent = null;
-var vector = _.vector;
-var Self = vector.operations = vector.operations || Object.create( null );
-var dop;
+let Parent = null;
+let vector = _.vector;
+let Self = vector.operations = vector.operations || Object.create( null );
+let dop;
 
 // --
 //
@@ -72,7 +72,7 @@ function operationNormalize2( operation )
 // atomWiseSingler
 // --
 
-var inv = dop = Object.create( null );
+let inv = dop = Object.create( null );
 
 dop.onAtom = function inv( o )
 {
@@ -81,7 +81,7 @@ dop.onAtom = function inv( o )
 
 //
 
-var invOrOne = dop = Object.create( null );
+let invOrOne = dop = Object.create( null );
 
 dop.onAtom = function invOrOne( o )
 {
@@ -93,7 +93,7 @@ dop.onAtom = function invOrOne( o )
 
 //
 
-var floorOperation = dop = Object.create( null );
+let floorOperation = dop = Object.create( null );
 
 dop.onAtom = function floor( o )
 {
@@ -102,7 +102,7 @@ dop.onAtom = function floor( o )
 
 //
 
-var ceilOperation = dop = Object.create( null );
+let ceilOperation = dop = Object.create( null );
 
 dop.onAtom = function ceil( o )
 {
@@ -111,7 +111,7 @@ dop.onAtom = function ceil( o )
 
 //
 
-var roundOperation = dop = Object.create( null );
+let roundOperation = dop = Object.create( null );
 
 dop.onAtom = function round( o )
 {
@@ -121,35 +121,36 @@ dop.onAtom = function round( o )
 
 //
 
-var floorOperation = dop = Object.create( null );
+  /* let floorOperation = dop = Object.create( null );
+  *
+  * dop.onAtom = function floor( o )
+  * {
+  *   o.dstElement = _floor( o.srcElement );
+  * }
+  *
+  * //
+  *
+  * let ceilOperation = dop = Object.create( null );
+  *
+  * dop.onAtom = function ceil( o )
+  * {
+  *   o.dstElement = _ceil( o.srcElement );
+  * }
+  *
+  * //
+  *
+  * let roundOperation = dop = Object.create( null );
+  *
+  * dop.onAtom = function round( o )
+  * {
+  *   debugger;
+  *   o.dstElement = _round( o.srcElement );
+  * }
+  *
+  * //
+  */
 
-dop.onAtom = function floor( o )
-{
-  o.dstElement = _floor( o.srcElement );
-}
-
-//
-
-var ceilOperation = dop = Object.create( null );
-
-dop.onAtom = function ceil( o )
-{
-  o.dstElement = _ceil( o.srcElement );
-}
-
-//
-
-var roundOperation = dop = Object.create( null );
-
-dop.onAtom = function round( o )
-{
-  debugger;
-  o.dstElement = _round( o.srcElement );
-}
-
-//
-
-var floorToPowerOfTwo = dop = Object.create( null );
+let floorToPowerOfTwo = dop = Object.create( null );
 
 dop.onAtom = function floor( o )
 {
@@ -158,7 +159,7 @@ dop.onAtom = function floor( o )
 
 //
 
-var ceilToPowerOfTwo = dop = Object.create( null );
+let ceilToPowerOfTwo = dop = Object.create( null );
 
 dop.onAtom = function ceil( o )
 {
@@ -167,7 +168,7 @@ dop.onAtom = function ceil( o )
 
 //
 
-var roundToPowerOfTwo = dop = Object.create( null );
+let roundToPowerOfTwo = dop = Object.create( null );
 
 dop.onAtom = function round( o )
 {
@@ -178,11 +179,11 @@ dop.onAtom = function round( o )
 
 function operationSinglerAdjust()
 {
-  var atomWiseSingler = Self.atomWiseSingler = Self.atomWiseSingler || Object.create( null );
+  let atomWiseSingler = Self.atomWiseSingler = Self.atomWiseSingler || Object.create( null );
 
-  for( var dop in Routines.atomWiseSingler )
+  for( let dop in Routines.atomWiseSingler )
   {
-    var operation = Routines.atomWiseSingler[ dop ];
+    let operation = Routines.atomWiseSingler[ dop ];
 
     operationNormalize1( operation );
 
@@ -215,7 +216,7 @@ function operationSinglerAdjust()
 // logic1
 // --
 
-var isZero = dop = Object.create( null );
+let isZero = dop = Object.create( null );
 
 dop.onAtom = function isZero( o )
 {
@@ -224,7 +225,7 @@ dop.onAtom = function isZero( o )
 
 //
 
-var isNumber = dop = Object.create( null );
+let isNumber = dop = Object.create( null );
 
 dop.onAtom = function isNumber( o )
 {
@@ -233,7 +234,7 @@ dop.onAtom = function isNumber( o )
 
 //
 
-var isFinite = dop = Object.create( null );
+let isFinite = dop = Object.create( null );
 
 dop.onAtom = function isFinite( o )
 {
@@ -242,7 +243,7 @@ dop.onAtom = function isFinite( o )
 
 //
 
-var isInfinite = dop = Object.create( null );
+let isInfinite = dop = Object.create( null );
 
 dop.onAtom = function isInfinite( o )
 {
@@ -251,7 +252,7 @@ dop.onAtom = function isInfinite( o )
 
 //
 
-var isNan = dop = Object.create( null );
+let isNan = dop = Object.create( null );
 
 dop.onAtom = function isNan( o )
 {
@@ -260,7 +261,7 @@ dop.onAtom = function isNan( o )
 
 //
 
-var isInt = dop = Object.create( null );
+let isInt = dop = Object.create( null );
 
 dop.onAtom = function isInt( o )
 {
@@ -269,7 +270,7 @@ dop.onAtom = function isInt( o )
 
 //
 
-var isString = dop = Object.create( null );
+let isString = dop = Object.create( null );
 
 dop.onAtom = function isString( o )
 {
@@ -280,11 +281,11 @@ dop.onAtom = function isString( o )
 
 function operationsLogical1Adjust()
 {
-  var logic1 = Self.logic1 = Self.logic1 || Object.create( null );
+  let logic1 = Self.logic1 = Self.logic1 || Object.create( null );
 
-  for( var dop in Routines.logic1 )
+  for( let dop in Routines.logic1 )
   {
-    var operation = Routines.logic1[ dop ];
+    let operation = Routines.logic1[ dop ];
 
     operationNormalize1( operation );
 
@@ -329,7 +330,7 @@ function operationsLogical1Adjust()
 // logical2
 // --
 
-var isIdentical = dop = Object.create( null );
+let isIdentical = dop = Object.create( null );
 
 isIdentical.onAtom = function isIdentical( o )
 {
@@ -338,7 +339,7 @@ isIdentical.onAtom = function isIdentical( o )
 
 //
 
-var isNotIdentical = dop = Object.create( null );
+let isNotIdentical = dop = Object.create( null );
 
 dop.onAtom = function isNotIdentical( o )
 {
@@ -347,7 +348,7 @@ dop.onAtom = function isNotIdentical( o )
 
 //
 
-var isEquivalent = dop = Object.create( null );
+let isEquivalent = dop = Object.create( null );
 
 dop.onAtom = function isEquivalent( o )
 {
@@ -356,7 +357,7 @@ dop.onAtom = function isEquivalent( o )
 
 //
 
-var isNotEquivalent = dop = Object.create( null );
+let isNotEquivalent = dop = Object.create( null );
 
 dop.onAtom = function isNotEquivalent( o )
 {
@@ -365,7 +366,7 @@ dop.onAtom = function isNotEquivalent( o )
 
 //
 
-var isGreater = dop = Object.create( null );
+let isGreater = dop = Object.create( null );
 
 dop.onAtom = function isGreater( o )
 {
@@ -374,7 +375,7 @@ dop.onAtom = function isGreater( o )
 
 //
 
-var isGreaterEqual = dop = Object.create( null );
+let isGreaterEqual = dop = Object.create( null );
 
 dop.onAtom = function isGreaterEqual( o )
 {
@@ -383,7 +384,7 @@ dop.onAtom = function isGreaterEqual( o )
 
 //
 
-var isLess = dop = Object.create( null );
+let isLess = dop = Object.create( null );
 
 dop.onAtom = function isLess( o )
 {
@@ -392,7 +393,7 @@ dop.onAtom = function isLess( o )
 
 //
 
-var isLessEqual = dop = Object.create( null );
+let isLessEqual = dop = Object.create( null );
 
 dop.onAtom = function isLessEqual( o )
 {
@@ -403,11 +404,11 @@ dop.onAtom = function isLessEqual( o )
 
 function operationsLogical2Adjust()
 {
-  var logical2 = Self.logical2 = Self.logical2 || Object.create( null );
+  let logical2 = Self.logical2 = Self.logical2 || Object.create( null );
 
-  for( var dop in Routines.logical2 )
+  for( let dop in Routines.logical2 )
   {
-    var operation = Routines.logical2[ dop ];
+    let operation = Routines.logical2[ dop ];
 
     operationNormalize1( operation );
 
@@ -444,7 +445,7 @@ function operationsLogical2Adjust()
 // atomWiseHomogeneous
 // --
 
-var add = dop = Object.create( null );
+let add = dop = Object.create( null );
 
 add.onAtom = function add( o )
 {
@@ -458,7 +459,7 @@ add.onAtomsBegin = function addBegin( o )
 
 //
 
-var sub = dop = Object.create( null );
+let sub = dop = Object.create( null );
 
 sub.onAtom = function sub( o )
 {
@@ -472,7 +473,7 @@ sub.onAtomsBegin = function subBegin( o )
 
 //
 
-var mul = dop = Object.create( null );
+let mul = dop = Object.create( null );
 
 mul.onAtom = function mul( o )
 {
@@ -486,7 +487,7 @@ mul.onAtomsBegin = function mulBegin( o )
 
 //
 
-var div = dop = Object.create( null );
+let div = dop = Object.create( null );
 
 div.onAtom = function div( o )
 {
@@ -500,7 +501,7 @@ div.onAtomsBegin = function divBegin( o )
 
 //
 
-var assign = dop = Object.create( null );
+let assign = dop = Object.create( null );
 
 assign.onAtom = function assign( o )
 {
@@ -509,7 +510,7 @@ assign.onAtom = function assign( o )
 
 //
 
-var min = dop = Object.create( null );
+let min = dop = Object.create( null );
 
 min.onAtom = function min( o )
 {
@@ -523,7 +524,7 @@ min.onAtomsBegin = function minBegin( o )
 
 //
 
-var max = dop = Object.create( null );
+let max = dop = Object.create( null );
 
 max.onAtom = function max( o )
 {
@@ -539,11 +540,11 @@ max.onAtomsBegin = function maxBegin( o )
 
 function operationHomogeneousAdjust()
 {
-  var atomWiseHomogeneous = Self.atomWiseHomogeneous = Self.atomWiseHomogeneous || Object.create( null );
+  let atomWiseHomogeneous = Self.atomWiseHomogeneous = Self.atomWiseHomogeneous || Object.create( null );
 
-  for( var dop in Routines.atomWiseHomogeneous )
+  for( let dop in Routines.atomWiseHomogeneous )
   {
-    var operation = Routines.atomWiseHomogeneous[ dop ];
+    let operation = Routines.atomWiseHomogeneous[ dop ];
 
     operationNormalize1( operation );
 
@@ -577,7 +578,7 @@ function operationHomogeneousAdjust()
 // atomWiseHeterogeneous
 // --
 
-var addScaled = dop = Object.create( null );
+let addScaled = dop = Object.create( null );
 
 dop.onAtom = function addScaled( o )
 {
@@ -591,7 +592,7 @@ dop.usingDstAsSrc = true;
 
 //
 
-var subScaled = dop = Object.create( null );
+let subScaled = dop = Object.create( null );
 
 dop.onAtom = function subScaled( o )
 {
@@ -604,7 +605,7 @@ dop.usingDstAsSrc = true;
 
 //
 
-var mulScaled = dop = Object.create( null );
+let mulScaled = dop = Object.create( null );
 
 dop.onAtom = function mulScaled( o )
 {
@@ -617,7 +618,7 @@ dop.usingDstAsSrc = true;
 
 //
 
-var divScaled = dop = Object.create( null );
+let divScaled = dop = Object.create( null );
 
 dop.onAtom = function divScaled( o )
 {
@@ -630,7 +631,7 @@ dop.usingDstAsSrc = true;
 
 //
 
-var clamp = dop = Object.create( null );
+let clamp = dop = Object.create( null );
 
 dop.onAtom = function clamp( o )
 {
@@ -646,7 +647,7 @@ dop.input = [ 'vw|s','vr|s*3' ];
 
 //
 
-var mix = dop = Object.create( null );
+let mix = dop = Object.create( null );
 
 dop.onAtom = function mix( o )
 {
@@ -674,11 +675,11 @@ dop.input = [ 'vw|s','vr|s*3' ];
 
 function operationHeterogeneousAdjust()
 {
-  var atomWiseHeterogeneous = Self.atomWiseHeterogeneous = Self.atomWiseHeterogeneous || Object.create( null );
+  let atomWiseHeterogeneous = Self.atomWiseHeterogeneous = Self.atomWiseHeterogeneous || Object.create( null );
 
-  for( var dop in Routines.atomWiseHeterogeneous )
+  for( let dop in Routines.atomWiseHeterogeneous )
   {
-    var operation = Routines.atomWiseHeterogeneous[ dop ];
+    let operation = Routines.atomWiseHeterogeneous[ dop ];
 
     operationNormalize1( operation );
 
@@ -704,18 +705,18 @@ function operationHeterogeneousAdjust()
   }
 }
 
-// var atomWiseHeterogeneous = Self.atomWiseHeterogeneous = Self.atomWiseHeterogeneous || Object.create( null );
+// let atomWiseHeterogeneous = Self.atomWiseHeterogeneous = Self.atomWiseHeterogeneous || Object.create( null );
 // operationHeterogeneousAdjust();
 
 // --
 // atomWiseReducing
 // --
 
-var polynomApply = dop = Object.create( null );
+let polynomApply = dop = Object.create( null );
 
 polynomApply.onAtom = function polynomApply( o )
 {
-  var x = o.args[ 1 ];
+  let x = o.args[ 1 ];
   o.result += o.element * _pow( x,o.key );
 }
 
@@ -734,7 +735,7 @@ polynomApply.takingVectorsOnly = false;
 
 //
 
-var mean = dop = Object.create( null );
+let mean = dop = Object.create( null );
 
 mean.onAtom = function mean( o )
 {
@@ -763,7 +764,7 @@ mean.takingVectors = 1;
 
 //
 
-var moment = dop = Object.create( null );
+let moment = dop = Object.create( null );
 
 moment.onAtom = function moment( o )
 {
@@ -792,20 +793,20 @@ moment.takingVectors = 1;
 
 //
 
-var _momentCentral = dop = Object.create( null );
+let _momentCentral = dop = Object.create( null );
 
 _momentCentral.onAtom = function _momentCentral( o )
 {
-  var degree = o.args[ 1 ];
-  var mean = o.args[ 2 ];
+  let degree = o.args[ 1 ];
+  let mean = o.args[ 2 ];
   o.result.total += _pow( o.element - mean,degree );
   o.result.nelement += 1;
 }
 
 _momentCentral.onAtomsBegin = function( o )
 {
-  var degree = o.args[ 1 ];
-  var mean = o.args[ 2 ];
+  let degree = o.args[ 1 ];
+  let mean = o.args[ 2 ];
   _.assert( _.numberIs( degree ) )
   _.assert( _.numberIs( mean ) )
   o.result = dop = Object.create( null );
@@ -827,7 +828,7 @@ _momentCentral.takingVectors = 1;
 
 //
 
-var reduceToMean = dop = Object.create( null );
+let reduceToMean = dop = Object.create( null );
 
 reduceToMean.onAtom = function reduceToMean( o )
 {
@@ -852,7 +853,7 @@ reduceToMean.onAtomsEnd = function( o )
 
 //
 
-var reduceToProduct = dop = Object.create( null );
+let reduceToProduct = dop = Object.create( null );
 
 reduceToProduct.onAtom = function reduceToProduct( o )
 {
@@ -866,7 +867,7 @@ reduceToProduct.onAtomsBegin = function( o )
 
 //
 
-var reduceToSum = dop = Object.create( null );
+let reduceToSum = dop = Object.create( null );
 
 reduceToSum.onAtom = function reduceToSum( o )
 {
@@ -880,7 +881,7 @@ reduceToSum.onAtomsBegin = function( o )
 
 //
 
-var reduceToAbsSum = dop = Object.create( null );
+let reduceToAbsSum = dop = Object.create( null );
 
 reduceToAbsSum.onAtom = function reduceToAbsSum( o )
 {
@@ -895,7 +896,7 @@ reduceToAbsSum.onAtomsBegin = function( o )
 
 //
 
-var reduceToMagSqr = dop = Object.create( null );
+let reduceToMagSqr = dop = Object.create( null );
 
 reduceToMagSqr.onAtom = function reduceToMagSqr( o )
 {
@@ -909,7 +910,7 @@ reduceToMagSqr.onAtomsBegin = function( o )
 
 //
 
-var reduceToMag = _.mapExtend( null,reduceToMagSqr );
+let reduceToMag = _.mapExtend( null,reduceToMagSqr );
 
 reduceToMag.onAtomsEnd = function reduceToMag( o )
 {
@@ -920,11 +921,11 @@ reduceToMag.onAtomsEnd = function reduceToMag( o )
 
 function operationReducingAdjust()
 {
-  var atomWiseReducing = Self.atomWiseReducing = Self.atomWiseReducing || Object.create( null );
+  let atomWiseReducing = Self.atomWiseReducing = Self.atomWiseReducing || Object.create( null );
 
-  for( var dop in Routines.atomWiseReducing )
+  for( let dop in Routines.atomWiseReducing )
   {
-    var operation = Routines.atomWiseReducing[ dop ];
+    let operation = Routines.atomWiseReducing[ dop ];
 
     operationNormalize1( operation );
 
@@ -956,7 +957,7 @@ function operationReducingAdjust()
 //
 // --
 
-var Routines =
+let Routines =
 {
 
   /*
