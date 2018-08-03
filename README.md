@@ -8,3 +8,4 @@ Collection of functions for vector math. MathVector introduces missing in JavaSc
 npm install
 node sample/Sample.s
 ```
+
