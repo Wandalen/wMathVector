@@ -331,7 +331,7 @@ function variants( variants )
 
   for( let v = 0 ; v < result.length ; v++ )
   {
-    variant = result[ v ];
+    let variant = result[ v ];
 
     _.assert( _.numberIs( variant ) || _.longIs( variant ) || _.vectorIs( variant ) );
 

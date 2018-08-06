@@ -1434,7 +1434,9 @@ function _toStr( src,o )
   }
   else
   {
-    for( let i = 0,l = length-1 ; i < l ; i++ )
+    let i = 0;
+    let l = length-1;
+    for(  ; i < l ; i++ )
     {
       result += src.eGet( i ).toPrecision( o.percision ) + ' ';
     }
