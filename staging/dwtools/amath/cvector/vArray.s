@@ -27,22 +27,22 @@ if( typeof module !== 'undefined' )
 
 }
 
-var _ = _global_.wTools;
-var _row = _.vector;
-var _min = Math.min;
-var _max = Math.max;
-var _arraySlice = Array.prototype.slice;
-var _sqrt = Math.sqrt;
-var _sqr = _.sqr;
+let _ = _global_.wTools;
+let _row = _.vector;
+let _min = Math.min;
+let _max = Math.max;
+let _arraySlice = Array.prototype.slice;
+let _sqrt = Math.sqrt;
+let _sqr = _.sqr;
 
-var Parent = null;
-var Self = Object.create( null );
+let Parent = null;
+let Self = Object.create( null );
 
 // --
 // define class
 // --
 
-var Proto =
+let Proto =
 {
 }
 
@@ -56,8 +56,8 @@ _.accessorForbid
 // row wrap
 // --
 
-var routines = _row.RoutinesMathematical;
-for( var r in routines )
+let routines = _row.RoutinesMathematical;
+for( let r in routines )
 {
 
   if( Self[ r ] )
@@ -68,7 +68,7 @@ for( var r in routines )
 
   function onReturn( result,theRoutine )
   {
-    var op = theRoutine.operation;
+    let op = theRoutine.operation;
 
     if( op.returningAtomic && _.primitiveIs( result ) )
     {
