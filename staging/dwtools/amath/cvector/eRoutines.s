@@ -5015,7 +5015,7 @@ for( let r in RoutinesMathematical )
 _routineAdjust( RoutinesMathematical[ r ],r );
 
 // --
-// define class
+// declare
 // --
 
 let Proto =

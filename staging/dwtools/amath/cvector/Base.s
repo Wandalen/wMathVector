@@ -511,7 +511,7 @@ let routineFrom =
 }
 
 // --
-// define class
+// declare
 // --
 
 let Proto =

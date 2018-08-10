@@ -317,7 +317,7 @@ hasShape.returningNew = false;
 hasShape.modifying = false;
 
 // --
-// define class
+// declare
 // --
 
 let Proto =

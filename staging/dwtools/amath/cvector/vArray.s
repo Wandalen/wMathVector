@@ -39,7 +39,7 @@ let Parent = null;
 let Self = Object.create( null );
 
 // --
-// define class
+// declare
 // --
 
 let Proto =
@@ -100,7 +100,7 @@ for( let r in routines )
 }
 
 // --
-// define class extension
+// declare extension
 // --
 
 Object.setPrototypeOf( Self,wTools );
