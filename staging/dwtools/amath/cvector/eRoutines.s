@@ -4231,7 +4231,7 @@ function equalAre( src1, src2, it )
   // _entityEqualIteratorMake
 }
 
-_.routineSupplement( equalAre, _._entityEqual );
+_.routineExtend( equalAre, _._entityEqual );
 
 _.assert( _.objectIs( equalAre.defaults ) );
 _.assert( _.routineIs( equalAre.body ) );
@@ -4258,7 +4258,7 @@ function identicalAre( src1,src2,iterator )
   // _entityEqualIteratorMake
 }
 
-_.routineSupplement( identicalAre, _.entityIdentical );
+_.routineExtend( identicalAre, _.entityIdentical );
 
 dop = identicalAre.operation = Object.create( null );
 dop.takingArguments = [ 2,3 ];
@@ -4280,7 +4280,7 @@ function equivalentAre( src1,src2,iterator )
   // _entityEqualIteratorMake
 }
 
-_.routineSupplement( equivalentAre, _.entityIdentical );
+_.routineExtend( equivalentAre, _.entityIdentical );
 
 dop = equivalentAre.operation = Object.create( null );
 dop.takingArguments = [ 2,3 ];
