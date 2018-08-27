@@ -1137,6 +1137,8 @@ function logical2ArgsZipperWithBadArguments( test,r,t,array )
 
 }
 
+logical2ArgsZipperWithBadArguments.timeOut = 30000;
+
 //
 
 function _allIdentical( test,r,t,array )
@@ -1203,6 +1205,9 @@ function allIdentical( test )
   });
 
 }
+
+allIdentical.timeOut = 15000;
+
 
 //
 
@@ -1271,6 +1276,8 @@ function anyIdentical( test )
   });
 
 }
+
+anyIdentical.timeOut = 15000;
 
 //
 
@@ -1380,6 +1387,8 @@ function allNotIdentical( test )
   });
 }
 
+allNotIdentical.timeOut = 15000;
+
 //
 
 function _allEquivalent( test,r,t,Array,array )
@@ -1463,6 +1472,8 @@ function allEquivalent( test )
   });
 }
 
+allEquivalent.timeOut = 15000;
+
 //
 
 function allEquivalent2( test )
@@ -1483,6 +1494,8 @@ function allEquivalent2( test )
   });
 }
 
+allEquivalent2.timeOut = 15000;
+
 //
 
 function allNotEquivalent( test )
@@ -1502,6 +1515,8 @@ function allNotEquivalent( test )
     return _.longMakeSimilar( Uint32Array,arguments );
   });
 }
+
+allNotEquivalent.timeOut = 15000;
 
 //
 
@@ -1583,6 +1598,8 @@ function allGreater( test )
   });
 }
 
+allGreater.timeOut = 150000;
+
 //
 
 function _anyNotIdentical( test,r,t,array )
@@ -1645,6 +1662,8 @@ function anyNotIdentical( test )
     return _.longMakeSimilar( Uint32Array,arguments );
   });
 }
+
+anyNotIdentical.timeOut = 15000;
 
 //
 
@@ -1727,6 +1746,8 @@ function anyEquivalent( test )
   });
 }
 
+anyEquivalent.timeOut = 15000;
+
 //
 
 function anyEquivalent2( test )
@@ -1747,6 +1768,8 @@ function anyEquivalent2( test )
   });
 }
 
+anyEquivalent2.timeOut = 15000;
+
 //
 
 function anyNotEquivalent( test )
@@ -1766,6 +1789,9 @@ function anyNotEquivalent( test )
     return _.longMakeSimilar( Uint32Array,arguments );
   });
 }
+
+anyNotEquivalent.timeOut = 15000;
+
 
 //
 
@@ -1847,6 +1873,8 @@ function anyGreater( test )
   });
 }
 
+anyGreater.timeOut = 15000;
+
 //
 
 function noneIdentical( test )
@@ -1867,6 +1895,8 @@ function noneIdentical( test )
   });
 }
 
+noneIdentical.timeOut = 15000;
+
 //
 
 function noneNotIdentical( test )
@@ -1886,6 +1916,8 @@ function noneNotIdentical( test )
     return _.longMakeSimilar( Uint32Array,arguments );
   });
 }
+
+noneNotIdentical.timeOut = 15000;
 
 //
 
@@ -1976,6 +2008,8 @@ function noneEquivalent( test )
   });
 }
 
+noneEquivalent.timeOut = 15000;
+
 //
 
 function noneEquivalent2( test )
@@ -1996,6 +2030,8 @@ function noneEquivalent2( test )
   });
 }
 
+noneEquivalent2.timeOut = 15000;
+
 //
 
 function noneNotEquivalent( test )
@@ -2015,6 +2051,8 @@ function noneNotEquivalent( test )
     return _.longMakeSimilar( Uint32Array,arguments );
   });
 }
+
+noneNotEquivalent.timeOut = 15000;
 
 //
 
@@ -2095,6 +2133,8 @@ function noneGreater( test )
     return _.longMakeSimilar( Uint32Array,arguments );
   });
 }
+
+noneGreater.timeOut = 15000;
 
 //
 
@@ -2187,6 +2227,8 @@ function logical2ArgsReducerWithBadArguments( test,r,t,array )
   }
 
 }
+
+logical2ArgsReducerWithBadArguments.timeOut = 30000;
 
 //
 
@@ -2354,6 +2396,8 @@ function isZero( test )
 
 }
 
+isZero.timeOut = 15000;
+
 //
 
 function logical1ArgsSinglerWithBadArguments( test,r,t,array )
@@ -2420,6 +2464,8 @@ function logical1ArgsSinglerWithBadArguments( test,r,t,array )
   }
 
 }
+
+logical1ArgsSinglerWithBadArguments.timeOut = 25000;
 
 //
 
@@ -2495,6 +2541,8 @@ function allZero( test )
   });
 
 }
+
+allZero.timeOut = 15000;
 
 //
 
@@ -2574,6 +2622,8 @@ function anyZero( test )
 
 }
 
+anyZero.timeOut = 15000;
+
 //
 
 function _noneZero( test,r,t,array )
@@ -2652,6 +2702,8 @@ function noneZero( test )
 
 }
 
+noneZero.timeOut = 15000;
+
 //
 
 function logical1ArgsReducerWithBadArguments( test,r,t,array )
@@ -2717,6 +2769,8 @@ function logical1ArgsReducerWithBadArguments( test,r,t,array )
 
 }
 
+logical1ArgsReducerWithBadArguments.timeOut = 30000;
+
 //
 
 function sort( test )
@@ -2764,6 +2818,8 @@ function sort( test )
   }
 
 }
+
+sort.timeOut = 15000;
 
 //
 
@@ -2824,6 +2880,8 @@ function dot( test )
 
   debugger;
 }
+
+dot.timeOut = 15000;
 
 //
 
@@ -3046,6 +3104,8 @@ function cross( test )
 
 }
 
+cross.timeOut = 15000;
+
 //
 
 function subarray( test )
@@ -3102,6 +3162,8 @@ function subarray( test )
 
   debugger;
 }
+
+subarray.timeOut = 15000;
 
 //
 
@@ -3312,6 +3374,8 @@ function add( test )
   test.shouldThrowErrorSync( () => _.avector.add( [ 0 ],[ 1,1,1 ] ) );
 
 }
+
+add.timeOut = 15000;
 
 //
 
@@ -3535,6 +3599,8 @@ function sub( test )
 
 }
 
+sub.timeOut = 15000;
+
 //
 
 function mul( test )
@@ -3745,6 +3811,8 @@ function mul( test )
   test.shouldThrowErrorSync( () => _.avector.mul( [ 0 ],[ 1,1,1 ] ) );
 
 }
+
+mul.timeOut = 15000;
 
 //
 
@@ -3957,6 +4025,8 @@ function div( test )
 
 }
 
+div.timeOut = 15000;
+
 //
 
 function abs( test )
@@ -3973,6 +4043,8 @@ function abs( test )
   test.is( dst === got );
 
 }
+
+abs.timeOut = 15000;
 
 //
 
@@ -4122,6 +4194,8 @@ function distributionRangeSummary( test )
 
 }
 
+distributionRangeSummary.timeOut = 15000;
+
 //
 
 function reduceToMean( test )
@@ -4194,6 +4268,8 @@ function reduceToMean( test )
 
 }
 
+reduceToMean.timeOut = 15000;
+
 //
 
 function median( test )
@@ -4218,6 +4294,8 @@ function median( test )
   test.equivalent( got,expected );
 
 }
+
+median.timeOut = 15000;
 
 //
 
@@ -4281,6 +4359,8 @@ function mean( test )
   test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ],[ 1 ],() => true ) );
 
 }
+
+mean.timeOut = 15000;
 
 //
 
@@ -4366,6 +4446,8 @@ function moment( test )
   test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ],[ 1 ],() => true ) );
 
 }
+
+moment.timeOut = 15000;
 
 //
 
@@ -4584,6 +4666,8 @@ function momentCentral( test )
 
 }
 
+momentCentral.timeOut = 15000;
+
 //
 
 function homogeneousWithScalar( test )
@@ -4694,6 +4778,8 @@ function homogeneousWithScalar( test )
   }
 
 }
+
+homogeneousWithScalar.timeOut = 15000;
 
 //
 
@@ -4930,6 +5016,8 @@ function homogeneousOnlyVectors( test )
   shouldThrowError( 'maxVectors' );
 
 }
+
+homogeneousOnlyVectors.timeOut = 15000;
 
 //
 
@@ -5265,6 +5353,8 @@ function heterogeneous( test )
 
 }
 
+heterogeneous.timeOut = 15000;
+
 //
 
 function clamp( test )
@@ -5503,6 +5593,8 @@ function clamp( test )
 
 }
 
+clamp.timeOut = 15000;
+
 //
 
 function mix( test )
@@ -5661,6 +5753,8 @@ function mix( test )
 
 }
 
+mix.timeOut = 15000;
+
 //
 
 function swap( test )
@@ -5754,6 +5848,8 @@ function swap( test )
 
 }
 
+swap.timeOut = 15000;
+
 //
 
 function polynomApply( test )
@@ -5784,6 +5880,8 @@ function polynomApply( test )
   test.identical( got,expected );
 
 }
+
+polynomApply.timeOut = 15000;
 
 //
 
@@ -5885,6 +5983,8 @@ function assign( test )
   test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ],[ 1,1 ] ) );
 
 }
+
+assign.timeOut = 15000;
 
 //
 
