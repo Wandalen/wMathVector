@@ -374,6 +374,11 @@ function variants( variants )
 function withWrapper( o )
 {
 
+  o = _.routineOptions( withWrapper, arguments );
+
+  // if( o.routine.name === '_equalAre' )
+  // debugger;
+
   if( _.objectIs( o.routine ) )
   {
     let result = Object.create( null );
@@ -386,13 +391,19 @@ function withWrapper( o )
     return result;
   }
 
+  let op = o.routine.operation;
+
+  /* if routine does not take vector than this is not used at all */
+
+  if( op.takingVectors && op.takingVectors[ 1 ] === 0 )
+  o.usingThisAsFirstArgument = 0;
+
   /* */
 
   let onReturn = o.onReturn;
   let usingThisAsFirstArgument = o.usingThisAsFirstArgument ? 1 : 0;
   let theRoutine = o.routine;
 
-  let op = theRoutine.operation;
   let takingArguments = op.takingArguments;
   let takingVectors = op.takingVectors;
   let takingVectorsOnly = op.takingVectorsOnly;
@@ -485,6 +496,13 @@ function withWrapper( o )
   vectorWrap.operation = op;
 
   return vectorWrap;
+}
+
+withWrapper.defaults =
+{
+  usingThisAsFirstArgument : null,
+  routine : null,
+  onReturn : null,
 }
 
 // --

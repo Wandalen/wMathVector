@@ -362,20 +362,24 @@ _.mapExtend( Self.prototype,Proto );
 
 function declareSingleArgumentRoutine( routine, r )
 {
-
   let op = routine.operation;
 
-  // if( r === 'allZero' )
+  // if( r === '_equalAre' )
+  // debugger;
+  //
+  // if( r === 'toArray' )
   // debugger;
 
   let absLike = op.returningOnly === 'self' && op.modifying && op.atomWise && op.homogeneous;
   let reduceToScalarLike = op.returningOnly === 'atomic' && !op.modifying && op.atomWise && op.homogeneous;
 
   let singleArgument = _.arrayIdentical( op.takingArguments, [ 1,1 ] );
+  let singleVector = op.takingVectors[ 1 ] === 1;
+
   let oneOrTwoArguments = _.arrayIdentical( op.takingArguments, [ 1,2 ] );
   let oneOrInfinity = _.arrayIdentical( op.takingArguments, [ 1,Infinity ] );
 
-  let doesFit = singleArgument || ( absLike && oneOrTwoArguments ) || ( reduceToScalarLike && ( singleArgument || oneOrInfinity ) );
+  let doesFit = ( singleArgument && singleVector ) || ( absLike && oneOrTwoArguments ) || ( reduceToScalarLike && ( singleArgument || oneOrInfinity ) );
 
   if( !doesFit )
   return false;

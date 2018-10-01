@@ -4212,8 +4212,8 @@ function _equalAre( it )
 }
 
 dop = _equalAre.operation = Object.create( null );
-dop.takingArguments = 3;
-dop.takingVectors = 2;
+dop.takingArguments = 1;
+dop.takingVectors = 0;
 dop.takingVectorsOnly = false;
 dop.returningSelf = false;
 dop.returningNew = false;
