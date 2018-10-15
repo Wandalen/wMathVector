@@ -46,7 +46,7 @@ let Proto =
 {
 }
 
-_.accessorForbid
+_.accessor.forbid
 ({
   object : Self,
   names : _.vector.Forbidden,

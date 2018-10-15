@@ -294,7 +294,7 @@ function _routineAdjust( theRoutine,routineName )
   _.assert( operation.handleBegin === undefined );
   _.assert( operation.handleEnd === undefined );
 
-  // _.accessorForbid
+  // _.accessor.forbid
   // ({
   //   object : operation,
   //   names :
@@ -311,7 +311,7 @@ function _routineAdjust( theRoutine,routineName )
 
   let _names = _.mapKeys( OperationDescriptor );
   _.arrayRemoveOnce( _names,'name' );
-  _.accessorForbid
+  _.accessor.forbid
   ({
     object : theRoutine,
     names : _names,
@@ -964,7 +964,7 @@ function _routineForOperation_functor( dop )
   _.assert( arguments.length === 1, 'expects single argument' );
 
   _.assert( _.arrayIs( dop.input ) );
-  _.assert( _.strIsNotEmpty( dop.name ) );
+  _.assert( _.strDefined( dop.name ) );
   _.assert( _.arrayIs( dop.input ) || _.arrayIs( dop.input ) );
   _.assert( _.boolIs( dop.homogeneous ) || _.boolIs( dop.homogeneous ) );
 
@@ -2477,7 +2477,7 @@ function declareHomogeneousTakingVectorsRoutines()
     let operation = operationSupplement( null,atomOperation );
 
     _.assert( operation.atomOperation === undefined );
-    _.assert( _.strIsNotEmpty( operation.name ) );
+    _.assert( _.strDefined( operation.name ) );
     _.assert( _.routineIs( atomOperation.onAtom ) );
     _.assert( !Routines[ routineName ] );
 
@@ -2520,7 +2520,7 @@ function declareHomogeneousTakingScalarRoutines()
     let operation = operationSupplement( null,atomOperation );
 
     _.assert( operation.atomOperation === undefined );
-    _.assert( _.strIsNotEmpty( operation.name ) );
+    _.assert( _.strDefined( operation.name ) );
     _.assert( _.routineIs( atomOperation.onAtom ) );
     _.assert( !Routines[ routineName ] );
 
@@ -2862,7 +2862,7 @@ function _routineHomogeneousDeclare( operation,atomOperation,routineName )
   debugger;
 
   _.assert( operation.atomOperation === undefined );
-  _.assert( _.strIsNotEmpty( operation.name ) );
+  _.assert( _.strDefined( operation.name ) );
   _.assert( _.routineIs( atomOperation.onAtom ) );
   _.assert( !Routines[ routineName ],'routine',routineName,'is already defined' );
 
@@ -3078,7 +3078,7 @@ function __operationReduceToScalar_functor( operation )
 
   _.assert( takingVectors.length === 2 );
   _.assert( takingArguments.length === 2 );
-  _.assert( _.strIsNotEmpty( operation.name ) );
+  _.assert( _.strDefined( operation.name ) );
 
   _.assert( _.objectIs( operation ) );
   _.assert( operation.onVectors.length === 0 );
@@ -3324,7 +3324,7 @@ function _operationReduceToScalar_functor( o )
   let result = Object.create( null );
   let conditional = o.conditional;
 
-  _.assert( _.strIsNotEmpty( o.name ) );
+  _.assert( _.strDefined( o.name ) );
   _.assert( _.objectIs( o ) );
   _.assertMapHasOnly( o,_operationReduceToScalar_functor.defaults );
 
@@ -3358,7 +3358,7 @@ function declareReducingRoutines()
     let operation = operationSupplement( null,atomOperation );
 
     _.assert( operation.atomOperation === undefined );
-    _.assert( _.strIsNotEmpty( operation.name ) );
+    _.assert( _.strDefined( operation.name ) );
     _.assert( _.routineIs( atomOperation.onAtom ) );
     _.assert( !Routines[ routineName ] );
 
@@ -3390,7 +3390,7 @@ function _operationReduceToExtremal_functor( operation )
 {
 
   _.assertMapHasOnly( operation,_operationReduceToExtremal_functor.defaults );
-  _.assert( _.strIsNotEmpty( operation.name ) );
+  _.assert( _.strDefined( operation.name ) );
   _.assert( _.objectIs( operation ) );
   _.assert( _.routineIs( operation.onDistance ) );
   _.assert( _.routineIs( operation.onIsGreater ) );
@@ -5055,7 +5055,7 @@ _.assert( _.vector.accuracySqr >= 0 );
 _.assert( _.numberIs( Self.accuracy ) );
 _.assert( _.numberIs( Self.accuracySqr ) );
 
-_.accessorForbid
+_.accessor.forbid
 ({
   object : Self,
   names : Forbidden,

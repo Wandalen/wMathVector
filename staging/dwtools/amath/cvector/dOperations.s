@@ -58,7 +58,7 @@ function operationNormalize2( operation )
 
   _.assert( _.mapIs( operation ) );
   _.assert( _.routineIs( operation.onAtom ) );
-  _.assert( _.strIsNotEmpty( operation.name ) );
+  _.assert( _.strDefined( operation.name ) );
   _.assert( operation.onAtom.length === 1 );
 
   _.assert( _.boolIs( operation.usingExtraSrcs ) );
@@ -315,7 +315,7 @@ function operationsLogical1Adjust()
     // _.assert( _.routineIs( operation.onAtom ) );
     // // _.assert( _.arrayIs( operation.takingArguments ) );
     // // _.assert( operation.takingArguments.length === 2 );
-    // _.assert( _.strIsNotEmpty( operation.name ) );
+    // _.assert( _.strDefined( operation.name ) );
     // _.assert( operation.onAtom.length === 1 );
     _.assert( !Self.logic1[ dop ] );
 
