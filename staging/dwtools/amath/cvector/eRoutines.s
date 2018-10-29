@@ -172,7 +172,7 @@ function operationSupplement( operation,atomOperation )
 function _operationLogicalReducerAdjust( operation )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   let def =
   {
@@ -361,7 +361,7 @@ function _routinesDeclare()
 function _onAtomGenBegin( dop )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.arrayIs( dop.input ) );
   _.assert( _.routineIs( dop.onAtom ) || _.arrayIs( dop.onAtom ) );
 
@@ -387,7 +387,7 @@ function _onAtomGenEnd( dop,onAtom )
 function _onAtomForRoutine_functor( dop )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( !dop.onAtom_functor );
 
   let handleAtom = null;
@@ -651,7 +651,7 @@ function _vectorsCallBegin( o,dop )
   if( Config.debug )
   {
     _.assert( _.vectorIs( dst ) || _.numberIs( dst ) );
-    _.assert( dop.takingArguments[ 0 ] <= o.args.length && o.args.length <= dop.takingArguments[ 1 ],'expects ', dop.takingArguments, ' arguments' );
+    _.assert( dop.takingArguments[ 0 ] <= o.args.length && o.args.length <= dop.takingArguments[ 1 ],'Expects ', dop.takingArguments, ' arguments' );
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let src = o.args[ a ];
@@ -694,7 +694,7 @@ function _vectorsGenBegin( dop )
   let takingArguments = dop.takingArguments;
   let onAtom = dop.onAtom[ 0 ];
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( takingArguments.length === 2 );
   _.assert( dop.handleAtom === undefined );
   _.assert( _.arrayIs( dop.onAtom ) );
@@ -749,7 +749,7 @@ function _onVectorsForRoutine_functor( dop )
   let onVectorsBegin0 = dop.onVectorsBegin[ 0 ];
   let onAtom0 = dop.onAtom[ 0 ];
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   /* */
 
@@ -791,8 +791,8 @@ function _onVectorsForRoutine_functor( dop )
       if( Config.debug )
       {
         _.assert( _.vectorIs( dst ) );
-        _.assert( arguments.length >= 1,'expects at least one argument' );
-        _.assert( takingArguments[ 0 ] <= arguments.length && arguments.length <= takingArguments[ 1 ],'expects ', takingArguments, ' arguments' );
+        _.assert( arguments.length >= 1,'Expects at least one argument' );
+        _.assert( takingArguments[ 0 ] <= arguments.length && arguments.length <= takingArguments[ 1 ],'Expects ', takingArguments, ' arguments' );
         for( let a = 0 ; a < o.srcContainers.length ; a++ )
         {
           let src = o.srcContainers[ a ];
@@ -857,7 +857,7 @@ function _onVectorsForRoutine_functor( dop )
 
       if( Config.debug )
       {
-        _.assert( arguments.length === 2,'expects 2 arguments' );
+        _.assert( arguments.length === 2,'Expects 2 arguments' );
         if( allowingDstScalar )
         _.assert( _.vectorIs( dst ) || _.numberIs( dst ) );
         else
@@ -961,7 +961,7 @@ function _routineForOperation_functor( dop )
   _.assert( dop.onAtom.length === 1 );
 
   _.assert( _.arrayIs( dop.takingArguments ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   _.assert( _.arrayIs( dop.input ) );
   _.assert( _.strDefined( dop.name ) );
@@ -1070,7 +1070,7 @@ function assignVector( dst,src )
 {
   let length = dst.length;
 
-  _.assert( !!dst && !!src,'vector :','expects {-src-} and ( dst )' );
+  _.assert( !!dst && !!src,'vector :','Expects {-src-} and ( dst )' );
   _.assert( dst.length === src.length,'vector :','src and dst should have same length' );
   _.assert( _.vectorIs( dst ) );
   _.assert( _.vectorIs( src ) );
@@ -1202,7 +1202,7 @@ function slicedArray( src,first,last )
 {
   _.assert( !!src );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( !!src._vectorBuffer,'expects vector as argument' );
+  _.assert( !!src._vectorBuffer,'Expects vector as argument' );
 
   let length = src.length;
   let f = first !== undefined ? first : 0;
@@ -1267,7 +1267,7 @@ function resizedArray( src,first,last,val )
   let lsrc = Math.min( src.length,l );
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  _.assert( !!src._vectorBuffer,'expects vector as argument' );
+  _.assert( !!src._vectorBuffer,'Expects vector as argument' );
 
   let result;
   if( src.stride !== 1 || src.offset !== 0 || src._vectorBuffer.length !== l || f !== 0 )
@@ -1349,7 +1349,7 @@ function subarray( src,first,last )
   first = last;
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( !!src._vectorBuffer,'expects vector as argument' );
+  _.assert( !!src._vectorBuffer,'Expects vector as argument' );
   _.assert( src.offset >= 0 );
 
   if( src.stride !== 1 )
@@ -1381,7 +1381,7 @@ function toArray( src )
   let result;
   let length = src.length;
 
-  _.assert( _.vectorIs( src ) || _.longIs( src ), 'expects vector as a single argument' );
+  _.assert( _.vectorIs( src ) || _.longIs( src ), 'Expects vector as a single argument' );
   _.assert( arguments.length === 1 );
 
   if( _.longIs( src ) )
@@ -1704,10 +1704,10 @@ function cross( dst )
   {
     dst = _.vector.from( arguments[ 1 ].slice() );
     firstSrc = 2;
-    _.assert( arguments.length >= 3, 'expects at least three arguments' );
+    _.assert( arguments.length >= 3, 'Expects at least three arguments' );
   }
 
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   _.assert( dst.length === 3,'implemented only for 3D' );
 
   for( let a = firstSrc ; a < arguments.length ; a++ )
@@ -1735,7 +1735,7 @@ dop.modifying = true;
 function quaternionApply( dst,q )
 {
 
-  _.assert( dst.length === 3 && q.length === 4,'quaternionApply :','expects vector and quaternion as arguments' );
+  _.assert( dst.length === 3 && q.length === 4,'quaternionApply :','Expects vector and quaternion as arguments' );
 
   let x = dst.eGet( 0 );
   let y = dst.eGet( 1 );
@@ -1793,7 +1793,7 @@ v' = v + q.w * t + cross(q.xyz, t)
 function quaternionApply2( dst,q )
 {
 
-  _.assert( dst.length === 3 && q.length === 4,'quaternionApply :','expects vector and quaternion as arguments' );
+  _.assert( dst.length === 3 && q.length === 4,'quaternionApply :','Expects vector and quaternion as arguments' );
   throw _.err( 'not tested' );
   let qvector = this.fromSubArray( dst,0,3 );
 
@@ -2552,7 +2552,7 @@ function _onAtomAtomwise_functor( dop )
   let handleAtom = null;
 
   _.assert( !dop.interruptible || _.routineIs( onContinue ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.arrayIs( dop.onContinue ) );
   _.assert( _.routineIs( onAtom0 ) );
   _.assert( _.routineIs( onContinue ) || !onContinue );
@@ -2691,7 +2691,7 @@ function _onVectorsAtomwise_functor( dop )
   let onVectorsBegin0 = dop.onVectorsBegin[ 0 ];
   let onAtom0 = dop.onAtom[ 0 ];
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   /* */
 
@@ -3098,7 +3098,7 @@ function __operationReduceToScalar_functor( operation )
   function onVectorsBegin( o )
   {
 
-    _.assert( arguments.length === 1, 'expects single argument' );
+    _.assert( arguments.length === 1, 'Expects single argument' );
 
     let op = Object.create( null );
     _.mapExtend( op , atomDefaults );
@@ -3212,7 +3212,7 @@ function __operationReduceToScalar_functor( operation )
     {
 
       op.container = arguments[ a ]
-      _.assert( _.vectorIs( op.container ),'expects vector' );
+      _.assert( _.vectorIs( op.container ),'Expects vector' );
 
       let length = op.container.length;
       for( let key = 0 ; key < length ; key++ )
@@ -3242,7 +3242,7 @@ function __operationReduceToScalar_functor( operation )
     {
 
       op.container = arguments[ a ]
-      _.assert( _.vectorIs( op.container ),'expects vector' );
+      _.assert( _.vectorIs( op.container ),'Expects vector' );
 
       let length = op.container.length;
       for( let key = 0 ; key < length ; key++ )

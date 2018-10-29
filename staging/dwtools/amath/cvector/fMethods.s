@@ -31,7 +31,7 @@ function to( cls )
   let self = this;
   let result,array;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.constructorLikeArray( cls ) )
   {
@@ -58,7 +58,7 @@ function to( cls )
 function eGet( index )
 {
   let self = this;
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   return vector.eGet( self,index );
 }
 
@@ -86,7 +86,7 @@ function assign()
 function copy( src )
 {
   let self = this;
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   return vector.assign( self,src );
 }
 
@@ -282,7 +282,7 @@ equivalentWith.modifying = false;
 function sameWith( src2 )
 {
   let src1 = this;
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   if( src1._vectorBuffer !== src2._vectorBuffer )
   return false;
   if( src1.offset !== src2.offset )
@@ -414,7 +414,7 @@ function declareTwoArgumentsRoutine( routine, r )
 
   Self.prototype[ r ] = function scalarRoutine( scalar )
   {
-    _.assert( arguments.length === 1, 'expects single argument' );
+    _.assert( arguments.length === 1, 'Expects single argument' );
     _.assert( _.vectorIs( this ) );
     return routine.call( vector,this,scalar );
   }

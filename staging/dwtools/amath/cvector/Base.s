@@ -70,7 +70,7 @@ Vector.prototype._vectorBuffer = null;
 
 function makeArrayOfLength( length )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   let srcArray = new this.ArrayType( length );
   return fromArray( srcArray );
 }
@@ -183,7 +183,7 @@ _.accessor.constant( VectorFromArray.prototype,
 function fromArray( srcArray )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.vectorIs( srcArray ) || _.longIs( srcArray ) );
 
   if( srcArray._vectorBuffer )
@@ -230,7 +230,7 @@ function fromSubArray( srcArray,offset,length )
   if( length === undefined )
   length = srcArray.length-offset;
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( !!srcArray );
   _.assert( offset+length <= srcArray.length );
 
@@ -324,7 +324,7 @@ function variants( variants )
   let result = _.longSlice( variants );
   let length;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.longIs( variants );
 
   /* */
