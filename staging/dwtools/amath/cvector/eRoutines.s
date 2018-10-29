@@ -90,7 +90,7 @@ function operationSupplement( operation,atomOperation )
 {
   operation = _.mapSupplement( operation,atomOperation );
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   /* */
 
@@ -372,7 +372,7 @@ function _onAtomGenBegin( dop )
 function _onAtomGenEnd( dop,onAtom )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   onAtom.own = { onAtom : dop.onAtom };
 
@@ -715,7 +715,7 @@ function _vectorsGenEnd( dop,onVectors,onVectorsBegin )
   let takingArguments = dop.takingArguments;
   let onAtom = dop.onAtom[ 0 ];
 
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
   _.assert( _.arrayIs( dop.onVectors ) && dop.onVectors.length === 0 );
   _.assert( _.routineIs( onAtom ) );
   _.assert( dop.onAtom.length > 1 );
@@ -1464,7 +1464,7 @@ function gather( dst,srcs )
   let atomsPerElement = srcs.length;
   let l = dst.length / srcs.length;
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.vectorIs( dst ) );
   _.assert( _.arrayIs( srcs ) );
   _.assert( _.numberIsInt( l ) );
@@ -1680,7 +1680,7 @@ dop.modifying = true;
 function cross3( dst, src1, src2 )
 {
 
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
   _.assert( dst.length === 3,'implemented only for 3D' );
   _.assert( src1.length === 3,'implemented only for 3D' );
   _.assert( src2.length === 3,'implemented only for 3D' );
@@ -1825,7 +1825,7 @@ dop.modifying = true;
 function eulerApply( v,e )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   throw _.err( 'not implemented' )
 
@@ -1846,7 +1846,7 @@ dop.modifying = true;
 function reflect( v,normal )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.vectorIs( v ) );
   _.assert( _.vectorIs( normal ) );
 
@@ -1872,7 +1872,7 @@ dop.modifying = true;
 
 function matrixApplyTo( dst,srcMatrix )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.spaceIs( srcMatrix ) );
   debugger;
   return _.space.mul( dst,[ srcMatrix,dst ] );
@@ -1893,7 +1893,7 @@ dop.modifying = true;
 
 function matrixHomogenousApply( dst,srcMatrix )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.spaceIs( srcMatrix ) );
   return srcMatrix.matrixHomogenousApply( dst );
 }
@@ -3001,7 +3001,7 @@ function _normalizeOperationFunctions( operationMake,operation )
 
   let atomDefaults = operationMake.atomDefaults;
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.objectIs( atomDefaults ) );
 
   function normalize( name )
@@ -3986,7 +3986,7 @@ function _declareLogic1SinglerRoutine( operation,atomOperation,routineName )
   operation = operationSupplement( operation,atomOperation );
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
 
   let def =
   {
@@ -4017,7 +4017,7 @@ function _declareLogic1ReducingSinglerRoutine( operation,atomOperation,routineNa
   operation = operationSupplement( operation,atomOperation );
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
 
   _operationLogicalReducerAdjust( operation );
 

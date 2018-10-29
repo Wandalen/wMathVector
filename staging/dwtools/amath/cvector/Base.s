@@ -77,7 +77,7 @@ function makeArrayOfLength( length )
 
 function makeArrayOfLengthWithValue( length,value )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let srcArray = new this.ArrayType( length );
   for( let i = 0 ; i < length ; i++ )
   srcArray[ i ] = value;
@@ -107,7 +107,7 @@ _.accessor.constant( VectorFromNumber.prototype,
 function fromMaybeNumber( number,length )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( length >= 0 );
 
   let numberIs = _.numberIs( number );
@@ -313,7 +313,7 @@ function fromSubArrayWithStride( srcArray,offset,length,stride )
 
 function fromArrayWithStride( srcArray,stride )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   return this.fromSubArrayWithStride( srcArray,0,Math.ceil( srcArray.length / stride ),stride );
 }
 
