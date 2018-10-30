@@ -310,7 +310,7 @@ function _routineAdjust( theRoutine,routineName )
   // });
 
   let _names = _.mapKeys( OperationDescriptor );
-  _.arrayRemoveOnce( _names,'name' );
+  _.arrayRemoveElementOnce( _names,'name' );
   _.accessor.forbid
   ({
     object : theRoutine,
