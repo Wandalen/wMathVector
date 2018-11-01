@@ -1,0 +1,26 @@
+
+name : wMathVector
+description : Collection of routines for vector math
+keywords :
+- wTools
+- math
+- vector
+- dot product
+- convolution
+
+license : MIT
+author : Kostiantyn Wandalen <wanalen@willbe.so>
+contributors :
+- name : Kostiantyn Wandalen
+  email : wanalen@willbe.so
+- name : Volodymyr M.
+  email : volodymyr.migdal@gmail.com
+
+interpreter : node >= 6.0.0
+scripts :
+  test : wtest staging
+  make_doc : wdoc staging
+repository : git+https://github.com/Wandalen/wMathVector.git
+bugs : https://github.com/Wandalen/wMathVector/issues
+composition : ./im.yml
+registry : ./.wMathVector.wimex
