@@ -1,6 +1,6 @@
 (function _fVectorMethods_s_() {
 
-'use strict'; aaa
+'use strict';
 
 let _ = _global_.wTools;
 let _hasLength = _.hasLength;

@@ -1,6 +1,6 @@
 (function _Array_s_() {
 
-'use strict'; aaa
+'use strict';
 
 let _ = _global_.wTools;
 let _row = _.vector;
