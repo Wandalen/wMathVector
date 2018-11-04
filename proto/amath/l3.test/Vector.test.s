@@ -1,6 +1,6 @@
 ( function _Vector_test_s_( ) {
 
-'use strict';
+'use strict'; aaa
 
 if( typeof module !== 'undefined' )
 {
@@ -26,7 +26,9 @@ if( typeof module !== 'undefined' )
 
   _.include( 'wTesting' );
 
-  require( '../cvector/Base.s' );
+  _.include( 'wStringer' );
+
+  require( '../l3_vector/Main.s' );
 
 }
 
@@ -46,6 +48,35 @@ _.assert( _.routineIs( sqrt ) );
 // --
 // test
 // --
+
+function comparator( test )
+{
+
+  test.case = 'trivial';
+
+  let v1 = vector.from([ 1,2,3 ]);
+  let v2 = vector.from([ 1,2,4 ]);
+
+  let diff = _.entityDiff( v1, v2 );
+  let expected =
+`
+- src1 :
+  1.000 2.000 3.000
+- src2 :
+  1.000 2.000 4.000
+- difference :
+  1.000 2.000 *
+`
+
+  console.log( diff );
+  debugger;
+
+  test.identical.apply( test, _.strLinesStrip( diff, expected ) );
+  test.notIdentical( v1, v2 );
+
+}
+
+//
 
 function vectorIs( test )
 {
@@ -4745,6 +4776,15 @@ function homogeneousWithScalar( test )
 
   test.case = 'bad arguments'; /* */
 
+  if( !Config.debug )
+  return;
+
+  shouldThrowError( 'assignScalar' );
+  shouldThrowError( 'addScalar' );
+  shouldThrowError( 'subScalar' );
+  shouldThrowError( 'mulScalar' );
+  shouldThrowError( 'divScalar' );
+
   function shouldThrowError( name )
   {
 
@@ -4766,15 +4806,6 @@ function homogeneousWithScalar( test )
     test.shouldThrowErrorSync( () => _.vector[ name ]( [],1,undefined ) );
     test.shouldThrowErrorSync( () => _.vector[ name ]( [],undefined ) );
 
-  }
-
-  if( Config.debug )
-  {
-    shouldThrowError( 'assignScalar' );
-    shouldThrowError( 'addScalar' );
-    shouldThrowError( 'subScalar' );
-    shouldThrowError( 'mulScalar' );
-    shouldThrowError( 'divScalar' );
   }
 
 }
@@ -5360,135 +5391,135 @@ heterogeneous.timeOut = 15000;
 function clamp( test )
 {
 
-  // test.case = 'clamp vectors, 4 arguments'; /* */
-  //
-  // var expected = [ 30,20,20,20,15,15 ];
-  // var dst = [ 10,20,10,30,30,15 ];
-  // var src1 = [ 30,20,20,20,10,10 ];
-  // var src2 = [ 40,20,20,20,15,15 ];
-  // var got = _.avector.clamp( dst,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got === dst );
-  //
-  // var expected = vec([ 30,20,20,20,15,15 ]);
-  // var dst = vec([ 10,20,10,30,30,15 ]);
-  // var src1 = vec([ 30,20,20,20,10,10 ]);
-  // var src2 = vec([ 40,20,20,20,15,15 ]);
-  // var got = _.vector.clamp( dst,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got === dst );
-  //
-  // test.case = 'clamp vectors, 3 arguments and null'; /* */
-  //
-  // var expected = [ 30,20,20,20,15,15 ];
-  // var dst = [ 10,20,10,30,30,15 ];
-  // var src1 = [ 30,20,20,20,10,10 ];
-  // var src2 = [ 40,20,20,20,15,15 ];
-  // var got = _.avector.clamp( null,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got !== dst );
-  //
-  // var expected = vec([ 30,20,20,20,15,15 ]);
-  // var dst = vec([ 10,20,10,30,30,15 ]);
-  // var src1 = vec([ 30,20,20,20,10,10 ]);
-  // var src2 = vec([ 40,20,20,20,15,15 ]);
-  // var got = _.vector.clamp( null,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got !== dst );
-  //
-  // test.case = 'clamp vectors, 3 arguments'; /* */
-  //
-  // var expected = [ 30,20,20,20,15,15 ];
-  // var dst = [ 10,20,10,30,30,15 ];
-  // var src1 = [ 30,20,20,20,10,10 ];
-  // var src2 = [ 40,20,20,20,15,15 ];
-  // var got = _.avector.clamp( dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got === dst );
-  //
-  // var expected = vec([ 30,20,20,20,15,15 ]);
-  // var dst = vec([ 10,20,10,30,30,15 ]);
-  // var src1 = vec([ 30,20,20,20,10,10 ]);
-  // var src2 = vec([ 40,20,20,20,15,15 ]);
-  // var got = _.vector.clamp( dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got === dst );
-  //
-  // test.case = 'clamp vector and scaler, 4 arguments'; /* */
-  //
-  // var expected = [ 20,20,20,20,20,15 ];
-  // var dst = [ 10,20,10,20,20,15 ];
-  // var src1 = [ 20,20,20,20,10,10 ];
-  // var src2 = 20;
-  // var got = _.avector.clamp( dst,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got === dst );
-  //
-  // var expected = vec([ 20,20,20,20,20,15 ]);
-  // var dst = vec([ 10,20,10,20,20,15 ]);
-  // var src1 = vec([ 20,20,20,20,10,10 ]);
-  // var src2 = 20;
-  // var got = _.vector.clamp( dst,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got === dst );
-  //
-  // var expected = [ 15,20,15,20,15,15 ];
-  // var dst = [ 10,20,10,30,30,15 ];
-  // var src1 = 15;
-  // var src2 = [ 40,20,20,20,15,15 ];
-  // var got = _.avector.clamp( dst,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got === dst );
-  //
-  // var expected = vec([ 15,20,15,20,15,15 ]);
-  // var dst = vec([ 10,20,10,30,30,15 ]);
-  // var src1 = 15;
-  // var src2 = vec([ 40,20,20,20,15,15 ]);
-  // var got = _.vector.clamp( dst,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got === dst );
-  //
-  // test.case = 'clamp vector and scaler, 3 arguments and null'; /* */
-  //
-  // var expected = [ 20,20,20,20,20,15 ];
-  // var dst = [ 10,20,10,20,20,15 ];
-  // var src1 = [ 20,20,20,20,10,10 ];
-  // var src2 = 20;
-  // var got = _.avector.clamp( null,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got !== dst );
-  //
-  // var expected = vec([ 20,20,20,20,20,15 ]);
-  // var dst = vec([ 10,20,10,20,20,15 ]);
-  // var src1 = vec([ 20,20,20,20,10,10 ]);
-  // var src2 = 20;
-  // var got = _.vector.clamp( null,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got !== dst );
-  //
-  // var expected = [ 15,20,15,20,15,15 ];
-  // var dst = [ 10,20,10,30,30,15 ];
-  // var src1 = 15;
-  // var src2 = [ 40,20,20,20,15,15 ];
-  // var got = _.avector.clamp( null,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got !== dst );
-  //
-  // var expected = vec([ 15,20,15,20,15,15 ]);
-  // var dst = vec([ 10,20,10,30,30,15 ]);
-  // var src1 = 15;
-  // var src2 = vec([ 40,20,20,20,15,15 ]);
-  // var got = _.vector.clamp( null,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got !== dst );
-  //
-  // var expected = vec([ 17,20,17,17,10,25 ]);
-  // var dst = 17;
-  // var src1 = vec([ 15,20,15,10,10,25 ]);
-  // var src2 = vec([ 40,20,20,20,10,25 ]);
-  // var got = _.vector.clamp( null,dst,src1,src2 );
-  // test.identical( got,expected );
-  // test.is( got !== dst );
+  test.case = 'clamp vectors, 4 arguments'; /* */
+
+  var expected = [ 30,20,20,20,15,15 ];
+  var dst = [ 10,20,10,30,30,15 ];
+  var src1 = [ 30,20,20,20,10,10 ];
+  var src2 = [ 40,20,20,20,15,15 ];
+  var got = _.avector.clamp( dst,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30,20,20,20,15,15 ]);
+  var dst = vec([ 10,20,10,30,30,15 ]);
+  var src1 = vec([ 30,20,20,20,10,10 ]);
+  var src2 = vec([ 40,20,20,20,15,15 ]);
+  var got = _.vector.clamp( dst,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got === dst );
+
+  test.case = 'clamp vectors, 3 arguments and null'; /* */
+
+  var expected = [ 30,20,20,20,15,15 ];
+  var dst = [ 10,20,10,30,30,15 ];
+  var src1 = [ 30,20,20,20,10,10 ];
+  var src2 = [ 40,20,20,20,15,15 ];
+  var got = _.avector.clamp( null,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 30,20,20,20,15,15 ]);
+  var dst = vec([ 10,20,10,30,30,15 ]);
+  var src1 = vec([ 30,20,20,20,10,10 ]);
+  var src2 = vec([ 40,20,20,20,15,15 ]);
+  var got = _.vector.clamp( null,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got !== dst );
+
+  test.case = 'clamp vectors, 3 arguments'; /* */
+
+  var expected = [ 30,20,20,20,15,15 ];
+  var dst = [ 10,20,10,30,30,15 ];
+  var src1 = [ 30,20,20,20,10,10 ];
+  var src2 = [ 40,20,20,20,15,15 ];
+  var got = _.avector.clamp( dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30,20,20,20,15,15 ]);
+  var dst = vec([ 10,20,10,30,30,15 ]);
+  var src1 = vec([ 30,20,20,20,10,10 ]);
+  var src2 = vec([ 40,20,20,20,15,15 ]);
+  var got = _.vector.clamp( dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got === dst );
+
+  test.case = 'clamp vector and scaler, 4 arguments'; /* */
+
+  var expected = [ 20,20,20,20,20,15 ];
+  var dst = [ 10,20,10,20,20,15 ];
+  var src1 = [ 20,20,20,20,10,10 ];
+  var src2 = 20;
+  var got = _.avector.clamp( dst,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got === dst );
+
+  var expected = vec([ 20,20,20,20,20,15 ]);
+  var dst = vec([ 10,20,10,20,20,15 ]);
+  var src1 = vec([ 20,20,20,20,10,10 ]);
+  var src2 = 20;
+  var got = _.vector.clamp( dst,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got === dst );
+
+  var expected = [ 15,20,15,20,15,15 ];
+  var dst = [ 10,20,10,30,30,15 ];
+  var src1 = 15;
+  var src2 = [ 40,20,20,20,15,15 ];
+  var got = _.avector.clamp( dst,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got === dst );
+
+  var expected = vec([ 15,20,15,20,15,15 ]);
+  var dst = vec([ 10,20,10,30,30,15 ]);
+  var src1 = 15;
+  var src2 = vec([ 40,20,20,20,15,15 ]);
+  var got = _.vector.clamp( dst,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got === dst );
+
+  test.case = 'clamp vector and scaler, 3 arguments and null'; /* */
+
+  var expected = [ 20,20,20,20,20,15 ];
+  var dst = [ 10,20,10,20,20,15 ];
+  var src1 = [ 20,20,20,20,10,10 ];
+  var src2 = 20;
+  var got = _.avector.clamp( null,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 20,20,20,20,20,15 ]);
+  var dst = vec([ 10,20,10,20,20,15 ]);
+  var src1 = vec([ 20,20,20,20,10,10 ]);
+  var src2 = 20;
+  var got = _.vector.clamp( null,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got !== dst );
+
+  var expected = [ 15,20,15,20,15,15 ];
+  var dst = [ 10,20,10,30,30,15 ];
+  var src1 = 15;
+  var src2 = [ 40,20,20,20,15,15 ];
+  var got = _.avector.clamp( null,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 15,20,15,20,15,15 ]);
+  var dst = vec([ 10,20,10,30,30,15 ]);
+  var src1 = 15;
+  var src2 = vec([ 40,20,20,20,15,15 ]);
+  var got = _.vector.clamp( null,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 17,20,17,17,10,25 ]);
+  var dst = 17;
+  var src1 = vec([ 15,20,15,10,10,25 ]);
+  var src2 = vec([ 40,20,20,20,10,25 ]);
+  var got = _.vector.clamp( null,dst,src1,src2 );
+  test.identical( got,expected );
+  test.is( got !== dst );
 
   test.case = 'clamp vector and scaler, 3 arguments'; /* */
 
@@ -6051,6 +6082,7 @@ var Self =
   tests :
   {
 
+    comparator : comparator,
     vectorIs : vectorIs,
 
     allFinite : allFinite,

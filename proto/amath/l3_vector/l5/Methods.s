@@ -1,6 +1,6 @@
 (function _fVectorMethods_s_() {
 
-'use strict';
+'use strict'; aaa
 
 let _ = _global_.wTools;
 let _hasLength = _.hasLength;
@@ -209,23 +209,23 @@ function toStr( o )
 //
 //   return vector.equalWith( self,src,o );
 // }
-
+// 
+// //
 //
-
-function _equalWith( src2, it )
-{
-  let src1 = this;
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  debugger; xxx
-  return vector._equalAre( src1, src2, it );
-}
-
-equalWith.takingArguments = 2;
-equalWith.takingVectors = 2;
-equalWith.takingVectorsOnly = true;
-equalWith.returningSelf = false;
-equalWith.returningNew = false;
-equalWith.modifying = false;
+// function _equalWith( src2, it )
+// {
+//   let src1 = this;
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   debugger; xxx
+//   return vector._equalAre( src1, src2, it );
+// }
+//
+// _equalWith.takingArguments = 2;
+// _equalWith.takingVectors = 2;
+// _equalWith.takingVectorsOnly = true;
+// _equalWith.returningSelf = false;
+// _equalWith.returningNew = false;
+// _equalWith.modifying = false;
 
 //
 

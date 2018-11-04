@@ -1,6 +1,6 @@
 (function _fVectorRoutines_s_() {
 
-'use strict';
+'use strict'; aaa
 
 let _ = _global_.wTools;
 let _hasLength = _.hasLength;
@@ -23,9 +23,9 @@ let sqrt2 = sqrt( 2 );
 let sqrt2Inv = 1 / sqrt2;
 
 let vector = _.vector;
-let operations = vector.operations;
+let operations = _.vector.operations;
 let Parent = null;
-let Self = vector;
+let Self = _.vector;
 let Routines = Object.create( null );
 
 /*
@@ -4211,6 +4211,8 @@ function _equalAre( it )
   return true;
 }
 
+_.routineExtend( _equalAre, _._entityEqual );
+
 dop = _equalAre.operation = Object.create( null );
 dop.takingArguments = 1;
 dop.takingVectors = 0;
@@ -4223,19 +4225,26 @@ dop.homogeneous = true;
 
 //
 
-function equalAre( src1, src2, it )
+function equalAre( src1, src2, opts )
 {
-  it = equalAre.lookContinue( equalAre, arguments );
+
+  let it = this._equalAre.pre.call( this, this.equalAre, arguments );
   let result = this._equalAre( it );
   return result;
+
+  // it = equalAre.lookContinue( equalAre, arguments );
+  // let result = this._equalAre( it );
+  // return result;
+
   // _entityEqualIteratorMake
+
 }
 
-_.routineExtend( equalAre, _._entityEqual );
+_.routineExtend( equalAre, _.entityEqual );
 
-_.assert( _.objectIs( equalAre.defaults ) );
-_.assert( _.routineIs( equalAre.body ) );
-_.assert( _.routineIs( equalAre.lookContinue ) );
+// _.assert( _.objectIs( equalAre.defaults ) );
+// _.assert( _.routineIs( equalAre.body ) );
+// _.assert( _.routineIs( equalAre.lookContinue ) );
 
 dop = equalAre.operation = Object.create( null );
 dop.takingArguments = [ 2,3 ];
@@ -4251,10 +4260,16 @@ dop.homogeneous = true;
 
 function identicalAre( src1,src2,iterator )
 {
+  _.assert( !opts, 'not tested' );
   debugger;
-  let it = identicalAre.lookContinue( identicalAre, arguments );
+  let it = this._equalAre.pre.call( this, this.identicalAre, arguments );
   let result = this._equalAre( it );
   return result;
+
+  // debugger;
+  // let it = identicalAre.lookContinue( identicalAre, arguments );
+  // let result = this._equalAre( it );
+  // return result;
   // _entityEqualIteratorMake
 }
 
@@ -4274,10 +4289,16 @@ dop.homogeneous = true;
 
 function equivalentAre( src1,src2,iterator )
 {
-  let it = equivalentAre.lookContinue( identicalAre, arguments );
+  _.assert( !opts, 'not tested' );
+  debugger;
+  let it = this._equalAre.pre.call( this, this.equivalentAre, arguments );
   let result = this._equalAre( it );
   return result;
-  // _entityEqualIteratorMake
+
+  // let it = equivalentAre.lookContinue( identicalAre, arguments );
+  // let result = this._equalAre( it );
+  // return result;
+  // // _entityEqualIteratorMake
 }
 
 _.routineExtend( equivalentAre, _.entityIdentical );
@@ -4904,7 +4925,6 @@ let RoutinesMathematical =
   distance : distance,
   distanceSqr : distanceSqr,
 
-
   // logical1 singler
 
 /*
@@ -4948,7 +4968,6 @@ let RoutinesMathematical =
   noneInt : Routines.noneInt,
   noneString : Routines.noneString,
 
-
   // interruptible reductor with bool result
 
   _equalAre : _equalAre,
@@ -4958,12 +4977,10 @@ let RoutinesMathematical =
 
   areParallel : areParallel,
 
-
   // helper
 
   mag : mag,
   magSqr : magSqr,
-
 
   // statistics
 
@@ -5030,8 +5047,8 @@ let Proto =
 
 }
 
-_.mapExtend( Proto,RoutinesMathematical );
-_.mapExtend( Self,Proto );
+_.mapExtend( Proto, RoutinesMathematical );
+_.mapExtend( Self, Proto );
 
 //
 
@@ -5052,8 +5069,20 @@ _.assert( _.arrayIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,
 _.assert( _.vector.accuracy >= 0 );
 _.assert( _.vector.accuracySqr >= 0 );
 
-_.assert( _.numberIs( Self.accuracy ) );
-_.assert( _.numberIs( Self.accuracySqr ) );
+_.assert( _.numberIs( _.vector.accuracy ) );
+_.assert( _.numberIs( _.vector.accuracySqr ) );
+
+// _.assert( _.routineIs( _.Vector.prototype.mag ) );
+// _.assert( _.routineIs( _.Vector.prototype.magSqr ) );
+//
+// _.assert( _.routineIs( _.Vector.prototype.toArray ) );
+//
+// _.assert( _.routineIs( _.Vector.prototype.abs ) );
+// _.assert( _.routineIs( _.Vector.prototype.makeSimilar ) );
+// _.assert( _.routineIs( _.Vector.prototype.assign ) );
+// _.assert( _.routineIs( _.Vector.prototype.slice ) );
+//
+// _.assert( _.routineIs( _.Vector.prototype.allZero ) );
 
 _.accessor.forbid
 ({

@@ -15,9 +15,9 @@
     }
   ],
   "license": "MIT",
-  "main": "staging/dwtools/amath/cvector/Base.s",
+  "main": "proto/dwtools/amath/l3_vector/Main.s",
   "files": [
-    "staging/dwtools/amath/cvector",
+    "proto/dwtools/amath/l3_vector",
     "production"
   ],
   "scripts": {
@@ -34,10 +34,12 @@
   "dependencies": {
     "wTools": "",
     "wProto": "",
-    "wmathscalar": ""
+    "wmathscalar": "",
+    "wcomparator": ""
   },
   "devDependencies": {
     "wTesting": "",
+    "wstringer": "",
     "wmathvector": "."
   },
   "keywords": [
