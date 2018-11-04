@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "test": "wtest staging",
-    "make_doc": "x"
+    "docgen": "wdocgen proto"
   },
   "repository": {
     "type": "git",
