@@ -18,7 +18,7 @@
   "main": "proto/dwtools/amath/l3_vector/Main.s",
   "files": [
     "proto/dwtools/amath/l3_vector",
-    "production"
+    "proto/dwtools/Tools.s", "production"
   ],
   "scripts": {
     "test": "wtest staging",
