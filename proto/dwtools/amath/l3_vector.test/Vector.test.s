@@ -41,7 +41,7 @@ var vec = _.vector.fromArray;
 var avector = _.avector;
 var sqrt = _.sqrt;
 
-var Parent = /*_.*/wTester;
+var Parent = wTester;
 
 _.assert( _.routineIs( sqrt ) );
 
@@ -6190,6 +6190,6 @@ var Self =
 
 Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-/*_.*/wTester.test( Self.name );
+wTester.test( Self.name );
 
 } )( );
