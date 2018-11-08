@@ -4289,7 +4289,7 @@ dop.homogeneous = true;
 
 function equivalentAre( src1,src2,iterator )
 {
-  _.assert( !opts, 'not tested' );
+  // _.assert( !opts, 'not tested' );
   debugger;
   let it = this._equalAre.pre.call( this, this.equivalentAre, arguments );
   let result = this._equalAre( it );
