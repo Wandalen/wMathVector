@@ -4240,7 +4240,7 @@ function equalAre( src1, src2, opts )
 
 }
 
-_.routineExtend( equalAre, _.entityEqual );
+_.routineExtend( equalAre, _._entityEqual );
 
 // _.assert( _.objectIs( equalAre.defaults ) );
 // _.assert( _.routineIs( equalAre.body ) );
