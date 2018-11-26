@@ -1389,7 +1389,7 @@ function toArray( src )
 
   if( src.stride !== 1 || src.offset !== 0 || src.length !== src._vectorBuffer.length )
   {
-    result = _.longMakeSimilar( src._vectorBuffer,src.length );
+    result = _.longMake( src._vectorBuffer,src.length );
     for( let i = 0 ; i < src.length ; i++ )
     result[ i ] = src.eGet( i );
   }
@@ -3011,7 +3011,7 @@ function _normalizeOperationFunctions( operationMake,operation )
     else if( operation[ name ] === undefined || operation[ name ] === null )
     operation[ name ] = [];
     else if( !_.arrayIs( operation[ name ] ) )
-    _.assert( 0,'unexpected type of operation function',name,_.strTypeOf( operation[ name ] ) );
+    _.assert( 0,'unexpected type of operation function',name,_.strType( operation[ name ] ) );
 
     if( operation[ name ][ 0 ] )
     if( operation[ name ][ 0 ].defaults === atomDefaults )

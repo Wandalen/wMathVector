@@ -451,17 +451,17 @@ function isIdentical( test )
 
   this._isIdentical( test,'isIdentical',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isIdentical( test,'isIdentical',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isIdentical( test,'isIdentical',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -473,17 +473,17 @@ function isNotIdentical( test )
 
   this._isIdentical( test,'isNotIdentical',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isIdentical( test,'isNotIdentical',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isIdentical( test,'isNotIdentical',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -495,17 +495,17 @@ function isEquivalent( test )
 
   this._isIdentical( test,'isEquivalent',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isIdentical( test,'isEquivalent',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isIdentical( test,'isEquivalent',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -517,17 +517,17 @@ function isNotEquivalent( test )
 
   this._isIdentical( test,'isNotEquivalent',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isIdentical( test,'isNotEquivalent',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isIdentical( test,'isNotEquivalent',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -673,17 +673,17 @@ function isEquivalent2( test )
 
   this._isEquivalent( test,'isEquivalent',true,Array,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isEquivalent( test,'isEquivalent',true,Float32Array,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isEquivalent( test,'isEquivalent',true,Uint32Array,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -831,32 +831,32 @@ function isGreater( test )
 
   this._isGreater( test,'isGreater',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isGreater( test,'isGreater',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isGreater( test,'isGreater',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
   this._isGreater( test,'gt',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isGreater( test,'gt',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isGreater( test,'gt',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -868,32 +868,32 @@ function isLessEqual( test )
 
   this._isGreater( test,'isLessEqual',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isGreater( test,'isLessEqual',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isGreater( test,'isLessEqual',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
   this._isGreater( test,'le',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isGreater( test,'le',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isGreater( test,'le',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -1032,32 +1032,32 @@ function isLess( test )
 
   this._isLess( test,'isLess',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isLess( test,'isLess',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isLess( test,'isLess',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
   this._isLess( test,'lt',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isLess( test,'lt',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isLess( test,'lt',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -1069,32 +1069,32 @@ function isGreaterEqual( test )
 
   this._isLess( test,'isGreaterEqual',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isLess( test,'isGreaterEqual',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isLess( test,'isGreaterEqual',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
   this._isLess( test,'ge',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isLess( test,'ge',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isLess( test,'ge',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -1222,17 +1222,17 @@ function allIdentical( test )
 
   this._allIdentical( test,'allIdentical',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._allIdentical( test,'allIdentical',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._allIdentical( test,'allIdentical',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -1293,17 +1293,17 @@ function anyIdentical( test )
 
   this._anyIdentical( test,'anyIdentical',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._anyIdentical( test,'anyIdentical',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._anyIdentical( test,'anyIdentical',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -1404,17 +1404,17 @@ function allNotIdentical( test )
 {
   this._allNotIdentical( test,'allNotIdentical',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._allNotIdentical( test,'allNotIdentical',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._allNotIdentical( test,'allNotIdentical',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1489,17 +1489,17 @@ function allEquivalent( test )
 {
   this._allEquivalent( test,'allEquivalent',true,Array,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._allEquivalent( test,'allEquivalent',true,Float32Array,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._allEquivalent( test,'allEquivalent',true,Uint32Array,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1511,17 +1511,17 @@ function allEquivalent2( test )
 {
   this._allIdentical( test,'allEquivalent',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._allIdentical( test,'allEquivalent',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._allIdentical( test,'allEquivalent',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1533,17 +1533,17 @@ function allNotEquivalent( test )
 {
   this._allNotIdentical( test,'allNotEquivalent',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._allNotIdentical( test,'allNotEquivalent',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._allNotIdentical( test,'allNotEquivalent',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1615,17 +1615,17 @@ function allGreater( test )
 {
   this._allGreater( test,'allGreater',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._allGreater( test,'allGreater',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._allGreater( test,'allGreater',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1680,17 +1680,17 @@ function anyNotIdentical( test )
 {
   this._anyNotIdentical( test,'anyNotIdentical',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._anyNotIdentical( test,'anyNotIdentical',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._anyNotIdentical( test,'anyNotIdentical',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1763,17 +1763,17 @@ function anyEquivalent( test )
 {
   this._anyEquivalent( test,'anyEquivalent',true,Array,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._anyEquivalent( test,'anyEquivalent',true,Float32Array,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._anyEquivalent( test,'anyEquivalent',true,Uint32Array,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1785,17 +1785,17 @@ function anyEquivalent2( test )
 {
   this._anyIdentical( test,'anyEquivalent',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._anyIdentical( test,'anyEquivalent',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._anyIdentical( test,'anyEquivalent',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1807,17 +1807,17 @@ function anyNotEquivalent( test )
 {
   this._anyNotIdentical( test,'anyNotEquivalent',false,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._anyNotIdentical( test,'anyNotEquivalent',false,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._anyNotIdentical( test,'anyNotEquivalent',false,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1890,17 +1890,17 @@ function anyGreater( test )
 {
   this._anyGreater( test,'anyGreater',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._anyGreater( test,'anyGreater',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._anyGreater( test,'anyGreater',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1912,17 +1912,17 @@ function noneIdentical( test )
 {
   this._noneIdentical( test,'noneIdentical',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._noneIdentical( test,'noneIdentical',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._noneIdentical( test,'noneIdentical',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -1934,17 +1934,17 @@ function noneNotIdentical( test )
 {
   this._allIdentical( test,'noneNotIdentical',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._allIdentical( test,'noneNotIdentical',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._allIdentical( test,'noneNotIdentical',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -2025,17 +2025,17 @@ function noneEquivalent( test )
 {
   this._noneEquivalent( test,'noneEquivalent',true,Array,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._noneEquivalent( test,'noneEquivalent',true,Float32Array,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._noneEquivalent( test,'noneEquivalent',true,Uint32Array,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -2047,17 +2047,17 @@ function noneEquivalent2( test )
 {
   this._noneIdentical( test,'noneIdentical',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._noneIdentical( test,'noneIdentical',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._noneIdentical( test,'noneIdentical',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -2069,17 +2069,17 @@ function noneNotEquivalent( test )
 {
   this._allIdentical( test,'noneNotEquivalent',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._allIdentical( test,'noneNotEquivalent',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._allIdentical( test,'noneNotEquivalent',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -2151,17 +2151,17 @@ function noneGreater( test )
 {
   this._noneGreater( test,'noneGreater',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._noneGreater( test,'noneGreater',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._noneGreater( test,'noneGreater',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 }
 
@@ -2412,17 +2412,17 @@ function isZero( test )
 
   this._isZero( test,'isZero',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._isZero( test,'isZero',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._isZero( test,'isZero',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -2558,17 +2558,17 @@ function allZero( test )
 
   this._allZero( test,'allZero',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._allZero( test,'allZero',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._allZero( test,'allZero',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -2638,17 +2638,17 @@ function anyZero( test )
 
   this._anyZero( test,'anyZero',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._anyZero( test,'anyZero',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._anyZero( test,'anyZero',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }
@@ -2718,17 +2718,17 @@ function noneZero( test )
 
   this._noneZero( test,'noneZero',true,function()
   {
-    return _.longMakeSimilar( Array,arguments );
+    return _.longMake( Array,arguments );
   });
 
   this._noneZero( test,'noneZero',true,function()
   {
-    return _.longMakeSimilar( Float32Array,arguments );
+    return _.longMake( Float32Array,arguments );
   });
 
   this._noneZero( test,'noneZero',true,function()
   {
-    return _.longMakeSimilar( Uint32Array,arguments );
+    return _.longMake( Uint32Array,arguments );
   });
 
 }

@@ -148,7 +148,7 @@ function from( srcArray )
     else
     return srcArray.colVectorGet( 0 );
   }
-  else _.assert( 0,'cant make Vector from',_.strTypeOf( srcArray ) );
+  else _.assert( 0,'cant make Vector from',_.strType( srcArray ) );
 
 }
 

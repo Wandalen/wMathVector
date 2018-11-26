@@ -50,7 +50,7 @@ function to( cls )
     return _.Space.makeCol( this )
   }
 
-  _.assert( 0,'unknown class to convert to',_.strTypeOf( cls ) );
+  _.assert( 0,'unknown class to convert to',_.strType( cls ) );
 }
 
 //
