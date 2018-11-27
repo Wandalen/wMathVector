@@ -1752,12 +1752,36 @@ function all( test )
   if( !Config.debug )
   return;
 
+  test.case = 'Only one argument'; //
+
   test.shouldThrowErrorSync( () => _.vector.all( ));
   test.shouldThrowErrorSync( () => _.vector.all( null ));
   test.shouldThrowErrorSync( () => _.vector.all( NaN ));
   test.shouldThrowErrorSync( () => _.vector.all( undefined ));
   test.shouldThrowErrorSync( () => _.vector.all( 'string' ));
   test.shouldThrowErrorSync( () => _.vector.all( 2 ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong second argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vector.all( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.all( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.all( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.all( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.all( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
 
 }
 
@@ -2181,12 +2205,36 @@ function any( test )
   if( !Config.debug )
   return;
 
+  test.case = 'Only one argument'; //
+
   test.shouldThrowErrorSync( () => _.vector.any( ));
   test.shouldThrowErrorSync( () => _.vector.any( null ));
   test.shouldThrowErrorSync( () => _.vector.any( NaN ));
   test.shouldThrowErrorSync( () => _.vector.any( undefined ));
   test.shouldThrowErrorSync( () => _.vector.any( 'string' ));
   test.shouldThrowErrorSync( () => _.vector.any( 2 ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong second argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vector.any( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.any( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.any( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.any( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.any( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
 
 }
 
@@ -2596,12 +2644,36 @@ function none( test )
   if( !Config.debug )
   return;
 
+  test.case = 'Only one argument'; //
+
   test.shouldThrowErrorSync( () => _.vector.none( ));
   test.shouldThrowErrorSync( () => _.vector.none( null ));
   test.shouldThrowErrorSync( () => _.vector.none( NaN ));
   test.shouldThrowErrorSync( () => _.vector.none( undefined ));
   test.shouldThrowErrorSync( () => _.vector.none( 'string' ));
   test.shouldThrowErrorSync( () => _.vector.none( 2 ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong second argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vector.none( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.none( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.none( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.none( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.none( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
 
 }
 
