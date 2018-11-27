@@ -547,7 +547,11 @@ function _vectorizeSrcs( o,first )
   for( let a = first ; a < o.args.length ; a++ )
   {
     let src = o.args[ a ];
-    src = o.args[ a ] = vector.fromMaybeNumber( src,o.dstContainer.length );
+
+    if( typeof( src ) !== 'function' )
+    {
+      src = o.args[ a ] = vector.fromMaybeNumber( src,o.dstContainer.length );
+    }
   }
 
 }
@@ -655,8 +659,8 @@ function _vectorsCallBegin( o,dop )
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let src = o.args[ a ];
-      _.assert( _.vectorIs( src ) || _.numberIs( src ) );
-      _.assert( _.numberIs( src ) || dst.length === src.length,'src and dst should have same length' );
+      _.assert( _.vectorIs( src ) || _.numberIs( src ) || typeof( src ) === 'function' );
+      _.assert( _.numberIs( src )  || typeof( src ) === 'function' || dst.length === src.length,'src and dst should have same length' );
     }
   }
 
@@ -2624,6 +2628,8 @@ function _onAtomAtomwise_functor( dop )
       for( let a = 1 ; a < o.srcContainers.length ; a++ )
       {
         let src = o.srcContainers[ a ];
+
+        if( typeof( o.srcContainers[ 1 ] ) !== 'function' )
         o.srcElement = src.eGet( o.key );
 
         let r = onAtom0.call( this,o );
@@ -2775,9 +2781,10 @@ function _onVectorsAtomwise_functor( dop )
       o.key = -1;
       o.args = _.longSlice( arguments,0,arguments.length );
       o.unwrapping = 0;
+      o.onEvaluate = arguments[ 1 ];
       o.result = null;
       Object.preventExtensions( o );
-
+      debugger;
       if( onVectorsBegin0 )
       onVectorsBegin0( o );
 
@@ -2787,6 +2794,7 @@ function _onVectorsAtomwise_functor( dop )
     if( dop.interruptible )
     onVectors = function onVectors( dst )
     {
+      debugger; //
       let o = onVectorsBegin.apply( this,arguments );
 
       _vectorsCallBegin( o,dop );
@@ -3824,6 +3832,9 @@ function declareHomogeneousLogical2Routines()
   _.assert( !Routines.anyIdentical );
   _.assert( !Routines.noneIdentical );
   _.assert( !Routines.isGreater );
+  _.assert( !Routines.all );
+  _.assert( !Routines.any );
+  _.assert( !Routines.none );
 
   /* */
 
@@ -3859,6 +3870,9 @@ function declareHomogeneousLogical2Routines()
   _.assert( _.routineIs( Routines.anyIdentical ) );
   _.assert( _.routineIs( Routines.noneIdentical ) );
   _.assert( _.routineIs( Routines.isGreater ) );
+  _.assert( _.routineIs( Routines.all ) );
+  _.assert( _.routineIs( Routines.any ) );
+  _.assert( _.routineIs( Routines.none ) );
 
   _.assert( _.arrayIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
   _.assert( _.arrayIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
@@ -4943,7 +4957,9 @@ let RoutinesMathematical =
   isNan : Routines.isNan,
   isInt : Routines.isInt,
   isString : Routines.isString,
+  is : Routines.is,
 
+  all : Routines.all,
   allNumber : Routines.allNumber,
   allZero : Routines.allZero,
   allFinite : Routines.allFinite,
@@ -4952,6 +4968,7 @@ let RoutinesMathematical =
   allInt : Routines.allInt,
   allString : Routines.allString,
 
+  any : Routines.any,
   anyNumber : Routines.anyNumber,
   anyZero : Routines.anyZero,
   anyFinite : Routines.anyFinite,
@@ -4960,6 +4977,7 @@ let RoutinesMathematical =
   anyInt : Routines.anyInt,
   anyString : Routines.anyString,
 
+  none : Routines.none,
   noneNumber : Routines.noneNumber,
   noneZero : Routines.noneZero,
   noneFinite : Routines.noneFinite,
