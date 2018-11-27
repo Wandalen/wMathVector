@@ -1242,6 +1242,136 @@ allIdentical.timeOut = 15000;
 
 //
 
+function all( test )
+{
+
+  test.case = 'Source vector remains unchanged'; //
+
+  function inRange( src )
+  {
+    return - 5 < src && src < 0 ; // numbers in range
+  }
+  var vector = _.vector.from( [ -1, -1.5, -2 ] );
+  var gotBool = _.vector.all( vector, inRange );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  var oldVector = _.vector.from( [ -1, -1.5, -2 ] )
+  test.equivalent( oldVector, vector );
+
+  test.case = 'Check if a number is > 0 - empty'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ ] );
+  var gotBool = _.vector.all( vector, positiveNumber );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - true'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, 1, 0, 2, 1000, 307 ] );
+  var gotBool = _.vector.all( vector, positiveNumber );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - false some'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var gotBool = _.vector.all( vector, positiveNumber );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - false all'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var gotBool = _.vector.all( vector, positiveNumber );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a string starts with h - true'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var gotBool = _.vector.all( vector, stringLengthThree );
+
+  var expectedStr = true;
+  test.identical( gotBool, expectedStr );
+
+  test.case = 'Check if a string starts with h - false'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'Hello,', 'how', 'are', 'you', '?' ] );
+  var gotBool = _.vector.all( vector, stringLengthThree );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check an array´s length - true'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var gotBool = _.vector.all( vector, arrayLength );
+
+  var expectedArr = true;
+  test.identical( gotBool, expectedArr );
+
+  test.case = 'Check an array´s length - false'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ [ 'Hello,', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var gotBool = _.vector.all( vector, arrayLength );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => _.vector.all( ));
+  test.shouldThrowErrorSync( () => _.vector.all( null ));
+  test.shouldThrowErrorSync( () => _.vector.all( NaN ));
+  test.shouldThrowErrorSync( () => _.vector.all( undefined ));
+  test.shouldThrowErrorSync( () => _.vector.all( 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.all( 2 ));
+
+}
+
+//
+
 function _anyIdentical( test,r,t,array )
 {
   var f = !t;
@@ -6115,6 +6245,7 @@ var Self =
     allEquivalent2 : allEquivalent2,
     allNotEquivalent : allNotEquivalent,
     allGreater : allGreater,
+    all : all,
 
     anyIdentical : anyIdentical,
     anyNotIdentical : anyNotIdentical,

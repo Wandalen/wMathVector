@@ -7,11 +7,10 @@ debugger;
 
 function onEvaluate( src )
 {
-  return src < 0 && src > -5;
+  return - 5 < src && src < 0 ; // numbers in range
 }
 
-
-var v1 = _.vector.from( [ -1, -1.5, -2 ]);
+var v1 = _.vector.from( [ -1, -1.5, -2 ] );
 var bool = _.vector.all( v1, onEvaluate );
 logger.log('ALL true -', bool );
 
