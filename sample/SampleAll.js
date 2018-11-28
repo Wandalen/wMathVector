@@ -34,3 +34,7 @@ logger.log('NONE true -', bool );
 var v1 = _.vector.from( [ 0, 1, -2 ]);
 var bool = _.vector.none( v1, onEvaluate );
 logger.log('NONE false -', bool );
+
+var v1 = _.vector.from( [ ]);
+var bool = _.vector.is( v1, onEvaluate );
+logger.log('Is -', bool, v1 );

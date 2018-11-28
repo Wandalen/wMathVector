@@ -2655,7 +2655,10 @@ function _onAtomAtomwise_functor( dop )
       for( let a = 1 ; a < o.srcContainers.length ; a++ )
       {
         let src = o.srcContainers[ a ];
+
+        if( typeof( o.srcContainers[ 1 ] ) !== 'function' )
         o.srcElement = src.eGet( o.key );
+
         let r = onAtom0.call( this,o );
         _.assert( r === undefined );
       }
