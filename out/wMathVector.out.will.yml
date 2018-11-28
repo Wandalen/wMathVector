@@ -187,8 +187,8 @@ reflector:
       ./dwtools/amath/l3_vector/l5/Methods.s: true
       ./dwtools/amath/l3_vector.test/Vector.test.s: true
     srcFilter:
-      basePath: ./proto
-      prefixPath: .
+      basePath: .
+      prefixPath: proto
     dstFilter:
       basePath: .
       prefixPath: .
