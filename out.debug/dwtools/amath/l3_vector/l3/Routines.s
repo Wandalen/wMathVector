@@ -715,7 +715,7 @@ function _vectorsGenEnd( dop,onVectors,onVectorsBegin )
   let takingArguments = dop.takingArguments;
   let onAtom = dop.onAtom[ 0 ];
 
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.arrayIs( dop.onVectors ) && dop.onVectors.length === 0 );
   _.assert( _.routineIs( onAtom ) );
   _.assert( dop.onAtom.length > 1 );
@@ -1680,7 +1680,7 @@ dop.modifying = true;
 function cross3( dst, src1, src2 )
 {
 
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( dst.length === 3,'implemented only for 3D' );
   _.assert( src1.length === 3,'implemented only for 3D' );
   _.assert( src2.length === 3,'implemented only for 3D' );
@@ -3986,7 +3986,7 @@ function _declareLogic1SinglerRoutine( operation,atomOperation,routineName )
   operation = operationSupplement( operation,atomOperation );
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   let def =
   {
@@ -4017,7 +4017,7 @@ function _declareLogic1ReducingSinglerRoutine( operation,atomOperation,routineNa
   operation = operationSupplement( operation,atomOperation );
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   _operationLogicalReducerAdjust( operation );
 
