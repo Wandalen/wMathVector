@@ -39,9 +39,8 @@
     "wcomparator": ""
   },
   "devDependencies": {
-    "wTesting": "",
     "wstringer": "",
-    "wmathvector": "."
+    "wTesting": ""
   },
   "keywords": [
     "wTools",
