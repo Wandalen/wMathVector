@@ -13,7 +13,7 @@ about:
     functions for the VectorImage and mirrors them for Array/Buffer. Use
     MathVector to be more functional with math and less constrained with storage
     format.
-  version: 0.3.58
+  version: 0.3.61
   enabled: 1
   interpreters:
     - nodejs >= 6.0.0
@@ -53,6 +53,7 @@ path:
       proto: 1
       export: 1
       tar: 1
+      public: 1
   baseDir:
     path: ..
   exportedFiles.0:
@@ -82,6 +83,7 @@ path:
       proto: 1
       export: 1
       tar: 1
+      public: 1
   exportedTerminals.0:
     path:
       - ./dwtools/Tools.s
@@ -98,12 +100,15 @@ path:
       proto: 1
       export: 1
       tar: 1
+      public: 1
 submodule: {}
 reflector:
   reflect.proto.0:
     filePath:
       ./proto: ./out.release
     srcFilter:
+      filePath:
+        ./proto: ./out.release
       maskAll:
         excludeAny:
           - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
@@ -113,7 +118,6 @@ reflector:
           - !<tag:yaml.org,2002:js/regexp> /\.hg$/
           - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
-          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
@@ -128,6 +132,8 @@ reflector:
     filePath:
       ./proto: ./out.debug
     srcFilter:
+      filePath:
+        ./proto: ./out.debug
       maskAll:
         excludeAny:
           - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
@@ -138,9 +144,6 @@ reflector:
           - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
           - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
       prefixPath: .
     dstFilter:
       prefixPath: .
@@ -160,9 +163,6 @@ reflector:
           - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
           - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
       prefixPath: .
     dstFilter:
       prefixPath: .
@@ -173,6 +173,7 @@ reflector:
   exported.0:
     filePath: ./proto
     srcFilter:
+      filePath: ./proto
       prefixPath: .
     dstFilter:
       prefixPath: .
@@ -187,8 +188,16 @@ reflector:
       ./dwtools/amath/l3_vector/l5/Methods.s: true
       ./dwtools/amath/l3_vector.test/Vector.test.s: true
     srcFilter:
-      basePath: ./proto
-      prefixPath: .
+      filePath:
+        ./dwtools/Tools.s: true
+        ./dwtools/amath/l3_vector/Main.s: true
+        ./dwtools/amath/l3_vector/l1/Operations.s: true
+        ./dwtools/amath/l3_vector/l3/Routines.s: true
+        ./dwtools/amath/l3_vector/l5/Array.s: true
+        ./dwtools/amath/l3_vector/l5/Methods.s: true
+        ./dwtools/amath/l3_vector.test/Vector.test.s: true
+      basePath: .
+      prefixPath: proto
     dstFilter:
       basePath: .
       prefixPath: .
@@ -288,12 +297,13 @@ build:
       proto: 1
       export: 1
       tar: 1
+      public: 1
     steps:
       - 'build::debug.raw'
       - 'step::export.proto'
 exported:
   proto.export:
-    version: 0.3.58
+    version: 0.3.61
     criterion:
       default: 1
       debug: 1
@@ -301,6 +311,7 @@ exported:
       proto: 1
       export: 1
       tar: 1
+      public: 1
     exportedReflector: 'reflector::exported.0'
     exportedFilesReflector: 'reflector::exportedFiles.0'
     exportedDirPath: 'path::exportedDir.0'
@@ -321,3 +332,4 @@ exported:
         proto: 1
         export: 1
         tar: 1
+        public: 1
