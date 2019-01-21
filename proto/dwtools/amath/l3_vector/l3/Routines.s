@@ -4359,7 +4359,7 @@ function areParallel( src1, src2, accuracy )
       continue;
     }
 
-    let ratio = src1.eGet( s ) / src2.eGet( s );
+    ratio = src1.eGet( s ) / src2.eGet( s );
     break;
 
     s += 1;
