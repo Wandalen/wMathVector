@@ -61,6 +61,7 @@ path:
       - .
       - ./dwtools
       - ./dwtools/Tools.s
+      - ./dwtools/abase
       - ./dwtools/amath
       - ./dwtools/amath/l3_vector
       - ./dwtools/amath/l3_vector/Main.s
@@ -73,6 +74,8 @@ path:
       - ./dwtools/amath/l3_vector/l5/Methods.s
       - ./dwtools/amath/l3_vector.test
       - ./dwtools/amath/l3_vector.test/Vector.test.s
+      - ./dwtools/amid
+      - ./dwtools/atop
     criterion:
       default: 1
       debug: 1
