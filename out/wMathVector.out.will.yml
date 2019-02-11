@@ -13,7 +13,7 @@ about:
     functions for the VectorImage and mirrors them for Array/Buffer. Use
     MathVector to be more functional with math and less constrained with storage
     format.
-  version: 0.3.71
+  version: 0.3.72
   enabled: 1
   interpreters:
     - nodejs >= 6.0.0
@@ -33,18 +33,18 @@ path:
   out:
     path: out
   out.debug:
-    path: ./out.debug
+    path: ./out/debug
     criterion:
       debug: 1
   out.release:
-    path: ./out.release
+    path: ./out/release
     criterion:
       debug: 0
   repository:
     path: 'git+https://github.com/Wandalen/wMathVector.git'
   bugs:
     path: 'https://github.com/Wandalen/wMathVector/issues'
-  exportedDir.0:
+  exportedDir.proto.export:
     path: ./proto
     criterion:
       default: 1
@@ -54,26 +54,26 @@ path:
       export: 1
       tar: 1
       public: 1
-  exportedFiles.0:
+  exportedFiles.proto.export:
     path:
-      - .
-      - ./dwtools
-      - ./dwtools/Tools.s
-      - ./dwtools/abase
-      - ./dwtools/amath
-      - ./dwtools/amath/l3_vector
-      - ./dwtools/amath/l3_vector/Main.s
-      - ./dwtools/amath/l3_vector/l1
-      - ./dwtools/amath/l3_vector/l1/Operations.s
-      - ./dwtools/amath/l3_vector/l3
-      - ./dwtools/amath/l3_vector/l3/Routines.s
-      - ./dwtools/amath/l3_vector/l5
-      - ./dwtools/amath/l3_vector/l5/Array.s
-      - ./dwtools/amath/l3_vector/l5/Methods.s
-      - ./dwtools/amath/l3_vector.test
-      - ./dwtools/amath/l3_vector.test/Vector.test.s
-      - ./dwtools/amid
-      - ./dwtools/atop
+      - proto
+      - proto/dwtools
+      - proto/dwtools/Tools.s
+      - proto/dwtools/abase
+      - proto/dwtools/amath
+      - proto/dwtools/amath/l3_vector
+      - proto/dwtools/amath/l3_vector/Main.s
+      - proto/dwtools/amath/l3_vector/l1
+      - proto/dwtools/amath/l3_vector/l1/Operations.s
+      - proto/dwtools/amath/l3_vector/l3
+      - proto/dwtools/amath/l3_vector/l3/Routines.s
+      - proto/dwtools/amath/l3_vector/l5
+      - proto/dwtools/amath/l3_vector/l5/Array.s
+      - proto/dwtools/amath/l3_vector/l5/Methods.s
+      - proto/dwtools/amath/l3_vector.test
+      - proto/dwtools/amath/l3_vector.test/Vector.test.s
+      - proto/dwtools/amid
+      - proto/dwtools/atop
     criterion:
       default: 1
       debug: 1
@@ -85,11 +85,9 @@ path:
 submodule: {}
 reflector:
   reflect.proto.:
-    filePath:
-      ./proto: ./out.release
     srcFilter:
       filePath:
-        ./proto: ./out.release
+        ./proto: ./out/release
       maskAll:
         excludeAny:
           - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
@@ -108,11 +106,9 @@ reflector:
     inherit:
       - predefined.*
   reflect.proto.debug:
-    filePath:
-      ./proto: ./out.debug
     srcFilter:
       filePath:
-        ./proto: ./out.debug
+        ./proto: ./out/debug
       maskAll:
         excludeAny:
           - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
@@ -145,54 +141,51 @@ reflector:
       debug: 1
     inherit:
       - predefined.*
-  exported.0:
-    filePath: ./proto
+  exported.proto.export:
     srcFilter:
-      filePath: ./proto
+      filePath:
+        ./proto: true
       prefixPath: .
-  exportedFiles.0:
+    criterion:
+      default: 1
+      debug: 1
+      raw: 1
+      proto: 1
+      export: 1
+      tar: 1
+      public: 1
+  exportedFiles.proto.export:
     recursive: 0
-    filePath:
-      .: true
-      ./dwtools: true
-      ./dwtools/Tools.s: true
-      ./dwtools/abase: true
-      ./dwtools/amath: true
-      ./dwtools/amath/l3_vector: true
-      ./dwtools/amath/l3_vector/Main.s: true
-      ./dwtools/amath/l3_vector/l1: true
-      ./dwtools/amath/l3_vector/l1/Operations.s: true
-      ./dwtools/amath/l3_vector/l3: true
-      ./dwtools/amath/l3_vector/l3/Routines.s: true
-      ./dwtools/amath/l3_vector/l5: true
-      ./dwtools/amath/l3_vector/l5/Array.s: true
-      ./dwtools/amath/l3_vector/l5/Methods.s: true
-      ./dwtools/amath/l3_vector.test: true
-      ./dwtools/amath/l3_vector.test/Vector.test.s: true
-      ./dwtools/amid: true
-      ./dwtools/atop: true
     srcFilter:
       filePath:
         .: true
-        ./dwtools: true
-        ./dwtools/Tools.s: true
-        ./dwtools/abase: true
-        ./dwtools/amath: true
-        ./dwtools/amath/l3_vector: true
-        ./dwtools/amath/l3_vector/Main.s: true
-        ./dwtools/amath/l3_vector/l1: true
-        ./dwtools/amath/l3_vector/l1/Operations.s: true
-        ./dwtools/amath/l3_vector/l3: true
-        ./dwtools/amath/l3_vector/l3/Routines.s: true
-        ./dwtools/amath/l3_vector/l5: true
-        ./dwtools/amath/l3_vector/l5/Array.s: true
-        ./dwtools/amath/l3_vector/l5/Methods.s: true
-        ./dwtools/amath/l3_vector.test: true
-        ./dwtools/amath/l3_vector.test/Vector.test.s: true
-        ./dwtools/amid: true
-        ./dwtools/atop: true
+        dwtools: true
+        dwtools/Tools.s: true
+        dwtools/abase: true
+        dwtools/amath: true
+        dwtools/amath/l3_vector: true
+        dwtools/amath/l3_vector/Main.s: true
+        dwtools/amath/l3_vector/l1: true
+        dwtools/amath/l3_vector/l1/Operations.s: true
+        dwtools/amath/l3_vector/l3: true
+        dwtools/amath/l3_vector/l3/Routines.s: true
+        dwtools/amath/l3_vector/l5: true
+        dwtools/amath/l3_vector/l5/Array.s: true
+        dwtools/amath/l3_vector/l5/Methods.s: true
+        dwtools/amath/l3_vector.test: true
+        dwtools/amath/l3_vector.test/Vector.test.s: true
+        dwtools/amid: true
+        dwtools/atop: true
       basePath: .
       prefixPath: proto
+    criterion:
+      default: 1
+      debug: 1
+      raw: 1
+      proto: 1
+      export: 1
+      tar: 1
+      public: 1
 step:
   clean.out.:
     criterion:
@@ -313,7 +306,7 @@ build:
       - 'step::export.proto'
 exported:
   proto.export:
-    version: 0.3.71
+    version: 0.3.72
     criterion:
       default: 1
       debug: 1
@@ -322,7 +315,7 @@ exported:
       export: 1
       tar: 1
       public: 1
-    exportedReflector: 'reflector::exported.0'
-    exportedFilesReflector: 'reflector::exportedFiles.0'
-    exportedDirPath: 'path::exportedDir.0'
-    exportedFilesPath: 'path::exportedFiles.0'
+    exportedReflector: 'reflector::exported.proto.export'
+    exportedFilesReflector: 'reflector::exportedFiles.proto.export'
+    exportedDirPath: 'path::exportedDir.proto.export'
+    exportedFilesPath: 'path::exportedFiles.proto.export'
