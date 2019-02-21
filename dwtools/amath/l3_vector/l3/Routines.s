@@ -4178,7 +4178,7 @@ function _equalAre( it )
   _.assert( it.context.strictTyping !== undefined );
   _.assert( it.context.containing !== undefined );
 
-  it.looking = false;
+  it.continue = false;
 
   if( !( it.src.length >= 0 ) )
   return false;
