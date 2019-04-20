@@ -11,6 +11,12 @@
  * @file vector/Main.s.
  */
 
+/**
+ *@summary Collection of functions for vector math
+  @namespace "wTools.vector"
+  @memberof module:Tools/math/Vector
+*/
+
 if( typeof module !== 'undefined' )
 {
 
@@ -53,12 +59,39 @@ Vector.prototype._vectorBuffer = null;
 // from
 // --
 
+/**
+* @summary Creates vector from array of length `length`.
+* @param {Number} length Length of array.
+*
+* @example
+* var vec = wTools.vector.makeArrayOfLength( 3 );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function makeArrayOfLength
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 function makeArrayOfLength( length )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   let srcArray = new this.ArrayType( length );
   return fromArray( srcArray );
 }
+
+/**
+* @summary Creates vector from array of length `length` and fills it with element `value`.
+* @param {Number} length Length of array.
+* @param {} value Element for fill operation.
+*
+* @example
+* var vec = wTools.vector.makeArrayOfLengthWithValue( 3,0 );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function makeArrayOfLengthWithValue
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 function makeArrayOfLengthWithValue( length,value )
 {
@@ -89,6 +122,20 @@ _.accessor.constant( VectorFromNumber.prototype,
   stride : 0,
 });
 
+/**
+* @summary Creates vector of length `length` from value of `number`.
+* @param {Number|Array} number Source number, vector or array.
+* @param {Number} length Length of new vector.
+*
+* @example
+* var vec = wTools.vector.fromMaybeNumber( 3,1 );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function fromMaybeNumber
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 function fromMaybeNumber( number,length )
 {
 
@@ -113,6 +160,21 @@ function fromMaybeNumber( number,length )
 }
 
 //
+
+
+/**
+* @summary Creates vector from entity `srcArray`.
+* @param {Array} srcArray Source array, vector, space.
+*
+* @example
+* var srcArray = [ 1, 2, 3 ];
+* var vec = wTools.vector.from( srcArray );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function from
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 function from( srcArray )
 {
@@ -165,6 +227,20 @@ _.accessor.constant( VectorFromArray.prototype,
   stride : 1,
 });
 
+/**
+* @summary Creates vector from source array `srcArray`.
+* @param {Array} srcArray Source array or vector.
+*
+* @example
+* var srcArray = [ 1, 2, 3 ];
+* var vec = wTools.vector.fromArray( srcArray );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function fromArray
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 function fromArray( srcArray )
 {
 
@@ -205,6 +281,22 @@ _.accessor.constant( VectorSub.prototype,
 {
   stride : 1,
 });
+
+/**
+* @summary Creates vector from part of source array `srcArray`.
+* @param {Array} srcArray Source array.
+* @param {Array} offset Offset to sub array in source array `srcArray`.
+* @param {Array} length Length of new vector.
+*
+* @example
+* var srcArray = [ 1, 2, 3 ];
+* var vec = wTools.vector.fromSubArray( srcArray, 0, 2 );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function fromSubArray
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 function fromSubArray( srcArray,offset,length )
 {
