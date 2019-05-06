@@ -20,7 +20,7 @@ interpreter : node >= 6.0.0
 scripts :
   test : wtest proto
   make_doc : wdoc staging
-repository : git+https://github.com/Wandalen/wMathVector.git
-bugs : https://github.com/Wandalen/wMathVector/issues
+repository : git+https:///github.com/Wandalen/wMathVector.git
+bugs : https:///github.com/Wandalen/wMathVector/issues
 composition : ./im.yml
 registry : ./.wMathVector.wimex
