@@ -2292,6 +2292,23 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults.__proto__
 
 //
 
+/**
+ * @summary Add vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,2,5,9 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.add( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [ 2, 4, 8, 13 ]
+ * //a2 [ 1, 2, 3, 4 ]
+ * 
+ * @function add
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 let add = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2,Infinity ],
@@ -2309,6 +2326,23 @@ let add = _operationReturningSelfTakingVariantsComponentWise_functor
 
 //
 
+/**
+ * @summary Subtracts vector `src` from vector `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,2,5,9 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.sub( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [ 0, 0, 2, 5 ]
+ * //a2 [ 1, 2, 3, 4 ]
+ * 
+ * @function sub
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 let sub = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2,Infinity ],
@@ -2325,6 +2359,23 @@ let sub = _operationReturningSelfTakingVariantsComponentWise_functor
 });
 
 //
+
+/**
+ * @summary Multiplication of vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,2,5,9 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.mul( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [1, 4, 15, 36]
+ * //a2 [ 1, 2, 3, 4 ]
+ * 
+ * @function mul
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 let mul = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
@@ -2346,6 +2397,23 @@ let mul = _operationReturningSelfTakingVariantsComponentWise_functor
 });
 
 //
+
+/**
+ * @summary Division of vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,4,9,16 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.div( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [1, 2, 3, 4]
+ * //a2 [ 1, 2, 3, 4 ]
+ * 
+ * @function div
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 let div = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
@@ -2370,6 +2438,23 @@ let div = _operationReturningSelfTakingVariantsComponentWise_functor
 
 //
 
+/**
+ * @summary Finds minimum values from vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,4,9,16 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.min( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [1, 2, 3, 4]
+ * //a2 [ 1, 2, 3, 4 ]
+ * 
+ * @function min
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 let min = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2,Infinity ],
@@ -2392,6 +2477,23 @@ let min = _operationReturningSelfTakingVariantsComponentWise_functor
 
 //
 
+/**
+ * @summary Finds maximal values from vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,4,9,16 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.max( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [ 1, 4, 9, 16 ]
+ * //a2 [ 1, 2, 3, 4 ]
+ * 
+ * @function max
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 let max = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2,Infinity ],
@@ -2413,6 +2515,19 @@ let max = _operationReturningSelfTakingVariantsComponentWise_functor
 });
 
 //
+
+/**
+ * @summary Limits values of vector `dst` to values in range [min,max].
+ * @param {Array|VectorFromArray} dst Vector. 
+ * @example
+ * var a1 = [ 1,2,3,4 ];
+ * _.avector.clamp( a1, 1,2 );
+ * console.log( 'a1',a1 );
+ * //a1 [ 1, 2, 2, 2 ]
+ * 
+ * @function clamp
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 let clamp = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
