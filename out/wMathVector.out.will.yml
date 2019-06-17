@@ -36,6 +36,10 @@ path:
     path: out
     criterion:
       predefined: 1
+  module.common:
+    path: out/wMathVector.out
+    criterion:
+      predefined: 1
   local:
     criterion:
       predefined: 1
