@@ -373,11 +373,11 @@ function declareSingleArgumentRoutine( routine, r )
   let absLike = op.returningOnly === 'self' && op.modifying && op.atomWise && op.homogeneous;
   let reduceToScalarLike = op.returningOnly === 'atomic' && !op.modifying && op.atomWise && op.homogeneous;
 
-  let singleArgument = _.arrayIdentical( op.takingArguments, [ 1,1 ] );
+  let singleArgument = _.arraysAreIdentical( op.takingArguments, [ 1,1 ] );
   let singleVector = op.takingVectors[ 1 ] === 1;
 
-  let oneOrTwoArguments = _.arrayIdentical( op.takingArguments, [ 1,2 ] );
-  let oneOrInfinity = _.arrayIdentical( op.takingArguments, [ 1,Infinity ] );
+  let oneOrTwoArguments = _.arraysAreIdentical( op.takingArguments, [ 1,2 ] );
+  let oneOrInfinity = _.arraysAreIdentical( op.takingArguments, [ 1,Infinity ] );
 
   let doesFit = ( singleArgument && singleVector ) || ( absLike && oneOrTwoArguments ) || ( reduceToScalarLike && ( singleArgument || oneOrInfinity ) );
 
@@ -404,10 +404,10 @@ function declareTwoArgumentsRoutine( routine, r )
   // if( r === 'mulScalar' )
   // debugger;
 
-  if( !_.arrayIdentical( op.takingArguments , [ 2,2 ] ) )
+  if( !_.arraysAreIdentical( op.takingArguments , [ 2,2 ] ) )
   return false;
-  // if( !_.arrayIdentical( op.takingVectors , [ 1,1 ] ) )
-  if( !_.arrayIdentical( op.takingVectors , [ 1,1 ] ) && !_.arrayIdentical( op.takingVectors , [ 0,1 ] ) )
+  // if( !_.arraysAreIdentical( op.takingVectors , [ 1,1 ] ) )
+  if( !_.arraysAreIdentical( op.takingVectors , [ 1,1 ] ) && !_.arraysAreIdentical( op.takingVectors , [ 0,1 ] ) )
   return false;
 
   _.assert( Self.prototype[ r ] === undefined );

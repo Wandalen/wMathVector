@@ -1142,7 +1142,7 @@ function logical2ArgsZipperWithBadArguments( test,r,t,array )
     // if( !op.returningBoolean )
     // continue;
 
-    if( !_.arrayIdentical( op.takingArguments,[ 2,3 ] ) )
+    if( !_.arraysAreIdentical( op.takingArguments,[ 2,3 ] ) )
     continue;
 
     forRoutine( r );
@@ -2233,7 +2233,7 @@ function logical2ArgsReducerWithBadArguments( test,r,t,array )
     if( !op.returningBoolean )
     continue;
 
-    if( !_.arrayIdentical( op.takingArguments,[ 2,2 ] ) )
+    if( !_.arraysAreIdentical( op.takingArguments,[ 2,2 ] ) )
     continue;
 
     forRoutine( r );
@@ -2468,7 +2468,7 @@ function logical1ArgsSinglerWithBadArguments( test,r,t,array )
     if( !op.returningBoolean )
     continue;
 
-    if( !_.arrayIdentical( op.takingArguments,[ 1,2 ] ) )
+    if( !_.arraysAreIdentical( op.takingArguments,[ 1,2 ] ) )
     continue;
 
     debugger;
@@ -2772,7 +2772,7 @@ function logical1ArgsReducerWithBadArguments( test,r,t,array )
     if( !op.returningBoolean )
     continue;
 
-    if( !_.arrayIdentical( op.takingArguments,[ 1,1 ] ) )
+    if( !_.arraysAreIdentical( op.takingArguments,[ 1,1 ] ) )
     continue;
 
     debugger;
