@@ -116,7 +116,7 @@ VectorFromNumber.prototype =
 
 Object.setPrototypeOf( VectorFromNumber.prototype,Vector.prototype );
 
-_.accessor.constant( VectorFromNumber.prototype,
+_.propertyConstant( VectorFromNumber.prototype,
 {
   offset : 0,
   stride : 0,
@@ -154,7 +154,7 @@ function fromMaybeNumber( number,length )
 
   let result = new VectorFromNumber();
   result._vectorBuffer = [ number ];
-  _.accessor.constant( result,{ length : length } );
+  _.propertyConstant( result,{ length : length } );
 
   return result;
 }
@@ -221,7 +221,7 @@ _.accessor.readOnly
   },
 });
 
-_.accessor.constant( VectorFromArray.prototype,
+_.propertyConstant( VectorFromArray.prototype,
 {
   offset : 0,
   stride : 1,
@@ -277,7 +277,7 @@ VectorSub.prototype =
 
 Object.setPrototypeOf( VectorSub.prototype, Vector.prototype );
 
-_.accessor.constant( VectorSub.prototype,
+_.propertyConstant( VectorSub.prototype,
 {
   stride : 1,
 });
