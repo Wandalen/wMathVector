@@ -18,7 +18,7 @@ contributors :
 
 interpreter : node >= 6.0.0
 scripts :
-  test : wtest proto
+  test : wtest .run proto/**
   make_doc : wdoc staging
 repository : git+https:///github.com/Wandalen/wMathVector.git
 bugs : https:///github.com/Wandalen/wMathVector/issues
