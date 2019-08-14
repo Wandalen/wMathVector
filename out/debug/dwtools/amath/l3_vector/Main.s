@@ -23,7 +23,7 @@ if( typeof module !== 'undefined' )
   let _ = require( '../../Tools.s' );
 
   _.include( 'wProto' );
-  _.include( 'wComparator' )
+  _.include( 'wEqualer' )
   _.include( 'wMathScalar' )
 
 }

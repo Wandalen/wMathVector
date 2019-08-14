@@ -36,7 +36,7 @@
     "wTools": "",
     "wProto": "",
     "wmathscalar": "",
-    "wcomparator": ""
+    "wEqualer": ""
   },
   "devDependencies": {
     "wstringer": "",

@@ -10,6 +10,10 @@
       "email": "wanalen@willbe.so"
     },
     {
+      "name": "Pablo Garcimartin",
+      "email": "pablogarcimartinruiz@gmail.com"
+    },
+    {
       "name": "Volodymyr M.",
       "email": "volodymyr.migdal@gmail.com"
     }
@@ -36,7 +40,7 @@
     "wTools": "",
     "wProto": "",
     "wmathscalar": "",
-    "wcomparator": ""
+    "wEqualer": ""
   },
   "devDependencies": {
     "wstringer": "",

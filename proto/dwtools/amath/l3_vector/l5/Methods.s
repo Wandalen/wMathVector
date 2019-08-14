@@ -201,39 +201,11 @@ function toStr( o )
 
 //
 
-// function equalWith( src,o )
-// {
-//   let self = this;
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//
-//   return vector.equalWith( self,src,o );
-// }
-// 
-// //
-//
-// function _equalWith( src2, it )
-// {
-//   let src1 = this;
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   debugger; xxx
-//   return vector._equalAre( src1, src2, it );
-// }
-//
-// _equalWith.takingArguments = 2;
-// _equalWith.takingVectors = 2;
-// _equalWith.takingVectorsOnly = true;
-// _equalWith.returningSelf = false;
-// _equalWith.returningNew = false;
-// _equalWith.modifying = false;
-
-//
-
 function equalWith( src2, it )
 {
   let src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return vector.equalAre( src1, src2, it );
+  return vector.equalAre( src2, src1, it );
 }
 
 equalWith.takingArguments = 2;
@@ -250,7 +222,7 @@ function identicalWith( src2, it )
   let src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
   debugger; xxx
-  return vector.identicalAre( src1, src2, it );
+  return vector.identicalAre( src2, src1, it );
 }
 
 identicalWith.takingArguments = 2;
@@ -267,7 +239,7 @@ function equivalentWith( src2, it )
   let src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
   debugger; xxx
-  return vector.equivalentAre( src1, src2, it );
+  return vector.equivalentAre( src2, src1, it );
 }
 
 equivalentWith.takingArguments = [ 2,3 ];
