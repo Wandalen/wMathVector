@@ -23,7 +23,7 @@
   "files": [
     "proto/dwtools/amath/l3_vector",
     "proto/dwtools/Tools.s",
-    "production"
+    "out"
   ],
   "scripts": {
     "test": "wtest .run proto/**",
