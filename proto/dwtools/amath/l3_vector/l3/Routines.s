@@ -2294,7 +2294,7 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults.__proto__
 
 /**
  * @summary Add vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} dst Destination vector.
  * @param {Array|VectorFromArray} src Source vector.
  * @example
  * var a1 = [ 1,2,5,9 ];
@@ -2304,7 +2304,7 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults.__proto__
  * console.log( 'a2',a2 );
  * //a1 [ 2, 4, 8, 13 ]
  * //a2 [ 1, 2, 3, 4 ]
- * 
+ *
  * @function add
  * @memberof module:Tools/math/Vector.wTools.vector
 */
@@ -2328,7 +2328,7 @@ let add = _operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Subtracts vector `src` from vector `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} dst Destination vector.
  * @param {Array|VectorFromArray} src Source vector.
  * @example
  * var a1 = [ 1,2,5,9 ];
@@ -2338,7 +2338,7 @@ let add = _operationReturningSelfTakingVariantsComponentWise_functor
  * console.log( 'a2',a2 );
  * //a1 [ 0, 0, 2, 5 ]
  * //a2 [ 1, 2, 3, 4 ]
- * 
+ *
  * @function sub
  * @memberof module:Tools/math/Vector.wTools.vector
 */
@@ -2362,7 +2362,7 @@ let sub = _operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Multiplication of vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} dst Destination vector.
  * @param {Array|VectorFromArray} src Source vector.
  * @example
  * var a1 = [ 1,2,5,9 ];
@@ -2372,7 +2372,7 @@ let sub = _operationReturningSelfTakingVariantsComponentWise_functor
  * console.log( 'a2',a2 );
  * //a1 [1, 4, 15, 36]
  * //a2 [ 1, 2, 3, 4 ]
- * 
+ *
  * @function mul
  * @memberof module:Tools/math/Vector.wTools.vector
 */
@@ -2400,7 +2400,7 @@ let mul = _operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Division of vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} dst Destination vector.
  * @param {Array|VectorFromArray} src Source vector.
  * @example
  * var a1 = [ 1,4,9,16 ];
@@ -2410,7 +2410,7 @@ let mul = _operationReturningSelfTakingVariantsComponentWise_functor
  * console.log( 'a2',a2 );
  * //a1 [1, 2, 3, 4]
  * //a2 [ 1, 2, 3, 4 ]
- * 
+ *
  * @function div
  * @memberof module:Tools/math/Vector.wTools.vector
 */
@@ -2440,7 +2440,7 @@ let div = _operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Finds minimum values from vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} dst Destination vector.
  * @param {Array|VectorFromArray} src Source vector.
  * @example
  * var a1 = [ 1,4,9,16 ];
@@ -2450,7 +2450,7 @@ let div = _operationReturningSelfTakingVariantsComponentWise_functor
  * console.log( 'a2',a2 );
  * //a1 [1, 2, 3, 4]
  * //a2 [ 1, 2, 3, 4 ]
- * 
+ *
  * @function min
  * @memberof module:Tools/math/Vector.wTools.vector
 */
@@ -2479,7 +2479,7 @@ let min = _operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Finds maximal values from vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromArray} dst Destination vector. 
+ * @param {Array|VectorFromArray} dst Destination vector.
  * @param {Array|VectorFromArray} src Source vector.
  * @example
  * var a1 = [ 1,4,9,16 ];
@@ -2489,7 +2489,7 @@ let min = _operationReturningSelfTakingVariantsComponentWise_functor
  * console.log( 'a2',a2 );
  * //a1 [ 1, 4, 9, 16 ]
  * //a2 [ 1, 2, 3, 4 ]
- * 
+ *
  * @function max
  * @memberof module:Tools/math/Vector.wTools.vector
 */
@@ -2518,13 +2518,13 @@ let max = _operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Limits values of vector `dst` to values in range [min,max].
- * @param {Array|VectorFromArray} dst Vector. 
+ * @param {Array|VectorFromArray} dst Vector.
  * @example
  * var a1 = [ 1,2,3,4 ];
  * _.avector.clamp( a1, 1,2 );
  * console.log( 'a1',a1 );
  * //a1 [ 1, 2, 2, 2 ]
- * 
+ *
  * @function clamp
  * @memberof module:Tools/math/Vector.wTools.vector
 */
@@ -4326,7 +4326,7 @@ function _equalAre( it )
   return true;
 }
 
-_.routineExtend( _equalAre, _._entityEqual );
+_.routineExtend( _equalAre, _._equal );
 
 dop = _equalAre.operation = Object.create( null );
 dop.takingArguments = 1;
@@ -4355,7 +4355,7 @@ function equalAre( src1, src2, opts )
 
 }
 
-_.routineExtend( equalAre, _._entityEqual );
+_.routineExtend( equalAre, _._equal );
 
 // _.assert( _.objectIs( equalAre.defaults ) );
 // _.assert( _.routineIs( equalAre.body ) );
