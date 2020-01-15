@@ -398,7 +398,7 @@ function _onAtomForRoutine_functor( dop )
 
   _onAtomGenBegin( dop );
 
-  if( _.arraysAreIdentical( dop.input , [ 'vw','vr+' ] ) || _.arraysAreIdentical( dop.input , [ 'vw','vr*' ] ) )
+  if( _.arraySetIdentical( dop.input , [ 'vw','vr+' ] ) || _.arraySetIdentical( dop.input , [ 'vw','vr*' ] ) )
   {
 
     handleAtom = function handleAtom( o )
@@ -434,7 +434,7 @@ function _onAtomForRoutine_functor( dop )
     }
 
   }
-  else if( _.arraysAreIdentical( dop.input , [ 'vw','s' ] ) || _.arraysAreIdentical( dop.input , [ 'vw|s','s' ] ) )
+  else if( _.arraySetIdentical( dop.input , [ 'vw','s' ] ) || _.arraySetIdentical( dop.input , [ 'vw|s','s' ] ) )
   {
 
     let allowingDstScalar = _.strHasAny( dop.inputWithoutLast[ 0 ] , [ '|s','s|' ] );
@@ -753,7 +753,7 @@ function _onVectorsForRoutine_functor( dop )
 
   /* */
 
-  if( _.arraysAreIdentical( dop.input , [ 'vw','vr+' ] ) || _.arraysAreIdentical( dop.input , [ 'vw','vr*' ] ) ) //
+  if( _.arraySetIdentical( dop.input , [ 'vw','vr+' ] ) || _.arraySetIdentical( dop.input , [ 'vw','vr*' ] ) ) //
   {
 
     onVectorsBegin = function onVectorsBegin( dst,src )
@@ -829,7 +829,7 @@ function _onVectorsForRoutine_functor( dop )
     _.assert( takingArguments[ 0 ] > 0 && takingArguments[ 1 ] === Infinity );
 
   }
-  else if( _.arraysAreIdentical( dop.input , [ 'vw','s' ] ) || _.arraysAreIdentical( dop.input , [ 'vw|s','s' ] ) ) //
+  else if( _.arraySetIdentical( dop.input , [ 'vw','s' ] ) || _.arraySetIdentical( dop.input , [ 'vw|s','s' ] ) ) //
   {
 
     let allowingDstScalar = _.strHasAny( dop.inputWithoutLast[ 0 ] , [ '|s','s|' ] );
@@ -3032,7 +3032,7 @@ function routinesHomogeneousDeclare()
 
   _.assert( _.routineIs( Routines.add ) );
   _.assert( Routines.add.operation.usingDstAsSrc );
-  _.assert( _.arraysAreIdentical( Routines.add.operation.takingVectors,[ 0,Infinity ] ) );
+  _.assert( _.arraySetIdentical( Routines.add.operation.takingVectors,[ 0,Infinity ] ) );
   _.assert( _.routineIs( Routines.min ) );
   _.assert( _.routineIs( Routines.max ) );
 
@@ -3975,8 +3975,8 @@ function declareHomogeneousLogical2Routines()
   _.assert( _.routineIs( Routines.noneIdentical ) );
   _.assert( _.routineIs( Routines.isGreater ) );
 
-  _.assert( _.arraysAreIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
-  _.assert( _.arraysAreIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
+  _.assert( _.arraySetIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
+  _.assert( _.arraySetIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
 }
 
@@ -4273,8 +4273,8 @@ function declareLogic1Routines()
   _.assert( _.routineIs( Routines.anyZero ) );
   _.assert( _.routineIs( Routines.noneZero ) );
 
-  _.assert( _.arraysAreIdentical( Routines.isZero.operation.takingArguments,[ 1,2 ] ) );
-  _.assert( _.arraysAreIdentical( Routines.allZero.operation.takingArguments,[ 1,1 ] ) );
+  _.assert( _.arraySetIdentical( Routines.isZero.operation.takingArguments,[ 1,2 ] ) );
+  _.assert( _.arraySetIdentical( Routines.allZero.operation.takingArguments,[ 1,1 ] ) );
 
 }
 
@@ -5179,7 +5179,7 @@ _.assert( _.routineIs( _.vector.abs ) );
 _.assert( _.routineIs( _.vector.round ) );
 
 _.assert( _.routineIs( _.vector.allIdentical ) );
-_.assert( _.arraysAreIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
+_.assert( _.arraySetIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
 _.assert( _.vector.accuracy >= 0 );
 _.assert( _.vector.accuracySqr >= 0 );
