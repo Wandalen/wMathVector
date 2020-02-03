@@ -95,7 +95,7 @@ function copy( src )
 // function clone()
 // {
 //   let self = this;
-//   _.assert( arguments.length === 0 );
+//   _.assert( arguments.length === 0, 'Expects no arguments' );
 //   _.assert( _.vectorAdapterIs( self ) );
 //   return vector.clone( self );
 // }
@@ -180,7 +180,7 @@ function toArray()
 {
   let self = this;
 
-  _.assert( arguments.length === 0 );
+  _.assert( arguments.length === 0, 'Expects no arguments' );
   _.assert( _.vectorAdapterIs( self ) );
 
   return vector.toArray( self );
@@ -360,7 +360,7 @@ function declareSingleArgumentRoutine( routine, r )
 
   Self.prototype[ r ] = function singleArgumentRoutine()
   {
-    _.assert( arguments.length === 0 );
+    _.assert( arguments.length === 0, 'Expects no arguments' );
     _.assert( _.vectorAdapterIs( this ) );
     return routine.call( vector,this );
   }
