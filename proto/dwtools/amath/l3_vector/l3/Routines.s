@@ -398,7 +398,7 @@ function _onAtomForRoutine_functor( dop )
 
   _onAtomGenBegin( dop );
 
-  if( _.arraysAreIdentical( dop.input , [ 'vw','vr+' ] ) || _.arraysAreIdentical( dop.input , [ 'vw','vr*' ] ) )
+  if( _.longIdentical( dop.input , [ 'vw','vr+' ] ) || _.longIdentical( dop.input , [ 'vw','vr*' ] ) )
   {
 
     handleAtom = function handleAtom( o )
@@ -434,7 +434,7 @@ function _onAtomForRoutine_functor( dop )
     }
 
   }
-  else if( _.arraysAreIdentical( dop.input , [ 'vw','s' ] ) || _.arraysAreIdentical( dop.input , [ 'vw|s','s' ] ) )
+  else if( _.longIdentical( dop.input , [ 'vw','s' ] ) || _.longIdentical( dop.input , [ 'vw|s','s' ] ) )
   {
 
     let allowingDstScalar = _.strHasAny( dop.inputWithoutLast[ 0 ] , [ '|s','s|' ] );
@@ -753,7 +753,7 @@ function _onVectorsForRoutine_functor( dop )
 
   /* */
 
-  if( _.arraysAreIdentical( dop.input , [ 'vw','vr+' ] ) || _.arraysAreIdentical( dop.input , [ 'vw','vr*' ] ) ) //
+  if( _.longIdentical( dop.input , [ 'vw','vr+' ] ) || _.longIdentical( dop.input , [ 'vw','vr*' ] ) ) //
   {
 
     onVectorsBegin = function onVectorsBegin( dst,src )
@@ -829,7 +829,7 @@ function _onVectorsForRoutine_functor( dop )
     _.assert( takingArguments[ 0 ] > 0 && takingArguments[ 1 ] === Infinity );
 
   }
-  else if( _.arraysAreIdentical( dop.input , [ 'vw','s' ] ) || _.arraysAreIdentical( dop.input , [ 'vw|s','s' ] ) ) //
+  else if( _.longIdentical( dop.input , [ 'vw','s' ] ) || _.longIdentical( dop.input , [ 'vw|s','s' ] ) ) //
   {
 
     let allowingDstScalar = _.strHasAny( dop.inputWithoutLast[ 0 ] , [ '|s','s|' ] );
@@ -3032,7 +3032,7 @@ function routinesHomogeneousDeclare()
 
   _.assert( _.routineIs( Routines.add ) );
   _.assert( Routines.add.operation.usingDstAsSrc );
-  _.assert( _.arraysAreIdentical( Routines.add.operation.takingVectors,[ 0,Infinity ] ) );
+  _.assert( _.longIdentical( Routines.add.operation.takingVectors,[ 0,Infinity ] ) );
   _.assert( _.routineIs( Routines.min ) );
   _.assert( _.routineIs( Routines.max ) );
 
@@ -3975,8 +3975,8 @@ function declareHomogeneousLogical2Routines()
   _.assert( _.routineIs( Routines.noneIdentical ) );
   _.assert( _.routineIs( Routines.isGreater ) );
 
-  _.assert( _.arraysAreIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
-  _.assert( _.arraysAreIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
+  _.assert( _.longIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
+  _.assert( _.longIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
 }
 
@@ -4273,8 +4273,8 @@ function declareLogic1Routines()
   _.assert( _.routineIs( Routines.anyZero ) );
   _.assert( _.routineIs( Routines.noneZero ) );
 
-  _.assert( _.arraysAreIdentical( Routines.isZero.operation.takingArguments,[ 1,2 ] ) );
-  _.assert( _.arraysAreIdentical( Routines.allZero.operation.takingArguments,[ 1,1 ] ) );
+  _.assert( _.longIdentical( Routines.isZero.operation.takingArguments,[ 1,2 ] ) );
+  _.assert( _.longIdentical( Routines.allZero.operation.takingArguments,[ 1,1 ] ) );
 
 }
 
@@ -4290,8 +4290,8 @@ function _equalAre( it )
   let length = it.src2.length;
 
   _.assert( arguments.length === 1 );
-  _.assert( it.context.strictTyping !== undefined );
-  _.assert( it.context.containing !== undefined );
+  _.assert( it.strictTyping !== undefined );
+  _.assert( it.containing !== undefined );
 
   it.continue = false;
 
@@ -4306,11 +4306,11 @@ function _equalAre( it )
   if( !_.vectorAdapterIs( it.src2 ) )
   return false;
 
-  if( it.context.strictTyping )
+  if( it.strictTyping )
   if( it.src._vectorBuffer.constructor !== it.src2._vectorBuffer.constructor )
   return false;
 
-  if( !it.context.containing )
+  if( !it.containing )
   if( it.src.length !== length )
   return false;
 
@@ -4319,7 +4319,7 @@ function _equalAre( it )
 
   for( let i = 0 ; i < length ; i++ )
   {
-    if( !it.context.onNumbersAreEqual( it.src.eGet( i ),it.src2.eGet( i ) ) )
+    if( !it.onNumbersAreEqual( it.src.eGet( i ),it.src2.eGet( i ) ) )
     return false;
   }
 
@@ -5179,7 +5179,7 @@ _.assert( _.routineIs( _.vector.abs ) );
 _.assert( _.routineIs( _.vector.round ) );
 
 _.assert( _.routineIs( _.vector.allIdentical ) );
-_.assert( _.arraysAreIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
+_.assert( _.longIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
 _.assert( _.vector.accuracy >= 0 );
 _.assert( _.vector.accuracySqr >= 0 );
