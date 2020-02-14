@@ -40,8 +40,8 @@ _.assert( _.objectIs( operations ) );
 // structure
 // --
 
-let OperationDescriptor = _.like()
-.also
+let OperationDescriptor = _.blueprint
+.construct
 ({
 
   takingArguments : null,
@@ -82,7 +82,6 @@ let OperationDescriptor = _.like()
   input : null,
 
 })
-.end
 
 //
 
