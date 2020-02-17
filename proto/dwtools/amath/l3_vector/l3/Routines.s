@@ -40,8 +40,8 @@ _.assert( _.objectIs( operations ) );
 // structure
 // --
 
-let OperationDescriptor = _.like()
-.also
+let OperationDescriptor = _.blueprint
+.construct
 ({
 
   takingArguments : null,
@@ -82,7 +82,6 @@ let OperationDescriptor = _.like()
   input : null,
 
 })
-.end
 
 //
 
@@ -398,7 +397,7 @@ function _onAtomForRoutine_functor( dop )
 
   _onAtomGenBegin( dop );
 
-  if( _.arrayIdentical( dop.input , [ 'vw','vr+' ] ) || _.arrayIdentical( dop.input , [ 'vw','vr*' ] ) )
+  if( _.longIdentical( dop.input , [ 'vw','vr+' ] ) || _.longIdentical( dop.input , [ 'vw','vr*' ] ) )
   {
 
     handleAtom = function handleAtom( o )
@@ -434,7 +433,7 @@ function _onAtomForRoutine_functor( dop )
     }
 
   }
-  else if( _.arrayIdentical( dop.input , [ 'vw','s' ] ) || _.arrayIdentical( dop.input , [ 'vw|s','s' ] ) )
+  else if( _.longIdentical( dop.input , [ 'vw','s' ] ) || _.longIdentical( dop.input , [ 'vw|s','s' ] ) )
   {
 
     let allowingDstScalar = _.strHasAny( dop.inputWithoutLast[ 0 ] , [ '|s','s|' ] );
@@ -497,7 +496,7 @@ function _vectorizeDst( o )
   {
     let src = o.args[ a ];
 
-    if( _.vectorIs( src ) )
+    if( _.vectorAdapterIs( src ) )
     {
       if( dst === null )
       {
@@ -512,7 +511,7 @@ function _vectorizeDst( o )
         dst = o.dstContainer;
       }
       o.args[ 0 ] = dst;
-      _.assert( _.vectorIs( dst ) );
+      _.assert( _.vectorAdapterIs( dst ) );
       return dst;
     }
 
@@ -520,7 +519,7 @@ function _vectorizeDst( o )
 
   /* */
 
-  if( !_.vectorIs( dst ) )
+  if( !_.vectorAdapterIs( dst ) )
   {
     if( dst === null )
     {
@@ -543,7 +542,7 @@ function _vectorizeDst( o )
 function _vectorizeSrcs( o,first )
 {
 
-  if( _.vectorIs( o.dstContainer ) )
+  if( _.vectorAdapterIs( o.dstContainer ) )
   for( let a = first ; a < o.args.length ; a++ )
   {
     let src = o.args[ a ];
@@ -567,7 +566,7 @@ function _vectorsCallBegin( o,dop )
 
   if( Config.debug )
   {
-    _.assert(  _.vectorIs( o.dstContainer ) || o.dstContainer === null || _.numberIs( o.dstContainer ) || _.boolIs( o.dstContainer ) );
+    _.assert(  _.vectorAdapterIs( o.dstContainer ) || o.dstContainer === null || _.numberIs( o.dstContainer ) || _.boolIs( o.dstContainer ) );
     _.assert( o.dstContainer !== null || o.args.length > dop.takingArguments[ 0 ] );
     if( dop.usingExtraSrcs )
     _.assert( dop.takingArguments[ 0 ] < dop.takingArguments[ 1 ] );
@@ -654,13 +653,15 @@ function _vectorsCallBegin( o,dop )
 
   if( Config.debug )
   {
-    _.assert( _.vectorIs( dst ) || _.numberIs( dst ) );
+    _.assert( _.vectorAdapterIs( dst ) || _.numberIs( dst ) );
     _.assert( dop.takingArguments[ 0 ] <= o.args.length && o.args.length <= dop.takingArguments[ 1 ],'Expects ', dop.takingArguments, ' arguments' );
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let src = o.args[ a ];
-      _.assert( _.vectorIs( src ) || _.numberIs( src ) || typeof( src ) === 'function' );
-      _.assert( _.numberIs( src )  || typeof( src ) === 'function' || dst.length === src.length,'src and dst should have same length' );
+      // _.assert( _.vectorIs( src ) || _.numberIs( src ) || typeof( src ) === 'function' );
+      // _.assert( _.numberIs( src )  || typeof( src ) === 'function' || dst.length === src.length,'src and dst should have same length' );
+      _.assert( _.vectorAdapterIs( src ) || _.numberIs( src ) );
+      _.assert( _.numberIs( src ) || dst.length === src.length,'src and dst should have same length' );
     }
   }
 
@@ -757,7 +758,7 @@ function _onVectorsForRoutine_functor( dop )
 
   /* */
 
-  if( _.arrayIdentical( dop.input , [ 'vw','vr+' ] ) || _.arrayIdentical( dop.input , [ 'vw','vr*' ] ) ) //
+  if( _.longIdentical( dop.input , [ 'vw','vr+' ] ) || _.longIdentical( dop.input , [ 'vw','vr*' ] ) ) //
   {
 
     onVectorsBegin = function onVectorsBegin( dst,src )
@@ -794,13 +795,13 @@ function _onVectorsForRoutine_functor( dop )
 
       if( Config.debug )
       {
-        _.assert( _.vectorIs( dst ) );
+        _.assert( _.vectorAdapterIs( dst ) );
         _.assert( arguments.length >= 1,'Expects at least one argument' );
         _.assert( takingArguments[ 0 ] <= arguments.length && arguments.length <= takingArguments[ 1 ],'Expects ', takingArguments, ' arguments' );
         for( let a = 0 ; a < o.srcContainers.length ; a++ )
         {
           let src = o.srcContainers[ a ];
-          _.assert( _.vectorIs( src ) );
+          _.assert( _.vectorAdapterIs( src ) );
           _.assert( dst.length === src.length,'src and dst should have same length' );
         }
       }
@@ -833,7 +834,7 @@ function _onVectorsForRoutine_functor( dop )
     _.assert( takingArguments[ 0 ] > 0 && takingArguments[ 1 ] === Infinity );
 
   }
-  else if( _.arrayIdentical( dop.input , [ 'vw','s' ] ) || _.arrayIdentical( dop.input , [ 'vw|s','s' ] ) ) //
+  else if( _.longIdentical( dop.input , [ 'vw','s' ] ) || _.longIdentical( dop.input , [ 'vw|s','s' ] ) ) //
   {
 
     let allowingDstScalar = _.strHasAny( dop.inputWithoutLast[ 0 ] , [ '|s','s|' ] );
@@ -863,9 +864,9 @@ function _onVectorsForRoutine_functor( dop )
       {
         _.assert( arguments.length === 2,'Expects 2 arguments' );
         if( allowingDstScalar )
-        _.assert( _.vectorIs( dst ) || _.numberIs( dst ) );
+        _.assert( _.vectorAdapterIs( dst ) || _.numberIs( dst ) );
         else
-        _.assert( _.vectorIs( dst ) );
+        _.assert( _.vectorAdapterIs( dst ) );
         _.assert( _.numberIs( src ) );
       }
 
@@ -1076,8 +1077,8 @@ function assignVector( dst,src )
 
   _.assert( !!dst && !!src,'vector :','Expects {-src-} and ( dst )' );
   _.assert( dst.length === src.length,'vector :','src and dst should have same length' );
-  _.assert( _.vectorIs( dst ) );
-  _.assert( _.vectorIs( src ) );
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.vectorAdapterIs( src ) );
 
   for( let s = 0 ; s < length ; s++ )
   {
@@ -1385,7 +1386,7 @@ function toArray( src )
   let result;
   let length = src.length;
 
-  _.assert( _.vectorIs( src ) || _.longIs( src ), 'Expects vector as a single argument' );
+  _.assert( _.vectorAdapterIs( src ) || _.longIs( src ), 'Expects vector as a single argument' );
   _.assert( arguments.length === 1 );
 
   if( _.longIs( src ) )
@@ -1469,7 +1470,7 @@ function gather( dst,srcs )
   let l = dst.length / srcs.length;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.vectorIs( dst ) );
+  _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.arrayIs( srcs ) );
   _.assert( _.numberIsInt( l ) );
 
@@ -1480,7 +1481,7 @@ function gather( dst,srcs )
   for( let s = 0 ; s < srcs.length ; s++ )
   {
     let src = srcs[ s ];
-    _.assert( _.numberIs( src ) || _.vectorIs( src ) || _.longIs( src ) );
+    _.assert( _.numberIs( src ) || _.vectorAdapterIs( src ) || _.longIs( src ) );
     if( _.numberIs( src ) )
     continue;
     if( _.longIs( src ) )
@@ -1851,8 +1852,8 @@ function reflect( v,normal )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.vectorIs( v ) );
-  _.assert( _.vectorIs( normal ) );
+  _.assert( _.vectorAdapterIs( v ) );
+  _.assert( _.vectorAdapterIs( normal ) );
 
   debugger;
   throw _.err( 'not tested' );
@@ -2230,7 +2231,7 @@ function _operationReturningSelfTakingVariantsComponentWiseAct_functor( operatio
   {
 
     if( operation.assigning )
-    _.assert( _.vectorIs( dst ) );
+    _.assert( _.vectorAdapterIs( dst ) );
 
     let args = _.vector.variants( arguments );
 
@@ -2243,7 +2244,7 @@ function _operationReturningSelfTakingVariantsComponentWiseAct_functor( operatio
 
     let length = dst.length;
     _.assert( takingArguments[ 0 ] <= args.length && args.length <= takingArguments[ 1 ],args.length,operation.assigning );
-    _.assert( _.vectorIs( dst ) );
+    _.assert( _.vectorAdapterIs( dst ) );
 
     onVectorsBegin.apply( args,args,length );
 
@@ -2296,6 +2297,23 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults.__proto__
 
 //
 
+/**
+ * @summary Add vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector.
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,2,5,9 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.add( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [ 2, 4, 8, 13 ]
+ * //a2 [ 1, 2, 3, 4 ]
+ *
+ * @function add
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 let add = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2,Infinity ],
@@ -2313,6 +2331,23 @@ let add = _operationReturningSelfTakingVariantsComponentWise_functor
 
 //
 
+/**
+ * @summary Subtracts vector `src` from vector `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector.
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,2,5,9 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.sub( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [ 0, 0, 2, 5 ]
+ * //a2 [ 1, 2, 3, 4 ]
+ *
+ * @function sub
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 let sub = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2,Infinity ],
@@ -2329,6 +2364,23 @@ let sub = _operationReturningSelfTakingVariantsComponentWise_functor
 });
 
 //
+
+/**
+ * @summary Multiplication of vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector.
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,2,5,9 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.mul( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [1, 4, 15, 36]
+ * //a2 [ 1, 2, 3, 4 ]
+ *
+ * @function mul
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 let mul = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
@@ -2350,6 +2402,23 @@ let mul = _operationReturningSelfTakingVariantsComponentWise_functor
 });
 
 //
+
+/**
+ * @summary Division of vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector.
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,4,9,16 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.div( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [1, 2, 3, 4]
+ * //a2 [ 1, 2, 3, 4 ]
+ *
+ * @function div
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 let div = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
@@ -2374,6 +2443,23 @@ let div = _operationReturningSelfTakingVariantsComponentWise_functor
 
 //
 
+/**
+ * @summary Finds minimum values from vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector.
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,4,9,16 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.min( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [1, 2, 3, 4]
+ * //a2 [ 1, 2, 3, 4 ]
+ *
+ * @function min
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 let min = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2,Infinity ],
@@ -2396,6 +2482,23 @@ let min = _operationReturningSelfTakingVariantsComponentWise_functor
 
 //
 
+/**
+ * @summary Finds maximal values from vectors `src` and `dst`. Saves result in vector `dst`.
+ * @param {Array|VectorFromArray} dst Destination vector.
+ * @param {Array|VectorFromArray} src Source vector.
+ * @example
+ * var a1 = [ 1,4,9,16 ];
+ * var a2 = [ 1,2,3,4 ];
+ * _.avector.max( a1,a2 );
+ * console.log( 'a1',a1 );
+ * console.log( 'a2',a2 );
+ * //a1 [ 1, 4, 9, 16 ]
+ * //a2 [ 1, 2, 3, 4 ]
+ *
+ * @function max
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 let max = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2,Infinity ],
@@ -2417,6 +2520,19 @@ let max = _operationReturningSelfTakingVariantsComponentWise_functor
 });
 
 //
+
+/**
+ * @summary Limits values of vector `dst` to values in range [min,max].
+ * @param {Array|VectorFromArray} dst Vector.
+ * @example
+ * var a1 = [ 1,2,3,4 ];
+ * _.avector.clamp( a1, 1,2 );
+ * console.log( 'a1',a1 );
+ * //a1 [ 1, 2, 2, 2 ]
+ *
+ * @function clamp
+ * @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 let clamp = _operationReturningSelfTakingVariantsComponentWise_functor
 ({
@@ -2928,7 +3044,7 @@ function routinesHomogeneousDeclare()
 
   _.assert( _.routineIs( Routines.add ) );
   _.assert( Routines.add.operation.usingDstAsSrc );
-  _.assert( _.arrayIdentical( Routines.add.operation.takingVectors,[ 0,Infinity ] ) );
+  _.assert( _.longIdentical( Routines.add.operation.takingVectors,[ 0,Infinity ] ) );
   _.assert( _.routineIs( Routines.min ) );
   _.assert( _.routineIs( Routines.max ) );
 
@@ -3223,7 +3339,7 @@ function __operationReduceToScalar_functor( operation )
     {
 
       op.container = arguments[ a ]
-      _.assert( _.vectorIs( op.container ),'Expects vector' );
+      _.assert( _.vectorAdapterIs( op.container ),'Expects vector' );
 
       let length = op.container.length;
       for( let key = 0 ; key < length ; key++ )
@@ -3253,7 +3369,7 @@ function __operationReduceToScalar_functor( operation )
     {
 
       op.container = arguments[ a ]
-      _.assert( _.vectorIs( op.container ),'Expects vector' );
+      _.assert( _.vectorAdapterIs( op.container ),'Expects vector' );
 
       let length = op.container.length;
       for( let key = 0 ; key < length ; key++ )
@@ -3877,8 +3993,8 @@ function declareHomogeneousLogical2Routines()
   _.assert( _.routineIs( Routines.any ) );
   _.assert( _.routineIs( Routines.none ) );
 
-  _.assert( _.arrayIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
-  _.assert( _.arrayIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
+  _.assert( _.longIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
+  _.assert( _.longIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
 }
 
@@ -3931,8 +4047,8 @@ function dot( dst,src )
   let result = 0;
   let length = dst.length;
 
-  _.assert( _.vectorIs( dst ) );
-  _.assert( _.vectorIs( src ) );
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.vectorAdapterIs( src ) );
   _.assert( dst.length === src.length,'src and dst should have same length' );
   _.assert( arguments.length === 2 );
 
@@ -4175,8 +4291,8 @@ function declareLogic1Routines()
   _.assert( _.routineIs( Routines.anyZero ) );
   _.assert( _.routineIs( Routines.noneZero ) );
 
-  _.assert( _.arrayIdentical( Routines.isZero.operation.takingArguments,[ 1,2 ] ) );
-  _.assert( _.arrayIdentical( Routines.allZero.operation.takingArguments,[ 1,1 ] ) );
+  _.assert( _.longIdentical( Routines.isZero.operation.takingArguments,[ 1,2 ] ) );
+  _.assert( _.longIdentical( Routines.allZero.operation.takingArguments,[ 1,1 ] ) );
 
 }
 
@@ -4192,10 +4308,10 @@ function _equalAre( it )
   let length = it.src2.length;
 
   _.assert( arguments.length === 1 );
-  _.assert( it.context.strictTyping !== undefined );
-  _.assert( it.context.containing !== undefined );
+  _.assert( it.strictTyping !== undefined );
+  _.assert( it.containing !== undefined );
 
-  it.looking = false;
+  it.continue = false;
 
   if( !( it.src.length >= 0 ) )
   return false;
@@ -4203,16 +4319,16 @@ function _equalAre( it )
   if( !( it.src2.length >= 0 ) )
   return false;
 
-  if( !_.vectorIs( it.src ) )
+  if( !_.vectorAdapterIs( it.src ) )
   return false;
-  if( !_.vectorIs( it.src2 ) )
+  if( !_.vectorAdapterIs( it.src2 ) )
   return false;
 
-  if( it.context.strictTyping )
+  if( it.strictTyping )
   if( it.src._vectorBuffer.constructor !== it.src2._vectorBuffer.constructor )
   return false;
 
-  if( !it.context.containing )
+  if( !it.containing )
   if( it.src.length !== length )
   return false;
 
@@ -4221,14 +4337,14 @@ function _equalAre( it )
 
   for( let i = 0 ; i < length ; i++ )
   {
-    if( !it.context.onNumbersAreEqual( it.src.eGet( i ),it.src2.eGet( i ) ) )
+    if( !it.onNumbersAreEqual( it.src.eGet( i ),it.src2.eGet( i ) ) )
     return false;
   }
 
   return true;
 }
 
-_.routineExtend( _equalAre, _._entityEqual );
+_.routineExtend( _equalAre, _._equal );
 
 dop = _equalAre.operation = Object.create( null );
 dop.takingArguments = 1;
@@ -4257,7 +4373,7 @@ function equalAre( src1, src2, opts )
 
 }
 
-_.routineExtend( equalAre, _._entityEqual );
+_.routineExtend( equalAre, _._equal );
 
 // _.assert( _.objectIs( equalAre.defaults ) );
 // _.assert( _.routineIs( equalAre.body ) );
@@ -4277,7 +4393,7 @@ dop.homogeneous = true;
 
 function identicalAre( src1,src2,iterator )
 {
-  _.assert( !opts, 'not tested' );
+  // _.assert( !opts, 'not tested' );
   debugger;
   let it = this._equalAre.pre.call( this, this.identicalAre, arguments );
   let result = this._equalAre( it );
@@ -5085,7 +5201,7 @@ _.assert( _.routineIs( _.vector.abs ) );
 _.assert( _.routineIs( _.vector.round ) );
 
 _.assert( _.routineIs( _.vector.allIdentical ) );
-_.assert( _.arrayIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
+_.assert( _.longIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
 _.assert( _.vector.accuracy >= 0 );
 _.assert( _.vector.accuracySqr >= 0 );

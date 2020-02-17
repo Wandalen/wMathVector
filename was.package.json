@@ -25,11 +25,11 @@
   }, 
   "dependencies" : 
   {
-    "wTools" : "alpha", 
-    "wProto" : "alpha", 
-    "wmathscalar" : "alpha", 
-    "wequaler" : "alpha"
+    "wTools" : "", 
+    "wProto" : "", 
+    "wmathscalar" : "", 
+    "wequaler" : ""
   }, 
-  "devDependencies" : { "wstringer" : "alpha", "wTesting" : "alpha" }, 
+  "devDependencies" : { "wstringer" : "", "wTesting" : "" }, 
   "keywords" : [ "wTools", "math", "vector", "dot product", "convolution" ]
 }

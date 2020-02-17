@@ -3,12 +3,19 @@
 'use strict';
 
 /**
-  @module Tools/math/Vector - Collection of functions for vector math. MathVector introduces missing in JavaScript type VectorImage. VectorImage is a reference, it does not contain data but only refer on actual ( aka Long ) container of lined data. VectorImage could have offset, length and stride what makes look original container differently. Length of VectorImage is not necessarily equal to the length of the original container, siblings elements of VectorImage is not necessarily sibling in the original container, so storage format of vectors does not make a big difference for math algorithms. MathVector implements functions for the VectorImage and mirrors them for Array/Buffer. Use MathVector to be more functional with math and less constrained with storage format.
+ * Collection of functions for vector math. MathVector introduces missing in JavaScript type VectorAdapter. VectorAdapter is a reference, it does not contain data but only refer on actual ( aka Long ) container of lined data. VectorAdapter could have offset, length and stride what makes look original container differently. Length of VectorAdapter is not necessarily equal to the length of the original container, siblings elements of VectorAdapter is not necessarily sibling in the original container, so storage format of vectors does not make a big difference for math algorithms. MathVector implements functions for the VectorAdapter and mirrors them for Array/BufferNode. Use MathVector to be more functional with math and less constrained with storage format.
+  @module Tools/math/Vector
 */
 
 /**
  * @file vector/Main.s.
  */
+
+/**
+ *@summary Collection of functions for vector math
+  @namespace "wTools.vector"
+  @memberof module:Tools/math/Vector
+*/
 
 if( typeof module !== 'undefined' )
 {
@@ -16,7 +23,7 @@ if( typeof module !== 'undefined' )
   let _ = require( '../../Tools.s' );
 
   _.include( 'wProto' );
-  _.include( 'wComparator' )
+  _.include( 'wEqualer' )
   _.include( 'wMathScalar' )
 
 }
@@ -52,12 +59,39 @@ Vector.prototype._vectorBuffer = null;
 // from
 // --
 
+/**
+* @summary Creates vector from array of length `length`.
+* @param {Number} length Length of array.
+*
+* @example
+* var vec = wTools.vector.makeArrayOfLength( 3 );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function makeArrayOfLength
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 function makeArrayOfLength( length )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   let srcArray = new this.ArrayType( length );
   return fromArray( srcArray );
 }
+
+/**
+* @summary Creates vector from array of length `length` and fills it with element `value`.
+* @param {Number} length Length of array.
+* @param {} value Element for fill operation.
+*
+* @example
+* var vec = wTools.vector.makeArrayOfLengthWithValue( 3,0 );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function makeArrayOfLengthWithValue
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 function makeArrayOfLengthWithValue( length,value )
 {
@@ -82,11 +116,25 @@ VectorFromNumber.prototype =
 
 Object.setPrototypeOf( VectorFromNumber.prototype,Vector.prototype );
 
-_.accessor.constant( VectorFromNumber.prototype,
+_.propertyConstant( VectorFromNumber.prototype,
 {
   offset : 0,
   stride : 0,
 });
+
+/**
+* @summary Creates vector of length `length` from value of `number`.
+* @param {Number|Array} number Source number, vector or array.
+* @param {Number} length Length of new vector.
+*
+* @example
+* var vec = wTools.vector.fromMaybeNumber( 3,1 );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function fromMaybeNumber
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 function fromMaybeNumber( number,length )
 {
@@ -96,7 +144,7 @@ function fromMaybeNumber( number,length )
 
   let numberIs = _.numberIs( number );
 
-  _.assert( numberIs || _.longIs( number ) || _.vectorIs( number ) );
+  _.assert( numberIs || _.longIs( number ) || _.vectorAdapterIs( number ) );
 
   if( !numberIs )
   {
@@ -106,19 +154,34 @@ function fromMaybeNumber( number,length )
 
   let result = new VectorFromNumber();
   result._vectorBuffer = [ number ];
-  _.accessor.constant( result,{ length : length } );
+  _.propertyConstant( result,{ length : length } );
 
   return result;
 }
 
 //
 
+
+/**
+* @summary Creates vector from entity `srcArray`.
+* @param {Array} srcArray Source array, vector, space.
+*
+* @example
+* var srcArray = [ 1, 2, 3 ];
+* var vec = wTools.vector.from( srcArray );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function from
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 function from( srcArray )
 {
 
   _.assert( arguments.length === 1,'from expects single arguments { srcArray }' );
 
-  if( _.vectorIs( srcArray ) )
+  if( _.vectorAdapterIs( srcArray ) )
   return srcArray;
   else if( _.longIs( srcArray ) )
   return fromArray( srcArray );
@@ -158,17 +221,31 @@ _.accessor.readOnly
   },
 });
 
-_.accessor.constant( VectorFromArray.prototype,
+_.propertyConstant( VectorFromArray.prototype,
 {
   offset : 0,
   stride : 1,
 });
 
+/**
+* @summary Creates vector from source array `srcArray`.
+* @param {Array} srcArray Source array or vector.
+*
+* @example
+* var srcArray = [ 1, 2, 3 ];
+* var vec = wTools.vector.fromArray( srcArray );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function fromArray
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
+
 function fromArray( srcArray )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.vectorIs( srcArray ) || _.longIs( srcArray ) );
+  _.assert( _.vectorAdapterIs( srcArray ) || _.longIs( srcArray ) );
 
   if( srcArray._vectorBuffer )
   return srcArray;
@@ -200,10 +277,26 @@ VectorSub.prototype =
 
 Object.setPrototypeOf( VectorSub.prototype, Vector.prototype );
 
-_.accessor.constant( VectorSub.prototype,
+_.propertyConstant( VectorSub.prototype,
 {
   stride : 1,
 });
+
+/**
+* @summary Creates vector from part of source array `srcArray`.
+* @param {Array} srcArray Source array.
+* @param {Array} offset Offset to sub array in source array `srcArray`.
+* @param {Array} length Length of new vector.
+*
+* @example
+* var srcArray = [ 1, 2, 3 ];
+* var vec = wTools.vector.fromSubArray( srcArray, 0, 2 );
+* console.log( 'vec: ', vec );
+* console.log( 'vec.toStr(): ', vec.toStr() );
+*
+* @function fromSubArray
+* @memberof module:Tools/math/Vector.wTools.vector
+*/
 
 function fromSubArray( srcArray,offset,length )
 {
@@ -317,7 +410,7 @@ function variants( variants )
   {
     let variant = result[ v ];
 
-    _.assert( _.numberIs( variant ) || _.longIs( variant ) || _.vectorIs( variant ) );
+    _.assert( _.numberIs( variant ) || _.longIs( variant ) || _.vectorAdapterIs( variant ) );
 
     if( _.numberIs( variant ) )
     continue;
@@ -338,7 +431,7 @@ function variants( variants )
   {
     let variant = result[ v ];
 
-    if( _.vectorIs( variant ) )
+    if( _.vectorAdapterIs( variant ) )
     continue;
 
     if( _.longIs( variant ) )
@@ -456,7 +549,7 @@ function withWrapper( o )
     for( ; d < takingVectors[ 0 ] ; d++, s++ )
     {
       args[ d ] = makeVector( arguments[ s ] );
-      _.assert( _.vectorIs( args[ d ] ) || ( d === 0 && returningNew ) );
+      _.assert( _.vectorAdapterIs( args[ d ] ) || ( d === 0 && returningNew ) );
     }
 
     let optionalLength;

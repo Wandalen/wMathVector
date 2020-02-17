@@ -6,8 +6,40 @@ Collection of functions for vector math. MathVector introduces missing in JavaSc
 ### Try out
 ```
 npm install
-node sample/Sample.s
+node sample/Sample.js
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

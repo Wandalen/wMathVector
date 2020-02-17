@@ -1,8 +1,8 @@
 
 module :
-  wTools : git+https://github.com/Wandalen/wTools/exo.json#0.7.126
-  # wProto : git+https://github.com/Wandalen/wProto/exo.json
-  # wMathScalar : git+https://github.com/Wandalen/wMathScalar/exo.json
+  wTools : git+https:///github.com/Wandalen/wTools/exo.json#0.7.126
+  # wProto : git+https:///github.com/Wandalen/wProto/exo.json
+  # wMathScalar : git+https:///github.com/Wandalen/wMathScalar/exo.json
 
 path :
   proto : './proto'

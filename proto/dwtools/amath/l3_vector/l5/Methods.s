@@ -95,8 +95,8 @@ function copy( src )
 // function clone()
 // {
 //   let self = this;
-//   _.assert( arguments.length === 0 );
-//   _.assert( _.vectorIs( self ) );
+//   _.assert( arguments.length === 0, 'Expects no arguments' );
+//   _.assert( _.vectorAdapterIs( self ) );
 //   return vector.clone( self );
 // }
 
@@ -116,7 +116,7 @@ function slice( b,e )
   let self = this;
 
   _.assert( arguments.length <= 2 );
-  _.assert( _.vectorIs( self ) );
+  _.assert( _.vectorAdapterIs( self ) );
 
   return vector.slice( self,b,e );
 }
@@ -128,7 +128,7 @@ function slicedArray( b,e )
   let self = this;
 
   _.assert( arguments.length <= 2 );
-  _.assert( _.vectorIs( self ) );
+  _.assert( _.vectorAdapterIs( self ) );
 
   return vector.slicedArray( self,b,e );
 }
@@ -140,7 +140,7 @@ function slicedVector( b,e )
   let self = this;
 
   _.assert( arguments.length <= 2 );
-  _.assert( _.vectorIs( self ) );
+  _.assert( _.vectorAdapterIs( self ) );
 
   return vector.slicedVector( self,b,e );
 }
@@ -180,8 +180,8 @@ function toArray()
 {
   let self = this;
 
-  _.assert( arguments.length === 0 );
-  _.assert( _.vectorIs( self ) );
+  _.assert( arguments.length === 0, 'Expects no arguments' );
+  _.assert( _.vectorAdapterIs( self ) );
 
   return vector.toArray( self );
 }
@@ -194,38 +194,10 @@ function toStr( o )
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.mapIs( o ) || o === undefined );
-  _.assert( _.vectorIs( self ) );
+  _.assert( _.vectorAdapterIs( self ) );
 
   return vector._toStr( self,o );
 }
-
-//
-
-// function equalWith( src,o )
-// {
-//   let self = this;
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//
-//   return vector.equalWith( self,src,o );
-// }
-// 
-// //
-//
-// function _equalWith( src2, it )
-// {
-//   let src1 = this;
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   debugger; xxx
-//   return vector._equalAre( src1, src2, it );
-// }
-//
-// _equalWith.takingArguments = 2;
-// _equalWith.takingVectors = 2;
-// _equalWith.takingVectorsOnly = true;
-// _equalWith.returningSelf = false;
-// _equalWith.returningNew = false;
-// _equalWith.modifying = false;
 
 //
 
@@ -233,7 +205,7 @@ function equalWith( src2, it )
 {
   let src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return vector.equalAre( src1, src2, it );
+  return vector.equalAre( src2, src1, it );
 }
 
 equalWith.takingArguments = 2;
@@ -250,7 +222,7 @@ function identicalWith( src2, it )
   let src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
   debugger; xxx
-  return vector.identicalAre( src1, src2, it );
+  return vector.identicalAre( src2, src1, it );
 }
 
 identicalWith.takingArguments = 2;
@@ -267,7 +239,7 @@ function equivalentWith( src2, it )
   let src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
   debugger; xxx
-  return vector.equivalentAre( src1, src2, it );
+  return vector.equivalentAre( src2, src1, it );
 }
 
 equivalentWith.takingArguments = [ 2,3 ];
@@ -373,11 +345,11 @@ function declareSingleArgumentRoutine( routine, r )
   let absLike = op.returningOnly === 'self' && op.modifying && op.atomWise && op.homogeneous;
   let reduceToScalarLike = op.returningOnly === 'atomic' && !op.modifying && op.atomWise && op.homogeneous;
 
-  let singleArgument = _.arrayIdentical( op.takingArguments, [ 1,1 ] );
+  let singleArgument = _.longIdentical( op.takingArguments, [ 1,1 ] );
   let singleVector = op.takingVectors[ 1 ] === 1;
 
-  let oneOrTwoArguments = _.arrayIdentical( op.takingArguments, [ 1,2 ] );
-  let oneOrInfinity = _.arrayIdentical( op.takingArguments, [ 1,Infinity ] );
+  let oneOrTwoArguments = _.longIdentical( op.takingArguments, [ 1,2 ] );
+  let oneOrInfinity = _.longIdentical( op.takingArguments, [ 1,Infinity ] );
 
   let doesFit = ( singleArgument && singleVector ) || ( absLike && oneOrTwoArguments ) || ( reduceToScalarLike && ( singleArgument || oneOrInfinity ) );
 
@@ -388,8 +360,8 @@ function declareSingleArgumentRoutine( routine, r )
 
   Self.prototype[ r ] = function singleArgumentRoutine()
   {
-    _.assert( arguments.length === 0 );
-    _.assert( _.vectorIs( this ) );
+    _.assert( arguments.length === 0, 'Expects no arguments' );
+    _.assert( _.vectorAdapterIs( this ) );
     return routine.call( vector,this );
   }
 
@@ -404,10 +376,10 @@ function declareTwoArgumentsRoutine( routine, r )
   // if( r === 'mulScalar' )
   // debugger;
 
-  if( !_.arrayIdentical( op.takingArguments , [ 2,2 ] ) )
+  if( !_.longIdentical( op.takingArguments , [ 2,2 ] ) )
   return false;
-  // if( !_.arrayIdentical( op.takingVectors , [ 1,1 ] ) )
-  if( !_.arrayIdentical( op.takingVectors , [ 1,1 ] ) && !_.arrayIdentical( op.takingVectors , [ 0,1 ] ) )
+  // if( !_.longIdentical( op.takingVectors , [ 1,1 ] ) )
+  if( !_.longIdentical( op.takingVectors , [ 1,1 ] ) && !_.longIdentical( op.takingVectors , [ 0,1 ] ) )
   return false;
 
   _.assert( Self.prototype[ r ] === undefined );
@@ -415,7 +387,7 @@ function declareTwoArgumentsRoutine( routine, r )
   Self.prototype[ r ] = function scalarRoutine( scalar )
   {
     _.assert( arguments.length === 1, 'Expects single argument' );
-    _.assert( _.vectorIs( this ) );
+    _.assert( _.vectorAdapterIs( this ) );
     return routine.call( vector,this,scalar );
   }
 
