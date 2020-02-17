@@ -286,16 +286,13 @@ function _isIdentical( test, r, t, array )
 {
   var f = !t;
 
-  // debugger;
-  // var res = _.avector[ r ]( '1', 3, 4 );
-  // debugger;
-
   /* */
 
   test.case = ' trivial'; /* */
+  debugger;
   var expected = array( f, f, t );
   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
+  test.identical( got, expected ); debugger;
   var expected = array( t, f, f );
   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
