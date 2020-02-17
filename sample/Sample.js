@@ -1,4 +1,3 @@
-
 if( typeof module !== 'undefined' )
 require( 'wmathvector' );
 
@@ -42,6 +41,7 @@ console.log( 'add 2 vectors made from single array' );
 console.log( 'v1',v1.toStr() );
 console.log( 'v2',v2.toStr() );
 console.log( 'a',a );
+
 /*
 v1 2.000 4.000 8.000 13.00
 v2 1.000 2.000 3.000 4.000

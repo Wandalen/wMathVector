@@ -334,6 +334,7 @@ let isIdentical = dop = Object.create( null );
 
 isIdentical.onAtom = function isIdentical( o )
 {
+  debugger;
   o.dstElement = o.dstElement === o.srcElement;
 }
 
@@ -398,6 +399,15 @@ let isLessEqual = dop = Object.create( null );
 dop.onAtom = function isLessEqual( o )
 {
   o.dstElement = o.dstElement <= o.srcElement;
+}
+
+//
+
+let is = dop = Object.create( null );
+
+dop.onAtom = function is( o )
+{
+  o.dstElement = o.onEvaluate( o.dstElement );
 }
 
 //
@@ -1010,6 +1020,7 @@ let Routines =
     isGreaterEqual : isGreaterEqual,
     isLess : isLess,
     isLessEqual : isLessEqual,
+    is : is,
 
   },
 
