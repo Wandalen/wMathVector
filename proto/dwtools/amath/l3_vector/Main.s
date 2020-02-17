@@ -85,7 +85,7 @@ function makeArrayOfLength( length )
 * @param {} value Element for fill operation.
 *
 * @example
-* var vec = wTools.vector.makeArrayOfLengthWithValue( 3,0 );
+* var vec = wTools.vector.makeArrayOfLengthWithValue( 3, 0 );
 * console.log( 'vec: ', vec );
 * console.log( 'vec.toStr(): ', vec.toStr() );
 *
@@ -93,7 +93,7 @@ function makeArrayOfLength( length )
 * @memberof module:Tools/math/Vector.wTools.vector
 */
 
-function makeArrayOfLengthWithValue( length,value )
+function makeArrayOfLengthWithValue( length, value )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   let srcArray = new this.ArrayType( length );
@@ -110,11 +110,11 @@ function VectorFromNumber() {};
 VectorFromNumber.prototype =
 {
   eGet : function( index ){ return this._vectorBuffer[ 0 ]; },
-  eSet : function( index,src ){ this._vectorBuffer[ 0 ] = src; },
+  eSet : function( index, src ){ this._vectorBuffer[ 0 ] = src; },
   constructor : VectorFromNumber,
 }
 
-Object.setPrototypeOf( VectorFromNumber.prototype,Vector.prototype );
+Object.setPrototypeOf( VectorFromNumber.prototype, Vector.prototype );
 
 _.propertyConstant( VectorFromNumber.prototype,
 {
@@ -128,7 +128,7 @@ _.propertyConstant( VectorFromNumber.prototype,
 * @param {Number} length Length of new vector.
 *
 * @example
-* var vec = wTools.vector.fromMaybeNumber( 3,1 );
+* var vec = wTools.vector.fromMaybeNumber( 3, 1 );
 * console.log( 'vec: ', vec );
 * console.log( 'vec.toStr(): ', vec.toStr() );
 *
@@ -136,7 +136,7 @@ _.propertyConstant( VectorFromNumber.prototype,
 * @memberof module:Tools/math/Vector.wTools.vector
 */
 
-function fromMaybeNumber( number,length )
+function fromMaybeNumber( number, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -154,7 +154,7 @@ function fromMaybeNumber( number,length )
 
   let result = new VectorFromNumber();
   result._vectorBuffer = [ number ];
-  _.propertyConstant( result,{ length : length } );
+  _.propertyConstant( result, { length : length } );
 
   return result;
 }
@@ -179,7 +179,7 @@ function fromMaybeNumber( number,length )
 function from( srcArray )
 {
 
-  _.assert( arguments.length === 1,'from expects single arguments { srcArray }' );
+  _.assert( arguments.length === 1, 'from expects single arguments { srcArray }' );
 
   if( _.vectorAdapterIs( srcArray ) )
   return srcArray;
@@ -194,7 +194,7 @@ function from( srcArray )
     else
     return srcArray.colVectorGet( 0 );
   }
-  else _.assert( 0,'cant make Vector from',_.strType( srcArray ) );
+  else _.assert( 0, 'cant make Vector from', _.strType( srcArray ) );
 
 }
 
@@ -205,11 +205,11 @@ VectorFromArray.prototype =
 {
   '_lengthGet' : function(){ return this._vectorBuffer.length; },
   eGet : function( index ){ return this._vectorBuffer[ index ]; },
-  eSet : function( index,src ){ this._vectorBuffer[ index ] = src; },
+  eSet : function( index, src ){ this._vectorBuffer[ index ] = src; },
   constructor : VectorFromArray,
 }
 
-Object.setPrototypeOf( VectorFromArray.prototype,Vector.prototype );
+Object.setPrototypeOf( VectorFromArray.prototype, Vector.prototype );
 
 _.accessor.readOnly
 ({
@@ -267,7 +267,7 @@ VectorSub.prototype =
     _.assert( index < this.length );
     return this._vectorBuffer[ this.offset+index ];
   },
-  eSet : function( index,src )
+  eSet : function( index, src )
   {
     _.assert( index < this.length );
     this._vectorBuffer[ this.offset+index ] = src;
@@ -298,7 +298,7 @@ _.propertyConstant( VectorSub.prototype,
 * @memberof module:Tools/math/Vector.wTools.vector
 */
 
-function fromSubArray( srcArray,offset,length )
+function fromSubArray( srcArray, offset, length )
 {
 
   if( offset === undefined )
@@ -317,10 +317,10 @@ function fromSubArray( srcArray,offset,length )
     if( srcArray.offset )
     offset = srcArray.offset + offset*( srcArray.stride || 1 );
 
-    length = _min( length,srcArray.length );
+    length = _min( length, srcArray.length );
 
     if( srcArray.stride )
-    return fromSubArrayWithStride( srcArray._vectorBuffer,offset,length,srcArray.stride );
+    return fromSubArrayWithStride( srcArray._vectorBuffer, offset, length, srcArray.stride );
 
     srcArray = srcArray._vectorBuffer;
 
@@ -347,7 +347,7 @@ VectorSubArrayWithStride.prototype =
     _.assert( i < this._vectorBuffer.length );
     return this._vectorBuffer[ i ];
   },
-  eSet : function( index,src )
+  eSet : function( index, src )
   {
     let i = this.offset+index*this.stride;
     _.assert( index < this.length );
@@ -357,9 +357,9 @@ VectorSubArrayWithStride.prototype =
   constructor : VectorSubArrayWithStride,
 }
 
-Object.setPrototypeOf( VectorSubArrayWithStride.prototype,Vector.prototype );
+Object.setPrototypeOf( VectorSubArrayWithStride.prototype, Vector.prototype );
 
-function fromSubArrayWithStride( srcArray,offset,length,stride )
+function fromSubArrayWithStride( srcArray, offset, length, stride )
 {
 
   _.assert( arguments.length === 4 );
@@ -369,7 +369,7 @@ function fromSubArrayWithStride( srcArray,offset,length,stride )
   _.assert( offset+(length-1)*stride < srcArray.length );
 
   if( stride === 1 )
-  return fromSubArray( srcArray,offset,length );
+  return fromSubArray( srcArray, offset, length );
 
   if( srcArray._vectorBuffer )
   {
@@ -388,10 +388,10 @@ function fromSubArrayWithStride( srcArray,offset,length,stride )
 
 //
 
-function fromArrayWithStride( srcArray,stride )
+function fromArrayWithStride( srcArray, stride )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  return this.fromSubArrayWithStride( srcArray,0,Math.ceil( srcArray.length / stride ),stride );
+  return this.fromSubArrayWithStride( srcArray, 0, Math.ceil( srcArray.length / stride ), stride );
 }
 
 //
@@ -400,6 +400,8 @@ function variants( variants )
 {
   let result = _.longSlice( variants );
   let length;
+
+  debugger;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.longIs( variants );
@@ -416,7 +418,7 @@ function variants( variants )
     continue;
 
     if( length !== undefined )
-    _.assert( variant.length === length,'all variants should have same length' );
+    _.assert( variant.length === length, 'all variants should have same length' );
 
     length = variant.length;
 
@@ -437,7 +439,7 @@ function variants( variants )
     if( _.longIs( variant ) )
     variant = result[ v ] = _.vector.fromArray( variant );
     else
-    variant = result[ v ] = _.vector.fromMaybeNumber( variant,length );
+    variant = result[ v ] = _.vector.fromMaybeNumber( variant, length );
 
   }
 
@@ -461,7 +463,7 @@ function withWrapper( o )
     let result = Object.create( null );
     for( let r in o.routine )
     {
-      let optionsForWrapper = _.mapExtend( null,o );
+      let optionsForWrapper = _.mapExtend( null, o );
       optionsForWrapper.routine = o.routine[ r ];
       result[ r ] = withWrapper( optionsForWrapper );
     }
@@ -507,11 +509,11 @@ function withWrapper( o )
 
   /* adjust */
 
-  if( _.numberIs( takingArguments ) ) takingArguments = Object.freeze([ takingArguments,takingArguments ]);
+  if( _.numberIs( takingArguments ) ) takingArguments = Object.freeze([ takingArguments, takingArguments ]);
   else takingArguments = Object.freeze( takingArguments.slice() );
 
   if( _.numberIs( takingVectors ) )
-  takingVectors = Object.freeze([ takingVectors,takingVectors ]);
+  takingVectors = Object.freeze([ takingVectors, takingVectors ]);
   else
   takingVectors = Object.freeze( takingVectors.slice() );
   let hasOptionalVectors = takingVectors[ 0 ] !== takingVectors[ 1 ];
@@ -555,18 +557,18 @@ function withWrapper( o )
     let optionalLength;
     if( hasOptionalVectors )
     {
-      optionalLength = _min( takingVectors[ 1 ],l );
+      optionalLength = _min( takingVectors[ 1 ], l );
       for( ; d < optionalLength ; d++, s++ )
       args[ d ] = makeVector( arguments[ s ] );
     }
 
-    optionalLength = _min( takingArguments[ 1 ],l );
+    optionalLength = _min( takingArguments[ 1 ], l );
     for( ; d < optionalLength ; d++, s++ )
     args[ d ] = arguments[ s ];
 
-    let result = theRoutine.apply( Self,args );
+    let result = theRoutine.apply( Self, args );
 
-    return onReturn.call( this,result,theRoutine );
+    return onReturn.call( this, result, theRoutine );
   }
 
   vectorWrap.notMethod = notMethod;
@@ -617,10 +619,10 @@ let Proto =
 
 }
 
-_.mapExtend( Proto,routineFrom );
-_.mapExtend( Self,Proto );
+_.mapExtend( Proto, routineFrom );
+_.mapExtend( Self, Proto );
 
-Object.setPrototypeOf( Self,wTools );
+Object.setPrototypeOf( Self, wTools );
 Self.constructor = function Vector(){};
 
 _.vector = Self;

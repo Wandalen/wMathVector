@@ -41,10 +41,10 @@ function operationNormalize1( operation )
   operation.onAtom.operation = operation;
 
   if( _.numberIs( operation.takingArguments ) )
-  operation.takingArguments = [ operation.takingArguments,operation.takingArguments ];
+  operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
 
   if( _.numberIs( operation.takingVectors ) )
-  operation.takingVectors = [ operation.takingVectors,operation.takingVectors ];
+  operation.takingVectors = [ operation.takingVectors, operation.takingVectors ];
 
 }
 
@@ -190,9 +190,9 @@ function operationSinglerAdjust()
     operation.kind = 'singler';
 
     if( operation.takingArguments === undefined )
-    operation.takingArguments = [ 1,1 ];
+    operation.takingArguments = [ 1, 1 ];
     // else if( _.numberIs( operation.takingArguments ) )
-    // operation.takingArguments = [ operation.takingArguments,operation.takingArguments ];
+    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
     operation.homogeneous = true;
     operation.atomWise = true;
 
@@ -297,9 +297,9 @@ function operationsLogical1Adjust()
     operation.usingDstAsSrc = false;
 
     // if( _.numberIs( operation.takingArguments ) )
-    // operation.takingArguments = [ operation.takingArguments,operation.takingArguments ];
+    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
     // else if( operation.takingArguments === undefined )
-    // operation.takingArguments = [ 2,2 ];
+    // operation.takingArguments = [ 2, 2 ];
 
     operation.homogeneous = true;
     operation.atomWise = true;
@@ -353,7 +353,7 @@ let isEquivalent = dop = Object.create( null );
 
 dop.onAtom = function isEquivalent( o )
 {
-  o.dstElement = _.numbersAreEquivalent( o.dstElement,o.srcElement );
+  o.dstElement = _.numbersAreEquivalent( o.dstElement, o.srcElement );
 }
 
 //
@@ -362,7 +362,7 @@ let isNotEquivalent = dop = Object.create( null );
 
 dop.onAtom = function isNotEquivalent( o )
 {
-  o.dstElement = !_.numbersAreEquivalent( o.dstElement,o.srcElement );
+  o.dstElement = !_.numbersAreEquivalent( o.dstElement, o.srcElement );
 }
 
 //
@@ -403,12 +403,12 @@ dop.onAtom = function isLessEqual( o )
 
 //
 
-let is = dop = Object.create( null );
-
-dop.onAtom = function is( o )
-{
-  o.dstElement = o.onEvaluate( o.dstElement );
-}
+// let is = dop = Object.create( null );
+//
+// dop.onAtom = function is( o )
+// {
+//   o.dstElement = o.onEvaluate( o.dstElement );
+// }
 
 //
 
@@ -430,9 +430,9 @@ function operationsLogical2Adjust()
     operation.usingDstAsSrc = false;
 
     // if( _.numberIs( operation.takingArguments ) )
-    // operation.takingArguments = [ operation.takingArguments,operation.takingArguments ];
+    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
     // else if( operation.takingArguments === undefined )
-    // operation.takingArguments = [ 2,2 ];
+    // operation.takingArguments = [ 2, 2 ];
 
     operation.homogeneous = true;
     operation.atomWise = true;
@@ -561,10 +561,10 @@ function operationHomogeneousAdjust()
     operation.kind = 'homogeneous';
 
     if( operation.takingArguments === undefined )
-    operation.takingArguments = [ 2,2 ];
+    operation.takingArguments = [ 2, 2 ];
 
     if( operation.takingVectors === undefined )
-    operation.takingVectors = [ 0,operation.takingArguments[ 1 ] ];
+    operation.takingVectors = [ 0, operation.takingArguments[ 1 ] ];
 
     if( operation.usingExtraSrcs === undefined )
     operation.usingExtraSrcs = true;
@@ -596,8 +596,8 @@ dop.onAtom = function addScaled( o )
   o.dstElement = o.srcElements[ 0 ] + ( o.srcElements[ 1 ]*o.srcElements[ 2 ] );
 }
 
-dop.takingArguments = [ 3,4 ];
-dop.input = [ 'vw','vr|s*2' ];
+dop.takingArguments = [ 3, 4 ];
+dop.input = [ 'vw', 'vr|s*2' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -609,8 +609,8 @@ dop.onAtom = function subScaled( o )
   o.dstElement = o.srcElements[ 0 ] - ( o.srcElements[ 1 ]*o.srcElements[ 2 ] );
 }
 
-dop.takingArguments = [ 3,4 ];
-dop.input = [ 'vw','vr|s*2' ];
+dop.takingArguments = [ 3, 4 ];
+dop.input = [ 'vw', 'vr|s*2' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -622,8 +622,8 @@ dop.onAtom = function mulScaled( o )
   o.dstElement = o.srcElements[ 0 ] * ( o.srcElements[ 1 ]*o.srcElements[ 2 ] );
 }
 
-dop.takingArguments = [ 3,4 ];
-dop.input = [ 'vw','vr|s*2' ];
+dop.takingArguments = [ 3, 4 ];
+dop.input = [ 'vw', 'vr|s*2' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -635,8 +635,8 @@ dop.onAtom = function divScaled( o )
   o.dstElement = o.srcElements[ 0 ] / ( o.srcElements[ 1 ]*o.srcElements[ 2 ] );
 }
 
-dop.takingArguments = [ 3,4 ];
-dop.input = [ 'vw','vr|s*2' ];
+dop.takingArguments = [ 3, 4 ];
+dop.input = [ 'vw', 'vr|s*2' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -645,15 +645,15 @@ let clamp = dop = Object.create( null );
 
 dop.onAtom = function clamp( o )
 {
-  o.dstElement = _min( _max( o.srcElements[ 0 ] , o.srcElements[ 1 ] ),o.srcElements[ 2 ] );
+  o.dstElement = _min( _max( o.srcElements[ 0 ] , o.srcElements[ 1 ] ), o.srcElements[ 2 ] );
 }
 
-dop.takingArguments = [ 3,4 ];
+dop.takingArguments = [ 3, 4 ];
 dop.returningNumber = true;
 dop.returningAtomic = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
-dop.input = [ 'vw|s','vr|s*3' ];
+dop.input = [ 'vw|s', 'vr|s*3' ];
 
 //
 
@@ -673,13 +673,13 @@ dop.onAtom = function mix( o )
 
 }
 
-dop.takingArguments = [ 3,4 ];
-dop.takingVectors = [ 0,4 ];
+dop.takingArguments = [ 3, 4 ];
+dop.takingVectors = [ 0, 4 ];
 dop.returningNumber = true;
 dop.returningAtomic = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
-dop.input = [ 'vw|s','vr|s*3' ];
+dop.input = [ 'vw|s', 'vr|s*3' ];
 
 //
 
@@ -727,7 +727,7 @@ let polynomApply = dop = Object.create( null );
 polynomApply.onAtom = function polynomApply( o )
 {
   let x = o.args[ 1 ];
-  o.result += o.element * _pow( x,o.key );
+  o.result += o.element * _pow( x, o.key );
 }
 
 polynomApply.onAtomsBegin = function( o )
@@ -739,8 +739,8 @@ polynomApply.onAtomsEnd = function( o )
 {
 }
 
-polynomApply.takingArguments = [ 2,2 ];
-polynomApply.takingVectors = [ 1,1 ];
+polynomApply.takingArguments = [ 2, 2 ];
+polynomApply.takingVectors = [ 1, 1 ];
 polynomApply.takingVectorsOnly = false;
 
 //
@@ -778,7 +778,7 @@ let moment = dop = Object.create( null );
 
 moment.onAtom = function moment( o )
 {
-  o.result.total += _pow( o.element,o.args[ 1 ] );
+  o.result.total += _pow( o.element, o.args[ 1 ] );
   o.result.nelement += 1;
 }
 
@@ -797,7 +797,7 @@ moment.onAtomsEnd = function( o )
   o.result = 0;
 }
 
-moment.input = [ 'vr','s' ];
+moment.input = [ 'vr', 's' ];
 moment.takingArguments = 2;
 moment.takingVectors = 1;
 
@@ -809,7 +809,7 @@ _momentCentral.onAtom = function _momentCentral( o )
 {
   let degree = o.args[ 1 ];
   let mean = o.args[ 2 ];
-  o.result.total += _pow( o.element - mean,degree );
+  o.result.total += _pow( o.element - mean, degree );
   o.result.nelement += 1;
 }
 
@@ -832,8 +832,8 @@ _momentCentral.onAtomsEnd = function( o )
   o.result = 0;
 }
 
-_momentCentral.input = [ 'vr','s','s' ];
-_momentCentral.takingArguments = [ 3,3 ];
+_momentCentral.input = [ 'vr', 's', 's' ];
+_momentCentral.takingArguments = [ 3, 3 ];
 _momentCentral.takingVectors = 1;
 
 //
@@ -920,7 +920,7 @@ reduceToMagSqr.onAtomsBegin = function( o )
 
 //
 
-let reduceToMag = _.mapExtend( null,reduceToMagSqr );
+let reduceToMag = _.mapExtend( null, reduceToMagSqr );
 
 reduceToMag.onAtomsEnd = function reduceToMag( o )
 {
@@ -942,7 +942,7 @@ function operationReducingAdjust()
     operation.kind = 'reducing';
 
     if( operation.takingArguments === undefined )
-    operation.takingArguments = [ 1,Infinity ];
+    operation.takingArguments = [ 1, Infinity ];
 
     operation.homogeneous = false;
     operation.atomWise = true;
@@ -1020,7 +1020,7 @@ let Routines =
     isGreaterEqual : isGreaterEqual,
     isLess : isLess,
     isLessEqual : isLessEqual,
-    is : is,
+    // is : is,
 
   },
 
@@ -1091,6 +1091,6 @@ operationHomogeneousAdjust();
 operationHeterogeneousAdjust();
 operationReducingAdjust();
 
-_.assert( _.entityIdentical( vector.operations,Routines ) );
+_.assert( _.entityIdentical( vector.operations, Routines ) );
 
 })();

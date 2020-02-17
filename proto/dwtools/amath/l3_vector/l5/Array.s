@@ -41,7 +41,7 @@ for( let r in routines )
     continue;
   }
 
-  function onReturn( result,theRoutine )
+  function onReturn( result, theRoutine )
   {
     let op = theRoutine.operation;
 
@@ -59,7 +59,7 @@ for( let r in routines )
     }
     else if( op.returningArray )
     {
-      _.assert( _.arrayIs( result ) || _.bufferTypedIs( result ),'unexpected' );
+      _.assert( _.arrayIs( result ) || _.bufferTypedIs( result ), 'unexpected' );
       return result;
     }
     else return result;
@@ -78,14 +78,14 @@ for( let r in routines )
 // declare extension
 // --
 
-Object.setPrototypeOf( Self,wTools );
+Object.setPrototypeOf( Self, wTools );
 
-_.mapExtend( Self,Proto );
+_.mapExtend( Self, Proto );
 
 _.avector = Self;
 
-_._arrayNameSpaceApplyTo( Self,'Float32' );
-_.assert( _.mapOwnKey( _.avector,'withArray' ) );
+_._arrayNameSpaceApplyTo( Self, 'Float32' );
+_.assert( _.mapOwnKey( _.avector, 'withArray' ) );
 _.assert( _.objectIs( _.avector.withArray ) );
 _.assert( _.objectIs( _.avector.withArray.Array ) );
 _.assert( _.objectIs( _.avector.withArray.Float32 ) );
