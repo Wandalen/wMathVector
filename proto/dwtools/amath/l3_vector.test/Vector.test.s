@@ -1083,6 +1083,160 @@ function isGreaterEqual( test )
 
 //
 
+function is( test )
+{
+
+  test.case = 'Source vector remains unchanged'; //
+
+  function inRange( src )
+  {
+    return - 5 < src && src < 0 ; // numbers in range
+  }
+  var vector = _.vector.from( [ -1, -1.5, -2 ] );
+  var gotBool = _.vector.is( vector, inRange );
+
+  var expected = _.vector.from( [ true, true, true ] );
+  test.identical( gotBool, expected );
+
+  var oldVector = _.vector.from( [ -1, -1.5, -2 ] )
+  test.equivalent( oldVector, vector );
+
+  test.case = 'Check if a number is > 0 - empty'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ ] );
+  var gotBool = _.vector.is( vector, positiveNumber );
+
+  var expected = _.vector.from( [ ] );
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - true'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, 1, 0, 2, 1000, 307 ] );
+  var gotBool = _.vector.is( vector, positiveNumber );
+
+  var expected = _.vector.from( [ true, true, true, true, true, true ] );
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - false some'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var gotBool = _.vector.is( vector, positiveNumber );
+
+  var expected = _.vector.from( [ true, false, true, true, true, false ] );
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - false none'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var gotBool = _.vector.is( vector, positiveNumber );
+
+  var expected = _.vector.from( [ false, false, false, false, false ] );
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a string starts with h - true'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var gotBool = _.vector.is( vector, stringLengthThree );
+
+  var expectedStr = _.vector.from( [ true, true, true, true, true, true, true, true ] );
+  test.identical( gotBool, expectedStr );
+
+  test.case = 'Check if a string starts with h - false'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'Hello,', 'how', 'are', 'you', '?' ] );
+  var gotBool = _.vector.is( vector, stringLengthThree );
+
+  var expected = _.vector.from( [ false, true, false, false, false ] );
+  test.identical( gotBool, expected );
+
+  test.case = 'Check an array´s length - true'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var gotBool = _.vector.is( vector, arrayLength );
+
+  var expectedArr = _.vector.from( [ true, true ] );
+  test.identical( gotBool, expectedArr );
+
+  test.case = 'Check an array´s length - false'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ [ 'Hello,', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var gotBool = _.vector.is( vector, arrayLength );
+
+  var expected =  _.vector.from( [ false, false ] );
+  test.identical( gotBool, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Only one argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.is( ));
+  test.shouldThrowErrorSync( () => _.vector.is( null ));
+  test.shouldThrowErrorSync( () => _.vector.is( NaN ));
+  test.shouldThrowErrorSync( () => _.vector.is( undefined ));
+  test.shouldThrowErrorSync( () => _.vector.is( 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.is( 2 ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong second argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vector.is( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.is( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.is( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.is( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.is( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+
+}
+
+//
+
 function logical2ArgsZipperWithBadArguments( test,r,t,array )
 {
   var f = !t;
@@ -1615,6 +1769,160 @@ allGreater.timeOut = 150000;
 
 //
 
+function all( test )
+{
+
+  test.case = 'Source vector remains unchanged'; //
+
+  function inRange( src )
+  {
+    return - 5 < src && src < 0 ; // numbers in range
+  }
+  var vector = _.vector.from( [ -1, -1.5, -2 ] );
+  var gotBool = _.vector.all( vector, inRange );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  var oldVector = _.vector.from( [ -1, -1.5, -2 ] )
+  test.equivalent( oldVector, vector );
+
+  test.case = 'Check if a number is > 0 - empty'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ ] );
+  var gotBool = _.vector.all( vector, positiveNumber );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - true'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, 1, 0, 2, 1000, 307 ] );
+  var gotBool = _.vector.all( vector, positiveNumber );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - false some'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var gotBool = _.vector.all( vector, positiveNumber );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - false none'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var gotBool = _.vector.all( vector, positiveNumber );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a string starts with h - true'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var gotBool = _.vector.all( vector, stringLengthThree );
+
+  var expectedStr = true;
+  test.identical( gotBool, expectedStr );
+
+  test.case = 'Check if a string starts with h - false'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'Hello,', 'how', 'are', 'you', '?' ] );
+  var gotBool = _.vector.all( vector, stringLengthThree );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check an array´s length - true'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var gotBool = _.vector.all( vector, arrayLength );
+
+  var expectedArr = true;
+  test.identical( gotBool, expectedArr );
+
+  test.case = 'Check an array´s length - false'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ [ 'Hello,', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var gotBool = _.vector.all( vector, arrayLength );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Only one argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.all( ));
+  test.shouldThrowErrorSync( () => _.vector.all( null ));
+  test.shouldThrowErrorSync( () => _.vector.all( NaN ));
+  test.shouldThrowErrorSync( () => _.vector.all( undefined ));
+  test.shouldThrowErrorSync( () => _.vector.all( 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.all( 2 ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong second argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vector.all( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.all( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.all( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.all( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.all( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+
+}
+
+//
+
 function _anyNotIdentical( test,r,t,array )
 {
   var f = !t;
@@ -1890,6 +2198,184 @@ anyGreater.timeOut = 15000;
 
 //
 
+function any( test )
+{
+
+  test.case = 'Source vector remains unchanged'; //
+
+  function inRange( src )
+  {
+    return - 5 < src && src < 0 ; // numbers in range
+  }
+  var vector = _.vector.from( [ -1, -1.5, -2 ] );
+  var gotBool = _.vector.any( vector, inRange );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  var oldVector = _.vector.from( [ -1, -1.5, -2 ] )
+  test.equivalent( oldVector, vector );
+
+  test.case = 'Check if a number is > 0 - empty'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ ] );
+  var gotBool = _.vector.any( vector, positiveNumber );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - true all'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, 1, 0, 2, 1000, 307 ] );
+  var gotBool = _.vector.any( vector, positiveNumber );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - true some'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var gotBool = _.vector.any( vector, positiveNumber );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - false none'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var gotBool = _.vector.any( vector, positiveNumber );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a string starts with h - true all'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var gotBool = _.vector.any( vector, stringLengthThree );
+
+  var expectedStr = true;
+  test.identical( gotBool, expectedStr );
+
+  test.case = 'Check if a string starts with h - true some'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'Hi!', 'How', 'has', 'he', 'handled', 'his', 'huge', 'hair', '?' ] );
+  var gotBool = _.vector.any( vector, stringLengthThree );
+
+  var expectedStr = true;
+  test.identical( gotBool, expectedStr );
+
+  test.case = 'Check if a string starts with h - false none'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'Hello!', 'How', 'are', 'you', '?' ] );
+  var gotBool = _.vector.any( vector, stringLengthThree );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check an array´s length - true all'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var gotBool = _.vector.any( vector, arrayLength );
+
+  var expectedArr = true;
+  test.identical( gotBool, expectedArr );
+
+  test.case = 'Check an array´s length - true some'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3, 4 ] ] );
+  var gotBool = _.vector.any( vector, arrayLength );
+
+  var expectedArr = true;
+  test.identical( gotBool, expectedArr );
+
+  test.case = 'Check an array´s length - false none'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ [ 'Hello,', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var gotBool = _.vector.any( vector, arrayLength );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Only one argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.any( ));
+  test.shouldThrowErrorSync( () => _.vector.any( null ));
+  test.shouldThrowErrorSync( () => _.vector.any( NaN ));
+  test.shouldThrowErrorSync( () => _.vector.any( undefined ));
+  test.shouldThrowErrorSync( () => _.vector.any( 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.any( 2 ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong second argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vector.any( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.any( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.any( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.any( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.any( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+
+}
+
+//
+
 function noneIdentical( test )
 {
   this._noneIdentical( test,'noneIdentical',true,function()
@@ -2148,6 +2634,184 @@ function noneGreater( test )
 }
 
 noneGreater.timeOut = 15000;
+
+//
+
+function none( test )
+{
+
+  test.case = 'Source vector remains unchanged'; //
+
+  function inRange( src )
+  {
+    return - 5 < src && src < 0 ; // numbers in range
+  }
+  var vector = _.vector.from( [ -1, -1.5, -2 ] );
+  var gotBool = _.vector.none( vector, inRange );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  var oldVector = _.vector.from( [ -1, -1.5, -2 ] )
+  test.equivalent( oldVector, vector );
+
+  test.case = 'Check if a number is > 0 - empty'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ ] );
+  var gotBool = _.vector.none( vector, positiveNumber );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - false all'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, 1, 0, 2, 1000, 307 ] );
+  var gotBool = _.vector.none( vector, positiveNumber );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - false some'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var gotBool = _.vector.none( vector, positiveNumber );
+
+  var expected = false;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a number is > 0 - true none'; //
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; // positive numbers
+  }
+  var vector = _.vector.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var gotBool = _.vector.none( vector, positiveNumber );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check if a string starts with h - false all'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var gotBool = _.vector.none( vector, stringLengthThree );
+
+  var expectedStr = false;
+  test.identical( gotBool, expectedStr );
+
+  test.case = 'Check if a string starts with h - false some'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'Hi!', 'How', 'has', 'he', 'handled', 'his', 'huge', 'hair', '?' ] );
+  var gotBool = _.vector.none( vector, stringLengthThree );
+
+  var expectedStr = false;
+  test.identical( gotBool, expectedStr );
+
+  test.case = 'Check if a string starts with h - true none'; //
+
+  function stringLengthThree( src )
+  {
+    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
+  }
+  var vector = _.vector.from( [ 'Hello!', 'How', 'are', 'you', '?' ] );
+  var gotBool = _.vector.none( vector, stringLengthThree );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  test.case = 'Check an array´s length - false all'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var gotBool = _.vector.none( vector, arrayLength );
+
+  var expectedArr = false;
+  test.identical( gotBool, expectedArr );
+
+  test.case = 'Check an array´s length - false some'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3, 4 ] ] );
+  var gotBool = _.vector.none( vector, arrayLength );
+
+  var expectedArr = false;
+  test.identical( gotBool, expectedArr );
+
+  test.case = 'Check an array´s length - true none'; //
+
+  function arrayLength( src )
+  {
+    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
+  }
+  var vector = _.vector.from( [ [ 'Hello,', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var gotBool = _.vector.none( vector, arrayLength );
+
+  var expected = true;
+  test.identical( gotBool, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Only one argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.none( ));
+  test.shouldThrowErrorSync( () => _.vector.none( null ));
+  test.shouldThrowErrorSync( () => _.vector.none( NaN ));
+  test.shouldThrowErrorSync( () => _.vector.none( undefined ));
+  test.shouldThrowErrorSync( () => _.vector.none( 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.none( 2 ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong second argument'; //
+
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vector.none( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.none( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.none( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.none( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vector.none( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+
+}
 
 //
 
@@ -6084,6 +6748,7 @@ var Self =
     isLessEqual : isLessEqual,
     isLess : isLess,
     isGreaterEqual : isGreaterEqual,
+    is : is,
 
     logical2ArgsZipperWithBadArguments : logical2ArgsZipperWithBadArguments,
 
@@ -6095,6 +6760,7 @@ var Self =
     allEquivalent2 : allEquivalent2,
     allNotEquivalent : allNotEquivalent,
     allGreater : allGreater,
+    all : all,
 
     anyIdentical : anyIdentical,
     anyNotIdentical : anyNotIdentical,
@@ -6102,6 +6768,7 @@ var Self =
     anyEquivalent2 : anyEquivalent2,
     anyNotEquivalent : anyNotEquivalent,
     anyGreater : anyGreater,
+    any : any,
 
     noneIdentical : noneIdentical,
     noneNotIdentical : noneNotIdentical,
@@ -6109,7 +6776,7 @@ var Self =
     noneEquivalent2 : noneEquivalent2,
     noneNotEquivalent : noneNotEquivalent,
     noneGreater : noneGreater,
-
+    none : none,
 
     logical2ArgsReducerWithBadArguments : logical2ArgsReducerWithBadArguments,
 

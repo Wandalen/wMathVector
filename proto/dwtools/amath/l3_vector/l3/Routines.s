@@ -40,8 +40,8 @@ _.assert( _.objectIs( operations ) );
 // structure
 // --
 
-let OperationDescriptor = _.like()
-.also
+let OperationDescriptor = _.blueprint
+.construct
 ({
 
   takingArguments : null,
@@ -82,7 +82,6 @@ let OperationDescriptor = _.like()
   input : null,
 
 })
-.end
 
 //
 
@@ -398,7 +397,7 @@ function _onAtomForRoutine_functor( dop )
 
   _onAtomGenBegin( dop );
 
-  if( _.arraySetIdentical( dop.input , [ 'vw','vr+' ] ) || _.arraySetIdentical( dop.input , [ 'vw','vr*' ] ) )
+  if( _.longIdentical( dop.input , [ 'vw','vr+' ] ) || _.longIdentical( dop.input , [ 'vw','vr*' ] ) )
   {
 
     handleAtom = function handleAtom( o )
@@ -434,7 +433,7 @@ function _onAtomForRoutine_functor( dop )
     }
 
   }
-  else if( _.arraySetIdentical( dop.input , [ 'vw','s' ] ) || _.arraySetIdentical( dop.input , [ 'vw|s','s' ] ) )
+  else if( _.longIdentical( dop.input , [ 'vw','s' ] ) || _.longIdentical( dop.input , [ 'vw|s','s' ] ) )
   {
 
     let allowingDstScalar = _.strHasAny( dop.inputWithoutLast[ 0 ] , [ '|s','s|' ] );
@@ -547,7 +546,11 @@ function _vectorizeSrcs( o,first )
   for( let a = first ; a < o.args.length ; a++ )
   {
     let src = o.args[ a ];
-    src = o.args[ a ] = vector.fromMaybeNumber( src,o.dstContainer.length );
+
+    if( typeof( src ) !== 'function' )
+    {
+      src = o.args[ a ] = vector.fromMaybeNumber( src,o.dstContainer.length );
+    }
   }
 
 }
@@ -655,6 +658,8 @@ function _vectorsCallBegin( o,dop )
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let src = o.args[ a ];
+      // _.assert( _.vectorIs( src ) || _.numberIs( src ) || typeof( src ) === 'function' );
+      // _.assert( _.numberIs( src )  || typeof( src ) === 'function' || dst.length === src.length,'src and dst should have same length' );
       _.assert( _.vectorAdapterIs( src ) || _.numberIs( src ) );
       _.assert( _.numberIs( src ) || dst.length === src.length,'src and dst should have same length' );
     }
@@ -753,7 +758,7 @@ function _onVectorsForRoutine_functor( dop )
 
   /* */
 
-  if( _.arraySetIdentical( dop.input , [ 'vw','vr+' ] ) || _.arraySetIdentical( dop.input , [ 'vw','vr*' ] ) ) //
+  if( _.longIdentical( dop.input , [ 'vw','vr+' ] ) || _.longIdentical( dop.input , [ 'vw','vr*' ] ) ) //
   {
 
     onVectorsBegin = function onVectorsBegin( dst,src )
@@ -829,7 +834,7 @@ function _onVectorsForRoutine_functor( dop )
     _.assert( takingArguments[ 0 ] > 0 && takingArguments[ 1 ] === Infinity );
 
   }
-  else if( _.arraySetIdentical( dop.input , [ 'vw','s' ] ) || _.arraySetIdentical( dop.input , [ 'vw|s','s' ] ) ) //
+  else if( _.longIdentical( dop.input , [ 'vw','s' ] ) || _.longIdentical( dop.input , [ 'vw|s','s' ] ) ) //
   {
 
     let allowingDstScalar = _.strHasAny( dop.inputWithoutLast[ 0 ] , [ '|s','s|' ] );
@@ -2739,6 +2744,8 @@ function _onAtomAtomwise_functor( dop )
       for( let a = 1 ; a < o.srcContainers.length ; a++ )
       {
         let src = o.srcContainers[ a ];
+
+        if( typeof( o.srcContainers[ 1 ] ) !== 'function' )
         o.srcElement = src.eGet( o.key );
 
         let r = onAtom0.call( this,o );
@@ -2764,7 +2771,10 @@ function _onAtomAtomwise_functor( dop )
       for( let a = 1 ; a < o.srcContainers.length ; a++ )
       {
         let src = o.srcContainers[ a ];
+
+        if( typeof( o.srcContainers[ 1 ] ) !== 'function' )
         o.srcElement = src.eGet( o.key );
+
         let r = onAtom0.call( this,o );
         _.assert( r === undefined );
       }
@@ -2890,9 +2900,10 @@ function _onVectorsAtomwise_functor( dop )
       o.key = -1;
       o.args = _.longSlice( arguments,0,arguments.length );
       o.unwrapping = 0;
+      o.onEvaluate = arguments[ 1 ];
       o.result = null;
       Object.preventExtensions( o );
-
+      debugger;
       if( onVectorsBegin0 )
       onVectorsBegin0( o );
 
@@ -2902,6 +2913,7 @@ function _onVectorsAtomwise_functor( dop )
     if( dop.interruptible )
     onVectors = function onVectors( dst )
     {
+      debugger; //
       let o = onVectorsBegin.apply( this,arguments );
 
       _vectorsCallBegin( o,dop );
@@ -3032,7 +3044,7 @@ function routinesHomogeneousDeclare()
 
   _.assert( _.routineIs( Routines.add ) );
   _.assert( Routines.add.operation.usingDstAsSrc );
-  _.assert( _.arraySetIdentical( Routines.add.operation.takingVectors,[ 0,Infinity ] ) );
+  _.assert( _.longIdentical( Routines.add.operation.takingVectors,[ 0,Infinity ] ) );
   _.assert( _.routineIs( Routines.min ) );
   _.assert( _.routineIs( Routines.max ) );
 
@@ -3939,6 +3951,9 @@ function declareHomogeneousLogical2Routines()
   _.assert( !Routines.anyIdentical );
   _.assert( !Routines.noneIdentical );
   _.assert( !Routines.isGreater );
+  _.assert( !Routines.all );
+  _.assert( !Routines.any );
+  _.assert( !Routines.none );
 
   /* */
 
@@ -3974,9 +3989,12 @@ function declareHomogeneousLogical2Routines()
   _.assert( _.routineIs( Routines.anyIdentical ) );
   _.assert( _.routineIs( Routines.noneIdentical ) );
   _.assert( _.routineIs( Routines.isGreater ) );
+  _.assert( _.routineIs( Routines.all ) );
+  _.assert( _.routineIs( Routines.any ) );
+  _.assert( _.routineIs( Routines.none ) );
 
-  _.assert( _.arraySetIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
-  _.assert( _.arraySetIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
+  _.assert( _.longIdentical( Routines.isIdentical.operation.takingArguments,[ 2,3 ] ) );
+  _.assert( _.longIdentical( Routines.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
 }
 
@@ -4273,8 +4291,8 @@ function declareLogic1Routines()
   _.assert( _.routineIs( Routines.anyZero ) );
   _.assert( _.routineIs( Routines.noneZero ) );
 
-  _.assert( _.arraySetIdentical( Routines.isZero.operation.takingArguments,[ 1,2 ] ) );
-  _.assert( _.arraySetIdentical( Routines.allZero.operation.takingArguments,[ 1,1 ] ) );
+  _.assert( _.longIdentical( Routines.isZero.operation.takingArguments,[ 1,2 ] ) );
+  _.assert( _.longIdentical( Routines.allZero.operation.takingArguments,[ 1,1 ] ) );
 
 }
 
@@ -4290,8 +4308,8 @@ function _equalAre( it )
   let length = it.src2.length;
 
   _.assert( arguments.length === 1 );
-  _.assert( it.context.strictTyping !== undefined );
-  _.assert( it.context.containing !== undefined );
+  _.assert( it.strictTyping !== undefined );
+  _.assert( it.containing !== undefined );
 
   it.continue = false;
 
@@ -4306,11 +4324,11 @@ function _equalAre( it )
   if( !_.vectorAdapterIs( it.src2 ) )
   return false;
 
-  if( it.context.strictTyping )
+  if( it.strictTyping )
   if( it.src._vectorBuffer.constructor !== it.src2._vectorBuffer.constructor )
   return false;
 
-  if( !it.context.containing )
+  if( !it.containing )
   if( it.src.length !== length )
   return false;
 
@@ -4319,7 +4337,7 @@ function _equalAre( it )
 
   for( let i = 0 ; i < length ; i++ )
   {
-    if( !it.context.onNumbersAreEqual( it.src.eGet( i ),it.src2.eGet( i ) ) )
+    if( !it.onNumbersAreEqual( it.src.eGet( i ),it.src2.eGet( i ) ) )
     return false;
   }
 
@@ -4457,7 +4475,7 @@ function areParallel( src1, src2, accuracy )
       continue;
     }
 
-    let ratio = src1.eGet( s ) / src2.eGet( s );
+    ratio = src1.eGet( s ) / src2.eGet( s );
     break;
 
     s += 1;
@@ -5058,7 +5076,9 @@ let RoutinesMathematical =
   isNan : Routines.isNan,
   isInt : Routines.isInt,
   isString : Routines.isString,
+  is : Routines.is,
 
+  all : Routines.all,
   allNumber : Routines.allNumber,
   allZero : Routines.allZero,
   allFinite : Routines.allFinite,
@@ -5067,6 +5087,7 @@ let RoutinesMathematical =
   allInt : Routines.allInt,
   allString : Routines.allString,
 
+  any : Routines.any,
   anyNumber : Routines.anyNumber,
   anyZero : Routines.anyZero,
   anyFinite : Routines.anyFinite,
@@ -5075,6 +5096,7 @@ let RoutinesMathematical =
   anyInt : Routines.anyInt,
   anyString : Routines.anyString,
 
+  none : Routines.none,
   noneNumber : Routines.noneNumber,
   noneZero : Routines.noneZero,
   noneFinite : Routines.noneFinite,
@@ -5179,7 +5201,7 @@ _.assert( _.routineIs( _.vector.abs ) );
 _.assert( _.routineIs( _.vector.round ) );
 
 _.assert( _.routineIs( _.vector.allIdentical ) );
-_.assert( _.arraySetIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
+_.assert( _.longIdentical( _.vector.allIdentical.operation.takingArguments,[ 2,2 ] ) );
 
 _.assert( _.vector.accuracy >= 0 );
 _.assert( _.vector.accuracySqr >= 0 );
