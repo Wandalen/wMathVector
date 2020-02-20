@@ -6,7 +6,6 @@ let _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
 let _sqr = _.sqr;
-// let __assert = _.assert;
 let _assertMapHasOnly = _.assertMapHasOnly;
 let _routineIs = _.routineIs;
 
@@ -71,6 +70,43 @@ function operationNormalize2( operation )
 // --
 // atomWiseSingler
 // --
+
+function operationSinglerAdjust()
+{
+  let atomWiseSingler = Self.atomWiseSingler = Self.atomWiseSingler || Object.create( null );
+
+  for( let dop in Routines.atomWiseSingler )
+  {
+    let operation = Routines.atomWiseSingler[ dop ];
+
+    operationNormalize1( operation );
+
+    operation.kind = 'singler';
+
+    if( operation.takingArguments === undefined )
+    operation.takingArguments = [ 1, 1 ];
+    // else if( _.numberIs( operation.takingArguments ) )
+    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
+    operation.homogeneous = true;
+    operation.atomWise = true;
+
+    if( operation.usingExtraSrcs === undefined )
+    operation.usingExtraSrcs = false;
+    if( operation.usingDstAsSrc === undefined )
+    operation.usingDstAsSrc = false;
+
+    _.assert( _.arrayIs( operation.takingArguments ) );
+    _.assert( operation.takingArguments.length === 2 );
+    _.assert( !Self.atomWiseSingler[ dop ] );
+
+    operationNormalize2( operation );
+
+    Self.atomWiseSingler[ dop ] = operation;
+  }
+
+}
+
+//
 
 let inv = dop = Object.create( null );
 
@@ -175,46 +211,58 @@ dop.onAtom = function round( o )
   o.dstElement = _.roundToPowerOfTwo( o.srcElement );
 }
 
-//
+// --
+// logical1
+// --
 
-function operationSinglerAdjust()
+function operationsLogical1Adjust()
 {
-  let atomWiseSingler = Self.atomWiseSingler = Self.atomWiseSingler || Object.create( null );
+  let logical1 = Self.logical1 = Self.logical1 || Object.create( null );
 
-  for( let dop in Routines.atomWiseSingler )
+  for( let dop in Routines.logical1 )
   {
-    let operation = Routines.atomWiseSingler[ dop ];
+    let operation = Routines.logical1[ dop ];
 
     operationNormalize1( operation );
 
-    operation.kind = 'singler';
-
-    if( operation.takingArguments === undefined )
-    operation.takingArguments = [ 1, 1 ];
-    // else if( _.numberIs( operation.takingArguments ) )
-    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
-    operation.homogeneous = true;
-    operation.atomWise = true;
+    operation.kind = 'logical1';
 
     if( operation.usingExtraSrcs === undefined )
     operation.usingExtraSrcs = false;
     if( operation.usingDstAsSrc === undefined )
     operation.usingDstAsSrc = false;
 
-    _.assert( _.arrayIs( operation.takingArguments ) );
-    _.assert( operation.takingArguments.length === 2 );
-    _.assert( !Self.atomWiseSingler[ dop ] );
+    // if( _.numberIs( operation.takingArguments ) )
+    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
+    // else if( operation.takingArguments === undefined )
+    // operation.takingArguments = [ 2, 2 ];
+
+    operation.homogeneous = true;
+    operation.atomWise = true;
+    operation.reducing = true;
+    operation.zipping = false;
+    operation.interruptible = false;
+
+    // operation.onAtom.operation = operation;
+    // if( !operation.name )
+    // operation.name = operation.onAtom.name;
+
+    // _.assert( _.mapIs( operation ) );
+    // _.assert( _.routineIs( operation.onAtom ) );
+    // // _.assert( _.arrayIs( operation.takingArguments ) );
+    // // _.assert( operation.takingArguments.length === 2 );
+    // _.assert( _.strDefined( operation.name ) );
+    // _.assert( operation.onAtom.length === 1 );
+    _.assert( !Self.logical1[ dop ] );
 
     operationNormalize2( operation );
 
-    Self.atomWiseSingler[ dop ] = operation;
+    Self.logical1[ dop ] = operation;
   }
 
 }
 
-// --
-// logic1
-// --
+//
 
 let isZero = dop = Object.create( null );
 
@@ -277,19 +325,21 @@ dop.onAtom = function isString( o )
   o.dstElement = _.strIs( o.srcElement );
 }
 
-//
+// --
+// logical2
+// --
 
-function operationsLogical1Adjust()
+function operationsLogical2Adjust()
 {
-  let logic1 = Self.logic1 = Self.logic1 || Object.create( null );
+  let logical2 = Self.logical2 = Self.logical2 || Object.create( null );
 
-  for( let dop in Routines.logic1 )
+  for( let dop in Routines.logical2 )
   {
-    let operation = Routines.logic1[ dop ];
+    let operation = Routines.logical2[ dop ];
 
     operationNormalize1( operation );
 
-    operation.kind = 'logical1';
+    operation.kind = 'logical2';
 
     if( operation.usingExtraSrcs === undefined )
     operation.usingExtraSrcs = false;
@@ -304,31 +354,21 @@ function operationsLogical1Adjust()
     operation.homogeneous = true;
     operation.atomWise = true;
     operation.reducing = true;
-    operation.zipping = false;
+    operation.zipping = true;
     operation.interruptible = false;
 
     // operation.onAtom.operation = operation;
-    // if( !operation.name )
-    // operation.name = operation.onAtom.name;
 
-    // _.assert( _.mapIs( operation ) );
-    // _.assert( _.routineIs( operation.onAtom ) );
-    // // _.assert( _.arrayIs( operation.takingArguments ) );
-    // // _.assert( operation.takingArguments.length === 2 );
-    // _.assert( _.strDefined( operation.name ) );
-    // _.assert( operation.onAtom.length === 1 );
-    _.assert( !Self.logic1[ dop ] );
+    _.assert( !Self.logical2[ dop ] );
 
     operationNormalize2( operation );
 
-    Self.logic1[ dop ] = operation;
+    Self.logical2[ dop ] = operation;
   }
 
 }
 
-// --
-// logical2
-// --
+//
 
 let isIdentical = dop = Object.create( null );
 
@@ -410,50 +450,47 @@ dop.onAtom = function isLessEqual( o )
 //   o.dstElement = o.onEvaluate( o.dstElement );
 // }
 
-//
-
-function operationsLogical2Adjust()
-{
-  let logical2 = Self.logical2 = Self.logical2 || Object.create( null );
-
-  for( let dop in Routines.logical2 )
-  {
-    let operation = Routines.logical2[ dop ];
-
-    operationNormalize1( operation );
-
-    operation.kind = 'logical2';
-
-    if( operation.usingExtraSrcs === undefined )
-    operation.usingExtraSrcs = false;
-    if( operation.usingDstAsSrc === undefined )
-    operation.usingDstAsSrc = false;
-
-    // if( _.numberIs( operation.takingArguments ) )
-    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
-    // else if( operation.takingArguments === undefined )
-    // operation.takingArguments = [ 2, 2 ];
-
-    operation.homogeneous = true;
-    operation.atomWise = true;
-    operation.reducing = true;
-    operation.zipping = true;
-    operation.interruptible = false;
-
-    // operation.onAtom.operation = operation;
-
-    _.assert( !Self.logical2[ dop ] );
-
-    operationNormalize2( operation );
-
-    Self.logical2[ dop ] = operation;
-  }
-
-}
-
 // --
 // atomWiseHomogeneous
 // --
+
+function operationHomogeneousAdjust()
+{
+  let atomWiseHomogeneous = Self.atomWiseHomogeneous = Self.atomWiseHomogeneous || Object.create( null );
+
+  for( let dop in Routines.atomWiseHomogeneous )
+  {
+    let operation = Routines.atomWiseHomogeneous[ dop ];
+
+    operationNormalize1( operation );
+
+    operation.kind = 'homogeneous';
+
+    if( operation.takingArguments === undefined )
+    operation.takingArguments = [ 2, 2 ];
+
+    if( operation.takingVectors === undefined )
+    operation.takingVectors = [ 0, operation.takingArguments[ 1 ] ];
+
+    if( operation.usingExtraSrcs === undefined )
+    operation.usingExtraSrcs = true;
+    if( operation.usingDstAsSrc === undefined )
+    operation.usingDstAsSrc = true;
+
+    operation.homogeneous = true;
+    operation.atomWise = true;
+
+    _.assert( _.arrayIs( operation.takingArguments ) );
+    _.assert( operation.takingArguments.length === 2 );
+    _.assert( !Self.atomWiseHomogeneous[ dop ] );
+
+    operationNormalize2( operation );
+
+    Self.atomWiseHomogeneous[ dop ] = operation;
+  }
+}
+
+//
 
 let add = dop = Object.create( null );
 
@@ -546,47 +583,43 @@ max.onAtomsBegin = function maxBegin( o )
   o.dstElement = +Infinity;
 }
 
-//
+// --
+// atomWiseHeterogeneous
+// --
 
-function operationHomogeneousAdjust()
+function operationHeterogeneousAdjust()
 {
-  let atomWiseHomogeneous = Self.atomWiseHomogeneous = Self.atomWiseHomogeneous || Object.create( null );
+  let atomWiseHeterogeneous = Self.atomWiseHeterogeneous = Self.atomWiseHeterogeneous || Object.create( null );
 
-  for( let dop in Routines.atomWiseHomogeneous )
+  for( let dop in Routines.atomWiseHeterogeneous )
   {
-    let operation = Routines.atomWiseHomogeneous[ dop ];
+    let operation = Routines.atomWiseHeterogeneous[ dop ];
 
     operationNormalize1( operation );
 
-    operation.kind = 'homogeneous';
+    operation.kind = 'heterogeneous';
 
-    if( operation.takingArguments === undefined )
-    operation.takingArguments = [ 2, 2 ];
-
-    if( operation.takingVectors === undefined )
-    operation.takingVectors = [ 0, operation.takingArguments[ 1 ] ];
-
-    if( operation.usingExtraSrcs === undefined )
-    operation.usingExtraSrcs = true;
     if( operation.usingDstAsSrc === undefined )
-    operation.usingDstAsSrc = true;
+    operation.usingDstAsSrc = false;
+    if( operation.usingExtraSrcs === undefined )
+    operation.usingExtraSrcs = false;
 
-    operation.homogeneous = true;
+    operation.homogeneous = false;
     operation.atomWise = true;
 
     _.assert( _.arrayIs( operation.takingArguments ) );
     _.assert( operation.takingArguments.length === 2 );
-    _.assert( !Self.atomWiseHomogeneous[ dop ] );
+    _.assert( !!operation.input );
+    _.assert( !Self.atomWiseHeterogeneous[ dop ] );
 
     operationNormalize2( operation );
 
-    Self.atomWiseHomogeneous[ dop ] = operation;
+    Self.atomWiseHeterogeneous[ dop ] = operation;
+
   }
 }
 
-// --
-// atomWiseHeterogeneous
-// --
+//
 
 let addScaled = dop = Object.create( null );
 
@@ -681,46 +714,49 @@ dop.returningNew = true;
 dop.usingDstAsSrc = true;
 dop.input = [ 'vw|s', 'vr|s*3' ];
 
-//
-
-function operationHeterogeneousAdjust()
-{
-  let atomWiseHeterogeneous = Self.atomWiseHeterogeneous = Self.atomWiseHeterogeneous || Object.create( null );
-
-  for( let dop in Routines.atomWiseHeterogeneous )
-  {
-    let operation = Routines.atomWiseHeterogeneous[ dop ];
-
-    operationNormalize1( operation );
-
-    operation.kind = 'heterogeneous';
-
-    if( operation.usingDstAsSrc === undefined )
-    operation.usingDstAsSrc = false;
-    if( operation.usingExtraSrcs === undefined )
-    operation.usingExtraSrcs = false;
-
-    operation.homogeneous = false;
-    operation.atomWise = true;
-
-    _.assert( _.arrayIs( operation.takingArguments ) );
-    _.assert( operation.takingArguments.length === 2 );
-    _.assert( !!operation.input );
-    _.assert( !Self.atomWiseHeterogeneous[ dop ] );
-
-    operationNormalize2( operation );
-
-    Self.atomWiseHeterogeneous[ dop ] = operation;
-
-  }
-}
-
 // let atomWiseHeterogeneous = Self.atomWiseHeterogeneous = Self.atomWiseHeterogeneous || Object.create( null );
 // operationHeterogeneousAdjust();
 
 // --
 // atomWiseReducing
 // --
+
+function operationReducingAdjust()
+{
+  let atomWiseReducing = Self.atomWiseReducing = Self.atomWiseReducing || Object.create( null );
+
+  for( let name in Routines.atomWiseReducing )
+  {
+    let operation = Routines.atomWiseReducing[ name ];
+
+    operationNormalize1( operation );
+
+    operation.kind = 'reducing';
+
+    if( operation.takingArguments === undefined )
+    operation.takingArguments = [ 1, Infinity ];
+
+    operation.homogeneous = false;
+    operation.atomWise = true;
+    operation.reducing = true;
+
+    if( operation.usingExtraSrcs === undefined )
+    operation.usingExtraSrcs = false;
+    if( operation.usingDstAsSrc === undefined )
+    operation.usingDstAsSrc = false;
+
+    _.assert( _.arrayIs( operation.takingArguments ) );
+    _.assert( operation.takingArguments.length === 2 );
+    _.assert( !Self.atomWiseReducing[ name ] );
+
+    operationNormalize2( operation );
+
+    Self.atomWiseReducing[ name ] = operation;
+  }
+
+}
+
+//
 
 let polynomApply = dop = Object.create( null );
 
@@ -927,160 +963,147 @@ reduceToMag.onAtomsEnd = function reduceToMag( o )
   o.result = _sqrt( o.result );
 }
 
+// --
 //
+// --
 
-function operationReducingAdjust()
+/*
+operationNormalize1,
+operationNormalize2,
+*/
+
+/* operationSinglerAdjust, */
+
+let atomWiseSingler = //
 {
-  let atomWiseReducing = Self.atomWiseReducing = Self.atomWiseReducing || Object.create( null );
 
-  for( let dop in Routines.atomWiseReducing )
-  {
-    let operation = Routines.atomWiseReducing[ dop ];
+  inv,
+  invOrOne,
 
-    operationNormalize1( operation );
+  floor : floorOperation,
+  ceil : ceilOperation,
+  round : roundOperation,
 
-    operation.kind = 'reducing';
+  floorToPowerOfTwo,
+  ceilToPowerOfTwo,
+  roundToPowerOfTwo,
 
-    if( operation.takingArguments === undefined )
-    operation.takingArguments = [ 1, Infinity ];
-
-    operation.homogeneous = false;
-    operation.atomWise = true;
-    operation.reducing = true;
-
-    if( operation.usingExtraSrcs === undefined )
-    operation.usingExtraSrcs = false;
-    if( operation.usingDstAsSrc === undefined )
-    operation.usingDstAsSrc = false;
-
-    _.assert( _.arrayIs( operation.takingArguments ) );
-    _.assert( operation.takingArguments.length === 2 );
-    _.assert( !Self.atomWiseReducing[ dop ] );
-
-    operationNormalize2( operation );
-
-    Self.atomWiseReducing[ dop ] = operation;
-  }
 }
 
-// --
-//
-// --
+/* operationsLogical1Adjust, */
+
+let logical1 = //
+{
+
+  isNumber,
+  isZero,
+  isFinite,
+  isInfinite,
+  isNan,
+  isInt,
+  isString,
+
+}
+
+/* operationsLogical2Adjust, */
+
+let logical2 = //
+{
+
+  isIdentical,
+  isNotIdentical,
+  isEquivalent,
+  isNotEquivalent,
+  isGreater,
+  isGreaterEqual,
+  isLess,
+  isLessEqual,
+  // is,
+
+}
+
+/* operationHomogeneousAdjust, */
+
+let atomWiseHomogeneous = //
+{
+
+  add,
+  sub,
+  mul,
+  div,
+
+  assign,
+  min,
+  max,
+
+}
+
+/* operationHeterogeneousAdjust, */
+
+let atomWiseHeterogeneous = //
+{
+
+  addScaled,
+  subScaled,
+  mulScaled,
+  divScaled,
+
+  clamp,
+  mix,
+
+}
+
+/* operationReducingAdjust, */
+
+let atomWiseReducing = //
+{
+
+  polynomApply,
+
+  mean,
+  moment,
+  _momentCentral,
+
+  reduceToMean,
+  reduceToProduct,
+  reduceToSum,
+  reduceToAbsSum,
+  reduceToMagSqr,
+  reduceToMag,
+
+  // allFinite,
+  // anyNan,
+  // allInt,
+  // allZero,
+
+}
 
 let Routines =
 {
 
-  /*
-  operationNormalize1 : operationNormalize1,
-  operationNormalize2 : operationNormalize2,
-  */
+  /* operationSinglerAdjust */
 
+  atomWiseSingler,
 
-  atomWiseSingler : //
-  {
+  /* operationsLogical1Adjust, */
 
-    inv : inv,
-    invOrOne : invOrOne,
+  logical1,
 
-    floor : floorOperation,
-    ceil : ceilOperation,
-    round : roundOperation,
+  /* operationsLogical2Adjust, */
 
-    floorToPowerOfTwo : floorToPowerOfTwo,
-    ceilToPowerOfTwo : ceilToPowerOfTwo,
-    roundToPowerOfTwo : roundToPowerOfTwo,
+  logical2,
 
-  },
+  /* operationHomogeneousAdjust */
 
-  /* operationSinglerAdjust : operationSinglerAdjust, */
+  atomWiseHomogeneous,
 
-  logic1 : //
-  {
+  /* operationHeterogeneousAdjust */
 
-    isNumber : isNumber,
-    isZero : isZero,
-    isFinite : isFinite,
-    isInfinite : isInfinite,
-    isNan : isNan,
-    isInt : isInt,
-    isString : isString,
+  atomWiseHeterogeneous,
 
-  },
+  /* operationReducingAdjust */
 
-  /* operationsLogical1Adjust : operationsLogical1Adjust, */
-
-  logical2 : //
-  {
-
-    isIdentical : isIdentical,
-    isNotIdentical : isNotIdentical,
-    isEquivalent : isEquivalent,
-    isNotEquivalent : isNotEquivalent,
-    isGreater : isGreater,
-    isGreaterEqual : isGreaterEqual,
-    isLess : isLess,
-    isLessEqual : isLessEqual,
-    // is : is,
-
-  },
-
-  /* operationsLogical2Adjust : operationsLogical2Adjust, */
-
-  atomWiseHomogeneous : //
-  {
-
-    add : add,
-    sub : sub,
-    mul : mul,
-    div : div,
-
-    assign : assign,
-    min : min,
-    max : max,
-
-  },
-
-  /* operationHomogeneousAdjust : operationHomogeneousAdjust, */
-
-  atomWiseHeterogeneous : //
-  {
-
-    addScaled : addScaled,
-    subScaled : subScaled,
-    mulScaled : mulScaled,
-    divScaled : divScaled,
-
-    clamp : clamp,
-    mix : mix,
-
-  },
-
-  /* operationHeterogeneousAdjust : operationHeterogeneousAdjust, */
-
-  atomWiseReducing : //
-  {
-
-    polynomApply : polynomApply,
-
-    mean : mean,
-    moment : moment,
-    _momentCentral : _momentCentral,
-
-    reduceToMean : reduceToMean,
-    reduceToProduct : reduceToProduct,
-    reduceToSum : reduceToSum,
-    reduceToAbsSum : reduceToAbsSum,
-    reduceToMagSqr : reduceToMagSqr,
-    reduceToMag : reduceToMag,
-
-    // allFinite : allFinite,
-    // anyNan : anyNan,
-    // allInt : allInt,
-    // allZero : allZero,
-
-  },
-
-  /* operationReducingAdjust : operationReducingAdjust, */
+  atomWiseReducing,
 
 }
 
@@ -1091,6 +1114,8 @@ operationHomogeneousAdjust();
 operationHeterogeneousAdjust();
 operationReducingAdjust();
 
+// debugger;
 _.assert( _.entityIdentical( vector.operations, Routines ) );
+// debugger;
 
 })();

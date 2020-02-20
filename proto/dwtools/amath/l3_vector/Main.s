@@ -75,9 +75,13 @@ Vector.prototype._vectorBuffer = null;
 function makeArrayOfLength( length )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  let srcArray = new this.ArrayType( length );
+  debugger; /* xxx */
+  // let srcArray = new this.ArrayType( length );
+  let srcArray = new this.longDescriptor.make( length );
   return fromArray( srcArray );
 }
+
+//
 
 /**
 * @summary Creates vector from array of length `length` and fills it with element `value`.
@@ -96,7 +100,9 @@ function makeArrayOfLength( length )
 function makeArrayOfLengthWithValue( length, value )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  let srcArray = new this.ArrayType( length );
+  // let srcArray = new this.ArrayType( length );
+  debugger; /* xxx */
+  let srcArray = new this.longDescriptor.make( length );
   for( let i = 0 ; i < length ; i++ )
   srcArray[ i ] = value;
   return fromArray( srcArray );
@@ -154,7 +160,7 @@ function fromMaybeNumber( number, length )
 
   let result = new VectorFromNumber();
   result._vectorBuffer = [ number ];
-  _.propertyConstant( result, { length : length } );
+  _.propertyConstant( result, { length } );
 
   return result;
 }
@@ -591,19 +597,19 @@ withWrapper.defaults =
 let routineFrom =
 {
 
-  makeArrayOfLength : makeArrayOfLength,
-  makeArrayOfLengthWithValue : makeArrayOfLengthWithValue,
+  makeArrayOfLength,
+  makeArrayOfLengthWithValue,
 
-  fromMaybeNumber : fromMaybeNumber,
-  from : from,
-  fromArray : fromArray,
-  fromSubArray : fromSubArray,
-  fromSubArrayWithStride : fromSubArrayWithStride,
-  fromArrayWithStride : fromArrayWithStride,
+  fromMaybeNumber,
+  from,
+  fromArray,
+  fromSubArray,
+  fromSubArrayWithStride,
+  fromArrayWithStride,
 
-  variants : variants,
+  variants,
 
-  withWrapper : withWrapper,
+  withWrapper,
 
 }
 
@@ -629,9 +635,9 @@ _.vector = Self;
 _.Vector = Vector;
 
 _.assert( _.routineIs( Self.withWrapper ) );
-_.assert( _.objectIs( Self.array ) );
-_.assert( _.routineIs( Self.array.arrayFromCoercing ) );
-_.assert( _.routineIs( Self.array.makeArrayOfLength ) );
+// _.assert( _.objectIs( Self.array ) ); // xxx
+// _.assert( _.routineIs( Self.array.arrayFromCoercing ) );
+// _.assert( _.routineIs( Self.array.makeArrayOfLength ) );
 
 _.assert( _.numberIs( _.accuracy ) );
 _.assert( _.numberIs( _.accuracySqr ) );

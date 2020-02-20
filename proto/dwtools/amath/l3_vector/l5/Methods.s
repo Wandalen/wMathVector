@@ -295,34 +295,34 @@ hasShape.modifying = false;
 let Proto =
 {
 
-  to : to,
+  to,
 
-  eGet : eGet,
-  eSet : eSet,
+  eGet,
+  eSet,
 
-  assign : assign,
-  copy : copy,
+  assign,
+  copy,
 
-  makeSimilar : makeSimilar,
+  makeSimilar,
 
-  slice : slice,
-  slicedArray : slicedArray,
-  slicedVector : slicedVector,
+  slice,
+  slicedArray,
+  slicedVector,
 
-  resizedArray : resizedArray,
-  resizedVector : resizedVector,
+  resizedArray,
+  resizedVector,
 
-  subarray : subarray,
+  subarray,
 
-  // toArray : toArray,
-  toStr : toStr,
+  // toArray,
+  toStr,
 
-  equalWith : equalWith,
-  identicalWith : identicalWith,
-  equivalentWith : equivalentWith,
-  sameWith : sameWith,
+  equalWith,
+  identicalWith,
+  equivalentWith,
+  sameWith,
 
-  hasShape : hasShape,
+  hasShape,
 
 }
 

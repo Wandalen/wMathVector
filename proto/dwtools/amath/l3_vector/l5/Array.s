@@ -68,7 +68,7 @@ for( let r in routines )
   Proto[ r ] = _.vector.withWrapper
   ({
     routine : routines[ r ],
-    onReturn : onReturn,
+    onReturn,
     usingThisAsFirstArgument : 0,
   });
 
@@ -84,11 +84,12 @@ _.mapExtend( Self, Proto );
 
 _.avector = Self;
 
-_._arrayNameSpaceApplyTo( Self, 'Float32' );
-_.assert( _.mapOwnKey( _.avector, 'withArray' ) );
-_.assert( _.objectIs( _.avector.withArray ) );
-_.assert( _.objectIs( _.avector.withArray.Array ) );
-_.assert( _.objectIs( _.avector.withArray.Float32 ) );
+_._arrayNameSpaceApplyTo( Self, 'Fx' );
+_.assert( _.mapOwnKey( _.avector, 'withDefaultLong' ) );
+_.assert( _.objectIs( _.avector.withDefaultLong ) );
+_.assert( _.objectIs( _.avector.withDefaultLong.Array ) );
+_.assert( _.objectIs( _.avector.withDefaultLong.F32x ) );
+// _.assert( _.objectIs( _.avector.withDefaultLong.Fx ) );
 
 _.assert( Object.getPrototypeOf( Self ) === wTools );
 _.assert( _.objectIs( _row.RoutinesMathematical ) );
