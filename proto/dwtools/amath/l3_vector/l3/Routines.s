@@ -3991,9 +3991,9 @@ function declareHomogeneousLogical2Routines()
   _.assert( _.routineIs( Routines.anyIdentical ) );
   _.assert( _.routineIs( Routines.noneIdentical ) );
   _.assert( _.routineIs( Routines.isGreater ) );
-  _.assert( _.routineIs( Routines.all ) );
-  _.assert( _.routineIs( Routines.any ) );
-  _.assert( _.routineIs( Routines.none ) );
+  // _.assert( _.routineIs( Routines.all ) ); /* xxx */
+  // _.assert( _.routineIs( Routines.any ) );
+  // _.assert( _.routineIs( Routines.none ) );
 
   _.assert( _.longIdentical( Routines.isIdentical.operation.takingArguments, [ 2, 3 ] ) );
   _.assert( _.longIdentical( Routines.allIdentical.operation.takingArguments, [ 2, 2 ] ) );
@@ -5078,7 +5078,7 @@ let RoutinesMathematical =
   isString : Routines.isString,
   // is : Routines.is,
 
-  all : Routines.all,
+  // all : Routines.all,
   allNumber : Routines.allNumber,
   allZero : Routines.allZero,
   allFinite : Routines.allFinite,
@@ -5087,7 +5087,7 @@ let RoutinesMathematical =
   allInt : Routines.allInt,
   allString : Routines.allString,
 
-  any : Routines.any,
+  // any : Routines.any,
   anyNumber : Routines.anyNumber,
   anyZero : Routines.anyZero,
   anyFinite : Routines.anyFinite,
@@ -5096,7 +5096,7 @@ let RoutinesMathematical =
   anyInt : Routines.anyInt,
   anyString : Routines.anyString,
 
-  none : Routines.none,
+  // none : Routines.none,
   noneNumber : Routines.noneNumber,
   noneZero : Routines.noneZero,
   noneFinite : Routines.noneFinite,
