@@ -1630,7 +1630,7 @@ function crossWithPoints( a, b, c, result )
 
   debugger; /* xxx2 */
   result = result || this.makeArrayOfLength( 3 );
-  // result = result || this.array.makeArrayOfLength( 3 );
+  // result = result || this.long.longMake( 3 );
 
   let ax = a.eGet( 0 )-c.eGet( 0 ), ay = a.eGet( 1 )-c.eGet( 1 ), az = a.eGet( 2 )-c.eGet( 2 );
   let bx = b.eGet( 0 )-c.eGet( 0 ), by = b.eGet( 1 )-c.eGet( 1 ), bz = b.eGet( 2 )-c.eGet( 2 );

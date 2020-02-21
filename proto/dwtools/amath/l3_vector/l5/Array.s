@@ -86,6 +86,7 @@ _.avector = Self;
 
 _.LongDescriptorProducer.applyTo( Self, 'Fx' );
 _.assert( _.mapOwnKey( _.avector, 'withDefaultLong' ) );
+
 _.assert( _.objectIs( _.avector.withDefaultLong ) );
 _.assert( _.objectIs( _.avector.withDefaultLong.Array ) );
 _.assert( _.objectIs( _.avector.withDefaultLong.F32x ) );

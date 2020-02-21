@@ -49,7 +49,7 @@ let _routineIs = _.routineIs;
 // _.accuracySqr = 1e-15;
 
 let Parent = null;
-let Self = Object.create( null );
+let Namespace = Object.create( null );
 
 function Vector(){ throw _.err( 'should not be called' ) };
 Vector.prototype = Object.create( null );
@@ -533,7 +533,7 @@ function withWrapper( o )
 
     // if( _hasLength( arg ) && ( !_.Space || !( arg instanceof _.Space ) ) )
     if( _.longIs( arg ) )
-    return Self.fromArray( arg );
+    return Namespace.fromArray( arg );
     return arg;
   }
 
@@ -572,7 +572,7 @@ function withWrapper( o )
     for( ; d < optionalLength ; d++, s++ )
     args[ d ] = arguments[ s ];
 
-    let result = theRoutine.apply( Self, args );
+    let result = theRoutine.apply( Namespace, args );
 
     return onReturn.call( this, result, theRoutine );
   }
@@ -620,24 +620,30 @@ let routineFrom =
 let Proto =
 {
 
-
   _routineFrom : routineFrom,
 
 }
 
 _.mapExtend( Proto, routineFrom );
-_.mapExtend( Self, Proto );
+_.mapExtend( Namespace, Proto );
 
-Object.setPrototypeOf( Self, wTools );
-Self.constructor = function Vector(){};
+_.assert( _.objectIs( _.withDefaultLong.Fx ) );
+// Object.setPrototypeOf( Namespace, wTools );
+Object.setPrototypeOf( Namespace, _.withDefaultLong.Fx );
+Namespace.constructor = function Vector(){};
 
-_.vector = Self;
+_.assert( Namespace.long === undefined );
+Namespace.long = _.withDefaultLong.Fx;
+_.assert( _.objectIs( Namespace.long ) );
+
+_.vector = Namespace;
 _.Vector = Vector;
 
-_.assert( _.routineIs( Self.withWrapper ) );
-// _.assert( _.objectIs( Self.array ) ); // xxx
-// _.assert( _.routineIs( Self.array.arrayFromCoercing ) );
-// _.assert( _.routineIs( Self.array.makeArrayOfLength ) );
+_.assert( _.routineIs( Namespace.withWrapper ) );
+_.assert( _.routineIs( Namespace.long.longFrom ) );
+// _.assert( _.objectIs( Namespace.array ) ); // xxx
+// _.assert( _.routineIs( Namespace.array.arrayFromCoercing ) );
+// _.assert( _.routineIs( NamespaceNamespace.long.longMake ) );
 
 _.assert( _.numberIs( _.accuracy ) );
 _.assert( _.numberIs( _.accuracySqr ) );
