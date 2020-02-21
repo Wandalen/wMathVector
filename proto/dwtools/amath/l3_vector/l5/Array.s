@@ -84,7 +84,7 @@ _.mapExtend( Self, Proto );
 
 _.avector = Self;
 
-_._arrayNameSpaceApplyTo( Self, 'Fx' );
+_.LongDescriptorProducer.applyTo( Self, 'Fx' );
 _.assert( _.mapOwnKey( _.avector, 'withDefaultLong' ) );
 _.assert( _.objectIs( _.avector.withDefaultLong ) );
 _.assert( _.objectIs( _.avector.withDefaultLong.Array ) );
