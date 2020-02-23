@@ -7,7 +7,6 @@ let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
 let _sqr = _.sqr;
 let _sqrt = _.sqrt;
-// let __assert = _.assert;
 let _assertMapHasOnly = _.assertMapHasOnly;
 let _routineIs = _.routineIs;
 
@@ -16,11 +15,6 @@ let _max = Math.max;
 let _pow = Math.pow;
 let sqrt = Math.sqrt;
 let abs = Math.abs;
-
-// let accuracy = _.accuracy;
-// let accuracySqr = _.accuracySqr;
-let sqrt2 = sqrt( 2 );
-let sqrt2Inv = 1 / sqrt2;
 
 let vector = _.vector;
 let operations = _.vector.operations;
@@ -54,7 +48,7 @@ let OperationDescriptor = _.blueprint
   returningArray : null,
   returningNumber : null,
   returningBoolean : null,
-  returningAtomic : null,
+  returningPrimitive : null,
 
   modifying : null,
   reducing : null,
@@ -179,7 +173,7 @@ function _operationLogicalReducerAdjust( operation )
     usingDstAsSrc : 0,
     interruptible : 1,
     reducing : 1,
-    returningAtomic : 1,
+    returningPrimitive : 1,
     returningBoolean : 1,
     returningNumber : 0,
     returningNew : 0,
@@ -213,7 +207,7 @@ function _routineAdjust( theRoutine, routineName )
 
   /* adjust */
 
-  operation.returningAtomic = !!operation.returningAtomic;
+  operation.returningPrimitive = !!operation.returningPrimitive;
   operation.returningArray = !!operation.returningArray;
   operation.returningNumber = !!operation.returningNumber;
   operation.returningBoolean = !!operation.returningBoolean;
@@ -246,7 +240,7 @@ function _routineAdjust( theRoutine, routineName )
   differentReturns += operation.returningNew ? 1 : 0;
   differentReturns += operation.returningSelf ? 1 : 0;
   differentReturns += operation.returningArray ? 1 : 0;
-  differentReturns += operation.returningAtomic ? 1 : 0;
+  differentReturns += operation.returningPrimitive ? 1 : 0;
 
   let returningOnly = operation.returningOnly;
   if( returningOnly === null || returningOnly === undefined )
@@ -257,7 +251,7 @@ function _routineAdjust( theRoutine, routineName )
       returningOnly = operation.returningNew ? 'new' : returningOnly;
       returningOnly = operation.returningSelf ? 'self' : returningOnly;
       returningOnly = operation.returningArray ? 'array' : returningOnly;
-      returningOnly = operation.returningAtomic ? 'atomic' : returningOnly;
+      returningOnly = operation.returningPrimitive ? 'atomic' : returningOnly;
     }
     operation.returningOnly = returningOnly;
   }
@@ -282,9 +276,9 @@ function _routineAdjust( theRoutine, routineName )
   _.assert( _.boolIs( operation.returningArray ) );
   _.assert( _.boolIs( operation.returningNumber ) );
   _.assert( _.boolIs( operation.returningBoolean ) );
-  _.assert( _.boolIs( operation.returningAtomic ) );
+  _.assert( _.boolIs( operation.returningPrimitive ) );
   _.assert( _.strIs( operation.returningOnly ) );
-  _.assert( operation.returningNumber ? operation.returningAtomic : true );
+  _.assert( operation.returningNumber ? operation.returningPrimitive : true );
   _.assert( ( !!returningOnly ) == ( differentReturns == 1 ) );
 
   _.assert( operation.handleAtom === undefined );
@@ -523,12 +517,12 @@ function _vectorizeDst( o )
   {
     if( dst === null )
     {
-      dst = o.dstContainer = vector.makeArrayOfLengthWithValue( 1 , 0 );
+      dst = o.dstContainer = vector.MakeFilling( 1 , 0 );
       o.dstContainer.assign( o.args[ 1 ] );
     }
     else
     {
-      dst = o.dstContainer = vector.makeArrayOfLengthWithValue( 1 , dst );
+      dst = o.dstContainer = vector.MakeFilling( 1 , dst );
     }
     o.unwrapping = 1;
     o.args[ 0 ] = dst;
@@ -550,7 +544,7 @@ function _vectorizeSrcs( o, first )
     // xxx
     if( !_.routineIs( src ) )
     {
-      src = o.args[ a ] = vector.fromMaybeNumber( src, o.dstContainer.length );
+      src = o.args[ a ] = vector.FromMaybeNumber( src, o.dstContainer.length );
     }
   }
 
@@ -755,6 +749,8 @@ function _onVectorsForRoutine_functor( dop )
   let onVectorsBegin0 = dop.onVectorsBegin[ 0 ];
   let onAtom0 = dop.onAtom[ 0 ];
 
+  // _.assert( dop.onVectorsBegin.length === 1, 'not tested' );
+  // _.assert( dop.onAtom.length === 1, 'not tested' );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   /* */
@@ -907,7 +903,7 @@ function _onVectorsForRoutine_functor( dop )
     dop.returningNew = false;
     dop.returningArray = false;
     dop.returningNumber = true;
-    dop.returningAtomic = true;
+    dop.returningPrimitive = true;
     dop.modifying = true;
     dop.operation = dop;
 
@@ -1048,12 +1044,12 @@ function assign( dst )
     if( _.numberIs( arguments[ 1 ] ) )
     this.assignScalar( dst, arguments[ 1 ] );
     else if( _hasLength( arguments[ 1 ] ) )
-    this.assignVector( dst, _.vector.fromArray( arguments[ 1 ] ) );
+    this.assignVector( dst, _.vector.FromArray( arguments[ 1 ] ) );
     else _.assert( 0, 'unknown arguments' );
   }
   else if( alength === 1 + length )
   {
-    this.assign.call( this, dst, _.vector.fromArray( _arraySlice( arguments, 1, alength ) ) );
+    this.assign.call( this, dst, _.vector.FromArray( _arraySlice( arguments, 1, alength ) ) );
   }
   else _.assert( 0, 'assign :', 'unknown arguments' );
 
@@ -1136,7 +1132,7 @@ function makeSimilar( src, length )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( length ) );
 
-  let dst = _.vector.fromArray( new src._vectorBuffer.constructor( length ) );
+  let dst = _.vector.FromArray( new src._vectorBuffer.constructor( length ) );
 
   return dst;
 }
@@ -1360,11 +1356,11 @@ function subarray( src, first, last )
 
   if( src.stride !== 1 )
   {
-    result = _.vector.fromSubArrayWithStride( src._vectorBuffer , src.offset + first*src.stride , last-first , src.stride );
+    result = _.vector.FromSubArrayWithStride( src._vectorBuffer , src.offset + first*src.stride , last-first , src.stride );
   }
   else
   {
-    result = _.vector.fromSubArray( src._vectorBuffer , src.offset + first , last-first );
+    result = _.vector.FromSubArray( src._vectorBuffer , src.offset + first , last-first );
   }
 
   return result;
@@ -1486,7 +1482,7 @@ function gather( dst, srcs )
     if( _.numberIs( src ) )
     continue;
     if( _.longIs( src ) )
-    src = srcs[ s ] = _.vector.fromArray( src );
+    src = srcs[ s ] = _.vector.FromArray( src );
     _.assert( src.length === l );
   }
 
@@ -1629,7 +1625,7 @@ function crossWithPoints( a, b, c, result )
   _.assert( a.length === 3 && b.length === 3 && c.length === 3, 'implemented only for 3D' );
 
   debugger; /* xxx2 */
-  result = result || this.makeArrayOfLength( 3 );
+  result = result || this.Make/*makeArrayOfLength*/( 3 );
   // result = result || this.long.longMake( 3 );
 
   let ax = a.eGet( 0 )-c.eGet( 0 ), ay = a.eGet( 1 )-c.eGet( 1 ), az = a.eGet( 2 )-c.eGet( 2 );
@@ -1692,9 +1688,9 @@ function cross3( dst, src1, src2 )
   _.assert( src1.length === 3, 'implemented only for 3D' );
   _.assert( src2.length === 3, 'implemented only for 3D' );
 
-  dst = _.vector.from( dst );
-  src1 = _.vector.from( src1 );
-  src2 = _.vector.from( src2 );
+  dst = _.vector.From( dst );
+  src1 = _.vector.From( src1 );
+  src2 = _.vector.From( src2 );
 
   return this._cross3( dst, src1, src2 );
 }
@@ -1709,7 +1705,7 @@ function cross( dst )
   let firstSrc = 1;
   if( dst === null )
   {
-    dst = _.vector.from( arguments[ 1 ].slice() );
+    dst = _.vector.From( arguments[ 1 ].slice() );
     firstSrc = 2;
     _.assert( arguments.length >= 3, 'Expects at least three arguments' );
   }
@@ -2012,7 +2008,7 @@ function formate( dst, srcs )
     }
     else
     {
-      src = _.vector.from( src );
+      src = _.vector.From( src );
       _.assert( src.length === l );
       for( let i = 0 ; i < l ; i++ )
       dst.eSet( i*ape+a , src.eGet( i ) );
@@ -2229,17 +2225,83 @@ function _operationReturningSelfTakingVariantsComponentWiseAct_functor( operatio
 
   /* */
 
-  let routine = function _operationReturningSelfTakingVariantsComponentWise( dst )
+  let routine = _operationReturningSelfTakingVariantsComponentWise;
+
+  dop = routine.operation = Object.create( null );
+  dop.takingArguments = takingArguments;
+  dop.takingVectors = [ 1, takingArguments[ 1 ] ];
+  dop.takingVectorsOnly = false;
+  dop.returningSelf = false;
+  dop.returningNew = true;
+  dop.modifying = true;
+
+  return routine;
+
+  function variants( variants )
+  {
+    let result = _.longSlice( variants );
+    let length;
+
+    debugger;
+
+    _.assert( arguments.length === 1, 'Expects single argument' );
+    _.longIs( variants );
+
+    /* */
+
+    for( let v = 0 ; v < result.length ; v++ )
+    {
+      let variant = result[ v ];
+
+      _.assert( _.numberIs( variant ) || _.longIs( variant ) || _.vectorAdapterIs( variant ) );
+
+      if( _.numberIs( variant ) )
+      continue;
+
+      if( length !== undefined )
+      _.assert( variant.length === length, 'all variants should have same length' );
+
+      length = variant.length;
+
+    }
+
+    if( length === undefined )
+    length = 1;
+
+    /* */
+
+    for( let v = 0 ; v < result.length ; v++ )
+    {
+      let variant = result[ v ];
+
+      if( _.vectorAdapterIs( variant ) )
+      continue;
+
+      if( _.longIs( variant ) )
+      variant = result[ v ] = _.vector.FromArray( variant );
+      else
+      variant = result[ v ] = _.vector.FromMaybeNumber( variant, length );
+
+    }
+
+    /* */
+
+    return result;
+  }
+
+  function _operationReturningSelfTakingVariantsComponentWise( dst )
   {
 
     if( operation.assigning )
     _.assert( _.vectorAdapterIs( dst ) );
 
-    let args = _.vector.variants( arguments );
+    let args = variants( arguments );
 
+    debugger;
     if( !operation.assigning )
     {
-      dst = _.vector.fromArray( this.makeArrayOfLengthZeroed( args[ 0 ].length ) );
+      debugger;
+      dst = _.vector.FromArray( this./*makeArrayOfLength*/MakeZeroed( args[ 0 ].length ) );
       args.unshift( dst );
       onMakeIdentity.call( args, dst );
     }
@@ -2278,16 +2340,6 @@ function _operationReturningSelfTakingVariantsComponentWiseAct_functor( operatio
 
     return dst;
   }
-
-  dop = routine.operation = Object.create( null );
-  dop.takingArguments = takingArguments;
-  dop.takingVectors = [ 1, takingArguments[ 1 ] ];
-  dop.takingVectorsOnly = false;
-  dop.returningSelf = false;
-  dop.returningNew = true;
-  dop.modifying = true;
-
-  return routine;
 }
 
 _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults =
@@ -2905,7 +2957,10 @@ function _onVectorsAtomwise_functor( dop )
       o.onEvaluate = arguments[ 1 ]; /* yyy */
       o.result = null;
       Object.preventExtensions( o );
+
+      if( onVectorsBegin0 )
       debugger;
+
       if( onVectorsBegin0 )
       onVectorsBegin0( o );
 
@@ -3000,7 +3055,7 @@ function _routineHomogeneousDeclare( operation, atomOperation, routineName )
   let def =
   {
     returningNumber : 1,
-    returningAtomic : 1,
+    returningPrimitive : 1,
     takingArguments : [ 2, 3 ],
   }
 
@@ -3405,7 +3460,7 @@ function __operationReduceToScalar_functor( operation )
     returningNew : false,
     returningArray : false,
     returningNumber : ( operation.returningNumber !== undefined && operation.returningNumber !== null ? !!operation.returningNumber : true ),
-    returningAtomic : ( operation.returningAtomic !== undefined && operation.returningAtomic !== null ? !!operation.returningAtomic : true ),
+    returningPrimitive : ( operation.returningPrimitive !== undefined && operation.returningPrimitive !== null ? !!operation.returningPrimitive : true ),
     modifying : false,
     reducing : true,
   }
@@ -3558,7 +3613,7 @@ function _operationReduceToExtremal_functor( operation )
     },
     takingVectors : operation.takingVectors,
     returningNumber : false,
-    returningAtomic : false,
+    returningPrimitive : false,
     name : operation.name,
   });
 
@@ -3747,7 +3802,7 @@ let distributionRangeSummary = _operationReduceToScalar_functor
   onAtomsBegin : _distributionRangeSummaryBegin,
   onAtomsEnd : _distributionRangeSummaryEnd,
   returningNumber : false,
-  returningAtomic : false,
+  returningPrimitive : false,
   name : 'distributionRangeSummary',
 });
 
@@ -3768,7 +3823,7 @@ dop.takingVectorsOnly = true;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningNumber = true;
-dop.returningAtomic = true;
+dop.returningPrimitive = true;
 dop.modifying = false;
 
 //
@@ -3786,7 +3841,7 @@ dop.takingVectorsOnly = true;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningNumber = true;
-dop.returningAtomic = true;
+dop.returningPrimitive = true;
 dop.modifying = false;
 
 //
@@ -3845,18 +3900,6 @@ function _declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, r
 
   let def =
   {
-
-    // usingExtraSrcs : 0,
-    // usingDstAsSrc : 0,
-    // interruptible : 1,
-    // reducing : 1,
-    // returningAtomic : 1,
-    // returningBoolean : 1,
-    // returningNumber : 0,
-    // returningNew : 0,
-    // returningSelf : 0,
-    // returningArray : 0,
-
     takingArguments : [ 2, 2 ],
     takingVectors : [ 0, 2 ],
     input : [ 'vw?', 'vr', 'vr' ],
@@ -4129,7 +4172,7 @@ function _declareLogic1SinglerRoutine( operation, atomOperation, routineName )
     usingDstAsSrc : 0,
     interruptible : 0,
     reducing : 0,
-    returningAtomic : 1,
+    returningPrimitive : 1,
     returningBoolean : 1,
     returningNumber : 0,
     returningNew : 1,
@@ -4142,6 +4185,8 @@ function _declareLogic1SinglerRoutine( operation, atomOperation, routineName )
 
   _.mapExtend( operation, def );
 
+  if( routineName === 'isZero' )
+  debugger;
   return _routineHomogeneousDeclare( operation, atomOperation, routineName );
 }
 
@@ -4158,17 +4203,6 @@ function _declareLogic1ReducingSinglerRoutine( operation, atomOperation, routine
 
   let def =
   {
-
-    // usingExtraSrcs : 0,
-    // usingDstAsSrc : 0,
-    // interruptible : 1,
-    // reducing : 1,
-    // returningAtomic : 1,
-    // returningBoolean : 1,
-    // returningNumber : 0,
-    // returningNew : 0,
-    // returningSelf : 0,
-    // returningArray : 0,
 
     takingArguments : [ 1, 1 ],
     takingVectors : [ 0, 1 ],

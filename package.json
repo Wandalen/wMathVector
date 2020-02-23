@@ -11,7 +11,7 @@
     { "name" : "Volodymyr M.", "email" : "volodymyr.migdal@gmail.com" }
   ], 
   "license" : "MIT", 
-  "main" : "proto/dwtools/amath/l3_vector/Main.s", 
+  "main" : "proto/dwtools/amath/l3_vector/Include.s", 
   "files" : [ "proto/dwtools/amath/l3_vector", "proto/dwtools/Tools.s", "out" ], 
   "scripts" : { "test" : "wtest .run proto/**", "docgen" : "wdocgen proto" }, 
   "repository" : 

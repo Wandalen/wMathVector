@@ -10,7 +10,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
   _.include( 'wStringer' );
 
-  require( '../l3_vector/Main.s' );
+  require( '../l3_vector/Include.s' );
 
 }
 
@@ -19,7 +19,7 @@ if( typeof module !== 'undefined' )
 var _ = _global_.wTools.withDefaultLong.Fx;
 var Space = _.Space;
 var vector = _.vector;
-var vec = _.vector.fromArray;
+var vec = _.vector.FromArray;
 var avector = _.avector;
 var sqrt = _.sqrt;
 
@@ -36,8 +36,8 @@ function comparator( test )
 
   test.case = 'trivial';
 
-  let v1 = vector.from([ 1, 2, 3 ]);
-  let v2 = vector.from([ 1, 2, 4 ]);
+  let v1 = vector.From([ 1, 2, 3 ]);
+  let v2 = vector.From([ 1, 2, 4 ]);
 
   let diff = _.entityDiff( v1, v2 );
   let expected =
@@ -69,11 +69,11 @@ function vectorAdapterIs( test )
   var n3 = arguments;
   var n4 = function( x ){};
 
-  var v1 = vector.fromArray([ 1, 2, 3 ]);
-  var v2 = vector.fromSubArray( [ -1, 1, 2, 3, -1 ], 1, 3 );
-  var v3 = vector.fromSubArrayWithStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
-  var v4 = vector.fromArrayWithStride( [ 1, -1, 2, -1, 3 ], 2 );
-  var v5 = vector.from([ 1, 2, 3 ]);
+  var v1 = vector.FromArray([ 1, 2, 3 ]);
+  var v2 = vector.FromSubArray( [ -1, 1, 2, 3, -1 ], 1, 3 );
+  var v3 = vector.FromSubArrayWithStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
+  var v4 = vector.FromArrayWithStride( [ 1, -1, 2, -1, 3 ], 2 );
+  var v5 = vector.From([ 1, 2, 3 ]);
 
   test.case = 'vectorAdapterIs'; /* */
 
@@ -188,7 +188,7 @@ function to( test )
 
     test.case = 'vector to space'; /* */
 
-    var v = vector.from([ 1, 2, 3 ]);
+    var v = vector.From([ 1, 2, 3 ]);
     var got = v.to( Space );
     var expected = Space.makeCol([ 1, 2, 3 ]);
     test.identical( got, expected );
@@ -197,15 +197,15 @@ function to( test )
 
   test.case = 'vector to array'; /* */
 
-  var v = vector.from([ 1, 2, 3 ]);
+  var v = vector.From([ 1, 2, 3 ]);
   var got = v.to( [].constructor );
   var expected = [ 1, 2, 3 ];
   test.identical( got, expected );
 
   test.case = 'vector to vector'; /* */
 
-  var v = vector.from([ 1, 2, 3 ]);
-  var got = v.to( vector.fromArray( [] ).constructor );
+  var v = vector.From([ 1, 2, 3 ]);
+  var got = v.to( vector.FromArray( [] ).constructor );
   test.is( got === v );
 
   test.case = 'bad arguments'; /* */
@@ -213,12 +213,12 @@ function to( test )
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to() );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( [], 1 ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( 1 ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( null ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( '1' ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( [], 1 ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to() );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( [], 1 ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( 1 ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( null ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( '1' ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( [], 1 ) );
 
 }
 
@@ -229,7 +229,7 @@ function toArray( test )
 
   test.case = 'trivial'; /* */
 
-  var v = vector.from([ 1, 2, 3 ]);
+  var v = vector.From([ 1, 2, 3 ]);
   var got = v.toArray();
   var expected = [ 1, 2, 3 ];
   test.identical( got, expected );
@@ -237,7 +237,7 @@ function toArray( test )
 
   test.case = 'trivial with fromSubArrayWithStride'; /* */
 
-  var v = vector.fromSubArrayWithStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
+  var v = vector.FromSubArrayWithStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
   var got = v.toArray();
   var expected = [ 1, 2, 3, 4, 5 ];
   test.identical( got, expected );
@@ -245,7 +245,7 @@ function toArray( test )
 
   test.case = 'with custom offset'; /* */
 
-  var v = vector.fromSubArray( [ 1, 2, 3, 4, 5 ], 1 );
+  var v = vector.FromSubArray( [ 1, 2, 3, 4, 5 ], 1 );
   var got = v.toArray();
   var expected = [ 2, 3, 4, 5 ];
   test.identical( got, expected );
@@ -253,7 +253,7 @@ function toArray( test )
 
   test.case = 'with custom length'; /* */
 
-  var v = vector.fromSubArray( [ 1, 2, 3, 4, 5 ], 0, 4 );
+  var v = vector.FromSubArray( [ 1, 2, 3, 4, 5 ], 0, 4 );
   var got = v.toArray();
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
@@ -261,7 +261,7 @@ function toArray( test )
 
   test.case = 'with fromSubArrayWithStride'; /* */
 
-  var v = vector.fromSubArrayWithStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
+  var v = vector.FromSubArrayWithStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
   var got = v.toArray();
   var expected = [ 2, 4 ];
   test.identical( got, expected );
@@ -270,13 +270,13 @@ function toArray( test )
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( 0 ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( undefined ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( null ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( _.vector.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( '123' ) );
-  test.shouldThrowErrorSync( () => vector.from([ 1, 2, 3 ]).to( function( a, b, c ){} ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( 0 ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( undefined ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( null ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( _.vector.From([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( '123' ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( function( a, b, c ){} ) );
 
 }
 
@@ -1090,13 +1090,13 @@ function is( test )
   {
     return - 5 < src && src < 0 ; // numbers in range
   }
-  var vector = _.vector.from( [ -1, -1.5, -2 ] );
+  var vector = _.vector.From( [ -1, -1.5, -2 ] );
   var gotBool = _.vector.is( vector, inRange );
 
-  var expected = _.vector.from( [ true, true, true ] );
+  var expected = _.vector.From( [ true, true, true ] );
   test.identical( gotBool, expected );
 
-  var oldVector = _.vector.from( [ -1, -1.5, -2 ] )
+  var oldVector = _.vector.From( [ -1, -1.5, -2 ] )
   test.equivalent( oldVector, vector );
 
   test.case = 'Check if a number is > 0 - empty'; //
@@ -1105,10 +1105,10 @@ function is( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ ] );
+  var vector = _.vector.From( [ ] );
   var gotBool = _.vector.is( vector, positiveNumber );
 
-  var expected = _.vector.from( [ ] );
+  var expected = _.vector.From( [ ] );
   test.identical( gotBool, expected );
 
   test.case = 'Check if a number is > 0 - true'; //
@@ -1117,10 +1117,10 @@ function is( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ 0, 1, 0, 2, 1000, 307 ] );
+  var vector = _.vector.From( [ 0, 1, 0, 2, 1000, 307 ] );
   var gotBool = _.vector.is( vector, positiveNumber );
 
-  var expected = _.vector.from( [ true, true, true, true, true, true ] );
+  var expected = _.vector.From( [ true, true, true, true, true, true ] );
   test.identical( gotBool, expected );
 
   test.case = 'Check if a number is > 0 - false some'; //
@@ -1129,10 +1129,10 @@ function is( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var vector = _.vector.From( [ 0, - 1, 0, 2, 1000, '307' ] );
   var gotBool = _.vector.is( vector, positiveNumber );
 
-  var expected = _.vector.from( [ true, false, true, true, true, false ] );
+  var expected = _.vector.From( [ true, false, true, true, true, false ] );
   test.identical( gotBool, expected );
 
   test.case = 'Check if a number is > 0 - false none'; //
@@ -1141,10 +1141,10 @@ function is( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var vector = _.vector.From( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
   var gotBool = _.vector.is( vector, positiveNumber );
 
-  var expected = _.vector.from( [ false, false, false, false, false ] );
+  var expected = _.vector.From( [ false, false, false, false, false ] );
   test.identical( gotBool, expected );
 
   test.case = 'Check if a string starts with h - true'; //
@@ -1153,10 +1153,10 @@ function is( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var vector = _.vector.From( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
   var gotBool = _.vector.is( vector, stringLengthThree );
 
-  var expectedStr = _.vector.from( [ true, true, true, true, true, true, true, true ] );
+  var expectedStr = _.vector.From( [ true, true, true, true, true, true, true, true ] );
   test.identical( gotBool, expectedStr );
 
   test.case = 'Check if a string starts with h - false'; //
@@ -1165,10 +1165,10 @@ function is( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
+  var vector = _.vector.From( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
   var gotBool = _.vector.is( vector, stringLengthThree );
 
-  var expected = _.vector.from( [ false, true, false, false, false ] );
+  var expected = _.vector.From( [ false, true, false, false, false ] );
   test.identical( gotBool, expected );
 
   test.case = 'Check an array´s length - true'; //
@@ -1177,10 +1177,10 @@ function is( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
   var gotBool = _.vector.is( vector, arrayLength );
 
-  var expectedArr = _.vector.from( [ true, true ] );
+  var expectedArr = _.vector.From( [ true, true ] );
   test.identical( gotBool, expectedArr );
 
   test.case = 'Check an array´s length - false'; //
@@ -1189,10 +1189,10 @@ function is( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var vector = _.vector.From( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
   var gotBool = _.vector.is( vector, arrayLength );
 
-  var expected =  _.vector.from( [ false, false ] );
+  var expected =  _.vector.From( [ false, false ] );
   test.identical( gotBool, expected );
 
   /* */
@@ -1208,16 +1208,16 @@ function is( test )
   test.shouldThrowErrorSync( () => _.vector.is( undefined ));
   test.shouldThrowErrorSync( () => _.vector.is( 'string' ));
   test.shouldThrowErrorSync( () => _.vector.is( 2 ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong second argument'; //
 
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), undefined ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), _.vector.From( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong first argument'; //
 
@@ -1777,13 +1777,13 @@ function all( test )
     debugger;
     return - 5 < src && src < 0 ; // numbers in range
   }
-  var vector = _.vector.from( [ -1, -1.5, -2 ] );
+  var vector = _.vector.From( [ -1, -1.5, -2 ] );
   var gotBool = _.vector.all( vector, inRange );
 
   var expected = true;
   test.identical( gotBool, expected );
 
-  var oldVector = _.vector.from( [ -1, -1.5, -2 ] )
+  var oldVector = _.vector.From( [ -1, -1.5, -2 ] )
   test.equivalent( oldVector, vector );
 
   test.case = 'Check if a number is > 0 - empty'; //
@@ -1792,7 +1792,7 @@ function all( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ ] );
+  var vector = _.vector.From( [ ] );
   var gotBool = _.vector.all( vector, positiveNumber );
 
   var expected = true;
@@ -1804,7 +1804,7 @@ function all( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ 0, 1, 0, 2, 1000, 307 ] );
+  var vector = _.vector.From( [ 0, 1, 0, 2, 1000, 307 ] );
   var gotBool = _.vector.all( vector, positiveNumber );
 
   var expected = true;
@@ -1816,7 +1816,7 @@ function all( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var vector = _.vector.From( [ 0, - 1, 0, 2, 1000, '307' ] );
   var gotBool = _.vector.all( vector, positiveNumber );
 
   var expected = false;
@@ -1828,7 +1828,7 @@ function all( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var vector = _.vector.From( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
   var gotBool = _.vector.all( vector, positiveNumber );
 
   var expected = false;
@@ -1840,7 +1840,7 @@ function all( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var vector = _.vector.From( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
   var gotBool = _.vector.all( vector, stringLengthThree );
 
   var expectedStr = true;
@@ -1852,7 +1852,7 @@ function all( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
+  var vector = _.vector.From( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
   var gotBool = _.vector.all( vector, stringLengthThree );
 
   var expected = false;
@@ -1864,7 +1864,7 @@ function all( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
   var gotBool = _.vector.all( vector, arrayLength );
 
   var expectedArr = true;
@@ -1876,7 +1876,7 @@ function all( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var vector = _.vector.From( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
   var gotBool = _.vector.all( vector, arrayLength );
 
   var expected = false;
@@ -1895,16 +1895,16 @@ function all( test )
   test.shouldThrowErrorSync( () => _.vector.all( undefined ));
   test.shouldThrowErrorSync( () => _.vector.all( 'string' ));
   test.shouldThrowErrorSync( () => _.vector.all( 2 ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong second argument'; //
 
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), undefined ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), _.vector.From( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong first argument'; //
 
@@ -2206,13 +2206,13 @@ function any( test )
   {
     return - 5 < src && src < 0 ; // numbers in range
   }
-  var vector = _.vector.from( [ -1, -1.5, -2 ] );
+  var vector = _.vector.From( [ -1, -1.5, -2 ] );
   var gotBool = _.vector.any( vector, inRange );
 
   var expected = true;
   test.identical( gotBool, expected );
 
-  var oldVector = _.vector.from( [ -1, -1.5, -2 ] )
+  var oldVector = _.vector.From( [ -1, -1.5, -2 ] )
   test.equivalent( oldVector, vector );
 
   test.case = 'Check if a number is > 0 - empty'; //
@@ -2221,7 +2221,7 @@ function any( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ ] );
+  var vector = _.vector.From( [ ] );
   var gotBool = _.vector.any( vector, positiveNumber );
 
   var expected = true;
@@ -2233,7 +2233,7 @@ function any( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ 0, 1, 0, 2, 1000, 307 ] );
+  var vector = _.vector.From( [ 0, 1, 0, 2, 1000, 307 ] );
   var gotBool = _.vector.any( vector, positiveNumber );
 
   var expected = true;
@@ -2245,7 +2245,7 @@ function any( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var vector = _.vector.From( [ 0, - 1, 0, 2, 1000, '307' ] );
   var gotBool = _.vector.any( vector, positiveNumber );
 
   var expected = true;
@@ -2257,7 +2257,7 @@ function any( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var vector = _.vector.From( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
   var gotBool = _.vector.any( vector, positiveNumber );
 
   var expected = false;
@@ -2269,7 +2269,7 @@ function any( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var vector = _.vector.From( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
   var gotBool = _.vector.any( vector, stringLengthThree );
 
   var expectedStr = true;
@@ -2281,7 +2281,7 @@ function any( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'Hi!', 'How', 'has', 'he', 'handled', 'his', 'huge', 'hair', '?' ] );
+  var vector = _.vector.From( [ 'Hi!', 'How', 'has', 'he', 'handled', 'his', 'huge', 'hair', '?' ] );
   var gotBool = _.vector.any( vector, stringLengthThree );
 
   var expectedStr = true;
@@ -2293,7 +2293,7 @@ function any( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'Hello!', 'How', 'are', 'you', '?' ] );
+  var vector = _.vector.From( [ 'Hello!', 'How', 'are', 'you', '?' ] );
   var gotBool = _.vector.any( vector, stringLengthThree );
 
   var expected = false;
@@ -2305,7 +2305,7 @@ function any( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
   var gotBool = _.vector.any( vector, arrayLength );
 
   var expectedArr = true;
@@ -2317,7 +2317,7 @@ function any( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3, 4 ] ] );
+  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3, 4 ] ] );
   var gotBool = _.vector.any( vector, arrayLength );
 
   var expectedArr = true;
@@ -2329,7 +2329,7 @@ function any( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var vector = _.vector.From( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
   var gotBool = _.vector.any( vector, arrayLength );
 
   var expected = false;
@@ -2348,16 +2348,16 @@ function any( test )
   test.shouldThrowErrorSync( () => _.vector.any( undefined ));
   test.shouldThrowErrorSync( () => _.vector.any( 'string' ));
   test.shouldThrowErrorSync( () => _.vector.any( 2 ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong second argument'; //
 
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), undefined ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), _.vector.From( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong first argument'; //
 
@@ -2645,13 +2645,13 @@ function none( test )
   {
     return - 5 < src && src < 0 ; // numbers in range
   }
-  var vector = _.vector.from( [ -1, -1.5, -2 ] );
+  var vector = _.vector.From( [ -1, -1.5, -2 ] );
   var gotBool = _.vector.none( vector, inRange );
 
   var expected = false;
   test.identical( gotBool, expected );
 
-  var oldVector = _.vector.from( [ -1, -1.5, -2 ] )
+  var oldVector = _.vector.From( [ -1, -1.5, -2 ] )
   test.equivalent( oldVector, vector );
 
   test.case = 'Check if a number is > 0 - empty'; //
@@ -2660,7 +2660,7 @@ function none( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ ] );
+  var vector = _.vector.From( [ ] );
   var gotBool = _.vector.none( vector, positiveNumber );
 
   var expected = true;
@@ -2672,7 +2672,7 @@ function none( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ 0, 1, 0, 2, 1000, 307 ] );
+  var vector = _.vector.From( [ 0, 1, 0, 2, 1000, 307 ] );
   var gotBool = _.vector.none( vector, positiveNumber );
 
   var expected = false;
@@ -2684,7 +2684,7 @@ function none( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var vector = _.vector.From( [ 0, - 1, 0, 2, 1000, '307' ] );
   var gotBool = _.vector.none( vector, positiveNumber );
 
   var expected = false;
@@ -2696,7 +2696,7 @@ function none( test )
   {
     return _.numberIs( src ) && src >= 0 ; // positive numbers
   }
-  var vector = _.vector.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var vector = _.vector.From( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
   var gotBool = _.vector.none( vector, positiveNumber );
 
   var expected = true;
@@ -2708,7 +2708,7 @@ function none( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var vector = _.vector.From( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
   var gotBool = _.vector.none( vector, stringLengthThree );
 
   var expectedStr = false;
@@ -2720,7 +2720,7 @@ function none( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'Hi!', 'How', 'has', 'he', 'handled', 'his', 'huge', 'hair', '?' ] );
+  var vector = _.vector.From( [ 'Hi!', 'How', 'has', 'he', 'handled', 'his', 'huge', 'hair', '?' ] );
   var gotBool = _.vector.none( vector, stringLengthThree );
 
   var expectedStr = false;
@@ -2732,7 +2732,7 @@ function none( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
   }
-  var vector = _.vector.from( [ 'Hello!', 'How', 'are', 'you', '?' ] );
+  var vector = _.vector.From( [ 'Hello!', 'How', 'are', 'you', '?' ] );
   var gotBool = _.vector.none( vector, stringLengthThree );
 
   var expected = true;
@@ -2744,7 +2744,7 @@ function none( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
   var gotBool = _.vector.none( vector, arrayLength );
 
   var expectedArr = false;
@@ -2756,7 +2756,7 @@ function none( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3, 4 ] ] );
+  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3, 4 ] ] );
   var gotBool = _.vector.none( vector, arrayLength );
 
   var expectedArr = false;
@@ -2768,7 +2768,7 @@ function none( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
   }
-  var vector = _.vector.from( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var vector = _.vector.From( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
   var gotBool = _.vector.none( vector, arrayLength );
 
   var expected = true;
@@ -2787,16 +2787,16 @@ function none( test )
   test.shouldThrowErrorSync( () => _.vector.none( undefined ));
   test.shouldThrowErrorSync( () => _.vector.none( 'string' ));
   test.shouldThrowErrorSync( () => _.vector.none( 2 ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong second argument'; //
 
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), undefined ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.from( [ 2, 3, 4 ] ), _.vector.from( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), undefined ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), _.vector.From( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong first argument'; //
 
@@ -2936,8 +2936,10 @@ function _isZero( test, r, t, array )
   test.case = 'scalar'; /* */
   var expected = f;
   var src = 3;
+  debugger;
   var got = _.avector[ r ]( src );
   test.identical( got, expected );
+  debugger;
   var expected = t;
   var src = 0;
   var got = _.avector[ r ]( src );
@@ -3486,7 +3488,7 @@ function sort( test )
     var sample1 = samples[ s ].slice();
     var sample2 = samples[ s ].slice();
     debugger;
-    _.vector.sort( _.vector.fromArray( sample1 ) );
+    _.vector.sort( _.vector.FromArray( sample1 ) );
     sample2.sort();
     test.identical( sample1, sample2 );
   }
@@ -3532,8 +3534,8 @@ function dot( test )
 
   test.case = 'subarray vectors'; /* */
 
-  var av = _.vector.fromSubArray( a, 1, 3 );
-  var bv = _.vector.fromSubArray( b, 1, 3 );
+  var av = _.vector.FromSubArray( a, 1, 3 );
+  var bv = _.vector.FromSubArray( b, 1, 3 );
   var expected = 74;
   var got = _.avector.dot( av, bv );
   test.identical( got, expected );
@@ -3793,13 +3795,13 @@ function subarray( test )
 
   test.case = 'subarray from vector with stride'; /* */
 
-  var v = vector.fromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  var v = vector.FromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   test.identical( v.subarray( 0, 2 ), vec([ 1, 2 ]) );
   test.identical( v.subarray( 1, 3 ), vec([ 2, 3 ]) );
 
   test.case = 'get empty subarray'; /* */
 
-  var v = vector.fromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  var v = vector.FromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   test.identical( v.subarray( 0, 0 ), vec([]) );
   test.identical( v.subarray( 2, 2 ), vec([]) );
   test.identical( v.subarray( 3, 3 ), vec([]) );
@@ -3822,13 +3824,13 @@ function subarray( test )
   var v = vec([ 1, 2, 3 ]);
   test.shouldThrowErrorSync( () => v.subarray( 10, 10, 10 ) );
 
-  // var v = vector.fromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  // var v = vector.FromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
   //
   // var v = vec([ 1, 2, 3 ]);
   // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
   //
-  // var v = vector.fromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  // var v = vector.FromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   // test.shouldThrowErrorSync( () => v.subarray( 10, 10 ) );
   //
   // var v = vec([ 1, 2, 3 ]);
@@ -4500,7 +4502,7 @@ function div( test )
 
   var got = _.avector.div( null, ins1, ins2 );
 
-  test.identical( got, [ 1/3, 2/4, 3/5 ] );
+  test.equivalent( got, [ 1/3, 2/4, 3/5 ] );
   test.identical( ins1, [ 1, 2, 3 ] );
   test.identical( ins2, [ 3, 4, 5 ] );
   test.is( got !== ins1 );
@@ -4513,7 +4515,7 @@ function div( test )
 
   var got = _.avector.div( null, ins1, ins2, ins3 );
 
-  test.identical( got, [ 1/3/10, 2/4/20, 3/5/30 ] );
+  test.equivalent( got, [ 1/3/10, 2/4/20, 3/5/30 ] );
   test.identical( ins1, [ 1, 2, 3 ] );
   test.identical( ins2, [ 3, 4, 5 ] );
   test.is( got !== ins1 );
@@ -4525,7 +4527,7 @@ function div( test )
 
   var got = _.avector.div( null, ins1, ins2 );
 
-  test.identical( got, [ 1/10, 2/10, 3/10 ] );
+  test.equivalent( got, [ 1/10, 2/10, 3/10 ] );
   test.identical( ins1, [ 1, 2, 3 ] );
   test.identical( ins2, 10 );
   test.is( got !== ins1 );
@@ -4538,7 +4540,7 @@ function div( test )
 
   var got = _.avector.div( null, ins1, ins2, ins3 );
 
-  test.identical( got, [ 1/10/10, 2/10/20, 3/10/30 ] );
+  test.equivalent( got, [ 1/10/10, 2/10/20, 3/10/30 ] );
   test.identical( ins1, [ 1, 2, 3 ] );
   test.identical( ins2, 10 );
   test.is( got !== ins1 );
@@ -4550,7 +4552,7 @@ function div( test )
 
   var got = _.avector.div( null, ins1, ins2 );
 
-  test.identical( got, [ 10/1, 10/2, 10/3 ] );
+  test.equivalent( got, [ 10/1, 10/2, 10/3 ] );
   test.identical( ins1, 10 );
   test.identical( ins2, [ 1, 2, 3 ] );
   test.is( got !== ins1 );
@@ -4563,7 +4565,7 @@ function div( test )
 
   var got = _.avector.div( null, ins1, ins2, ins3 );
 
-  test.identical( got, [ 10/1/10, 10/2/20, 10/3/30 ] );
+  test.equivalent( got, [ 10/1/10, 10/2/20, 10/3/30 ] );
   test.identical( ins1, 10 );
   test.identical( ins2, [ 1, 2, 3 ] );
   test.is( got !== ins1 );
@@ -4574,8 +4576,7 @@ function div( test )
   var ins2 = 10;
 
   var got = _.avector.div( null, ins1, ins2 );
-
-  test.identical( got, 1/10 );
+  test.equivalent( got, 1/10 );
   test.identical( ins1, 1 );
   test.identical( ins2, 10 );
   test.is( got !== ins1 );
@@ -4588,19 +4589,21 @@ function div( test )
 
   var got = _.avector.div( null, ins1, ins2, ins3 );
 
-  test.identical( got, 1/10/100 );
+  test.equivalent( got, 1/10/100 );
   test.identical( ins1, 1 );
   test.identical( ins2, 10 );
   test.is( got !== ins1 );
 
-  test.case = 'vector vector, first argument is dst'; ///
+  /* -- */
+
+  test.case = 'vector vector, first argument is dst';
 
   var ins1 = [ 1, 2, 3 ];
   var ins2 = [ 3, 4, 5 ];
 
   var got = _.avector.div( ins1, ins2 );
 
-  test.identical( got, [ 1/3, 2/4, 3/5 ] );
+  test.equivalent( got, [ 1/3, 2/4, 3/5 ] );
   test.identical( ins2, [ 3, 4, 5 ] );
   test.is( got === ins1 );
 
@@ -4612,7 +4615,7 @@ function div( test )
 
   var got = _.avector.div( ins1, ins2, ins3 );
 
-  test.identical( got, [ 1/3/10, 2/4/20, 3/5/30 ] );
+  test.equivalent( got, [ 1/3/10, 2/4/20, 3/5/30 ] );
   test.identical( ins2, [ 3, 4, 5 ] );
   test.is( got === ins1 );
 
@@ -4623,7 +4626,7 @@ function div( test )
 
   var got = _.avector.div( ins1, ins2 );
 
-  test.identical( got, [ 1/10, 2/10, 3/10 ] );
+  test.equivalent( got, [ 1/10, 2/10, 3/10 ] );
   test.identical( ins2, 10 );
   test.is( got === ins1 );
 
@@ -4635,7 +4638,7 @@ function div( test )
 
   var got = _.avector.div( ins1, ins2, ins3 );
 
-  test.identical( got, [ 1/10/10, 2/10/20, 3/10/30 ] );
+  test.equivalent( got, [ 1/10/10, 2/10/20, 3/10/30 ] );
   test.identical( ins2, 10 );
   test.is( got === ins1 );
 
@@ -4646,7 +4649,7 @@ function div( test )
 
   var got = _.avector.div( ins1, ins2 );
 
-  test.identical( got, [ 10/1, 10/2, 10/3 ] );
+  test.equivalent( got, [ 10/1, 10/2, 10/3 ] );
   test.identical( ins1, 10 );
   test.identical( ins2, [ 1, 2, 3 ] );
 
@@ -4658,7 +4661,7 @@ function div( test )
 
   var got = _.avector.div( ins1, ins2, ins3 );
 
-  test.identical( got, [ 10/1/10, 10/2/20, 10/3/30 ] );
+  test.equivalent( got, [ 10/1/10, 10/2/20, 10/3/30 ] );
   test.identical( ins1, 10 );
   test.identical( ins2, [ 1, 2, 3 ] );
 
@@ -4669,7 +4672,7 @@ function div( test )
 
   var got = _.avector.div( ins1, ins2 );
 
-  test.identical( got, 1/10 );
+  test.equivalent( got, 1/10 );
   test.identical( ins1, 1 );
   test.identical( ins2, 10 );
 
@@ -4681,7 +4684,7 @@ function div( test )
 
   var got = _.avector.div( ins1, ins2, ins3 );
 
-  test.identical( got, 1/10/100 );
+  test.equivalent( got, 1/10/100 );
   test.identical( ins1, 1 );
   test.identical( ins2, 10 );
 
@@ -6436,10 +6439,10 @@ function swap( test )
 
   test.case = 'swapVectors vectors'; /* */
 
-  var v1 = vector.from([ 1, 2, 3 ]);
-  var v2 = vector.from([ 10, 20, 30 ]);
-  var v1Expected = vector.from([ 10, 20, 30 ]);
-  var v2Expected = vector.from([ 1, 2, 3 ]);
+  var v1 = vector.From([ 1, 2, 3 ]);
+  var v2 = vector.From([ 10, 20, 30 ]);
+  var v1Expected = vector.From([ 10, 20, 30 ]);
+  var v2Expected = vector.From([ 1, 2, 3 ]);
 
   var r = vector.swapVectors( v1, v2 );
 
@@ -6475,8 +6478,8 @@ function swap( test )
 
   test.case = 'swapAtoms vectors'; /* */
 
-  var v1 = vector.from([ 1, 2, 3 ]);
-  var v1Expected = vector.from([ 3, 2, 1 ]);
+  var v1 = vector.From([ 1, 2, 3 ]);
+  var v1Expected = vector.From([ 3, 2, 1 ]);
   var r = vector.swapAtoms( v1, 0, 2 );
 
   test.is( r === v1 );
@@ -6506,19 +6509,19 @@ function swap( test )
   return;
 
   test.shouldThrowErrorSync( () => vector.swapVectors() );
-  test.shouldThrowErrorSync( () => vector.swapVectors( vector.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vector.swapVectors( vector.from([ 1, 2, 3 ]), vector.from([ 1, 2, 3 ]), vector.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vector.swapVectors( vector.from([ 1, 2, 3 ]), vector.from([ 1, 2 ]) ) );
-  test.shouldThrowErrorSync( () => vector.swapVectors( vector.from([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => vector.swapVectors( vector.From([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vector.swapVectors( vector.From([ 1, 2, 3 ]), vector.From([ 1, 2, 3 ]), vector.From([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vector.swapVectors( vector.From([ 1, 2, 3 ]), vector.From([ 1, 2 ]) ) );
+  test.shouldThrowErrorSync( () => vector.swapVectors( vector.From([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
   test.shouldThrowErrorSync( () => vector.swapVectors( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
 
   test.shouldThrowErrorSync( () => vector.swapAtoms() );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.from([ 1, 2, 3 ]), 0 ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.from([ 1, 2, 3 ]), 0, +3 ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.from([ 1, 2, 3 ]), 0, -1 ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.from([ 1, 2, 3 ]), '0', '1' ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.from([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), 0 ) );
+  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), 0, +3 ) );
+  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), 0, -1 ) );
+  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), '0', '1' ) );
+  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
 
 }
 
@@ -6606,42 +6609,42 @@ function assign( test )
 
   test.case = 'assign scalar by method';
 
-  var src = vector.fromArray([ 1, 2, 3 ]);
+  var src = vector.FromArray([ 1, 2, 3 ]);
   debugger;
   var got = src.assign( 0 );
-  var expected = vector.fromArray([ 0, 0, 0 ]);
+  var expected = vector.FromArray([ 0, 0, 0 ]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'assign scalar to null vector';
 
-  var src = vector.fromArray([]);
+  var src = vector.FromArray([]);
   var got = src.assign( 1 );
-  var expected = vector.fromArray([]);
+  var expected = vector.FromArray([]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'assign avector';
 
-  var src = vector.fromArray([ 1, 2, 3 ]);
+  var src = vector.FromArray([ 1, 2, 3 ]);
   var got = src.assign([ 4, 5, 6 ] );
-  var expected = vector.fromArray([ 4, 5, 6 ]);
+  var expected = vector.FromArray([ 4, 5, 6 ]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'assign multiple scalars';
 
-  var src = vector.fromArray([ 1, 2, 3 ]);
+  var src = vector.FromArray([ 1, 2, 3 ]);
   var got = src.assign([ 4, 5, 6 ]);
-  var expected = vector.fromArray([ 4, 5, 6 ]);
+  var expected = vector.FromArray([ 4, 5, 6 ]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'null avector';
 
-  var src = vector.fromArray([]);
+  var src = vector.FromArray([]);
   var got = src.assign();
-  var expected = vector.fromArray([]);
+  var expected = vector.FromArray([]);
   test.identical( expected, got );
   test.is( got === src );
 

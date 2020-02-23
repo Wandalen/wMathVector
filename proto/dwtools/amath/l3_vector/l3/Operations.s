@@ -85,8 +85,6 @@ function operationSinglerAdjust()
 
     if( operation.takingArguments === undefined )
     operation.takingArguments = [ 1, 1 ];
-    // else if( _.numberIs( operation.takingArguments ) )
-    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
     operation.homogeneous = true;
     operation.atomWise = true;
 
@@ -219,9 +217,9 @@ function operationsLogical1Adjust()
 {
   let logical1 = Self.logical1 = Self.logical1 || Object.create( null );
 
-  for( let dop in Routines.logical1 )
+  for( let name in Routines.logical1 )
   {
-    let operation = Routines.logical1[ dop ];
+    let operation = Routines.logical1[ name ];
 
     operationNormalize1( operation );
 
@@ -232,32 +230,17 @@ function operationsLogical1Adjust()
     if( operation.usingDstAsSrc === undefined )
     operation.usingDstAsSrc = false;
 
-    // if( _.numberIs( operation.takingArguments ) )
-    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
-    // else if( operation.takingArguments === undefined )
-    // operation.takingArguments = [ 2, 2 ];
-
     operation.homogeneous = true;
     operation.atomWise = true;
     operation.reducing = true;
     operation.zipping = false;
     operation.interruptible = false;
 
-    // operation.onAtom.operation = operation;
-    // if( !operation.name )
-    // operation.name = operation.onAtom.name;
-
-    // _.assert( _.mapIs( operation ) );
-    // _.assert( _.routineIs( operation.onAtom ) );
-    // // _.assert( _.arrayIs( operation.takingArguments ) );
-    // // _.assert( operation.takingArguments.length === 2 );
-    // _.assert( _.strDefined( operation.name ) );
-    // _.assert( operation.onAtom.length === 1 );
-    _.assert( !Self.logical1[ dop ] );
+    _.assert( !Self.logical1[ name ] );
 
     operationNormalize2( operation );
 
-    Self.logical1[ dop ] = operation;
+    Self.logical1[ name ] = operation;
   }
 
 }
@@ -346,18 +329,11 @@ function operationsLogical2Adjust()
     if( operation.usingDstAsSrc === undefined )
     operation.usingDstAsSrc = false;
 
-    // if( _.numberIs( operation.takingArguments ) )
-    // operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
-    // else if( operation.takingArguments === undefined )
-    // operation.takingArguments = [ 2, 2 ];
-
     operation.homogeneous = true;
     operation.atomWise = true;
     operation.reducing = true;
     operation.zipping = true;
     operation.interruptible = false;
-
-    // operation.onAtom.operation = operation;
 
     _.assert( !Self.logical2[ dop ] );
 
@@ -683,7 +659,7 @@ dop.onAtom = function clamp( o )
 
 dop.takingArguments = [ 3, 4 ];
 dop.returningNumber = true;
-dop.returningAtomic = true;
+dop.returningPrimitive = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
 dop.input = [ 'vw|s', 'vr|s*3' ];
@@ -709,7 +685,7 @@ dop.onAtom = function mix( o )
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
 dop.returningNumber = true;
-dop.returningAtomic = true;
+dop.returningPrimitive = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
 dop.input = [ 'vw|s', 'vr|s*3' ];
