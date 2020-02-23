@@ -16,8 +16,6 @@ let _arraySlice = _.longSlice;
 let _sqrt = Math.sqrt;
 let _abs = Math.abs;
 let _sqr = _.sqr;
-let _assertMapHasOnly = _.assertMapHasOnly;
-let _routineIs = _.routineIs;
 
 let Parent = null;
 let Namespace = Object.create( null );

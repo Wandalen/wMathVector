@@ -2,15 +2,12 @@ format: outwillfile-2.0
 root:
   - wMathVector.out
 consistency:
-  wMathVector.out.will.yml: &ref_0
-    hash: d0658666f920d30711d0911a0b14198f
-    size: 40990
-  ../.ex.will.yml: &ref_1
+  ../.ex.will.yml: &ref_0
     hash: 57b0603c43c674d078afd52f59b8f39a
     size: 2567
-  ../.im.will.yml: &ref_2
-    hash: 032ee3cb165214fef598de27c563d6ce
-    size: 5258
+  ../.im.will.yml: &ref_1
+    hash: 4db4d94a6d3f96304865a6715e9670f1
+    size: 5264
 module:
   wMathVector.out:
     about:
@@ -30,11 +27,11 @@ module:
         math and less constrained with storage format.
       enabled: 1
       version: 0.4.0
-      interpreters:
+      interpreters: &ref_2
         - njs >= 8.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords:
+      keywords: &ref_3
         - wTools
         - math
         - vector
@@ -42,12 +39,12 @@ module:
         - convolution
       license: MIT
       author: Kostiantyn Wandalen <wanalen@willbe.so>
-      contributors:
+      contributors: &ref_4
         - Kostiantyn Wandalen <wanalen@willbe.so>
         - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
         - Volodymyr M. <volodymyr.migdal@gmail.com>
       npm.name: wmathvector
-      npm.scripts:
+      npm.scripts: &ref_5
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -178,12 +175,14 @@ module:
           - ../proto/dwtools/amath/l3_vector
           - ../proto/dwtools/amath/l3_vector/Include.s
           - ../proto/dwtools/amath/l3_vector/l1
-          - ../proto/dwtools/amath/l3_vector/l1/Operations.s
+          - ../proto/dwtools/amath/l3_vector/l1/Core.s
           - ../proto/dwtools/amath/l3_vector/l3
-          - ../proto/dwtools/amath/l3_vector/l3/Routines.s
+          - ../proto/dwtools/amath/l3_vector/l3/Operations.s
           - ../proto/dwtools/amath/l3_vector/l5
-          - ../proto/dwtools/amath/l3_vector/l5/Array.s
-          - ../proto/dwtools/amath/l3_vector/l5/Methods.s
+          - ../proto/dwtools/amath/l3_vector/l5/Routines.s
+          - ../proto/dwtools/amath/l3_vector/l7
+          - ../proto/dwtools/amath/l3_vector/l7/Long.s
+          - ../proto/dwtools/amath/l3_vector/l7/Methods.s
           - ../proto/dwtools/amath/l3_vector.test
           - ../proto/dwtools/amath/l3_vector.test/Vector.test.s
           - ../proto/dwtools/amid
@@ -738,24 +737,6 @@ module:
           content: prime
         inherit:
           - files.transpile
-      exported.proto.export:
-        opts:
-          reflector: 'reflector::exported.proto.export*'
-        criterion:
-          generated: 1
-          content: proto
-          export: 1
-        inherit:
-          - files.reflect
-      exported.files.proto.export:
-        opts:
-          reflector: 'reflector::exported.files.proto.export*'
-        criterion:
-          generated: 1
-          content: proto
-          export: 1
-        inherit:
-          - files.reflect
     build:
       proto.export:
         steps:
@@ -844,9 +825,8 @@ module:
           content: proto
           export: 1
     consistency:
-      wMathVector.out.will.yml: *ref_0
-      ../.ex.will.yml: *ref_1
-      ../.im.will.yml: *ref_2
+      ../.ex.will.yml: *ref_0
+      ../.im.will.yml: *ref_1
   ../:
     about:
       name: wMathVector
@@ -865,26 +845,13 @@ module:
         math and less constrained with storage format.
       enabled: 1
       version: 0.4.0
-      interpreters:
-        - njs >= 8.0.0
-        - chrome >= 60.0.0
-        - firefox >= 60.0.0
-      keywords:
-        - wTools
-        - math
-        - vector
-        - dot product
-        - convolution
+      interpreters: *ref_2
+      keywords: *ref_3
       license: MIT
       author: Kostiantyn Wandalen <wanalen@willbe.so>
-      contributors:
-        - Kostiantyn Wandalen <wanalen@willbe.so>
-        - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
-        - Volodymyr M. <volodymyr.migdal@gmail.com>
+      contributors: *ref_4
       npm.name: wmathvector
-      npm.scripts:
-        test: wtest .run proto/**
-        docgen: wdocgen .build proto
+      npm.scripts: *ref_5
     path:
       module.willfiles:
         criterion:
@@ -1572,6 +1539,5 @@ module:
         hash: 57b0603c43c674d078afd52f59b8f39a
         size: 2567
       ../.im.will.yml:
-        hash: 032ee3cb165214fef598de27c563d6ce
-        size: 5258
-      wMathVector.out.will.yml: *ref_0
+        hash: 4db4d94a6d3f96304865a6715e9670f1
+        size: 5264
