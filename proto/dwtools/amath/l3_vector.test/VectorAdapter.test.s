@@ -17,8 +17,8 @@ if( typeof module !== 'undefined' )
 //
 
 var _ = _global_.wTools.withDefaultLong.Fx;
-var Space = _.Space;
-var src = _.vectorAdapter;
+var Space = _.Matrix;
+var vad = _.vectorAdapter;
 var vec = _.vectorAdapter.FromLong;
 var avector = _.avector;
 var sqrt = _.sqrt;
@@ -28,7 +28,7 @@ var Parent = wTester;
 _.assert( _.routineIs( sqrt ) );
 
 // --
-// test
+// iterator
 // --
 
 function map( test )
@@ -517,6 +517,22 @@ function none( test )
 }
 
 // --
+// etc
+// --
+
+function distributionRangeSummaryValue( test )
+{
+
+  test.case = 'basic';
+  var a = vad.From( new I32x([ 1, 2, 3 ]) );
+  var b = vad.From( new I32x([ 3, 4, 5 ]) );
+  var exp = [ 1, 5 ];
+  var got = vad.distributionRangeSummaryValue( a, b );
+  test.identical( got, exp );
+
+}
+
+// --
 // proto
 // --
 
@@ -539,13 +555,18 @@ var Self =
   tests :
   {
 
+    // iterator
+
     map,
     filter,
     while : _while,
-
     all,
     any,
     none,
+
+    // etc
+
+    distributionRangeSummaryValue,
 
   },
 

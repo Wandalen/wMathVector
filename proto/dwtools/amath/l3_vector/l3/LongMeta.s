@@ -118,7 +118,7 @@ function _routineLongWrap_functor( o )
     if( _.routineIs( arg ) )
     return arg;
 
-    // if( _hasLength( arg ) && ( !_.Space || !( arg instanceof _.Space ) ) )
+    // if( _hasLength( arg ) && ( !_.Matrix || !( arg instanceof _.Matrix ) ) )
     if( _.longIs( arg ) )
     return _.vectorAdapter.FromLong( arg );
     return arg;

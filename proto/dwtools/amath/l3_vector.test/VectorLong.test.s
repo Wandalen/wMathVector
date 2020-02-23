@@ -17,8 +17,8 @@ if( typeof module !== 'undefined' )
 //
 
 var _ = _global_.wTools.withDefaultLong.Fx;
-var Space = _.Space;
-var vector = _.vectorAdapter;
+var Space = _.Matrix;
+var vad = _.vectorAdapter;
 var vec = _.vectorAdapter.FromLong;
 var avector = _.avector;
 var sqrt = _.sqrt;
@@ -36,8 +36,8 @@ function comparator( test )
 
   test.case = 'trivial';
 
-  let v1 = vector.From([ 1, 2, 3 ]);
-  let v2 = vector.From([ 1, 2, 4 ]);
+  let v1 = vad.From([ 1, 2, 3 ]);
+  let v2 = vad.From([ 1, 2, 4 ]);
 
   let diff = _.entityDiff( v1, v2 );
   let expected =
@@ -69,11 +69,11 @@ function vectorAdapterIs( test )
   var n3 = arguments;
   var n4 = function( x ){};
 
-  var v1 = vector.FromLong([ 1, 2, 3 ]);
-  var v2 = vector.FromSubLong( [ -1, 1, 2, 3, -1 ], 1, 3 );
-  var v3 = vector.FromSubLongWithStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
-  var v4 = vector.FromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
-  var v5 = vector.From([ 1, 2, 3 ]);
+  var v1 = vad.FromLong([ 1, 2, 3 ]);
+  var v2 = vad.FromSubLong( [ -1, 1, 2, 3, -1 ], 1, 3 );
+  var v3 = vad.FromSubLongWithStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
+  var v4 = vad.FromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
+  var v5 = vad.From([ 1, 2, 3 ]);
 
   test.case = 'vectorAdapterIs'; /* */
 
@@ -166,15 +166,15 @@ function to( test )
 
   test.case = 'vector to array'; /* */
 
-  var v = vector.From([ 1, 2, 3 ]);
+  var v = vad.From([ 1, 2, 3 ]);
   var got = v.to( [].constructor );
   var expected = [ 1, 2, 3 ];
   test.identical( got, expected );
 
   test.case = 'vector to vector'; /* */
 
-  var v = vector.From([ 1, 2, 3 ]);
-  var got = v.to( vector.FromLong( [] ).constructor );
+  var v = vad.From([ 1, 2, 3 ]);
+  var got = v.to( vad.FromLong( [] ).constructor );
   test.is( got === v );
 
   test.case = 'bad arguments'; /* */
@@ -182,12 +182,12 @@ function to( test )
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to() );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( [], 1 ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( 1 ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( null ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( '1' ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( [], 1 ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to() );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( [], 1 ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( 1 ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( null ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( '1' ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( [], 1 ) );
 
 }
 
@@ -198,7 +198,7 @@ function toArray( test )
 
   test.case = 'trivial'; /* */
 
-  var v = vector.From([ 1, 2, 3 ]);
+  var v = vad.From([ 1, 2, 3 ]);
   var got = v.toArray();
   var expected = [ 1, 2, 3 ];
   test.identical( got, expected );
@@ -206,7 +206,7 @@ function toArray( test )
 
   test.case = 'trivial with FromSubLongWithStride'; /* */
 
-  var v = vector.FromSubLongWithStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
+  var v = vad.FromSubLongWithStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
   var got = v.toArray();
   var expected = [ 1, 2, 3, 4, 5 ];
   test.identical( got, expected );
@@ -214,7 +214,7 @@ function toArray( test )
 
   test.case = 'with custom offset'; /* */
 
-  var v = vector.FromSubLong( [ 1, 2, 3, 4, 5 ], 1 );
+  var v = vad.FromSubLong( [ 1, 2, 3, 4, 5 ], 1 );
   var got = v.toArray();
   var expected = [ 2, 3, 4, 5 ];
   test.identical( got, expected );
@@ -222,7 +222,7 @@ function toArray( test )
 
   test.case = 'with custom length'; /* */
 
-  var v = vector.FromSubLong( [ 1, 2, 3, 4, 5 ], 0, 4 );
+  var v = vad.FromSubLong( [ 1, 2, 3, 4, 5 ], 0, 4 );
   var got = v.toArray();
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
@@ -230,7 +230,7 @@ function toArray( test )
 
   test.case = 'with FromSubLongWithStride'; /* */
 
-  var v = vector.FromSubLongWithStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
+  var v = vad.FromSubLongWithStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
   var got = v.toArray();
   var expected = [ 2, 4 ];
   test.identical( got, expected );
@@ -239,13 +239,13 @@ function toArray( test )
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( 0 ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( undefined ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( null ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( _.vectorAdapter.From([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( '123' ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( function( a, b, c ){} ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( 0 ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( undefined ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( null ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( _.vectorAdapter.From([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( '123' ) );
+  test.shouldThrowErrorSync( () => vad.From([ 1, 2, 3 ]).to( function( a, b, c ){} ) );
 
 }
 
@@ -3277,13 +3277,13 @@ function subarray( test )
 
   test.case = 'subarray from vector with stride'; /* */
 
-  var v = vector.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  var v = vad.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   test.identical( v.subarray( 0, 2 ), vec([ 1, 2 ]) );
   test.identical( v.subarray( 1, 3 ), vec([ 2, 3 ]) );
 
   test.case = 'get empty subarray'; /* */
 
-  var v = vector.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  var v = vad.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   test.identical( v.subarray( 0, 0 ), vec([]) );
   test.identical( v.subarray( 2, 2 ), vec([]) );
   test.identical( v.subarray( 3, 3 ), vec([]) );
@@ -3306,13 +3306,13 @@ function subarray( test )
   var v = vec([ 1, 2, 3 ]);
   test.shouldThrowErrorSync( () => v.subarray( 10, 10, 10 ) );
 
-  // var v = vector.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  // var v = vad.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
   //
   // var v = vec([ 1, 2, 3 ]);
   // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
   //
-  // var v = vector.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  // var v = vad.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   // test.shouldThrowErrorSync( () => v.subarray( 10, 10 ) );
   //
   // var v = vec([ 1, 2, 3 ]);
@@ -4237,7 +4237,7 @@ function distributionRangeSummary( test )
 
   var ar = [ 1 ];
   var expected = { value : 1, index : 0, container : vec( ar ) };
-  var got = vector.reduceToMax( vec( ar ) );
+  var got = vad.reduceToMax( vec( ar ) );
   test.identical( got, expected );
 
   test.case = 'trivial'; /* */
@@ -5921,12 +5921,12 @@ function swap( test )
 
   test.case = 'swapVectors vectors'; /* */
 
-  var v1 = vector.From([ 1, 2, 3 ]);
-  var v2 = vector.From([ 10, 20, 30 ]);
-  var v1Expected = vector.From([ 10, 20, 30 ]);
-  var v2Expected = vector.From([ 1, 2, 3 ]);
+  var v1 = vad.From([ 1, 2, 3 ]);
+  var v2 = vad.From([ 10, 20, 30 ]);
+  var v1Expected = vad.From([ 10, 20, 30 ]);
+  var v2Expected = vad.From([ 1, 2, 3 ]);
 
-  var r = vector.swapVectors( v1, v2 );
+  var r = vad.swapVectors( v1, v2 );
 
   test.is( r === undefined );
   test.identical( v1, v1Expected );
@@ -5960,9 +5960,9 @@ function swap( test )
 
   test.case = 'swapAtoms vectors'; /* */
 
-  var v1 = vector.From([ 1, 2, 3 ]);
-  var v1Expected = vector.From([ 3, 2, 1 ]);
-  var r = vector.swapAtoms( v1, 0, 2 );
+  var v1 = vad.From([ 1, 2, 3 ]);
+  var v1Expected = vad.From([ 3, 2, 1 ]);
+  var r = vad.swapAtoms( v1, 0, 2 );
 
   test.is( r === v1 );
   test.identical( v1, v1Expected );
@@ -5990,20 +5990,20 @@ function swap( test )
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( () => vector.swapVectors() );
-  test.shouldThrowErrorSync( () => vector.swapVectors( vector.From([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vector.swapVectors( vector.From([ 1, 2, 3 ]), vector.From([ 1, 2, 3 ]), vector.From([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vector.swapVectors( vector.From([ 1, 2, 3 ]), vector.From([ 1, 2 ]) ) );
-  test.shouldThrowErrorSync( () => vector.swapVectors( vector.From([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => vector.swapVectors( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => vad.swapVectors() );
+  test.shouldThrowErrorSync( () => vad.swapVectors( vad.From([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.swapVectors( vad.From([ 1, 2, 3 ]), vad.From([ 1, 2, 3 ]), vad.From([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.swapVectors( vad.From([ 1, 2, 3 ]), vad.From([ 1, 2 ]) ) );
+  test.shouldThrowErrorSync( () => vad.swapVectors( vad.From([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => vad.swapVectors( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
 
-  test.shouldThrowErrorSync( () => vector.swapAtoms() );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), 0 ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), 0, +3 ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), 0, -1 ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), '0', '1' ) );
-  test.shouldThrowErrorSync( () => vector.swapAtoms( vector.From([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms() );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.From([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.From([ 1, 2, 3 ]), 0 ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.From([ 1, 2, 3 ]), 0, +3 ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.From([ 1, 2, 3 ]), 0, -1 ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.From([ 1, 2, 3 ]), '0', '1' ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.From([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
 
 }
 
@@ -6091,42 +6091,42 @@ function assign( test )
 
   test.case = 'assign scalar by method';
 
-  var src = vector.FromLong([ 1, 2, 3 ]);
+  var src = vad.FromLong([ 1, 2, 3 ]);
   debugger;
   var got = src.assign( 0 );
-  var expected = vector.FromLong([ 0, 0, 0 ]);
+  var expected = vad.FromLong([ 0, 0, 0 ]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'assign scalar to null vector';
 
-  var src = vector.FromLong([]);
+  var src = vad.FromLong([]);
   var got = src.assign( 1 );
-  var expected = vector.FromLong([]);
+  var expected = vad.FromLong([]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'assign avector';
 
-  var src = vector.FromLong([ 1, 2, 3 ]);
+  var src = vad.FromLong([ 1, 2, 3 ]);
   var got = src.assign([ 4, 5, 6 ] );
-  var expected = vector.FromLong([ 4, 5, 6 ]);
+  var expected = vad.FromLong([ 4, 5, 6 ]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'assign multiple scalars';
 
-  var src = vector.FromLong([ 1, 2, 3 ]);
+  var src = vad.FromLong([ 1, 2, 3 ]);
   var got = src.assign([ 4, 5, 6 ]);
-  var expected = vector.FromLong([ 4, 5, 6 ]);
+  var expected = vad.FromLong([ 4, 5, 6 ]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'null avector';
 
-  var src = vector.FromLong([]);
+  var src = vad.FromLong([]);
   var got = src.assign();
-  var expected = vector.FromLong([]);
+  var expected = vad.FromLong([]);
   test.identical( expected, got );
   test.is( got === src );
 
@@ -6207,7 +6207,7 @@ var Self =
 
   },
 
-  tests :
+  tests : /* qqq : move out routines which should be in VectorAdapter.test.s. ask how */
   {
 
     comparator,

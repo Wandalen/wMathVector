@@ -45,9 +45,9 @@ function to( cls )
   {
     return this;
   }
-  else if( _.constructorIsSpace( cls ) )
+  else if( _.constructorIsMatrix( cls ) )
   {
-    return _.Space.makeCol( this )
+    return _.Matrix.makeCol( this )
   }
 
   _.assert( 0, 'unknown class to convert to', _.strType( cls ) );

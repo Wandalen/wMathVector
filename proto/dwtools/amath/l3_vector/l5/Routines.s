@@ -1947,7 +1947,6 @@ dop.modifying = false;
 
 function reduceToMaxValue()
 {
-  debugger;
   let result = this.reduceToMax.apply( this, arguments );
   return result.value;
 }
@@ -1966,7 +1965,7 @@ dop.modifying = false;
 
 function distributionRangeSummaryValue()
 {
-  debugger;
+  _.assert( _.routineIs( this.distributionRangeSummary ) );
   let result = this.distributionRangeSummary.apply( this, arguments );
   return [ result.min.value, result.max.value ];
 }
