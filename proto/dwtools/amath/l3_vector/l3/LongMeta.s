@@ -1,38 +1,24 @@
-(function _Long_s_() {
+(function _LongMeta_s_() {
 
 'use strict';
 
 let _ = _global_.wTools;
-let _row = _.vector;
 let _min = Math.min;
 let _max = Math.max;
 let _arraySlice = Array.prototype.slice;
 let _sqrt = Math.sqrt;
 let _sqr = _.sqr;
 
-let Parent = null;
-let Self = Object.create( null );
+let meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
 
 // --
 // declare
 // --
 
-let Proto =
-{
-}
-
-_.accessor.forbid
-({
-  object : Self,
-  names : _.vector.Forbidden,
-});
-
-//
-
-function LongWrapper_functor( o )
+function _routineLongWrap_functor( o )
 {
 
-  o = _.routineOptions( LongWrapper_functor, arguments );
+  o = _.routineOptions( _routineLongWrap_functor, arguments );
 
   if( _.objectIs( o.routine ) )
   {
@@ -41,7 +27,7 @@ function LongWrapper_functor( o )
     {
       let optionsForWrapper = _.mapExtend( null, o );
       optionsForWrapper.routine = o.routine[ r ];
-      result[ r ] = LongWrapper_functor( optionsForWrapper );
+      result[ r ] = _routineLongWrap_functor( optionsForWrapper );
     }
     return result;
   }
@@ -64,7 +50,7 @@ function LongWrapper_functor( o )
   let takingVectorsOnly = op.takingVectorsOnly;
   let returningSelf = op.returningSelf;
   let returningNew = op.returningNew;
-  let returningArray = op.returningArray;
+  let returningLong = op.returningLong;
   let modifying = op.modifying;
   let notMethod = op.notMethod;
 
@@ -77,7 +63,7 @@ function LongWrapper_functor( o )
   _.assert( _.boolIs( takingVectorsOnly ) );
   _.assert( _.boolIs( returningSelf ) );
   _.assert( _.boolIs( returningNew ) );
-  _.assert( _.boolIs( returningArray ) );
+  _.assert( _.boolIs( returningLong ) );
   _.assert( _.boolIs( modifying ) );
 
   // _.assert( _.routineIs( onReturn ) );
@@ -94,16 +80,16 @@ function LongWrapper_functor( o )
   takingVectors = Object.freeze( takingVectors.slice() );
   let hasOptionalVectors = takingVectors[ 0 ] !== takingVectors[ 1 ];
 
-  vectorWrap.notMethod = notMethod;
-  vectorWrap.operation = op;
+  longWrap.notMethod = notMethod;
+  longWrap.operation = op;
 
-  return vectorWrap;
+  return longWrap;
 
   /* */
 
   function end( result, theRoutine )
   {
-    let op = theRoutine.operation; debugger;
+    let op = theRoutine.operation;
 
     if( op.returningPrimitive && _.primitiveIs( result ) )
     {
@@ -117,7 +103,7 @@ function LongWrapper_functor( o )
     {
       return result.toArray();
     }
-    else if( op.returningArray )
+    else if( op.returningLong )
     {
       _.assert( _.arrayIs( result ) || _.bufferTypedIs( result ), 'unexpected' );
       return result;
@@ -134,13 +120,13 @@ function LongWrapper_functor( o )
 
     // if( _hasLength( arg ) && ( !_.Space || !( arg instanceof _.Space ) ) )
     if( _.longIs( arg ) )
-    return _.vector.FromArray( arg );
+    return _.vectorAdapter.FromLong( arg );
     return arg;
   }
 
   /* */
 
-  function vectorWrap()
+  function longWrap()
   {
     let l = arguments.length + usingThisAsFirstArgument;
     let args = new Array( l );
@@ -173,71 +159,41 @@ function LongWrapper_functor( o )
     for( ; d < optionalLength ; d++, s++ )
     args[ d ] = arguments[ s ];
 
-    let result = theRoutine.apply( _.vector, args );
+    let result = theRoutine.apply( _.vectorAdapter, args );
 
     return end.call( this, result, theRoutine );
   }
 
 }
 
-LongWrapper_functor.defaults =
+_routineLongWrap_functor.defaults =
 {
   usingThisAsFirstArgument : null,
   routine : null,
-  // onReturn : null,
 }
 
-var VectorExtension =
-{
-  LongWrapper_functor,
-}
+//
 
-_.mapExtend( _.vector, VectorExtension );
-
-// --
-// row wrap
-// --
-
-let routines = _row.RoutinesMathematical;
-for( let r in routines )
+function _routinesLongWrap_functor()
 {
 
-  if( Self[ r ] )
+  let routines = _.vectorAdapter._routinesMathematical;
+  for( let r in routines )
   {
-    debugger;
-    continue;
+
+    if( _.mapOwnKey( _.avector, r ) )
+    {
+      debugger;
+      continue;
+    }
+
+    _.avector[ r ] = meta._routineLongWrap_functor
+    ({
+      routine : routines[ r ],
+      usingThisAsFirstArgument : 0,
+    });
+
   }
-
-  // function onReturn( result, theRoutine )
-  // {
-  //   let op = theRoutine.operation; debugger;
-  //
-  //   if( op.returningPrimitive && _.primitiveIs( result ) )
-  //   {
-  //     return result;
-  //   }
-  //   else if( op.returningSelf )
-  //   {
-  //     return result.toArray();
-  //   }
-  //   else if( op.returningNew && _.vectorAdapterIs( result ) )
-  //   {
-  //     return result.toArray();
-  //   }
-  //   else if( op.returningArray )
-  //   {
-  //     _.assert( _.arrayIs( result ) || _.bufferTypedIs( result ), 'unexpected' );
-  //     return result;
-  //   }
-  //   else return result;
-  // }
-
-  Proto[ r ] = _.vector.LongWrapper_functor
-  ({
-    routine : routines[ r ],
-    // onReturn,
-    usingThisAsFirstArgument : 0,
-  });
 
 }
 
@@ -245,23 +201,12 @@ for( let r in routines )
 // declare extension
 // --
 
-Object.setPrototypeOf( Self, wTools );
+let MetaExtension =
+{
+  _routineLongWrap_functor,
+  _routinesLongWrap_functor,
+}
 
-_.mapExtend( Self, Proto );
-
-_.avector = Self;
-
-_.LongDescriptorProducer.applyTo( Self, 'Fx' );
-_.assert( _.mapOwnKey( _.avector, 'withDefaultLong' ) );
-
-_.assert( _.objectIs( _.avector.withDefaultLong ) );
-_.assert( _.objectIs( _.avector.withDefaultLong.Array ) );
-_.assert( _.objectIs( _.avector.withDefaultLong.F32x ) );
-// _.assert( _.objectIs( _.avector.withDefaultLong.Fx ) );
-
-_.assert( Object.getPrototypeOf( Self ) === wTools );
-_.assert( _.objectIs( _row.RoutinesMathematical ) );
-_.assert( !_.avector.isValid );
-_.assert( _.routineIs( _.avector.allFinite ) );
+_.mapExtend( _.vectorAdapter._meta, MetaExtension );
 
 })();

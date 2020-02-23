@@ -1,4 +1,4 @@
-( function _Vector_test_s_( ) {
+( function _VectorLong_test_s_( ) {
 
 'use strict';
 
@@ -18,8 +18,8 @@ if( typeof module !== 'undefined' )
 
 var _ = _global_.wTools.withDefaultLong.Fx;
 var Space = _.Space;
-var vector = _.vector;
-var vec = _.vector.FromArray;
+var vector = _.vectorAdapter;
+var vec = _.vectorAdapter.FromLong;
 var avector = _.avector;
 var sqrt = _.sqrt;
 
@@ -69,10 +69,10 @@ function vectorAdapterIs( test )
   var n3 = arguments;
   var n4 = function( x ){};
 
-  var v1 = vector.FromArray([ 1, 2, 3 ]);
-  var v2 = vector.FromSubArray( [ -1, 1, 2, 3, -1 ], 1, 3 );
-  var v3 = vector.FromSubArrayWithStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
-  var v4 = vector.FromArrayWithStride( [ 1, -1, 2, -1, 3 ], 2 );
+  var v1 = vector.FromLong([ 1, 2, 3 ]);
+  var v2 = vector.FromSubLong( [ -1, 1, 2, 3, -1 ], 1, 3 );
+  var v3 = vector.FromSubLongWithStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
+  var v4 = vector.FromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
   var v5 = vector.From([ 1, 2, 3 ]);
 
   test.case = 'vectorAdapterIs'; /* */
@@ -161,39 +161,8 @@ function allInt( test )
 
 //
 
-// function allZero( test )
-// {
-//
-//   test.identical( _.avector.allZero([ 1, 2, 3 ]), false );
-//   test.identical( _.avector.allZero([ 0, 0, 0 ]), true );
-//   test.identical( _.avector.allZero([ 0, 0, 1 ]), false );
-//
-//   test.identical( _.avector.allZero([ 0, 3, NaN ]), false );
-//   test.identical( _.avector.allZero([ 0, NaN, 3 ]), false );
-//   test.identical( _.avector.allZero([ 0, 3, -Infinity ]), false );
-//   test.identical( _.avector.allZero([ 0, +Infinity, 3 ]), false );
-//
-//   test.identical( _.avector.allZero([ 1.1, 0, 1 ]), false );
-//   test.identical( _.avector.allZero([ 1, 0, 1.1 ]), false );
-//
-// }
-
-//
-
 function to( test )
 {
-
-  if( Space )
-  {
-
-    test.case = 'vector to space'; /* */
-
-    var v = vector.From([ 1, 2, 3 ]);
-    var got = v.to( Space );
-    var expected = Space.makeCol([ 1, 2, 3 ]);
-    test.identical( got, expected );
-
-  }
 
   test.case = 'vector to array'; /* */
 
@@ -205,7 +174,7 @@ function to( test )
   test.case = 'vector to vector'; /* */
 
   var v = vector.From([ 1, 2, 3 ]);
-  var got = v.to( vector.FromArray( [] ).constructor );
+  var got = v.to( vector.FromLong( [] ).constructor );
   test.is( got === v );
 
   test.case = 'bad arguments'; /* */
@@ -235,9 +204,9 @@ function toArray( test )
   test.identical( got, expected );
   test.is( v._vectorBuffer === got );
 
-  test.case = 'trivial with fromSubArrayWithStride'; /* */
+  test.case = 'trivial with FromSubLongWithStride'; /* */
 
-  var v = vector.FromSubArrayWithStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
+  var v = vector.FromSubLongWithStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
   var got = v.toArray();
   var expected = [ 1, 2, 3, 4, 5 ];
   test.identical( got, expected );
@@ -245,7 +214,7 @@ function toArray( test )
 
   test.case = 'with custom offset'; /* */
 
-  var v = vector.FromSubArray( [ 1, 2, 3, 4, 5 ], 1 );
+  var v = vector.FromSubLong( [ 1, 2, 3, 4, 5 ], 1 );
   var got = v.toArray();
   var expected = [ 2, 3, 4, 5 ];
   test.identical( got, expected );
@@ -253,15 +222,15 @@ function toArray( test )
 
   test.case = 'with custom length'; /* */
 
-  var v = vector.FromSubArray( [ 1, 2, 3, 4, 5 ], 0, 4 );
+  var v = vector.FromSubLong( [ 1, 2, 3, 4, 5 ], 0, 4 );
   var got = v.toArray();
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
   test.is( v._vectorBuffer !== got );
 
-  test.case = 'with fromSubArrayWithStride'; /* */
+  test.case = 'with FromSubLongWithStride'; /* */
 
-  var v = vector.FromSubArrayWithStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
+  var v = vector.FromSubLongWithStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
   var got = v.toArray();
   var expected = [ 2, 4 ];
   test.identical( got, expected );
@@ -274,13 +243,192 @@ function toArray( test )
   test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( undefined ) );
   test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( null ) );
   test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( _.vector.From([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( _.vectorAdapter.From([ 1, 2, 3 ]) ) );
   test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( '123' ) );
   test.shouldThrowErrorSync( () => vector.From([ 1, 2, 3 ]).to( function( a, b, c ){} ) );
 
 }
 
 //
+
+function map( test )
+{
+
+  /* */
+
+  test.case = 'dst = src';
+
+  function inRange( src )
+  {
+    return - 5 < src && src < 0 ; /* numbers in range */
+  }
+  var vector = _.avector.Make( [ -1, -1.5, -2 ] );
+  var gotBool = _.avector.map( vector, inRange );
+
+  var expected = _.avector.Make( [ true, true, true ] );
+  test.identical( gotBool, expected );
+  test.is( gotBool === vector );
+
+  /* */
+
+  test.case = 'dst = null';
+
+  function inRange( src )
+  {
+    return - 5 < src && src < 0 ; /* numbers in range */
+  }
+  var vector = _.avector.Make( [ -1, -1.5, -2 ] );
+  var gotBool = _.avector.map( null, vector, inRange );
+
+  var expected = _.avector.Make( [ 1, 1, 1 ] );
+  test.identical( gotBool, expected );
+
+  var expected = _.avector.Make( [ -1, -1.5, -2 ] )
+  test.equivalent( expected, vector );
+
+  /* */
+
+  test.case = 'Check if a number is > 0 - empty';
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
+  }
+  var vector = _.avector.Make( [ ] );
+  var gotBool = _.avector.map( vector, positiveNumber );
+
+  var expected = _.avector.Make( [ ] );
+  test.identical( gotBool, expected );
+
+  /* */
+
+  test.case = 'Check if a number is > 0 - true';
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
+  }
+  var vector = _.avector.Make( [ 0, 1, 0, 2, 1000, 307 ] );
+  var gotBool = _.avector.map( vector, positiveNumber );
+
+  var expected = _.avector.Make( [ true, true, true, true, true, true ] );
+  test.identical( gotBool, expected );
+
+  /* */
+
+  test.case = 'Check if a number is > 0 - false some';
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
+  }
+  var vector = _.avector.Make( [ 0, - 1, 0, 2, 1000 ] );
+  var gotBool = _.avector.map( vector, positiveNumber );
+
+  var expected = _.avector.Make( [ true, false, true, true, true ] );
+  test.identical( gotBool, expected );
+
+  /* */
+
+  test.case = 'Check if a number is > 0 - false none';
+
+  function positiveNumber( src )
+  {
+    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
+  }
+  var vector = _.avector.Make( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var gotBool = _.avector.map( vector, positiveNumber );
+
+  var expected = _.avector.Make( [ false, false, false, true, true ] );
+  test.identical( gotBool, expected );
+
+  /* */
+
+  test.case = 'single argument';
+
+  var dst = _.avector.Make( [ 2, 3, 4 ] );
+  var got = _.avector.map( dst );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst and undefined';
+
+  var dst = _.avector.Make( [ 2, 3, 4 ] );
+  var got = _.avector.map( dst, undefined );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst is array';
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  var dst = [ 0, 1, 2, 3 ];
+  var got = _.avector.map( dst, onEvaluate );
+  test.is( got === dst );
+  var exp = [ false, false, false, true ];
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'dst is typed array';
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  var dst = I8x.from([ 0, 1, 2, 3 ]);
+  var got = _.avector.map( dst, onEvaluate );
+  test.is( got === dst );
+  var exp = I8x.from([ false, false, false, true ]);
+  test.identical( got, exp );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'Only one argument';
+
+  test.shouldThrowErrorSync( () => _.avector.map( ));
+  test.shouldThrowErrorSync( () => _.avector.map( null ));
+  test.shouldThrowErrorSync( () => _.avector.map( NaN ));
+  test.shouldThrowErrorSync( () => _.avector.map( undefined ));
+  test.shouldThrowErrorSync( () => _.avector.map( 'string' ));
+  test.shouldThrowErrorSync( () => _.avector.map( 2 ));
+
+  /* */
+
+  test.case = 'Wrong second argument';
+
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), _.avector.Make( [ 2, 3, 4 ] ) ));
+
+  /* */
+
+  test.case = 'Wrong first argument';
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.avector.map( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.avector.map( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.avector.map( 'string', onEvaluate ));
+
+}
+
+// --
+//
+// --
 
 function _isIdentical( test, r, t, array )
 {
@@ -289,11 +437,9 @@ function _isIdentical( test, r, t, array )
   /* */
 
   test.case = ' trivial'; /* */
-  debugger;
   var expected = array( f, f, t );
-  debugger;
   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected ); debugger;
+  test.identical( got, expected );
   var expected = array( t, f, f );
   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
@@ -309,7 +455,9 @@ function _isIdentical( test, r, t, array )
 
   test.case = 'scalar and scalar'; /* */
   var expected = t;
+  debugger;
   var got = _.avector[ r ]( 3, 3 );
+  debugger;
   test.identical( got, expected );
   var expected = f;
   var got = _.avector[ r ]( 3, 4 );
@@ -1081,160 +1229,6 @@ function isGreaterEqual( test )
 
 //
 
-function is( test )
-{
-
-  test.case = 'Source vector remains unchanged'; //
-
-  function inRange( src )
-  {
-    return - 5 < src && src < 0 ; // numbers in range
-  }
-  var vector = _.vector.From( [ -1, -1.5, -2 ] );
-  var gotBool = _.vector.is( vector, inRange );
-
-  var expected = _.vector.From( [ true, true, true ] );
-  test.identical( gotBool, expected );
-
-  var oldVector = _.vector.From( [ -1, -1.5, -2 ] )
-  test.equivalent( oldVector, vector );
-
-  test.case = 'Check if a number is > 0 - empty'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ ] );
-  var gotBool = _.vector.is( vector, positiveNumber );
-
-  var expected = _.vector.From( [ ] );
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - true'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ 0, 1, 0, 2, 1000, 307 ] );
-  var gotBool = _.vector.is( vector, positiveNumber );
-
-  var expected = _.vector.From( [ true, true, true, true, true, true ] );
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - false some'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ 0, - 1, 0, 2, 1000, '307' ] );
-  var gotBool = _.vector.is( vector, positiveNumber );
-
-  var expected = _.vector.From( [ true, false, true, true, true, false ] );
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - false none'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
-  var gotBool = _.vector.is( vector, positiveNumber );
-
-  var expected = _.vector.From( [ false, false, false, false, false ] );
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a string starts with h - true'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
-  var gotBool = _.vector.is( vector, stringLengthThree );
-
-  var expectedStr = _.vector.From( [ true, true, true, true, true, true, true, true ] );
-  test.identical( gotBool, expectedStr );
-
-  test.case = 'Check if a string starts with h - false'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
-  var gotBool = _.vector.is( vector, stringLengthThree );
-
-  var expected = _.vector.From( [ false, true, false, false, false ] );
-  test.identical( gotBool, expected );
-
-  test.case = 'Check an array´s length - true'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
-  var gotBool = _.vector.is( vector, arrayLength );
-
-  var expectedArr = _.vector.From( [ true, true ] );
-  test.identical( gotBool, expectedArr );
-
-  test.case = 'Check an array´s length - false'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
-  var gotBool = _.vector.is( vector, arrayLength );
-
-  var expected =  _.vector.From( [ false, false ] );
-  test.identical( gotBool, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vector.is( ));
-  test.shouldThrowErrorSync( () => _.vector.is( null ));
-  test.shouldThrowErrorSync( () => _.vector.is( NaN ));
-  test.shouldThrowErrorSync( () => _.vector.is( undefined ));
-  test.shouldThrowErrorSync( () => _.vector.is( 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.is( 2 ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong second argument'; //
-
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), undefined ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vector.is( _.vector.From( [ 2, 3, 4 ] ), _.vector.From( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vector.is( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.is( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.is( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.is( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.is( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
-}
-
-//
-
 function logical2ArgsZipperWithBadArguments( test, r, t, array )
 {
   var f = !t;
@@ -1275,12 +1269,12 @@ function logical2ArgsZipperWithBadArguments( test, r, t, array )
   /*
   */
 
-  for( r in _.vector )
+  for( r in _.vectorAdapter )
   {
-    if( !_.routineIs( _.vector[ r ] ) )
+    if( !_.routineIs( _.vectorAdapter[ r ] ) )
     continue;
 
-    var op = _.vector[ r ].operation;
+    var op = _.vectorAdapter[ r ].operation;
 
     if( r === 'isGreaterEqual' )
     debugger;
@@ -1767,161 +1761,6 @@ allGreater.timeOut = 150000;
 
 //
 
-function all( test )
-{
-
-  test.case = 'Source vector remains unchanged'; //
-
-  function inRange( src )
-  {
-    debugger;
-    return - 5 < src && src < 0 ; // numbers in range
-  }
-  var vector = _.vector.From( [ -1, -1.5, -2 ] );
-  var gotBool = _.vector.all( vector, inRange );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  var oldVector = _.vector.From( [ -1, -1.5, -2 ] )
-  test.equivalent( oldVector, vector );
-
-  test.case = 'Check if a number is > 0 - empty'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ ] );
-  var gotBool = _.vector.all( vector, positiveNumber );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - true'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ 0, 1, 0, 2, 1000, 307 ] );
-  var gotBool = _.vector.all( vector, positiveNumber );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - false some'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ 0, - 1, 0, 2, 1000, '307' ] );
-  var gotBool = _.vector.all( vector, positiveNumber );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - false none'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
-  var gotBool = _.vector.all( vector, positiveNumber );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a string starts with h - true'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
-  var gotBool = _.vector.all( vector, stringLengthThree );
-
-  var expectedStr = true;
-  test.identical( gotBool, expectedStr );
-
-  test.case = 'Check if a string starts with h - false'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
-  var gotBool = _.vector.all( vector, stringLengthThree );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check an array´s length - true'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
-  var gotBool = _.vector.all( vector, arrayLength );
-
-  var expectedArr = true;
-  test.identical( gotBool, expectedArr );
-
-  test.case = 'Check an array´s length - false'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
-  var gotBool = _.vector.all( vector, arrayLength );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vector.all( ));
-  test.shouldThrowErrorSync( () => _.vector.all( null ));
-  test.shouldThrowErrorSync( () => _.vector.all( NaN ));
-  test.shouldThrowErrorSync( () => _.vector.all( undefined ));
-  test.shouldThrowErrorSync( () => _.vector.all( 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.all( 2 ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong second argument'; //
-
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), undefined ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vector.all( _.vector.From( [ 2, 3, 4 ] ), _.vector.From( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vector.all( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.all( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.all( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.all( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.all( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
-}
-
-//
-
 function _anyNotIdentical( test, r, t, array )
 {
   var f = !t;
@@ -2197,184 +2036,6 @@ anyGreater.timeOut = 15000;
 
 //
 
-function any( test )
-{
-
-  test.case = 'Source vector remains unchanged'; //
-
-  function inRange( src )
-  {
-    return - 5 < src && src < 0 ; // numbers in range
-  }
-  var vector = _.vector.From( [ -1, -1.5, -2 ] );
-  var gotBool = _.vector.any( vector, inRange );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  var oldVector = _.vector.From( [ -1, -1.5, -2 ] )
-  test.equivalent( oldVector, vector );
-
-  test.case = 'Check if a number is > 0 - empty'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ ] );
-  var gotBool = _.vector.any( vector, positiveNumber );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - true all'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ 0, 1, 0, 2, 1000, 307 ] );
-  var gotBool = _.vector.any( vector, positiveNumber );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - true some'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ 0, - 1, 0, 2, 1000, '307' ] );
-  var gotBool = _.vector.any( vector, positiveNumber );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - false none'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
-  var gotBool = _.vector.any( vector, positiveNumber );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a string starts with h - true all'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
-  var gotBool = _.vector.any( vector, stringLengthThree );
-
-  var expectedStr = true;
-  test.identical( gotBool, expectedStr );
-
-  test.case = 'Check if a string starts with h - true some'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'Hi!', 'How', 'has', 'he', 'handled', 'his', 'huge', 'hair', '?' ] );
-  var gotBool = _.vector.any( vector, stringLengthThree );
-
-  var expectedStr = true;
-  test.identical( gotBool, expectedStr );
-
-  test.case = 'Check if a string starts with h - false none'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'Hello!', 'How', 'are', 'you', '?' ] );
-  var gotBool = _.vector.any( vector, stringLengthThree );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check an array´s length - true all'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
-  var gotBool = _.vector.any( vector, arrayLength );
-
-  var expectedArr = true;
-  test.identical( gotBool, expectedArr );
-
-  test.case = 'Check an array´s length - true some'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3, 4 ] ] );
-  var gotBool = _.vector.any( vector, arrayLength );
-
-  var expectedArr = true;
-  test.identical( gotBool, expectedArr );
-
-  test.case = 'Check an array´s length - false none'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
-  var gotBool = _.vector.any( vector, arrayLength );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vector.any( ));
-  test.shouldThrowErrorSync( () => _.vector.any( null ));
-  test.shouldThrowErrorSync( () => _.vector.any( NaN ));
-  test.shouldThrowErrorSync( () => _.vector.any( undefined ));
-  test.shouldThrowErrorSync( () => _.vector.any( 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.any( 2 ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong second argument'; //
-
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), undefined ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vector.any( _.vector.From( [ 2, 3, 4 ] ), _.vector.From( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vector.any( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.any( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.any( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.any( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.any( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
-}
-
-//
-
 function noneIdentical( test )
 {
   this._noneIdentical( test, 'noneIdentical', true, function()
@@ -2636,184 +2297,6 @@ noneGreater.timeOut = 15000;
 
 //
 
-function none( test )
-{
-
-  test.case = 'Source vector remains unchanged'; //
-
-  function inRange( src )
-  {
-    return - 5 < src && src < 0 ; // numbers in range
-  }
-  var vector = _.vector.From( [ -1, -1.5, -2 ] );
-  var gotBool = _.vector.none( vector, inRange );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  var oldVector = _.vector.From( [ -1, -1.5, -2 ] )
-  test.equivalent( oldVector, vector );
-
-  test.case = 'Check if a number is > 0 - empty'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ ] );
-  var gotBool = _.vector.none( vector, positiveNumber );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - false all'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ 0, 1, 0, 2, 1000, 307 ] );
-  var gotBool = _.vector.none( vector, positiveNumber );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - false some'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ 0, - 1, 0, 2, 1000, '307' ] );
-  var gotBool = _.vector.none( vector, positiveNumber );
-
-  var expected = false;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a number is > 0 - true none'; //
-
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; // positive numbers
-  }
-  var vector = _.vector.From( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
-  var gotBool = _.vector.none( vector, positiveNumber );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check if a string starts with h - false all'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
-  var gotBool = _.vector.none( vector, stringLengthThree );
-
-  var expectedStr = false;
-  test.identical( gotBool, expectedStr );
-
-  test.case = 'Check if a string starts with h - false some'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'Hi!', 'How', 'has', 'he', 'handled', 'his', 'huge', 'hair', '?' ] );
-  var gotBool = _.vector.none( vector, stringLengthThree );
-
-  var expectedStr = false;
-  test.identical( gotBool, expectedStr );
-
-  test.case = 'Check if a string starts with h - true none'; //
-
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; // str starts with H
-  }
-  var vector = _.vector.From( [ 'Hello!', 'How', 'are', 'you', '?' ] );
-  var gotBool = _.vector.none( vector, stringLengthThree );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  test.case = 'Check an array´s length - false all'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
-  var gotBool = _.vector.none( vector, arrayLength );
-
-  var expectedArr = false;
-  test.identical( gotBool, expectedArr );
-
-  test.case = 'Check an array´s length - false some'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3, 4 ] ] );
-  var gotBool = _.vector.none( vector, arrayLength );
-
-  var expectedArr = false;
-  test.identical( gotBool, expectedArr );
-
-  test.case = 'Check an array´s length - true none'; //
-
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; // arrays of length 4
-  }
-  var vector = _.vector.From( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
-  var gotBool = _.vector.none( vector, arrayLength );
-
-  var expected = true;
-  test.identical( gotBool, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vector.none( ));
-  test.shouldThrowErrorSync( () => _.vector.none( null ));
-  test.shouldThrowErrorSync( () => _.vector.none( NaN ));
-  test.shouldThrowErrorSync( () => _.vector.none( undefined ));
-  test.shouldThrowErrorSync( () => _.vector.none( 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.none( 2 ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong second argument'; //
-
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), undefined ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vector.none( _.vector.From( [ 2, 3, 4 ] ), _.vector.From( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vector.none( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.none( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.none( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.none( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vector.none( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
-}
-
-//
-
 function logical2ArgsReducerWithBadArguments( test, r, t, array )
 {
   var f = !t;
@@ -2877,15 +2360,15 @@ function logical2ArgsReducerWithBadArguments( test, r, t, array )
   noneLessEqual : Routines.noneLessEqual,
   */
 
-  for( r in _.vector )
+  for( r in _.vectorAdapter )
   {
-    if( !_.routineIs( _.vector[ r ] ) )
+    if( !_.routineIs( _.vectorAdapter[ r ] ) )
     continue;
 /*
     // if( r === 'isZero' )
     // debugger;
 */
-    var op = _.vector[ r ].operation;
+    var op = _.vectorAdapter[ r ].operation;
 
     if( !op )
     continue;
@@ -2936,10 +2419,8 @@ function _isZero( test, r, t, array )
   test.case = 'scalar'; /* */
   var expected = f;
   var src = 3;
-  debugger;
   var got = _.avector[ r ]( src );
   test.identical( got, expected );
-  debugger;
   var expected = t;
   var src = 0;
   var got = _.avector[ r ]( src );
@@ -3054,6 +2535,7 @@ function _isZero( test, r, t, array )
 
 //
 
+/* qqq : ask how to improve */
 function isZero( test )
 {
 
@@ -3116,13 +2598,13 @@ function logical1ArgsSinglerWithBadArguments( test, r, t, array )
   /*
   */
 
-  for( r in _.vector )
+  for( r in _.vectorAdapter )
   {
 
-    if( !_.routineIs( _.vector[ r ] ) )
+    if( !_.routineIs( _.vectorAdapter[ r ] ) )
     continue;
 
-    var op = _.vector[ r ].operation;
+    var op = _.vectorAdapter[ r ].operation;
 
     if( !op )
     continue;
@@ -3420,13 +2902,13 @@ function logical1ArgsReducerWithBadArguments( test, r, t, array )
   /*
   */
 
-  for( r in _.vector )
+  for( r in _.vectorAdapter )
   {
 
-    if( !_.routineIs( _.vector[ r ] ) )
+    if( !_.routineIs( _.vectorAdapter[ r ] ) )
     continue;
 
-    var op = _.vector[ r ].operation;
+    var op = _.vectorAdapter[ r ].operation;
 
     if( !op )
     continue;
@@ -3488,7 +2970,7 @@ function sort( test )
     var sample1 = samples[ s ].slice();
     var sample2 = samples[ s ].slice();
     debugger;
-    _.vector.sort( _.vector.FromArray( sample1 ) );
+    _.vectorAdapter.sort( _.vectorAdapter.FromLong( sample1 ) );
     sample2.sort();
     test.identical( sample1, sample2 );
   }
@@ -3534,8 +3016,8 @@ function dot( test )
 
   test.case = 'subarray vectors'; /* */
 
-  var av = _.vector.FromSubArray( a, 1, 3 );
-  var bv = _.vector.FromSubArray( b, 1, 3 );
+  var av = _.vectorAdapter.FromSubLong( a, 1, 3 );
+  var bv = _.vectorAdapter.FromSubLong( b, 1, 3 );
   var expected = 74;
   var got = _.avector.dot( av, bv );
   test.identical( got, expected );
@@ -3795,13 +3277,13 @@ function subarray( test )
 
   test.case = 'subarray from vector with stride'; /* */
 
-  var v = vector.FromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  var v = vector.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   test.identical( v.subarray( 0, 2 ), vec([ 1, 2 ]) );
   test.identical( v.subarray( 1, 3 ), vec([ 2, 3 ]) );
 
   test.case = 'get empty subarray'; /* */
 
-  var v = vector.FromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  var v = vector.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   test.identical( v.subarray( 0, 0 ), vec([]) );
   test.identical( v.subarray( 2, 2 ), vec([]) );
   test.identical( v.subarray( 3, 3 ), vec([]) );
@@ -3824,13 +3306,13 @@ function subarray( test )
   var v = vec([ 1, 2, 3 ]);
   test.shouldThrowErrorSync( () => v.subarray( 10, 10, 10 ) );
 
-  // var v = vector.FromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  // var v = vector.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
   //
   // var v = vec([ 1, 2, 3 ]);
   // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
   //
-  // var v = vector.FromSubArrayWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+  // var v = vector.FromSubLongWithStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
   // test.shouldThrowErrorSync( () => v.subarray( 10, 10 ) );
   //
   // var v = vec([ 1, 2, 3 ]);
@@ -5357,7 +4839,7 @@ function homogeneousWithScalar( test )
   test.identical( dst, [ 5, 5, 5 ] );
 
   var dst = vec([ 1, 2, 3 ]);
-  _.vector.assignScalar( dst, 5 );
+  _.vectorAdapter.assignScalar( dst, 5 );
   test.identical( dst, vec([ 5, 5, 5 ]) );
 
   var dst = [];
@@ -5371,7 +4853,7 @@ function homogeneousWithScalar( test )
   test.identical( dst, [ 6, 7, 8 ] );
 
   var dst = vec([ 1, 2, 3 ]);
-  _.vector.addScalar( dst, 5 );
+  _.vectorAdapter.addScalar( dst, 5 );
   test.identical( dst, vec([ 6, 7, 8 ]) );
 
   var dst = [];
@@ -5385,7 +4867,7 @@ function homogeneousWithScalar( test )
   test.identical( dst, [ -4, -3, -2 ] );
 
   var dst = vec([ 1, 2, 3 ]);
-  _.vector.subScalar( dst, 5 );
+  _.vectorAdapter.subScalar( dst, 5 );
   test.identical( dst, vec([ -4, -3, -2 ]) );
 
   var dst = [];
@@ -5399,7 +4881,7 @@ function homogeneousWithScalar( test )
   test.identical( dst, [ 5, 10, 15 ] );
 
   var dst = vec([ 1, 2, 3 ]);
-  _.vector.mulScalar( dst, 5 );
+  _.vectorAdapter.mulScalar( dst, 5 );
   test.identical( dst, vec([ 5, 10, 15 ]) );
 
   var dst = [];
@@ -5413,7 +4895,7 @@ function homogeneousWithScalar( test )
   test.identical( dst, [ 1/5, 2/5, 3/5 ] );
 
   var dst = vec([ 1, 2, 3 ]);
-  _.vector.divScalar( dst, 5 );
+  _.vectorAdapter.divScalar( dst, 5 );
   test.identical( dst, vec([ 1/5, 2/5, 3/5 ]) );
 
   var dst = [];
@@ -5443,14 +4925,14 @@ function homogeneousWithScalar( test )
     test.shouldThrowErrorSync( () => _.avector[ name ]( [], 1, undefined ) );
     test.shouldThrowErrorSync( () => _.avector[ name ]( [], undefined ) );
 
-    test.shouldThrowErrorSync( () => _.vector[ name ]() );
-    test.shouldThrowErrorSync( () => _.vector[ name ]( 1 ) );
-    // test.shouldThrowErrorSync( () => _.vector[ name ]( 1, 3 ) );
-    test.shouldThrowErrorSync( () => _.vector[ name ]( '1', '3' ) );
-    test.shouldThrowErrorSync( () => _.vector[ name ]( [], [] ) );
-    test.shouldThrowErrorSync( () => _.vector[ name ]( [], 1, 3 ) );
-    test.shouldThrowErrorSync( () => _.vector[ name ]( [], 1, undefined ) );
-    test.shouldThrowErrorSync( () => _.vector[ name ]( [], undefined ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]() );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( 1 ) );
+    // test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( 1, 3 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( '1', '3' ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], [] ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], 1, 3 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], 1, undefined ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], undefined ) );
 
   }
 
@@ -5644,7 +5126,7 @@ function homogeneousOnlyVectors( test )
     test.identical( got , [] );
 
     var dst = vec([]);
-    var got = _.vector[ rname ]( dst, vec([]), vec([]) );
+    var got = _.vectorAdapter[ rname ]( dst, vec([]), vec([]) );
     test.is( got === dst );
     test.identical( got , vec([]) );
 
@@ -5674,13 +5156,13 @@ function homogeneousOnlyVectors( test )
     test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], undefined ) );
     test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], '1' ) );
 
-    test.shouldThrowErrorSync( () => _.vector[ rname ]() );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]) ) );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), 1 ) );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]() );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), 1 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
 
   }
 
@@ -5715,7 +5197,7 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vector.addScaled( null, dst, src1, src2 );
+  var got = _.vectorAdapter.addScaled( null, dst, src1, src2 );
   test.identical( got, expected );
   test.is( got !== dst );
 
@@ -5733,7 +5215,7 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vector.addScaled( 1, dst, src1, src2 );
+  var got = _.vectorAdapter.addScaled( 1, dst, src1, src2 );
   test.identical( got, expected );
   test.is( got !== dst );
 
@@ -5751,7 +5233,7 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vector.addScaled( dst, dst.slice(), src1, src2 );
+  var got = _.vectorAdapter.addScaled( dst, dst.slice(), src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -5771,7 +5253,7 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vector.addScaled( dst, src1, src2 );
+  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -5791,7 +5273,7 @@ function heterogeneous( test )
   var dst = 100;
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vector.addScaled( dst, src1, src2 );
+  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got !== dst );
 
@@ -5809,7 +5291,7 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vector.subScaled( dst, src1, src2 );
+  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -5827,7 +5309,7 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vector.mulScaled( dst, src1, src2 );
+  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -5845,7 +5327,7 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vector.divScaled( dst, src1, src2 );
+  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -5867,11 +5349,11 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = 10;
-  var got = _.vector.addScaled( dst, src1, src2 );
+  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
   var dst = vec([ 1, 2, 3 ]);
-  var got = _.vector.addScaled( dst, src2, src1 );
+  var got = _.vectorAdapter.addScaled( dst, src2, src1 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -5893,11 +5375,11 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = 10;
-  var got = _.vector.subScaled( dst, src1, src2 );
+  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
   var dst = vec([ 1, 2, 3 ]);
-  var got = _.vector.subScaled( dst, src2, src1 );
+  var got = _.vectorAdapter.subScaled( dst, src2, src1 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -5919,11 +5401,11 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = 10;
-  var got = _.vector.mulScaled( dst, src1, src2 );
+  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
   var dst = vec([ 1, 2, 3 ]);
-  var got = _.vector.mulScaled( dst, src2, src1 );
+  var got = _.vectorAdapter.mulScaled( dst, src2, src1 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -5945,11 +5427,11 @@ function heterogeneous( test )
   var dst = vec([ 1, 2, 3 ]);
   var src1 = vec([ 3, 2, 1 ]);
   var src2 = 10;
-  var got = _.vector.divScaled( dst, src1, src2 );
+  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
   var dst = vec([ 1, 2, 3 ]);
-  var got = _.vector.divScaled( dst, src2, src1 );
+  var got = _.vectorAdapter.divScaled( dst, src2, src1 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -5957,7 +5439,7 @@ function heterogeneous( test )
 
   function checkEmpty( rname )
   {
-    var op = _.vector[ rname ].operation;
+    var op = _.vectorAdapter[ rname ].operation;
 
     var dst = [];
     var args = _.dup( [], op.takingArguments[ 0 ]-1 );
@@ -5969,7 +5451,7 @@ function heterogeneous( test )
     var dst = vec([]);
     var args = _.dup( vec([]), op.takingArguments[ 0 ]-1 );
     args.unshift( dst );
-    var got = _.vector[ rname ].apply( _, args );
+    var got = _.vectorAdapter[ rname ].apply( _, args );
     test.is( got === dst );
     test.identical( got , vec([]) );
 
@@ -6004,16 +5486,16 @@ function heterogeneous( test )
     test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ] ) );
     test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ) );
 
-    test.shouldThrowErrorSync( () => _.vector[ rname ]() );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]) ) );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]() );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
 
-    // test.shouldThrowErrorSync( () => _.vector[ rname ]( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
+    // test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
 
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-    test.shouldThrowErrorSync( () => _.vector[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
 
     test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined ) );
     test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]) ) );
@@ -6051,7 +5533,7 @@ function clamp( test )
   var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
   var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
   var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vector.clamp( dst, dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -6069,7 +5551,7 @@ function clamp( test )
   var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
   var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
   var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vector.clamp( null, dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
   test.identical( got, expected );
   test.is( got !== dst );
 
@@ -6087,7 +5569,7 @@ function clamp( test )
   var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
   var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
   var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vector.clamp( dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -6105,7 +5587,7 @@ function clamp( test )
   var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
   var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
   var src2 = 20;
-  var got = _.vector.clamp( dst, dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -6121,7 +5603,7 @@ function clamp( test )
   var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
   var src1 = 15;
   var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vector.clamp( dst, dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -6139,7 +5621,7 @@ function clamp( test )
   var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
   var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
   var src2 = 20;
-  var got = _.vector.clamp( null, dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
   test.identical( got, expected );
   test.is( got !== dst );
 
@@ -6155,7 +5637,7 @@ function clamp( test )
   var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
   var src1 = 15;
   var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vector.clamp( null, dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
   test.identical( got, expected );
   test.is( got !== dst );
 
@@ -6163,7 +5645,7 @@ function clamp( test )
   var dst = 17;
   var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
   var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
-  var got = _.vector.clamp( null, dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
   test.identical( got, expected );
   test.is( got !== dst );
 
@@ -6181,7 +5663,7 @@ function clamp( test )
   var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
   var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
   var src2 = 20;
-  var got = _.vector.clamp( dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -6197,7 +5679,7 @@ function clamp( test )
   var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
   var src1 = 15;
   var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vector.clamp( dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -6205,13 +5687,13 @@ function clamp( test )
   var dst = 17;
   var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
   var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
-  var got = _.vector.clamp( dst, src1, src2 );
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got !== dst );
 
   test.case = 'empty vectors, 3 arguments'; /* */
 
-  var op = _.vector.clamp.operation;
+  var op = _.vectorAdapter.clamp.operation;
 
   var args = _.dup( [], op.takingArguments[ 0 ] );
   var got = _.avector.clamp.apply( _, args );
@@ -6219,13 +5701,13 @@ function clamp( test )
   test.identical( got , [] );
 
   var args = _.dup( vec([]), op.takingArguments[ 0 ] );
-  var got = _.vector.clamp.apply( _, args );
+  var got = _.vectorAdapter.clamp.apply( _, args );
   test.is( got === args[ 0 ] );
   test.identical( got , vec([]) );
 
   test.case = 'empty vectors, 4 arguments'; /* */
 
-  var op = _.vector.clamp.operation;
+  var op = _.vectorAdapter.clamp.operation;
 
   var dst = [];
   var args = _.dup( [], op.takingArguments[ 0 ] );
@@ -6237,7 +5719,7 @@ function clamp( test )
   var dst = vec([]);
   var args = _.dup( vec([]), op.takingArguments[ 0 ] );
   args.unshift( dst );
-  var got = _.vector.clamp.apply( _, args );
+  var got = _.vectorAdapter.clamp.apply( _, args );
   test.is( got === dst );
   test.identical( got , vec([]) );
 
@@ -6257,16 +5739,16 @@ function clamp( test )
   test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], undefined ) );
   test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], '1' ) );
 
-  test.shouldThrowErrorSync( () => _.vector.clamp() );
-  test.shouldThrowErrorSync( () => _.vector.clamp( vec([ 1, 2 ]) ) );
-  test.shouldThrowErrorSync( () => _.vector.clamp( vec([ 1, 2 ]), vec([ 3 ]) ) );
-  test.shouldThrowErrorSync( () => _.vector.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-  test.shouldThrowErrorSync( () => _.vector.clamp( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp() );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
 
-  // test.shouldThrowErrorSync( () => _.vector.clamp( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
 
-  test.shouldThrowErrorSync( () => _.vector.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-  test.shouldThrowErrorSync( () => _.vector.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
 
 }
 
@@ -6609,42 +6091,42 @@ function assign( test )
 
   test.case = 'assign scalar by method';
 
-  var src = vector.FromArray([ 1, 2, 3 ]);
+  var src = vector.FromLong([ 1, 2, 3 ]);
   debugger;
   var got = src.assign( 0 );
-  var expected = vector.FromArray([ 0, 0, 0 ]);
+  var expected = vector.FromLong([ 0, 0, 0 ]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'assign scalar to null vector';
 
-  var src = vector.FromArray([]);
+  var src = vector.FromLong([]);
   var got = src.assign( 1 );
-  var expected = vector.FromArray([]);
+  var expected = vector.FromLong([]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'assign avector';
 
-  var src = vector.FromArray([ 1, 2, 3 ]);
+  var src = vector.FromLong([ 1, 2, 3 ]);
   var got = src.assign([ 4, 5, 6 ] );
-  var expected = vector.FromArray([ 4, 5, 6 ]);
+  var expected = vector.FromLong([ 4, 5, 6 ]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'assign multiple scalars';
 
-  var src = vector.FromArray([ 1, 2, 3 ]);
+  var src = vector.FromLong([ 1, 2, 3 ]);
   var got = src.assign([ 4, 5, 6 ]);
-  var expected = vector.FromArray([ 4, 5, 6 ]);
+  var expected = vector.FromLong([ 4, 5, 6 ]);
   test.identical( expected, got );
   test.is( got === src );
 
   test.case = 'null avector';
 
-  var src = vector.FromArray([]);
+  var src = vector.FromLong([]);
   var got = src.assign();
-  var expected = vector.FromArray([]);
+  var expected = vector.FromLong([]);
   test.identical( expected, got );
   test.is( got === src );
 
@@ -6690,7 +6172,7 @@ experiment.experimental = 1;
 var Self =
 {
 
-  name : 'Tools.Math.Vector',
+  name : 'Tools.Math.Vector.Long',
   silencing : 1,
 
   // routine : 'abs',
@@ -6737,6 +6219,7 @@ var Self =
 
     to,
     toArray,
+    map,
 
     /* */
 
@@ -6749,7 +6232,6 @@ var Self =
     isLessEqual,
     isLess,
     isGreaterEqual,
-    is,
 
     logical2ArgsZipperWithBadArguments,
 
@@ -6761,7 +6243,6 @@ var Self =
     allEquivalent2,
     allNotEquivalent,
     allGreater,
-    all,
 
     anyIdentical,
     anyNotIdentical,
@@ -6769,7 +6250,6 @@ var Self =
     anyEquivalent2,
     anyNotEquivalent,
     anyGreater,
-    any,
 
     noneIdentical,
     noneNotIdentical,
@@ -6777,7 +6257,6 @@ var Self =
     noneEquivalent2,
     noneNotEquivalent,
     noneGreater,
-    none,
 
     logical2ArgsReducerWithBadArguments,
 
@@ -6789,9 +6268,10 @@ var Self =
 
     /* */
 
-    allZero,
-    anyZero,
-    noneZero,
+    /* qqq : sort routines order*/
+    allZero, /* qqq : group all* routines */
+    anyZero, /* qqq : group any* routines */
+    noneZero, /* qqq : group none* routines */
 
     logical1ArgsReducerWithBadArguments,
 

@@ -20,11 +20,23 @@ if( typeof module !== 'undefined' )
 
 if( module !== 'undefined' )
 {
-  require( './l1/Core.s' );
-  require( './l3/Operations.s' );
+
+  require( './l1/Namespaces.s' );
+
+  require( './l2/AdapterMake.s' );
+  require( './l2/LongMake.s' );
+  require( './l2/OperationDescriptor.s' );
+
+  require( './l3/LongMeta.s' );
+  require( './l3/OperationMeta.s' );
+  require( './l3/RoutineMeta.s' );
+
+  require( './l4/Operations.s' );
+
   require( './l5/Routines.s' );
-  require( './l7/Long.s' );
-  require( './l7/Methods.s' );
+
+  require( './l8/Methods.s' );
+
 }
 
 })();
