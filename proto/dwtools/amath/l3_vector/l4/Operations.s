@@ -5,7 +5,7 @@
 let _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
-let _sqr = _.sqr;
+let _sqr = _.math.sqr;
 let _assertMapHasOnly = _.assertMapHasOnly;
 let _routineIs = _.routineIs;
 
@@ -84,7 +84,7 @@ let floorToPowerOfTwo = dop = Object.create( null );
 
 dop.onAtom = function floor( o )
 {
-  o.dstElement = _.floorToPowerOfTwo( o.srcElement );
+  o.dstElement = _.math.floorToPowerOfTwo( o.srcElement );
 }
 
 //
@@ -93,7 +93,7 @@ let ceilToPowerOfTwo = dop = Object.create( null );
 
 dop.onAtom = function ceil( o )
 {
-  o.dstElement = _.ceilToPowerOfTwo( o.srcElement );
+  o.dstElement = _.math.ceilToPowerOfTwo( o.srcElement );
 }
 
 //
@@ -102,7 +102,7 @@ let roundToPowerOfTwo = dop = Object.create( null );
 
 dop.onAtom = function round( o )
 {
-  o.dstElement = _.roundToPowerOfTwo( o.srcElement );
+  o.dstElement = _.math.roundToPowerOfTwo( o.srcElement );
 }
 
 // --

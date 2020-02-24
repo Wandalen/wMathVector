@@ -5,7 +5,7 @@
 let _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
-let _sqr = _.sqr;
+let _sqr = _.math.sqr;
 let _assertMapHasOnly = _.assertMapHasOnly;
 let _routineIs = _.routineIs;
 

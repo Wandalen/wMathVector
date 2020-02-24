@@ -5,8 +5,8 @@
 let _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
-let _sqr = _.sqr;
-let _sqrt = _.sqrt;
+let _sqr = _.math.sqr;
+let _sqrt = _.math.sqrt;
 let _assertMapHasOnly = _.assertMapHasOnly;
 let _routineIs = _.routineIs;
 
@@ -1972,7 +1972,7 @@ function __operationReduceToScalar_functor( operation )
       _.assert( op.filter.length === 2 );
     }
 
-    op.numberOfArguments = _.clamp( op.numberOfArguments, takingVectors );
+    op.numberOfArguments = _.math.clamp( op.numberOfArguments, takingVectors );
 
     /* */
 

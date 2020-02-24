@@ -9,7 +9,7 @@ let _max = Math.max;
 let _arraySlice = _.longSlice;
 let _sqrt = Math.sqrt;
 let _abs = Math.abs;
-let _sqr = _.sqr;
+let _sqr = _.math.sqr;
 
 let vectorAdapter = _.vectorAdapter;
 let VectorAdapter = _.VectorAdapter;

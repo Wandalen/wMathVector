@@ -7,7 +7,7 @@ let _min = Math.min;
 let _max = Math.max;
 let _arraySlice = Array.prototype.slice;
 let _sqrt = Math.sqrt;
-let _sqr = _.sqr;
+let _sqr = _.math.sqr;
 
 let meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
 

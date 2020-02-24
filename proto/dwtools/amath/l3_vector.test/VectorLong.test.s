@@ -21,7 +21,7 @@ var Space = _.Matrix;
 var vad = _.vectorAdapter;
 var vec = _.vectorAdapter.FromLong;
 var avector = _.avector;
-var sqrt = _.sqrt;
+var sqrt = _.math.sqrt;
 
 var Parent = wTester;
 
