@@ -1208,7 +1208,7 @@ dop.modifying = true;
 function matrixApplyTo( dst, srcMatrix )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.spaceIs( srcMatrix ) );
+  _.assert( _.matrixIs( srcMatrix ) );
   debugger;
   return _.space.mul( dst, [ srcMatrix, dst ] );
 }
@@ -1229,7 +1229,7 @@ dop.modifying = true;
 function matrixHomogenousApply( dst, srcMatrix )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.spaceIs( srcMatrix ) );
+  _.assert( _.matrixIs( srcMatrix ) );
   return srcMatrix.matrixHomogenousApply( dst );
 }
 

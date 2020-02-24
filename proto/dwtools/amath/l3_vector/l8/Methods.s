@@ -276,7 +276,7 @@ sameWith.modifying = false;
 
 function hasShape( src )
 {
-  if( _.spaceIs( src ) )
+  if( _.matrixIs( src ) )
   return src.dims.length === 2 && src.dims[ 0 ] === self.length && src.dims[ 1 ] === 1;
   return this.length === src.length;
 }

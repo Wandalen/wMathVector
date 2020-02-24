@@ -155,7 +155,7 @@ function From( srcLong )
 
   if( _.vectorAdapterIs( srcLong ) )
   return srcLong;
-  else if( _.spaceIs( srcLong ) )
+  else if( _.matrixIs( srcLong ) )
   {
     _.assert( arguments.length === 1 );
     _.assert( srcLong.dims.length === 2 );

@@ -104,6 +104,23 @@ function vectorAdapterIs( test )
 
 //
 
+function basic( test )
+{
+
+  test.case = 'basic';
+  var exp = [ 5, 8 ];
+  var dst = [ 1, 3 ];
+  var src = [ 4, 5 ];
+  debugger;
+  var got = _.avector.add( dst, src );
+  test.identical( got, exp );
+  test.is( got === dst );
+  debugger;
+
+}
+
+//
+
 function allFinite( test )
 {
 
@@ -6212,6 +6229,7 @@ var Self =
 
     comparator,
     vectorAdapterIs,
+    basic,
 
     allFinite,
     anyNan,
