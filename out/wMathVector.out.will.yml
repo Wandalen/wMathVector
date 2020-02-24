@@ -3,14 +3,14 @@ root:
   - wMathVector.out
 consistency:
   wMathVector.out.will.yml: &ref_0
-    hash: d0658666f920d30711d0911a0b14198f
-    size: 40990
+    hash: db71c8528fd03e0dc51c8e584ba93ccf
+    size: 41113
   ../.ex.will.yml: &ref_1
     hash: 57b0603c43c674d078afd52f59b8f39a
     size: 2567
   ../.im.will.yml: &ref_2
-    hash: 032ee3cb165214fef598de27c563d6ce
-    size: 5258
+    hash: 4db4d94a6d3f96304865a6715e9670f1
+    size: 5264
 module:
   wMathVector.out:
     about:
@@ -129,7 +129,7 @@ module:
       entry.proto.no.tests:
         criterion:
           tests: no.tests
-        path: ../proto/dwtools/amath/l3_vector/Main.s
+        path: ../proto/dwtools/amath/l3_vector/Include.s
       entry.proto.only.tests:
         criterion:
           tests: only.tests
@@ -139,13 +139,13 @@ module:
           debug: debug
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Main.s'
+        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Include.s'
       entry.out.raw.debug.release:
         criterion:
           debug: release
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Main.s'
+        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Include.s'
       entry.out.compiled.debug.debug:
         criterion:
           debug: debug
@@ -176,16 +176,26 @@ module:
           - ../proto/dwtools/abase
           - ../proto/dwtools/amath
           - ../proto/dwtools/amath/l3_vector
-          - ../proto/dwtools/amath/l3_vector/Main.s
+          - ../proto/dwtools/amath/l3_vector/Include.s
           - ../proto/dwtools/amath/l3_vector/l1
-          - ../proto/dwtools/amath/l3_vector/l1/Operations.s
+          - ../proto/dwtools/amath/l3_vector/l1/Namespaces.s
+          - ../proto/dwtools/amath/l3_vector/l2
+          - ../proto/dwtools/amath/l3_vector/l2/AdapterMake.s
+          - ../proto/dwtools/amath/l3_vector/l2/LongMake.s
+          - ../proto/dwtools/amath/l3_vector/l2/OperationDescriptor.s
           - ../proto/dwtools/amath/l3_vector/l3
-          - ../proto/dwtools/amath/l3_vector/l3/Routines.s
+          - ../proto/dwtools/amath/l3_vector/l3/LongMeta.s
+          - ../proto/dwtools/amath/l3_vector/l3/OperationMeta.s
+          - ../proto/dwtools/amath/l3_vector/l3/RoutineMeta.s
+          - ../proto/dwtools/amath/l3_vector/l4
+          - ../proto/dwtools/amath/l3_vector/l4/Operations.s
           - ../proto/dwtools/amath/l3_vector/l5
-          - ../proto/dwtools/amath/l3_vector/l5/Array.s
-          - ../proto/dwtools/amath/l3_vector/l5/Methods.s
+          - ../proto/dwtools/amath/l3_vector/l5/Routines.s
+          - ../proto/dwtools/amath/l3_vector/l8
+          - ../proto/dwtools/amath/l3_vector/l8/Methods.s
           - ../proto/dwtools/amath/l3_vector.test
-          - ../proto/dwtools/amath/l3_vector.test/Vector.test.s
+          - ../proto/dwtools/amath/l3_vector.test/VectorAdapter.test.s
+          - ../proto/dwtools/amath/l3_vector.test/VectorLong.test.s
           - ../proto/dwtools/amid
           - ../proto/dwtools/atop
     submodule:
@@ -964,7 +974,7 @@ module:
       entry.proto.no.tests:
         criterion:
           tests: no.tests
-        path: proto/dwtools/amath/l3_vector/Main.s
+        path: proto/dwtools/amath/l3_vector/Include.s
       entry.proto.only.tests:
         criterion:
           tests: only.tests
@@ -974,13 +984,13 @@ module:
           debug: debug
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Main.s'
+        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Include.s'
       entry.out.raw.debug.release:
         criterion:
           debug: release
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Main.s'
+        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Include.s'
       entry.out.compiled.debug.debug:
         criterion:
           debug: debug
@@ -1572,6 +1582,6 @@ module:
         hash: 57b0603c43c674d078afd52f59b8f39a
         size: 2567
       ../.im.will.yml:
-        hash: 032ee3cb165214fef598de27c563d6ce
-        size: 5258
+        hash: 4db4d94a6d3f96304865a6715e9670f1
+        size: 5264
       wMathVector.out.will.yml: *ref_0
