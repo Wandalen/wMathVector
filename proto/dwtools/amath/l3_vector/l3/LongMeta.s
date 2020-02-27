@@ -203,8 +203,12 @@ function _routinesLongWrap_functor()
 
 let MetaExtension =
 {
+
   _routineLongWrap_functor,
   _routinesLongWrap_functor,
+
+  vectorAdapter : _.vectorAdapter,
+
 }
 
 _.mapExtend( _.vectorAdapter._meta, MetaExtension );

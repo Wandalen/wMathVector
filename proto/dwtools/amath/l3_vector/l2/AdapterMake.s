@@ -39,7 +39,7 @@ function make( length )
   if( _.routineIs( self ) )
   self = self.prototype;
   let srcLong = new self.longDescriptor.make( length );
-  return fromLong( srcLong );
+  return self.fromLong( srcLong );
 }
 
 //

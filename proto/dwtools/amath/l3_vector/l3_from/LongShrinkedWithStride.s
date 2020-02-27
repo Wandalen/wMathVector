@@ -122,7 +122,7 @@ function fromLongLrangeAndStride( srcLong, offset, length, stride ) /* xxx */
   _.assert( offset+(length-1)*stride < srcLong.length );
 
   if( stride === 1 )
-  return fromLongLrange( srcLong, offset, length );
+  return this.fromLongLrange( srcLong, offset, length ); 
 
   if( srcLong._vectorBuffer )
   {

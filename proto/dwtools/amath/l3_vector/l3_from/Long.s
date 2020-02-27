@@ -29,7 +29,7 @@ function _shrinkView( crange )
 function _toLong()
 {
   let result;
-  result = this._vectorBuffer; debugger;
+  result = this._vectorBuffer;
   return result;
 }
 

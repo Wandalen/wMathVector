@@ -714,9 +714,8 @@ function _methodWrapDeclare( routine, r )
 {
   let op = routine.operation;
 
-  if( r === 'allZero' )
-  debugger;
-
+  // if( r === 'allZero' )
+  // debugger;
   // if( r === 'allZero' )
   // debugger;
   // if( r === 'toStr' )
@@ -740,7 +739,7 @@ function _methodWrapDeclare( routine, r )
 
   _.VectorAdapter.prototype[ r ] = function wrap()
   {
-    _.assert( arguments.length >= 1 );
+    // _.assert( arguments.length >= 1 );
     _.assert( _.vectorAdapterIs( this ) );
     return routine.call( this.vectorAdapter, this, ... arguments );
   }
@@ -1041,6 +1040,7 @@ function _vectorizeSrcs( o, first )
     {
       src = o.args[ a ] = this.vectorAdapter.fromMaybeNumber( src, o.dstContainer.length );
     }
+
   }
 
 }
@@ -1049,6 +1049,7 @@ function _vectorizeSrcs( o, first )
 
 function _vectorsCallBegin( o, dop )
 {
+  let meta = this;
 
   let minimalCall = o.args.length === dop.takingArguments[ 0 ];
   let dstProvided = !_.primitiveIs( o.dstContainer );
@@ -1074,8 +1075,8 @@ function _vectorsCallBegin( o, dop )
 
   /* */
 
-  let dst = _vectorizeDst( o, dop );
-  _vectorizeSrcs( o, 1 );
+  let dst = meta._vectorizeDst( o, dop );
+  meta._vectorizeSrcs( o, 1 );
 
   /* */
 
@@ -1182,6 +1183,7 @@ function _vectorsCallEnd( o, dop )
 
 function _vectorsGenBegin( dop )
 {
+  let meta = this;
 
   if( _.routineIs( dop.onAtom ) )
   dop.onAtom = [ dop.onAtom ];
@@ -1235,8 +1237,9 @@ function _vectorsGenEnd( dop, onVectors, onVectorsBegin )
 
 function _onVectorsForRoutine_functor( dop )
 {
+  let meta = this;
 
-  _vectorsGenBegin( dop );
+  meta._vectorsGenBegin( dop );
 
   let takingArguments = dop.takingArguments;
   let onVectors = null;
@@ -1496,7 +1499,7 @@ function _routineForOperation_functor( dop )
 
   if( dop.onAtom_functor )
   {
-    dop.onAtom_functor( dop );
+    dop.onAtom_functor.call( this, dop );
     delete dop.onAtom_functor;
   }
   else
@@ -1506,12 +1509,12 @@ function _routineForOperation_functor( dop )
 
   if( dop.onVectors_functor )
   {
-    dop.onVectors_functor( dop );
+    dop.onVectors_functor.call( this, dop );
     delete dop.onVectors_functor;
   }
   else
   {
-    _onVectorsForRoutine_functor( dop );
+    this._onVectorsForRoutine_functor( dop );
   }
 
   /* */
@@ -2018,8 +2021,9 @@ function _onAtomAtomwise_functor( dop )
 
 function _onVectorsAtomwise_functor( dop )
 {
+  let meta = this;
 
-  _vectorsGenBegin( dop );
+  meta._vectorsGenBegin( dop );
 
   let takingArguments = dop.takingArguments;
   let onVectors = null;
@@ -2062,7 +2066,7 @@ function _onVectorsAtomwise_functor( dop )
     onVectors = function onVectors( dst )
     {
       let o = onVectorsBegin.apply( this, arguments );
-      _vectorsCallBegin( o, dop );
+      meta._vectorsCallBegin( o, dop );
 
       /* */
 
@@ -2133,7 +2137,7 @@ function _onVectorsAtomwise_functor( dop )
       debugger; //
       let o = onVectorsBegin.apply( this, arguments );
 
-      _vectorsCallBegin( o, dop );
+      meta._vectorsCallBegin( o, dop );
 
       dst = o.dstContainer;
       for( let k = 0 ; k < dst.length ; k++ )
@@ -2152,7 +2156,7 @@ function _onVectorsAtomwise_functor( dop )
       let dst = arguments[ 0 ];
       let o = onVectorsBegin.apply( this, arguments );
 
-      _vectorsCallBegin( o, dop );
+      meta._vectorsCallBegin( o, dop );
 
       dst = o.dstContainer;
       for( let k = 0 ; k < dst.length ; k++ )
@@ -2867,7 +2871,7 @@ function _declareHomogeneousLogical2NotReducingRoutine( operation, atomOperation
   // operation.takingVectors = [ 0, 3 ];
 
   if( !operation.input )
-  operation.input = [ 'vw?', 'vr', 'vr' ];
+  operation.input = [ 'vw?|n?', 'vr|s', 'vr|s' ];
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
 
@@ -3009,9 +3013,6 @@ function declareHomogeneousLogical2Routines()
 
   for( let name in operations.logical2 )
   {
-
-    // if( name === 'isIdentical' )
-    // debugger;
 
     let routineName = 'all' + _.strRemoveBegin( name, 'is' );
     let atomOperation = operations.logical2[ name ];

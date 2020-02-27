@@ -566,7 +566,6 @@ function toLong( src ) /* xxx : redo */
   if( _.longIs( src ) )
   return src;
 
-  debugger;
   return src._toLong();
 
   // if( src.stride !== 1 || src.offset !== 0 || src.length !== src._vectorBuffer.length )
@@ -755,11 +754,11 @@ function map( dst, src, onEach )
     _.assert( arguments[ 2 ] === undefined );
   }
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   if( dst === null )
-  dst = this.Make( src.length );
+  dst = this.make( src.length );
 
   let l = src.length;
 
@@ -785,10 +784,10 @@ function map( dst, src, onEach )
 }
 
 dop = map.operation = Object.create( null );
-dop.input = 'vw|n ?vr s';
+dop.input = 'vw|n ?vr ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
-dop.takingArguments = [ 2, 3 ];
+dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = [ 1, 2 ];
 dop.takingVectorsOnly = false;
 dop.returningSelf = true;
@@ -807,11 +806,11 @@ function filter( dst, src, onEach )
     _.assert( arguments[ 2 ] === undefined );
   }
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   if( dst === null )
-  dst = this.Make( src.length );
+  dst = this.make( src.length );
 
   let l = src.length;
 
@@ -859,10 +858,10 @@ function filter( dst, src, onEach )
 }
 
 dop = filter.operation = Object.create( null );
-dop.input = 'vw|n ?vr s';
+dop.input = 'vw|n ?vr ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
-dop.takingArguments = [ 2, 3 ];
+dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = [ 1, 2 ];
 dop.takingVectorsOnly = false;
 dop.returningSelf = true;
@@ -881,11 +880,11 @@ function _while( dst, src, onEach )
     _.assert( arguments[ 2 ] === undefined );
   }
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   if( dst === null )
-  dst = this.Make( src.length );
+  dst = this.make( src.length );
 
   let l = src.length;
 
@@ -934,10 +933,10 @@ function _while( dst, src, onEach )
 }
 
 dop = _while.operation = Object.create( null );
-dop.input = 'vw|n ?vr s';
+dop.input = 'vw|n ?vr ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
-dop.takingArguments = [ 2, 3 ];
+dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = [ 1, 2 ];
 dop.takingVectorsOnly = false;
 dop.returningSelf = true;
@@ -949,7 +948,7 @@ dop.modifying = true;
 function all( src, onEach )
 {
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   let l = src.length;
@@ -975,10 +974,10 @@ function all( src, onEach )
 }
 
 dop = all.operation = Object.create( null );
-dop.input = 'vw s';
+dop.input = 'vw ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
-dop.takingArguments = [ 2, 2 ];
+dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = [ 1, 1 ];
 dop.takingVectorsOnly = false;
 dop.returningSelf = false;
@@ -993,7 +992,7 @@ dop.modifying = false;
 function any( src, onEach )
 {
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   let l = src.length;
@@ -1019,10 +1018,10 @@ function any( src, onEach )
 }
 
 dop = any.operation = Object.create( null );
-dop.input = 'vw s';
+dop.input = 'vw ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
-dop.takingArguments = [ 2, 2 ];
+dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = [ 1, 1 ];
 dop.takingVectorsOnly = false;
 dop.returningSelf = false;
@@ -1037,7 +1036,7 @@ dop.modifying = false;
 function none( src, onEach )
 {
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   let l = src.length;
@@ -1063,10 +1062,10 @@ function none( src, onEach )
 }
 
 dop = none.operation = Object.create( null );
-dop.input = 'vw s';
+dop.input = 'vw ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
-dop.takingArguments = [ 2, 2 ];
+dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = [ 1, 1 ];
 dop.takingVectorsOnly = false;
 dop.returningSelf = false;
@@ -1195,7 +1194,7 @@ function crossWithPoints( dst, a, b, c )
   _.assert( a.length === 3 && b.length === 3 && c.length === 3, 'implemented only for 3D' );
 
   _.assert( 0, 'not tested' );
-  dst = dst || this.Make( 3 );
+  dst = dst || this.make( 3 );
   // dst = dst || this.long.longMake( 3 );
 
   let ax = a.eGet( 0 )-c.eGet( 0 ), ay = a.eGet( 1 )-c.eGet( 1 ), az = a.eGet( 2 )-c.eGet( 2 );
@@ -1232,7 +1231,7 @@ function _cross3( dst, src1, src2 )
   let src2y = src2.eGet( 1 );
   let src2z = src2.eGet( 2 );
 
-  dst = dst || this.Make( 3 );
+  dst = dst || this.make( 3 );
 
   dst.eSet( 0, src1y * src2z - src1z * src2y );
   dst.eSet( 1, src1z * src2x - src1x * src2z );
@@ -1715,8 +1714,8 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 
 /**
  * @summary Add vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 2, 5, 9 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1750,8 +1749,8 @@ let add = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Subtracts vector `src` from vector `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 2, 5, 9 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1785,8 +1784,8 @@ let sub = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Multiplication of vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 2, 5, 9 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1824,8 +1823,8 @@ let mul = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Division of vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 4, 9, 16 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1865,8 +1864,8 @@ let div = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Finds minimum values from vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 4, 9, 16 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1905,8 +1904,8 @@ let min = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Finds maximal values from vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 4, 9, 16 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1945,7 +1944,7 @@ let max = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Limits values of vector `dst` to values in orange [min, max].
- * @param {Array|VectorFromLong} dst Vector.
+ * @param {Long|VectorAdapter} dst Vector.
  * @example
  * var a1 = [ 1, 2, 3, 4 ];
  * _.avector.clamp( a1, 1, 2 );

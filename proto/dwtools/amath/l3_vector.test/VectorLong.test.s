@@ -279,10 +279,10 @@ function map( test )
   {
     return - 5 < src && src < 0 ; /* numbers in range */
   }
-  var vector = _.avector.Make( [ -1, -1.5, -2 ] );
+  var vector = _.avector.make( [ -1, -1.5, -2 ] );
   var gotBool = _.avector.map( vector, inRange );
 
-  var expected = _.avector.Make( [ true, true, true ] );
+  var expected = _.avector.make( [ true, true, true ] );
   test.identical( gotBool, expected );
   test.is( gotBool === vector );
 
@@ -294,13 +294,13 @@ function map( test )
   {
     return - 5 < src && src < 0 ; /* numbers in range */
   }
-  var vector = _.avector.Make( [ -1, -1.5, -2 ] );
+  var vector = _.avector.make( [ -1, -1.5, -2 ] );
   var gotBool = _.avector.map( null, vector, inRange );
 
-  var expected = _.avector.Make( [ 1, 1, 1 ] );
+  var expected = _.avector.make( [ 1, 1, 1 ] );
   test.identical( gotBool, expected );
 
-  var expected = _.avector.Make( [ -1, -1.5, -2 ] )
+  var expected = _.avector.make( [ -1, -1.5, -2 ] )
   test.equivalent( expected, vector );
 
   /* */
@@ -311,10 +311,10 @@ function map( test )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var vector = _.avector.Make( [ ] );
+  var vector = _.avector.make( [ ] );
   var gotBool = _.avector.map( vector, positiveNumber );
 
-  var expected = _.avector.Make( [ ] );
+  var expected = _.avector.make( [ ] );
   test.identical( gotBool, expected );
 
   /* */
@@ -325,10 +325,10 @@ function map( test )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var vector = _.avector.Make( [ 0, 1, 0, 2, 1000, 307 ] );
+  var vector = _.avector.make( [ 0, 1, 0, 2, 1000, 307 ] );
   var gotBool = _.avector.map( vector, positiveNumber );
 
-  var expected = _.avector.Make( [ true, true, true, true, true, true ] );
+  var expected = _.avector.make( [ true, true, true, true, true, true ] );
   test.identical( gotBool, expected );
 
   /* */
@@ -339,10 +339,10 @@ function map( test )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var vector = _.avector.Make( [ 0, - 1, 0, 2, 1000 ] );
+  var vector = _.avector.make( [ 0, - 1, 0, 2, 1000 ] );
   var gotBool = _.avector.map( vector, positiveNumber );
 
-  var expected = _.avector.Make( [ true, false, true, true, true ] );
+  var expected = _.avector.make( [ true, false, true, true, true ] );
   test.identical( gotBool, expected );
 
   /* */
@@ -353,17 +353,17 @@ function map( test )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var vector = _.avector.Make( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var vector = _.avector.make( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
   var gotBool = _.avector.map( vector, positiveNumber );
 
-  var expected = _.avector.Make( [ false, false, false, true, true ] );
+  var expected = _.avector.make( [ false, false, false, true, true ] );
   test.identical( gotBool, expected );
 
   /* */
 
   test.case = 'single argument';
 
-  var dst = _.avector.Make( [ 2, 3, 4 ] );
+  var dst = _.avector.make( [ 2, 3, 4 ] );
   var got = _.avector.map( dst );
   test.is( got === dst );
 
@@ -371,7 +371,7 @@ function map( test )
 
   test.case = 'dst and undefined';
 
-  var dst = _.avector.Make( [ 2, 3, 4 ] );
+  var dst = _.avector.make( [ 2, 3, 4 ] );
   var got = _.avector.map( dst, undefined );
   test.is( got === dst );
 
@@ -423,11 +423,11 @@ function map( test )
 
   test.case = 'Wrong second argument';
 
-  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.avector.map( _.avector.Make( [ 2, 3, 4 ] ), _.avector.Make( [ 2, 3, 4 ] ) ));
+  // test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), _.avector.make( [ 2, 3, 4 ] ) ));
 
   /* */
 
