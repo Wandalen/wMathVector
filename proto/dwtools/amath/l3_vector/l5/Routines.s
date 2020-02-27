@@ -5,8 +5,8 @@
 let _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
-let _sqr = _.sqr;
-let _sqrt = _.sqrt;
+let _sqr = _.math.sqr;
+let _sqrt = _.math.sqrt;
 let _assertMapHasOnly = _.assertMapHasOnly;
 let _routineIs = _.routineIs;
 
@@ -43,12 +43,12 @@ function assign( dst )
     if( _.numberIs( arguments[ 1 ] ) )
     this.assignScalar( dst, arguments[ 1 ] );
     else if( _hasLength( arguments[ 1 ] ) )
-    this.assignVector( dst, _.vectorAdapter.FromLong( arguments[ 1 ] ) );
+    this.assignVector( dst, _.vectorAdapter.fromLong( arguments[ 1 ] ) );
     else _.assert( 0, 'unknown arguments' );
   }
   else if( alength === 1 + length )
   {
-    this.assign.call( this, dst, _.vectorAdapter.FromLong( _arraySlice( arguments, 1, alength ) ) );
+    this.assign.call( this, dst, _.vectorAdapter.fromLong( _arraySlice( arguments, 1, alength ) ) );
   }
   else _.assert( 0, 'assign :', 'unknown arguments' );
 
@@ -56,9 +56,10 @@ function assign( dst )
 }
 
 let dop = assign.operation = Object.create( null );
+dop.input = 'vw ar *!vr';
 dop.atomWise = true;
 dop.homogeneous = false;
-dop.takingArguments = [ 1, Infinity ];
+dop.takingArguments = [ 2, Infinity ];
 dop.takingVectors = [ 1, 2 ];
 dop.takingVectorsOnly = false;
 dop.returningSelf = true;
@@ -85,6 +86,7 @@ function assignVector( dst, src )
 }
 
 dop = assignVector.operation = Object.create( null );
+dop.input = 'vw vr';
 dop.atomWise = true;
 dop.homogeneous = true;
 dop.takingArguments = 2;
@@ -111,6 +113,7 @@ function clone( src )
 }
 
 dop = clone.operation = Object.create( null );
+dop.input = 'vr';
 dop.atomWise = true;
 dop.homogeneous = true;
 dop.takingArguments = 1;
@@ -131,12 +134,13 @@ function makeSimilar( src, length )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( length ) );
 
-  let dst = _.vectorAdapter.FromLong( new src._vectorBuffer.constructor( length ) );
+  let dst = _.vectorAdapter.fromLong( new src._vectorBuffer.constructor( length ) );
 
   return dst;
 }
 
 dop = makeSimilar.operation = Object.create( null );
+dop.input = 'vr ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
@@ -187,11 +191,12 @@ function slice( src, first, last )
 }
 
 dop = slice.operation = Object.create( null );
+dop.input = 'vr ?s ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = 1;
-dop.takingVectorsOnly = true;
+dop.takingVectorsOnly = false;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningLong = true;
@@ -225,11 +230,12 @@ function slicedLong( src, first, last )
 }
 
 dop = slicedLong.operation = Object.create( null );
+dop.input = 'vr ?s ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = 1;
-dop.takingVectorsOnly = true;
+dop.takingVectorsOnly = false;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningLong = true;
@@ -240,15 +246,16 @@ dop.modifying = false;
 function slicedAdapter( src, first, last )
 {
   let result = this.slicedLong.apply( this, arguments );
-  return this.FromLong( result );
+  return this.fromLong( result );
 }
 
 dop = slicedAdapter.operation = Object.create( null );
+dop.input = 'vr ?s ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = 1;
-dop.takingVectorsOnly = true;
+dop.takingVectorsOnly = false;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningLong = true;
@@ -256,7 +263,7 @@ dop.modifying = false;
 
 //
 
-function resizedArray( src, first, last, val )
+function resizedLong( src, first, last, val )
 {
   let length = src.length;
   let f = first !== undefined ? first : 0;
@@ -303,12 +310,13 @@ function resizedArray( src, first, last, val )
   return result;
 }
 
-dop = resizedArray.operation = Object.create( null );
+dop = resizedLong.operation = Object.create( null );
+dop.input = 'vr ?s ?s ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 4 ];
 dop.takingVectors = 1;
-dop.takingVectorsOnly = true;
+dop.takingVectorsOnly = false;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningLong = true;
@@ -316,21 +324,190 @@ dop.modifying = false;
 
 //
 
-function resizedVector( src, first, last, val )
+function resizedAdapter( src, first, last, val )
 {
-  let result = this.resizedArray.apply( this, arguments );
-  return this.FromLong( result );
+  let result = this.resizedLong.apply( this, arguments );
+  return this.fromLong( result );
 }
 
-dop = resizedVector.operation = Object.create( null );
+dop = resizedAdapter.operation = Object.create( null );
+dop.input = 'vr ?s ?s ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 4 ];
 dop.takingVectors = 1;
-dop.takingVectorsOnly = true;
+dop.takingVectorsOnly = false;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningLong = true;
+dop.modifying = false;
+
+//
+
+function growAdapter( src, crange, val )
+{
+  let result = this.growLong.apply( this, arguments );
+  return this.fromLong( result );
+}
+
+dop = growAdapter.operation = Object.create( null );
+dop.input = 'vr ?s ?s';
+dop.atomWise = false;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 3 ];
+dop.takingVectors = 1;
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = true;
+dop.modifying = false;
+
+//
+
+function growLong( src, crange, val )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+
+  if( val === undefined )
+  val = 0;
+  if( crange === undefined )
+  crange = [ 0, src.length ];
+
+  if( crange[ 0 ] >= 0 )
+  crange[ 0 ] = 0;
+  if( crange[ 1 ] <= src.length-1 )
+  crange[ 1 ] = src.length-1;
+
+  let l = crange[ 1 ] - crange[ 0 ] + 1;
+  let result = this.longMakeUndefined( src, l );
+
+  /* qqq : optimize */
+
+  let l2 = -crange[ 0 ];
+  for( let i = 0 ; i < l2 ; i++ )
+  result[ i ] = val;
+
+  let l3 = src.length-crange[ 0 ];
+  for( let i = -crange[ 0 ] ; i < l3 ; i++ )
+  result[ i ] = src.eGet( i );
+
+  let l4 = l;
+  for( let i = crange[ 1 ]+1 ; i < l4 ; i++ )
+  result[ i ] = val;
+
+  return result;
+}
+
+dop = growLong.operation = Object.create( null );
+dop.input = 'vr ?s ?s';
+dop.atomWise = false;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 3 ];
+dop.takingVectors = 1;
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = true;
+dop.modifying = false;
+
+//
+
+function shrinkAdapter( src, crange )
+{
+  let result = this.shrinkLong.apply( this, arguments );
+  return this.fromLong( result );
+}
+
+dop = shrinkAdapter.operation = Object.create( null );
+dop.input = 'vr ?s';
+dop.atomWise = false;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = 1;
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = true;
+dop.modifying = false;
+
+//
+
+function shrinkLong( src, crange )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( crange === undefined )
+  crange = [ 0, src.length ];
+  if( crange[ 0 ] < 0 )
+  crange[ 0 ] = 0;
+  if( crange[ 1 ] > src.length-1 )
+  crange[ 1 ] = src.length-1;
+
+  let l = crange[ 1 ] - crange[ 0 ] + 1;
+  let result = this.longMakeUndefined( src, l );
+
+  /* qqq : optimize */
+
+  let l2 = crange[ 1 ];
+  for( let i = crange[ 0 ] ; i <= l2 ; i++ )
+  result[ i ] = src.eGet( i );
+
+  return result;
+}
+
+dop = shrinkLong.operation = Object.create( null );
+dop.input = 'vr ?s';
+dop.atomWise = false;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = 1;
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = true;
+dop.modifying = false;
+
+//
+
+function shrinkView( src, crange )
+{
+
+  _.assert( _.rangeIs( crange ) );
+  _.assert( arguments.length === 2 );
+  _.assert( crange[ 0 ] >= 0 );
+  _.assert( crange[ 1 ] <= src.length-1 );
+
+  if( crange[ 0 ] === 0 && crange[ 1 ] === src.length-1 )
+  return this.fromLong( src );
+
+  src = this.fromLong( src );
+
+  // if( src.stride !== 1 )
+  // {
+  //   result = _.vectorAdapter.fromLongLrangeAndStride( src._vectorBuffer , src.offset + first*src.stride , last-first , src.stride );
+  // }
+  // else
+  // {
+  //   result = _.vectorAdapter.fromLongLrange( src._vectorBuffer , src.offset + first , last-first );
+  // }
+
+  let result = src._shrinkView( crange );
+
+  return result;
+}
+
+dop = shrinkView.operation = Object.create( null );
+dop.input = 'vr s';
+dop.atomWise = false;
+dop.homogeneous = false;
+dop.takingArguments = 2;
+dop.takingVectors = 1;
+dop.takingVectorsOnly = false;
+dop.returningSelf = true;
+dop.returningNew = true;
+dop.returningLong = false;
 dop.modifying = false;
 
 //
@@ -355,20 +532,21 @@ function subarray( src, first, last )
 
   if( src.stride !== 1 )
   {
-    result = _.vectorAdapter.FromSubLongWithStride( src._vectorBuffer , src.offset + first*src.stride , last-first , src.stride );
+    result = _.vectorAdapter.fromLongLrangeAndStride( src._vectorBuffer , src.offset + first*src.stride , last-first , src.stride );
   }
   else
   {
-    result = _.vectorAdapter.FromSubLong( src._vectorBuffer , src.offset + first , last-first );
+    result = _.vectorAdapter.fromLongLrange( src._vectorBuffer , src.offset + first , last-first );
   }
 
   return result;
 }
 
 dop = subarray.operation = Object.create( null );
+dop.input = 'vr s ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
-dop.takingArguments = [ 1, 3 ];
+dop.takingArguments = [ 2, 3 ];
 dop.takingVectors = 1;
 dop.takingVectorsOnly = false;
 dop.returningSelf = false;
@@ -377,7 +555,7 @@ dop.modifying = false;
 
 //
 
-function toArray( src )
+function toLong( src ) /* xxx : redo */
 {
   let result;
   let length = src.length;
@@ -388,30 +566,75 @@ function toArray( src )
   if( _.longIs( src ) )
   return src;
 
-  if( src.stride !== 1 || src.offset !== 0 || src.length !== src._vectorBuffer.length )
-  {
-    result = _.longMake( src._vectorBuffer, src.length ); debugger;
-    for( let i = 0 ; i < src.length ; i++ )
-    result[ i ] = src.eGet( i );
-  }
-  else
-  {
-    result = src._vectorBuffer;
-  }
+  return src._toLong();
 
-  return result;
+  // if( src.stride !== 1 || src.offset !== 0 || src.length !== src._vectorBuffer.length )
+  // {
+  //   result = _.longMake( src._vectorBuffer, src.length ); debugger;
+  //   for( let i = 0 ; i < src.length ; i++ )
+  //   result[ i ] = src.eGet( i );
+  // }
+  // else
+  // {
+  //   result = src._vectorBuffer;
+  // }
+  //
+  // return result;
 }
 
-dop = toArray.operation = Object.create( null );
+dop = toLong.operation = Object.create( null );
+dop.input = 'vr';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 1;
-dop.takingVectors = [ 0, 1 ];
-dop.takingVectorsOnly = false;
+dop.takingVectors = [ 1, 1 ];
+dop.takingVectorsOnly = true;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningLong = true;
 dop.modifying = false;
+
+// //
+//
+// function toStr( src ) /* xxx : redo */
+// {
+//   let result;
+//   let length = src.length;
+//
+//   _.assert( _.vectorAdapterIs( src ) || _.longIs( src ), 'Expects vector as a single argument' );
+//   _.assert( arguments.length === 1 );
+//
+//   src = this.fromLong( src );
+//
+//   src.each( ( e ) =>
+//   {
+//
+//   });
+//
+//   // if( src.stride !== 1 || src.offset !== 0 || src.length !== src._vectorBuffer.length )
+//   // {
+//   //   result = _.longMake( src._vectorBuffer, src.length ); debugger;
+//   //   for( let i = 0 ; i < src.length ; i++ )
+//   //   result[ i ] = src.eGet( i );
+//   // }
+//   // else
+//   // {
+//   //   result = src._vectorBuffer;
+//   // }
+//   //
+//   // return result;
+// }
+//
+// dop = toStr.operation = Object.create( null );
+// dop.atomWise = false;
+// dop.homogeneous = false;
+// dop.takingArguments = 1;
+// dop.takingVectors = [ 0, 1 ];
+// dop.takingVectorsOnly = false;
+// dop.returningSelf = false;
+// dop.returningNew = false;
+// dop.returningLong = true;
+// dop.modifying = false;
 
 //
 
@@ -456,11 +679,12 @@ function _toStr( src, o )
 }
 
 dop = _toStr.operation = Object.create( null );
+dop.input = 'vr ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = 1;
-dop.takingVectorsOnly = true;
+dop.takingVectorsOnly = false;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.modifying = false;
@@ -489,7 +713,7 @@ function gather( dst, srcs )
     if( _.numberIs( src ) )
     continue;
     if( _.longIs( src ) )
-    src = srcs[ s ] = _.vectorAdapter.FromLong( src );
+    src = srcs[ s ] = _.vectorAdapter.fromLong( src );
     _.assert( src.length === l );
   }
 
@@ -508,6 +732,7 @@ function gather( dst, srcs )
 }
 
 dop = gather.operation = Object.create( null );
+dop.input = 'vw !vw'; /* xxx : introduce (*vw) */
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
@@ -529,11 +754,11 @@ function map( dst, src, onEach )
     _.assert( arguments[ 2 ] === undefined );
   }
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   if( dst === null )
-  dst = this.Make( src.length );
+  dst = this.make( src.length );
 
   let l = src.length;
 
@@ -559,6 +784,7 @@ function map( dst, src, onEach )
 }
 
 dop = map.operation = Object.create( null );
+dop.input = 'vw|n ?vr ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
@@ -580,11 +806,11 @@ function filter( dst, src, onEach )
     _.assert( arguments[ 2 ] === undefined );
   }
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   if( dst === null )
-  dst = this.Make( src.length );
+  dst = this.make( src.length );
 
   let l = src.length;
 
@@ -632,6 +858,7 @@ function filter( dst, src, onEach )
 }
 
 dop = filter.operation = Object.create( null );
+dop.input = 'vw|n ?vr ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
@@ -653,11 +880,11 @@ function _while( dst, src, onEach )
     _.assert( arguments[ 2 ] === undefined );
   }
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   if( dst === null )
-  dst = this.Make( src.length );
+  dst = this.make( src.length );
 
   let l = src.length;
 
@@ -706,6 +933,7 @@ function _while( dst, src, onEach )
 }
 
 dop = _while.operation = Object.create( null );
+dop.input = 'vw|n ?vr ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
@@ -720,7 +948,7 @@ dop.modifying = true;
 function all( src, onEach )
 {
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   let l = src.length;
@@ -746,6 +974,7 @@ function all( src, onEach )
 }
 
 dop = all.operation = Object.create( null );
+dop.input = 'vw ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
@@ -763,7 +992,7 @@ dop.modifying = false;
 function any( src, onEach )
 {
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   let l = src.length;
@@ -789,6 +1018,7 @@ function any( src, onEach )
 }
 
 dop = any.operation = Object.create( null );
+dop.input = 'vw ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
@@ -806,7 +1036,7 @@ dop.modifying = false;
 function none( src, onEach )
 {
 
-  if( onEach === undefined )
+  if( onEach === undefined || onEach === null )
   onEach = onEach0;
 
   let l = src.length;
@@ -832,6 +1062,7 @@ function none( src, onEach )
 }
 
 dop = none.operation = Object.create( null );
+dop.input = 'vw ?s';
 dop.atomWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
@@ -852,14 +1083,18 @@ function sort( dst, comparator )
 {
   let length = dst.length;
 
-  if( !comparator ) comparator = function( a, b ){ return a-b };
+  if( !comparator )
+  comparator = function( a, b ){ return a-b };
+
+  _sort( 0, length-1 );
+
+  return dst;
 
   function _sort( left, right )
   {
 
-    if( left >= right ) return;
-
-    //console.log( '_sort :', left, right );
+    if( left >= right )
+    return;
 
     let m = Math.floor( ( left+right ) / 2 );
     let mValue = dst.eGet( m );
@@ -892,17 +1127,16 @@ function sort( dst, comparator )
 
   }
 
-  _sort( 0, length-1 );
-
-  return dst;
 }
 
 dop = sort.operation = Object.create( null );
+dop.input = 'vw ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
-dop.takingArguments = [ 1, 2 ];
-dop.takingVectors = [ 1, 1 ];
-dop.takingVectorsOnly = false;
+// dop.takingArguments = [ 2, 2 ];
+// dop.takingVectors = [ 1, 1 ];
+// dop.takingVectorsOnly = false;
+// xxx
 dop.returningSelf = true;
 dop.returningNew = false;
 dop.modifying = true;
@@ -941,6 +1175,7 @@ function randomInRadius( dst, radius )
 }
 
 dop = randomInRadius.operation = Object.create( null );
+dop.input = 'vw s';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 2, 2 ];
@@ -952,29 +1187,32 @@ dop.modifying = true;
 
 //
 
-function crossWithPoints( a, b, c, result )
+// function crossWithPoints( a, b, c, result )
+function crossWithPoints( dst, a, b, c )
 {
+  _.assert( arguments.length === 4 );
   _.assert( a.length === 3 && b.length === 3 && c.length === 3, 'implemented only for 3D' );
 
   _.assert( 0, 'not tested' );
-  result = result || this.Make/*makeArrayOfLength*/( 3 );
-  // result = result || this.long.longMake( 3 );
+  dst = dst || this.make( 3 );
+  // dst = dst || this.long.longMake( 3 );
 
   let ax = a.eGet( 0 )-c.eGet( 0 ), ay = a.eGet( 1 )-c.eGet( 1 ), az = a.eGet( 2 )-c.eGet( 2 );
   let bx = b.eGet( 0 )-c.eGet( 0 ), by = b.eGet( 1 )-c.eGet( 1 ), bz = b.eGet( 2 )-c.eGet( 2 );
 
-  result.eSet( 0, ay * bz - az * by );
-  result.eSet( 1, az * bx - ax * bz );
-  result.eSet( 2, ax * by - ay * bx );
+  dst.eSet( 0, ay * bz - az * by );
+  dst.eSet( 1, az * bx - ax * bz );
+  dst.eSet( 2, ax * by - ay * bx );
 
-  return result;
+  return dst;
 }
 
 dop = crossWithPoints.operation = Object.create( null );
+dop.input = 'vw|n vr vr vr';
 dop.atomWise = false;
 dop.homogeneous = false;
-dop.takingArguments = [ 3, 4 ];
-dop.takingVectors = [ 3, 4 ];
+dop.takingArguments = [ 4, 4 ];
+dop.takingVectors = [ 4, 4 ];
 dop.takingVectorsOnly = true;
 dop.returningSelf = true;
 dop.returningNew = false;
@@ -993,6 +1231,8 @@ function _cross3( dst, src1, src2 )
   let src2y = src2.eGet( 1 );
   let src2z = src2.eGet( 2 );
 
+  dst = dst || this.make( 3 );
+
   dst.eSet( 0, src1y * src2z - src1z * src2y );
   dst.eSet( 1, src1z * src2x - src1x * src2z );
   dst.eSet( 2, src1x * src2y - src1y * src2x );
@@ -1001,6 +1241,7 @@ function _cross3( dst, src1, src2 )
 }
 
 dop = _cross3.operation = Object.create( null );
+dop.input = 'vw|n vr vr';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 3;
@@ -1012,7 +1253,7 @@ dop.modifying = true;
 
 //
 
-function cross3( dst, src1, src2 )
+function cross3( dst, src1, src2 ) /* qqq : cover */
 {
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
@@ -1020,9 +1261,9 @@ function cross3( dst, src1, src2 )
   _.assert( src1.length === 3, 'implemented only for 3D' );
   _.assert( src2.length === 3, 'implemented only for 3D' );
 
-  dst = _.vectorAdapter.From( dst );
-  src1 = _.vectorAdapter.From( src1 );
-  src2 = _.vectorAdapter.From( src2 );
+  dst = _.vectorAdapter.from( dst );
+  src1 = _.vectorAdapter.from( src1 );
+  src2 = _.vectorAdapter.from( src2 );
 
   return this._cross3( dst, src1, src2 );
 }
@@ -1037,7 +1278,7 @@ function cross( dst )
   let firstSrc = 1;
   if( dst === null )
   {
-    dst = _.vectorAdapter.From( arguments[ 1 ].slice() );
+    dst = _.vectorAdapter.from( arguments[ 1 ].slice() );
     firstSrc = 2;
     _.assert( arguments.length >= 3, 'Expects at least three arguments' );
   }
@@ -1056,10 +1297,11 @@ function cross( dst )
 }
 
 dop = cross.operation = Object.create( null );
+dop.input = 'vw|n vr vr *vr';
 dop.atomWise = false;
 dop.homogeneous = false;
-dop.takingArguments = [ 2, Infinity ];
-dop.takingVectors = [ 2, Infinity ];
+dop.takingArguments = [ 3, Infinity ];
+dop.takingVectors = [ 3, Infinity ];
 dop.takingVectorsOnly = true;
 dop.returningSelf = true;
 dop.returningNew = true;
@@ -1081,32 +1323,35 @@ function quaternionApply( dst, q )
   let qz = q.eGet( 2 );
   let qw = q.eGet( 3 );
 
-  //
+  /* */
 
   let ix = + qw * x + qy * z - qz * y;
   let iy = + qw * y + qz * x - qx * z;
   let iz = + qw * z + qx * y - qy * x;
   let iw = - qx * x - qy * y - qz * z;
 
-  //
+  /* */
 
   dst.eSet( 0, ix * qw + iw * - qx + iy * - qz - iz * - qy );
   dst.eSet( 1, iy * qw + iw * - qy + iz * - qx - ix * - qz );
   dst.eSet( 2, iz * qw + iw * - qz + ix * - qy - iy * - qx );
 
-  //
+  /* */
+
 /*
   clone.quaternionApply2( q );
   let err = clone.distanceSqr( this );
   if( abs( err ) > 0.0001 )
   throw _.err( 'Vector :', 'Something wrong' );
 */
-  //
+
+  /* */
 
   return dst;
 }
 
 dop = quaternionApply.operation = Object.create( null );
+dop.input = 'vw vr';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
@@ -1130,7 +1375,7 @@ function quaternionApply2( dst, q )
 
   _.assert( dst.length === 3 && q.length === 4, 'quaternionApply :', 'Expects vector and quaternion as arguments' );
   throw _.err( 'not tested' );
-  let qvector = this.FromSubLong( dst, 0, 3 );
+  let qvector = this.fromLongLrange( dst, 0, 3 );
 
   let cross1 = this.cross( qvector, dst );
   this.mulScalar( cross1, 2 );
@@ -1146,6 +1391,7 @@ function quaternionApply2( dst, q )
 }
 
 dop = quaternionApply2.operation = Object.create( null );
+dop.input = 'vw vr';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
@@ -1167,6 +1413,7 @@ function eulerApply( v, e )
 }
 
 dop = eulerApply.operation = Object.create( null );
+dop.input = 'vw vr';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
@@ -1181,7 +1428,7 @@ dop.modifying = true;
 function reflect( v, normal )
 {
 
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( arguments.length === 3, 'Expects exactly two arguments' );
   _.assert( _.vectorAdapterIs( v ) );
   _.assert( _.vectorAdapterIs( normal ) );
 
@@ -1194,10 +1441,11 @@ function reflect( v, normal )
 }
 
 dop = reflect.operation = Object.create( null );
+dop.input = 'vw|n vr vr';
 dop.atomWise = false;
 dop.homogeneous = false;
-dop.takingArguments = 2;
-dop.takingVectors = 2;
+dop.takingArguments = 3;
+dop.takingVectors = 3;
 dop.takingVectorsOnly = true;
 dop.returningSelf = true;
 dop.returningNew = false;
@@ -1208,18 +1456,18 @@ dop.modifying = true;
 function matrixApplyTo( dst, srcMatrix )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.spaceIs( srcMatrix ) );
+  _.assert( _.matrixIs( srcMatrix ) );
   debugger;
   return _.space.mul( dst, [ srcMatrix, dst ] );
 }
 
 dop = matrixApplyTo.operation = Object.create( null );
+dop.input = 'vr mw';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 1;
 dop.takingVectorsOnly = false;
-dop.takindistanceSqrgVectorsOnly = false;
 dop.returningSelf = true;
 dop.returningNew = false;
 dop.modifying = true;
@@ -1229,11 +1477,12 @@ dop.modifying = true;
 function matrixHomogenousApply( dst, srcMatrix )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.spaceIs( srcMatrix ) );
+  _.assert( _.matrixIs( srcMatrix ) );
   return srcMatrix.matrixHomogenousApply( dst );
 }
 
 dop = matrixHomogenousApply.operation = Object.create( null );
+dop.input = 'vr mw';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
@@ -1253,6 +1502,7 @@ function matrixDirectionsApply( v, m )
 }
 
 dop = matrixDirectionsApply.operation = Object.create( null );
+dop.input = 'vr mw';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
@@ -1280,6 +1530,7 @@ function swapVectors( v1, v2 )
 }
 
 dop = swapVectors.operation = Object.create( null );
+dop.input = 'vw vw';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
@@ -1308,6 +1559,7 @@ function swapAtoms( v, i1, i2 )
 }
 
 dop = swapAtoms.operation = Object.create( null );
+dop.input = 'vw s s';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 3;
@@ -1340,7 +1592,7 @@ function formate( dst, srcs )
     }
     else
     {
-      src = _.vectorAdapter.From( src );
+      src = _.vectorAdapter.from( src );
       _.assert( src.length === l );
       for( let i = 0 ; i < l ; i++ )
       dst.eSet( i*ape+a , src.eGet( i ) );
@@ -1352,8 +1604,9 @@ function formate( dst, srcs )
 }
 
 dop = formate.operation = Object.create( null );
-dop.takingArguments = [ 1, 2 ];
-dop.takingVectors = [ 1, 1 ];
+dop.input = 'vw !vw';
+dop.takingArguments = 2;
+dop.takingVectors = 1;
 dop.takingVectorsOnly = false;
 dop.returningSelf = true;
 dop.returningNew = false;
@@ -1433,7 +1686,7 @@ let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_fun
 ({
   onEach : function _ceil( dst, src, i )
   {
-    dst.eSet( i, _.ceilToPowerOfTwo( src.eGet( i ) ) );
+    dst.eSet( i, _.math.ceilToPowerOfTwo( src.eGet( i ) ) );
   }
 });
 
@@ -1461,8 +1714,8 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 
 /**
  * @summary Add vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 2, 5, 9 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1479,6 +1732,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 let add = meta._operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2, Infinity ],
+  input : 'vw +vr|+s',
   homogenous : 1,
   onEach : function add( dst, src, i )
   {
@@ -1495,8 +1749,8 @@ let add = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Subtracts vector `src` from vector `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 2, 5, 9 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1513,6 +1767,7 @@ let add = meta._operationReturningSelfTakingVariantsComponentWise_functor
 let sub = meta._operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2, Infinity ],
+  input : 'vw +vr|+s',
   homogenous : 1,
   onEach : function sub( dst, src, i )
   {
@@ -1529,8 +1784,8 @@ let sub = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Multiplication of vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 2, 5, 9 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1547,6 +1802,7 @@ let sub = meta._operationReturningSelfTakingVariantsComponentWise_functor
 let mul = meta._operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2, Infinity ],
+  input : 'vw +vr|+s',
   homogenous : 1,
   onMakeIdentity : function( dst )
   {
@@ -1567,8 +1823,8 @@ let mul = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Division of vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 4, 9, 16 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1585,6 +1841,7 @@ let mul = meta._operationReturningSelfTakingVariantsComponentWise_functor
 let div = meta._operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2, Infinity ],
+  input : 'vw +vr|+s',
   homogenous : 1,
   onMakeIdentity : function( dst )
   {
@@ -1607,8 +1864,8 @@ let div = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Finds minimum values from vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 4, 9, 16 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1626,6 +1883,7 @@ let min = meta._operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2, Infinity ],
   homogenous : 1,
+  input : 'vw +vr|+s',
   onMakeIdentity : function( dst )
   {
     debugger;
@@ -1646,8 +1904,8 @@ let min = meta._operationReturningSelfTakingVariantsComponentWise_functor
 
 /**
  * @summary Finds maximal values from vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Array|VectorFromLong} dst Destination vector.
- * @param {Array|VectorFromLong} src Source vector.
+ * @param {Long|VectorAdapter} dst Destination vector.
+ * @param {Long|VectorAdapter} src Source vector.
  * @example
  * var a1 = [ 1, 4, 9, 16 ];
  * var a2 = [ 1, 2, 3, 4 ];
@@ -1665,6 +1923,7 @@ let max = meta._operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 2, Infinity ],
   homogenous : 1,
+  input : 'vw +vr|+s',
   onMakeIdentity : function( dst )
   {
     debugger;
@@ -1684,8 +1943,8 @@ let max = meta._operationReturningSelfTakingVariantsComponentWise_functor
 //
 
 /**
- * @summary Limits values of vector `dst` to values in range [min, max].
- * @param {Array|VectorFromLong} dst Vector.
+ * @summary Limits values of vector `dst` to values in orange [min, max].
+ * @param {Long|VectorAdapter} dst Vector.
  * @example
  * var a1 = [ 1, 2, 3, 4 ];
  * _.avector.clamp( a1, 1, 2 );
@@ -1699,6 +1958,7 @@ let max = meta._operationReturningSelfTakingVariantsComponentWise_functor
 let clamp = meta._operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 3, 3 ],
+  input : 'vw vr|s vr|s',
   onEach : function clamp( dst, min, max, i )
   {
     let vmin = min.eGet( i );
@@ -1713,6 +1973,7 @@ let clamp = meta._operationReturningSelfTakingVariantsComponentWise_functor
 let randomInRange = meta._operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 3, 3 ],
+  input : 'vw vr|s vr|s',
   onEach : function randomInRange( dst, min, max, i )
   {
     let vmin = min.eGet( i );
@@ -1726,6 +1987,7 @@ let randomInRange = meta._operationReturningSelfTakingVariantsComponentWise_func
 let mix = meta._operationReturningSelfTakingVariantsComponentWise_functor
 ({
   takingArguments : [ 3, 3 ],
+  input : 'vw vr|s vr|s',
   onEach : function mix( dst, src, progress, i )
   {
     debugger;
@@ -1761,8 +2023,9 @@ let reduceToClosest = meta._operationReduceToExtremal_functor
   {
     return a < b;
   },
-  takingArguments : 2,
-  takingVectors : 1,
+  input : 'vr *vr',
+  // takingArguments : 2,
+  // takingVectors : 1,
   distanceOnBegin : +Infinity,
   valueName : 'distance',
   name : 'reduceToClosest',
@@ -1783,8 +2046,9 @@ let reduceToFurthest = meta._operationReduceToExtremal_functor
   {
     return a > b;
   },
-  takingArguments : 2,
-  takingVectors : 1,
+  input : 'vr *vr',
+  // takingArguments : 2,
+  // takingVectors : 1,
   distanceOnBegin : -Infinity,
   valueName : 'distance',
   name : 'reduceToFurthest',
@@ -1805,6 +2069,7 @@ let reduceToMin = meta._operationReduceToExtremal_functor
   {
     return a < b;
   },
+  input : 'vr *vr',
   distanceOnBegin : +Infinity,
   valueName : 'value',
   name : 'reduceToMin',
@@ -1823,6 +2088,7 @@ let reduceToMinAbs = meta._operationReduceToExtremal_functor
   {
     return a < b;
   },
+  input : 'vr *vr',
   distanceOnBegin : -Infinity,
   valueName : 'value',
   name : 'reduceToMinAbs',
@@ -1841,6 +2107,7 @@ let reduceToMax = meta._operationReduceToExtremal_functor
   {
     return a > b;
   },
+  input : 'vr *vr',
   distanceOnBegin : -Infinity,
   valueName : 'value',
   name : 'reduceToMax',
@@ -1859,6 +2126,7 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
   {
     return a > b;
   },
+  input : 'vr *vr',
   distanceOnBegin : -Infinity,
   valueName : 'value',
   name : 'reduceToMaxAbs',
@@ -1933,9 +2201,12 @@ function reduceToMinValue()
   return result.value;
 }
 
+_.assert( _.strIs( reduceToMin.trivial.operation.input.definition ) );
+// debugger;
 dop = reduceToMinValue.operation = Object.create( null );
-dop.takingArguments = [ 1, Infinity ];
-dop.takingVectors = [ 1, Infinity ];
+dop.input = reduceToMin.trivial.operation.input.definition;
+// dop.takingArguments = [ 1, Infinity ];
+// dop.takingVectors = [ 1, Infinity ];
 dop.takingVectorsOnly = true;
 dop.returningSelf = false;
 dop.returningNew = false;
@@ -1952,8 +2223,9 @@ function reduceToMaxValue()
 }
 
 dop = reduceToMaxValue.operation = Object.create( null );
-dop.takingArguments = [ 1, Infinity ];
-dop.takingVectors = [ 1, Infinity ];
+dop.input = reduceToMax.trivial.operation.input.definition;
+// dop.takingArguments = [ 1, Infinity ];
+// dop.takingVectors = [ 1, Infinity ];
 dop.takingVectorsOnly = true;
 dop.returningSelf = false;
 dop.returningNew = false;
@@ -1970,9 +2242,11 @@ function distributionRangeSummaryValue()
   return [ result.min.value, result.max.value ];
 }
 
+// debugger;
 dop = distributionRangeSummaryValue.operation = Object.create( null );
-dop.takingArguments = [ 1, Infinity ];
-dop.takingVectors = [ 1, Infinity ];
+dop.input = distributionRangeSummary.trivial.operation.input.definition;
+// dop.takingArguments = [ 1, Infinity ];
+// dop.takingVectors = [ 1, Infinity ];
 dop.takingVectorsOnly = true;
 dop.returningSelf = false;
 dop.returningNew = false;
@@ -2045,6 +2319,7 @@ function dot( dst, src )
 }
 
 dop = dot.operation = Object.create( null );
+dop.input = 'vr vr';
 dop.takingArguments = 2;
 dop.takingVectors = 2;
 dop.takingVectorsOnly = true;
@@ -2062,6 +2337,7 @@ function distance( src1, src2 )
 }
 
 dop = distance.operation = Object.create( null );
+dop.input = 'vr vr';
 dop.takingArguments = 2;
 dop.takingVectors = 2;
 dop.takingVectorsOnly = true;
@@ -2087,6 +2363,7 @@ function distanceSqr( src1, src2 )
 }
 
 dop = distanceSqr.operation = Object.create( null );
+dop.input = 'vr vr';
 dop.takingArguments = 2;
 dop.takingVectors = 2;
 dop.takingVectorsOnly = true;
@@ -2142,6 +2419,7 @@ function _equalAre( it )
 _.routineExtend( _equalAre, _._equal );
 
 dop = _equalAre.operation = Object.create( null );
+dop.input = '!v';
 dop.takingArguments = 1;
 dop.takingVectors = 0;
 dop.takingVectorsOnly = false;
@@ -2175,6 +2453,7 @@ _.routineExtend( equalAre, _._equal );
 // _.assert( _.routineIs( equalAre.lookContinue ) );
 
 dop = equalAre.operation = Object.create( null );
+dop.input = 'vr vr ?!v';
 dop.takingArguments = [ 2, 3 ];
 dop.takingVectors = 2;
 dop.takingVectorsOnly = false;
@@ -2204,6 +2483,7 @@ function identicalAre( src1, src2, iterator )
 _.routineExtend( identicalAre, _.entityIdentical );
 
 dop = identicalAre.operation = Object.create( null );
+dop.input = 'vr vr ?!v';
 dop.takingArguments = [ 2, 3 ];
 dop.takingVectors = 2;
 dop.takingVectorsOnly = false;
@@ -2232,6 +2512,7 @@ function equivalentAre( src1, src2, iterator )
 _.routineExtend( equivalentAre, _.entityIdentical );
 
 dop = equivalentAre.operation = Object.create( null );
+dop.input = 'vr vr ?!v';
 dop.takingArguments = [ 2, 3 ];
 dop.takingVectors = 2;
 dop.takingVectorsOnly = false;
@@ -2247,7 +2528,7 @@ function areParallel( src1, src2, accuracy )
 {
   let length = src1.length;
   debugger;
-  accuracy = ( accuracy !== undefined ) ? accuracy : this.accuracy;
+  accuracy = ( accuracy !== undefined ) ? accuracy : this.accuracy; /* xxx */
 
   _.assert( _.numberIs( accuracy ) );
   _.assert( src1.length === src2.length, 'vector.distanceSqr :', 'src1 and src2 should have same length' );
@@ -2294,6 +2575,7 @@ function areParallel( src1, src2, accuracy )
 }
 
 dop = areParallel.operation = Object.create( null );
+dop.input = 'vr vr ?s';
 dop.takingArguments = [ 2, 3 ];
 dop.takingVectors = 2;
 dop.takingVectorsOnly = false;
@@ -2322,6 +2604,7 @@ function mag( v )
 }
 
 dop = mag.operation = _.mapExtend( null , Routines.reduceToMag.operation );
+dop.input = 'vr';
 dop.takingArguments = [ 1, 1 ];
 dop.takingVectors = [ 1, 1 ];
 
@@ -2336,6 +2619,7 @@ function magSqr( v )
 }
 
 dop = magSqr.operation = _.mapExtend( null , Routines.reduceToMagSqr.operation );
+dop.input = 'vr';
 dop.takingArguments = [ 1, 1 ];
 dop.takingVectors = [ 1, 1 ];
 
@@ -2353,6 +2637,7 @@ function median( v )
 }
 
 dop = median.operation = _.mapExtend( null , distributionRangeSummary.trivial.operation );
+// dop.input = 'vr';
 
 //
 
@@ -2367,6 +2652,7 @@ function momentCentral( v, degree, mean )
 }
 
 dop = momentCentral.operation = _.mapExtend( null , Routines._momentCentral.operation );
+dop.input = 'vr s ?s';
 dop.takingArguments = [ 2, 3 ];
 
 //
@@ -2390,6 +2676,7 @@ function momentCentralConditional( v, degree, mean, filter )
 }
 
 dop = momentCentralConditional.operation = _.mapExtend( null , Routines._momentCentralConditional.operation );
+dop.input = 'vr s ?s !v';
 dop.takingArguments = [ 3, 4 ];
 
 //
@@ -2412,7 +2699,8 @@ function distributionSummary( v )
 }
 
 dop = distributionSummary.operation = _.mapExtend( null , Routines._momentCentral.operation );
-dop.takingArguments = [ 1, 1 ];
+// dop.input = 'vr';
+// dop.takingArguments = [ 1, 1 ];
 
 //
 
@@ -2424,6 +2712,7 @@ function variance( v, mean )
 }
 
 dop = variance.operation = _.mapExtend( null , momentCentral.operation );
+dop.input = 'vr ?s';
 dop.takingArguments = [ 1, 2 ];
 
 //
@@ -2444,7 +2733,8 @@ function varianceConditional( v, mean, filter )
 }
 
 dop = varianceConditional.operation = _.mapExtend( null , momentCentralConditional.operation );
-dop.takingArguments = [ 1, 2 ];
+dop.input = 'vr ?s !v';
+dop.takingArguments = [ 2, 3 ];
 
 //
 
@@ -2455,6 +2745,7 @@ function standardDeviation()
 }
 
 dop = standardDeviation.operation = _.mapExtend( null , variance.operation );
+dop.input = 'vr ?s';
 
 //
 
@@ -2471,6 +2762,7 @@ function standardDeviationNormalized( v, mean )
 }
 
 dop = standardDeviationNormalized.operation = _.mapExtend( null , variance.operation );
+dop.input = 'vr ?s';
 
 //
 
@@ -2488,6 +2780,7 @@ function kurtosis( v, mean )
 }
 
 dop = kurtosis.operation = _.mapExtend( null , variance.operation );
+dop.input = 'vr ?s';
 
 //
 
@@ -2500,6 +2793,7 @@ function kurtosisNormalized( v, mean )
 }
 
 dop = kurtosisNormalized.operation = _.mapExtend( null , variance.operation );
+dop.input = 'vr ?s';
 
 //
 
@@ -2517,6 +2811,7 @@ function skewness( v, mean )
 }
 
 dop = skewness.operation = _.mapExtend( null , variance.operation );
+dop.input = 'vr ?s';
 
 // --
 // routines
@@ -2534,20 +2829,30 @@ let _routinesMathematical =
   makeSimilar,
 
   slice,
-  slicedLong,
-  slicedAdapter,
+  slicedAdapter, /* xxx : deprecate */
+  slicedLong, /* xxx : deprecate */
 
-  /* qqq : implement routine shrinkLong */
-  /* qqq : implement routine shrinkAdapter */
-  /* qqq : implement routine growLong */
-  /* qqq : implement routine growAdapter */
+  /* qqq : implement routine shrinkLong and cover */
+  /* qqq : implement routine shrinkAdapter and cover */
+  /* qqq : implement routine growLong and cover */
+  /* qqq : implement routine growAdapter and cover */
 
-  resizedArray,
-  resizedVector,
+  grow : growAdapter,
+  growAdapter,
+  growLong,
 
-  subarray,
+  shrink : shrinkAdapter,
+  shrinkAdapter,
+  shrinkLong,
 
-  toArray,
+  resizedAdapter, /* xxx : deprecate */
+  resizedLong, /* xxx : deprecate */
+
+  shrinkView, /* qqq : cover please */
+  subarray, /* xxx : deprecate */
+
+  toLong,
+  toStr : _toStr,
   _toStr,
 
   gather,
@@ -2602,8 +2907,7 @@ let _routinesMathematical =
 
   normalize,
 
-
-  // atom-wise, assigning, mixed : self
+  // atom-wise, assigning, mixed : self /* xxx qqq : deprecate */
 
   /* meta._operationReturningSelfTakingVariantsComponentWise_functor */
   /* meta._operationReturningSelfTakingVariantsComponentWiseAct_functor */
@@ -2619,8 +2923,7 @@ let _routinesMathematical =
   randomInRangeAssigning : randomInRange.assigning,
   mixAssigning : mix.assigning,
 
-
-  // atom-wise, copying, mixed : self
+  // atom-wise, copying, mixed : self /* xxx qqq : deprecate */
 
   addCopying : add.copying,
   subCopying : sub.copying,
@@ -2632,7 +2935,6 @@ let _routinesMathematical =
   clampCopying : clamp.copying,
   randomInRangeCopying : randomInRange.copying,
   mixCopying : mix.copying,
-
 
   // atom-wise, homogeneous, taking vectors
   // vectors only -> self
@@ -2976,20 +3278,17 @@ _.assert( _.routineIs( _.vectorAdapter.reduceToMean ) );
 _.assert( !_.vectorAdapter.isValid );
 _.assert( _.routineIs( _.vectorAdapter.allFinite ) );
 _.assert( _.routineIs( _.vectorAdapter.reduceToMaxValue ) );
-_.assert( _.routineIs( _routinesMathematical.reduceToMaxValue ) );
-
 _.assert( _.routineIs( _.vectorAdapter.floor ) );
 _.assert( _.routineIs( _.vectorAdapter.ceil ) );
 _.assert( _.routineIs( _.vectorAdapter.abs ) );
 _.assert( _.routineIs( _.vectorAdapter.round ) );
-
 _.assert( _.routineIs( _.vectorAdapter.allIdentical ) );
+_.assert( _.routineIs( _.vectorAdapter.isZero ) );
 _.assert( _.longIdentical( _.vectorAdapter.allIdentical.operation.takingArguments, [ 2, 2 ] ) );
-
 _.assert( _.vectorAdapter.accuracy >= 0 );
 _.assert( _.vectorAdapter.accuracySqr >= 0 );
-
 _.assert( _.numberIs( _.vectorAdapter.accuracy ) );
 _.assert( _.numberIs( _.vectorAdapter.accuracySqr ) );
+_.assert( _.routineIs( _routinesMathematical.reduceToMaxValue ) );
 
 })();

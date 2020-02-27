@@ -8,8 +8,9 @@ let _ = _global_.wTools;
 // structure
 // --
 
-let OperationDescriptor = _.blueprint
-.construct
+let OperationDescriptor1 = _.blueprint
+// .construct
+.define
 ({
 
   takingArguments : null,
@@ -51,6 +52,22 @@ let OperationDescriptor = _.blueprint
 
 })
 
+//
+
+let OperationDescriptor2 = _.blueprint
+// .construct
+.define
+({
+
+  extension : _.define.extension( OperationDescriptor1 ),
+
+  special : null,
+
+  inputWithoutLast : null,
+  inputLast : null,
+
+})
+
 // --
 // routines
 // --
@@ -59,7 +76,8 @@ let OperationDescriptor = _.blueprint
 let VectorExtension =
 {
 
-  OperationDescriptor,
+  OperationDescriptor1,
+  OperationDescriptor2,
 
 }
 

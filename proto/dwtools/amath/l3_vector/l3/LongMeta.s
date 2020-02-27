@@ -7,7 +7,7 @@ let _min = Math.min;
 let _max = Math.max;
 let _arraySlice = Array.prototype.slice;
 let _sqrt = Math.sqrt;
-let _sqr = _.sqr;
+let _sqr = _.math.sqr;
 
 let meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
 
@@ -97,11 +97,11 @@ function _routineLongWrap_functor( o )
     }
     else if( op.returningSelf )
     {
-      return result.toArray();
+      return result.toLong();
     }
     else if( op.returningNew && _.vectorAdapterIs( result ) )
     {
-      return result.toArray();
+      return result.toLong();
     }
     else if( op.returningLong )
     {
@@ -120,7 +120,7 @@ function _routineLongWrap_functor( o )
 
     // if( _hasLength( arg ) && ( !_.Matrix || !( arg instanceof _.Matrix ) ) )
     if( _.longIs( arg ) )
-    return _.vectorAdapter.FromLong( arg );
+    return _.vectorAdapter.fromLong( arg );
     return arg;
   }
 
@@ -203,8 +203,12 @@ function _routinesLongWrap_functor()
 
 let MetaExtension =
 {
+
   _routineLongWrap_functor,
   _routinesLongWrap_functor,
+
+  vectorAdapter : _.vectorAdapter,
+
 }
 
 _.mapExtend( _.vectorAdapter._meta, MetaExtension );

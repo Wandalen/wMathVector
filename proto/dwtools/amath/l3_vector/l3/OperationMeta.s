@@ -5,8 +5,8 @@
 let _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
-let _sqr = _.sqr;
-let _sqrt = _.sqrt;
+let _sqr = _.math.sqr;
+let _sqrt = _.math.sqrt;
 let _assertMapHasOnly = _.assertMapHasOnly;
 let _routineIs = _.routineIs;
 
@@ -16,12 +16,8 @@ let _pow = Math.pow;
 let sqrt = Math.sqrt;
 let abs = Math.abs;
 
-let vad = _.vectorAdapter;
-let OperationDescriptor = vad.OperationDescriptor;
-let meta = vad._meta = vad._meta || Object.create( null );
-vad._meta.routines = vad._meta.routines || Object.create( null );
-
-_.assert( _.objectIs( OperationDescriptor ) );
+let meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
+_.vectorAdapter._meta.routines = _.vectorAdapter._meta.routines || Object.create( null );
 
 // --
 // structure
@@ -375,8 +371,8 @@ function operationReducingAdjust()
 
     operation.kind = 'reducing';
 
-    if( operation.takingArguments === undefined )
-    operation.takingArguments = [ 1, Infinity ];
+    // if( operation.takingArguments === undefined )
+    // operation.takingArguments = [ 1, Infinity ];
 
     operation.homogeneous = false;
     operation.atomWise = true;
@@ -387,8 +383,8 @@ function operationReducingAdjust()
     if( operation.usingDstAsSrc === undefined )
     operation.usingDstAsSrc = false;
 
-    _.assert( _.arrayIs( operation.takingArguments ) );
-    _.assert( operation.takingArguments.length === 2 );
+    // _.assert( _.arrayIs( operation.takingArguments ) );
+    // _.assert( operation.takingArguments.length === 2 );
     _.assert( !operations.atomWiseReducing[ name ] );
 
     this.operationNormalize2( operation );
