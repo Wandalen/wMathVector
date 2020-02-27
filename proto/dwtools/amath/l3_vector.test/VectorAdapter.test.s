@@ -534,7 +534,7 @@ function distributionRangeSummaryValue( test )
 
 //
 
-function shrinkView( test )
+function review( test )
 {
 
   /* */
@@ -547,20 +547,20 @@ function shrinkView( test )
 
   var exp = vad.from( vad.long.longMake([ 1, 1 ]) );
   var vad1 = vad.fromNumber( 1, 4 );
-  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  var got = vad.review( vad1, [ 1, 2 ] );
   test.identical( got, exp );
   test.is( vad1._vectorBuffer !== got._vectorBuffer );
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+    var got = vad.review( vad1, [ 2, 8 ] );
   });
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
   });
 
   /* */
@@ -573,20 +573,20 @@ function shrinkView( test )
 
   var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
   var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  var got = vad.review( vad1, [ 1, 2 ] );
   test.identical( got, exp );
   test.is( vad1._vectorBuffer === got._vectorBuffer );
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+    var got = vad.review( vad1, [ 2, 8 ] );
   });
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
   });
 
   /* */
@@ -599,20 +599,20 @@ function shrinkView( test )
 
   var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
   var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  var got = vad.review( vad1, [ 1, 2 ] );
   test.identical( got, exp );
   test.is( vad1._vectorBuffer === got._vectorBuffer );
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+    var got = vad.review( vad1, [ 2, 8 ] );
   });
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
   });
 
   /* */
@@ -625,20 +625,20 @@ function shrinkView( test )
 
   var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
   var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  var got = vad.review( vad1, [ 1, 2 ] );
   test.identical( got, exp );
   test.is( vad1._vectorBuffer === got._vectorBuffer );
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+    var got = vad.review( vad1, [ 2, 8 ] );
   });
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
   });
 
   /* */
@@ -651,20 +651,20 @@ function shrinkView( test )
 
   var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
   var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  var got = vad.review( vad1, [ 1, 2 ] );
   test.identical( got, exp );
   test.is( vad1._vectorBuffer === got._vectorBuffer );
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+    var got = vad.review( vad1, [ 2, 8 ] );
   });
 
   test.shouldThrowErrorSync( () =>
   {
     var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
   });
 
   /* */
@@ -674,12 +674,6 @@ function shrinkView( test )
 // --
 // proto
 // --
-
-/*
-
-- check subarray
-
-*/
 
 var Self =
 {
@@ -707,7 +701,7 @@ var Self =
 
     distributionRangeSummaryValue,
 
-    shrinkView,
+    review,
 
   },
 

@@ -13,7 +13,7 @@ let Self = function AdapterFromNumber() {};
 
 //
 
-function _shrinkView( range )
+function _review( range )
 {
   let l = range[ 1 ] - range[ 0 ] + 1;
   _.assert( l >= 0 );
@@ -31,13 +31,21 @@ function _toLong()
 
 //
 
+function _bufferConstructorGet()
+{
+  return this._vectorBuffer.constructor;
+}
+
+//
+
 Self.prototype =
 {
   constructor : Self,
   eGet : function( index ){ return this._vectorBuffer[ 0 ]; },
   eSet : function( index, src ){ this._vectorBuffer[ 0 ] = src; },
-  _shrinkView,
+  _review,
   _toLong,
+  _bufferConstructorGet,
 }
 
 _.propertyConstant( Self.prototype,

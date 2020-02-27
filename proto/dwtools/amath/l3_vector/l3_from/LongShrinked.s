@@ -13,7 +13,7 @@ let Self = function VectorAdapterFromLongShrinked(){};
 
 //
 
-function _shrinkView( crange )
+function _review( crange )
 {
   debugger;
   let offset = this.offset + crange[ 0 ];
@@ -31,7 +31,7 @@ function _toLong()
   let result;
   if( this.offset !== 0 || this.length !== this._vectorBuffer.length )
   {
-    result = this.vectorAdapter.longMake( this._vectorBuffer, this.length ); debugger
+    result = this.vectorAdapter.longMake( this._vectorBuffer, this.length );
     for( let i = 0 ; i < this.length ; i++ )
     result[ i ] = this.eGet( i );
   }
@@ -40,6 +40,13 @@ function _toLong()
     result = this._vectorBuffer; debugger;
   }
   return result;
+}
+
+//
+
+function _bufferConstructorGet()
+{
+  return this._vectorBuffer.constructor;
 }
 
 //
@@ -57,8 +64,9 @@ Self.prototype =
     _.assert( index < this.length );
     this._vectorBuffer[ this.offset + index ] = src;
   },
-  _shrinkView,
+  _review,
   _toLong,
+  _bufferConstructorGet,
 }
 
 _.propertyConstant( Self.prototype,
@@ -107,7 +115,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 //   {
 //
 //     debugger; xxx
-//     return srcLong._shrinkView( crange );
+//     return srcLong._review( crange );
 //
 //     // if( srcLong.offset )
 //     // offset = srcLong.offset + offset*( srcLong.stride || 1 );
@@ -173,18 +181,21 @@ function fromLongLrange( srcLong, offset, length )  /* xxx */
   _.assert( !!srcLong );
   _.assert( offset+length <= srcLong.length );
 
-  if( srcLong._vectorBuffer )
+  if( _.vectorAdapterIs( srcLong ) )
   {
 
-    if( srcLong.offset )
-    offset = srcLong.offset + offset*( srcLong.stride || 1 );
+    // if( srcLong.offset )
+    // offset = srcLong.offset + offset*( srcLong.stride || 1 );
+    //
+    // length = Math.min( length, srcLong.length );
 
-    length = Math.min( length, srcLong.length );
+    // debugger;
+    return srcLong._review([ offset, offset+length-1 ]);
 
-    if( srcLong.stride )
-    return fromLongLrangeAndStride( srcLong._vectorBuffer, offset, length, srcLong.stride );
-
-    srcLong = srcLong._vectorBuffer;
+    // if( srcLong.stride )
+    // return this.fromLongLrangeAndStride( srcLong._vectorBuffer, offset, length, srcLong.stride );
+    //
+    // srcLong = srcLong._vectorBuffer;
 
   }
 
@@ -204,7 +215,7 @@ function fromLongLrange( srcLong, offset, length )  /* xxx */
 let _routinesFrom =
 {
 
-  fromLongLrange,
+  fromLongLrange, /* qqq : cover this and all from* routines */
   // fromLongLrange_old,
 
 }

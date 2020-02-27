@@ -13,9 +13,8 @@ let Self = function VectorAdapterFromLongShrinkedWithStrideNumberShrinkView(){};
 
 //
 
-function _shrinkView( crange )
+function _review( crange )
 {
-  debugger;
   let offset = this.offset + crange[ 0 ]*this.stride;
   let length = crange[ 1 ]-crange[ 0 ]+1;
   _.assert( crange[ 0 ] >= 0 );
@@ -44,6 +43,13 @@ function _toLong()
 
 //
 
+function _bufferConstructorGet()
+{
+  return this._vectorBuffer.constructor;
+}
+
+//
+
 Self.prototype =
 {
   constructor : Self,
@@ -61,8 +67,9 @@ Self.prototype =
     _.assert( i < this._vectorBuffer.length );
     this._vectorBuffer[ i ] = src;
   },
-  _shrinkView,
+  _review,
   _toLong,
+  _bufferConstructorGet,
 }
 
 Object.setPrototypeOf( Self.prototype, Parent.prototype );
@@ -122,7 +129,7 @@ function fromLongLrangeAndStride( srcLong, offset, length, stride ) /* xxx */
   _.assert( offset+(length-1)*stride < srcLong.length );
 
   if( stride === 1 )
-  return this.fromLongLrange( srcLong, offset, length ); 
+  return this.fromLongLrange( srcLong, offset, length );
 
   if( srcLong._vectorBuffer )
   {

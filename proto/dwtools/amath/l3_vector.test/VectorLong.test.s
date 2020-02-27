@@ -51,7 +51,6 @@ function comparator( test )
 `
 
   console.log( diff );
-  debugger;
 
   test.identical.apply( test, _.strLinesStrip( diff, expected ) );
   test.notIdentical( v1, v2 );
@@ -111,11 +110,9 @@ function basic( test )
   var exp = [ 5, 8 ];
   var dst = [ 1, 3 ];
   var src = [ 4, 5 ];
-  debugger;
   var got = _.avector.add( dst, src );
   test.identical( got, exp );
   test.is( got === dst );
-  debugger;
 
 }
 
@@ -472,9 +469,7 @@ function _isIdentical( test, r, t, array )
 
   test.case = 'scalar and scalar'; /* */
   var expected = t;
-  debugger;
   var got = _.avector[ r ]( 3, 3 );
-  debugger;
   test.identical( got, expected );
   var expected = f;
   var got = _.avector[ r ]( 3, 4 );
@@ -508,7 +503,6 @@ function _isIdentical( test, r, t, array )
 
   /* */
 
-  debugger;
   test.case = 'trivial, with dst'; /* */
   var expected = array( f, f, t );
   var dst = array( -1, -1, -1 );
@@ -699,7 +693,6 @@ function _isEquivalent( test, r, t, Array, array )
 
     test.case = 'very close, positive elements'; /* */
     var expected = array( t, t, t, t, t, t );
-    debugger;
     var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
     test.identical( got, expected );
 
@@ -1250,6 +1243,31 @@ function logical2ArgsZipperWithBadArguments( test, r, t, array )
 {
   var f = !t;
 
+  /*
+  */
+
+  for( r in _.vectorAdapter )
+  {
+    if( !_.routineIs( _.vectorAdapter[ r ] ) )
+    continue;
+
+    var op = _.vectorAdapter[ r ].operation;
+
+    if( !op )
+    continue;
+
+    if( op.reducing )
+    continue;
+
+    // if( !op.returningBoolean )
+    // continue;
+
+    if( !_.longIdentical( op.takingArguments, [ 2, 3 ] ) )
+    continue;
+
+    forRoutine( r );
+  }
+
   function forRoutine( r )
   {
 
@@ -1281,34 +1299,6 @@ function logical2ArgsZipperWithBadArguments( test, r, t, array )
     test.shouldThrowErrorSync( () => _.avector[ r ]( [ 1, 5 ], { 1 : 1, 2 : 2 } ) );
     test.shouldThrowErrorSync( () => _.avector[ r ]( [ 1, 1 ], [ 1, 5 ], { 1 : 1, 2 : 2 } ) );
 
-  }
-
-  /*
-  */
-
-  for( r in _.vectorAdapter )
-  {
-    if( !_.routineIs( _.vectorAdapter[ r ] ) )
-    continue;
-
-    var op = _.vectorAdapter[ r ].operation;
-
-    if( r === 'isGreaterEqual' )
-    debugger;
-
-    if( !op )
-    continue;
-
-    if( op.reducing )
-    continue;
-
-    // if( !op.returningBoolean )
-    // continue;
-
-    if( !_.longIdentical( op.takingArguments, [ 2, 3 ] ) )
-    continue;
-
-    forRoutine( r );
   }
 
 }
@@ -1419,7 +1409,6 @@ function _anyIdentical( test, r, t, array )
 
   test.case = 'empty vectors'; /* */
   var expected = t;
-  debugger;
   var got = _.avector[ r ]( array(), array() );
   test.identical( got, expected );
 
@@ -1587,7 +1576,6 @@ function _allEquivalent( test, r, t, Array, array )
 
     test.case = 'very close, positive elements'; /* */
     var expected = t;
-    debugger;
     var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
     test.identical( got, expected );
 
@@ -1863,7 +1851,6 @@ function _anyEquivalent( test, r, t, Array, array )
 
     test.case = 'very close, positive elements'; /* */
     var expected = t;
-    debugger;
     var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
     test.identical( got, expected );
 
@@ -2120,7 +2107,6 @@ function _noneEquivalent( test, r, t, Array, array )
 
     test.case = 'very close, positive elements'; /* */
     var expected = f;
-    debugger;
     var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
     test.identical( got, expected );
 
@@ -2381,10 +2367,7 @@ function logical2ArgsReducerWithBadArguments( test, r, t, array )
   {
     if( !_.routineIs( _.vectorAdapter[ r ] ) )
     continue;
-/*
-    // if( r === 'isZero' )
-    // debugger;
-*/
+
     var op = _.vectorAdapter[ r ].operation;
 
     if( !op )
@@ -2635,7 +2618,6 @@ function logical1ArgsSinglerWithBadArguments( test, r, t, array )
     if( !_.longIdentical( op.takingArguments, [ 1, 2 ] ) )
     continue;
 
-    debugger;
     forRoutine( r );
 
   }
@@ -2939,7 +2921,6 @@ function logical1ArgsReducerWithBadArguments( test, r, t, array )
     if( !_.longIdentical( op.takingArguments, [ 1, 1 ] ) )
     continue;
 
-    debugger;
     forRoutine( r );
 
   }
@@ -2986,7 +2967,6 @@ function sort( test )
   {
     var sample1 = samples[ s ].slice();
     var sample2 = samples[ s ].slice();
-    debugger;
     _.vectorAdapter.sort( _.vectorAdapter.fromLong( sample1 ) );
     sample2.sort();
     test.identical( sample1, sample2 );
@@ -3053,7 +3033,6 @@ function dot( test )
   test.shouldThrowErrorSync( () => _.avector.dot( [ 1 ], [ 1 ], [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.avector.dot( [], function(){} ) );
 
-  debugger;
 }
 
 dot.timeOut = 15000;
@@ -3062,16 +3041,13 @@ dot.timeOut = 15000;
 
 function cross( test )
 {
-  debugger;
 
   test.case = 'trivial, make new'; /* */
 
   var a = [ 1, 2, 3 ];
   var b = [ 4, 5, 6 ];
   var expected = [ -3, +6, -3 ];
-  debugger;
   var got = _.avector.cross( null, a, b );
-  debugger;
   test.identical( got, expected );
   test.is( got !== a );
 
@@ -3281,64 +3257,63 @@ function cross( test )
 
 cross.timeOut = 15000;
 
+// //
 //
-
-function subarray( test )
-{
-
-  test.case = 'trivial'; /* */
-
-  var v = vec([ 1, 2, 3 ]);
-  test.identical( v.subarray( 0, 2 ), vec([ 1, 2 ]) );
-  test.identical( v.subarray( 1, 3 ), vec([ 2, 3 ]) );
-
-  test.case = 'subarray from vector with stride'; /* */
-
-  var v = vad.fromLongLrangeAndStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
-  test.identical( v.subarray( 0, 2 ), vec([ 1, 2 ]) );
-  test.identical( v.subarray( 1, 3 ), vec([ 2, 3 ]) );
-
-  test.case = 'get empty subarray'; /* */
-
-  var v = vad.fromLongLrangeAndStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
-  test.identical( v.subarray( 0, 0 ), vec([]) );
-  test.identical( v.subarray( 2, 2 ), vec([]) );
-  test.identical( v.subarray( 3, 3 ), vec([]) );
-  test.identical( v.subarray( 10, 3 ), vec([]) );
-  test.identical( v.subarray( 10, 0 ), vec([]) );
-  test.identical( v.subarray( 10, 10 ), vec([]) );
-  test.identical( v.subarray( 10, 11 ), vec([]) );
-  test.identical( v.subarray( -2, -2 ), vec([]) );
-  test.identical( v.subarray( -2, -1 ), vec([]) );
-
-  test.case = 'missing argument'; /* */
-
-  test.identical( v.subarray( undefined, 2 ), vec([ 1, 2 ]) );
-  test.identical( v.subarray( 1 ), vec([ 2, 3 ]) );
-
-  test.case = 'bad arguments'; /* */
-
-  var v = vec([ 1, 2, 3 ]);
-  test.shouldThrowErrorSync( () => v.subarray() );
-  var v = vec([ 1, 2, 3 ]);
-  test.shouldThrowErrorSync( () => v.subarray( 10, 10, 10 ) );
-
-  // var v = vad.fromLongLrangeAndStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
-  // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
-  //
-  // var v = vec([ 1, 2, 3 ]);
-  // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
-  //
-  // var v = vad.fromLongLrangeAndStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
-  // test.shouldThrowErrorSync( () => v.subarray( 10, 10 ) );
-  //
-  // var v = vec([ 1, 2, 3 ]);
-  // test.shouldThrowErrorSync( () => v.subarray( 10, 10 ) );
-
-  debugger;
-}
-
-subarray.timeOut = 15000;
+// function subarray( test )
+// {
+//
+//   test.case = 'trivial'; /* */
+//
+//   var v = vec([ 1, 2, 3 ]);
+//   test.identical( v.subarray( 0, 2 ), vec([ 1, 2 ]) );
+//   test.identical( v.subarray( 1, 3 ), vec([ 2, 3 ]) );
+//
+//   test.case = 'subarray from vector with stride'; /* */
+//
+//   var v = vad.fromLongLrangeAndStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+//   test.identical( v.subarray( 0, 2 ), vec([ 1, 2 ]) );
+//   test.identical( v.subarray( 1, 3 ), vec([ 2, 3 ]) );
+//
+//   test.case = 'get empty subarray'; /* */
+//
+//   var v = vad.fromLongLrangeAndStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+//   test.identical( v.subarray( 0, 0 ), vec([]) );
+//   test.identical( v.subarray( 2, 2 ), vec([]) );
+//   test.identical( v.subarray( 3, 3 ), vec([]) );
+//   test.identical( v.subarray( 10, 3 ), vec([]) );
+//   test.identical( v.subarray( 10, 0 ), vec([]) );
+//   test.identical( v.subarray( 10, 10 ), vec([]) );
+//   test.identical( v.subarray( 10, 11 ), vec([]) );
+//   test.identical( v.subarray( -2, -2 ), vec([]) );
+//   test.identical( v.subarray( -2, -1 ), vec([]) );
+//
+//   test.case = 'missing argument'; /* */
+//
+//   test.identical( v.subarray( undefined, 2 ), vec([ 1, 2 ]) );
+//   test.identical( v.subarray( 1 ), vec([ 2, 3 ]) );
+//
+//   test.case = 'bad arguments'; /* */
+//
+//   var v = vec([ 1, 2, 3 ]);
+//   test.shouldThrowErrorSync( () => v.subarray() );
+//   var v = vec([ 1, 2, 3 ]);
+//   test.shouldThrowErrorSync( () => v.subarray( 10, 10, 10 ) );
+//
+//   // var v = vad.fromLongLrangeAndStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+//   // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
+//   //
+//   // var v = vec([ 1, 2, 3 ]);
+//   // test.shouldThrowErrorSync( () => v.subarray( -1, 1 ) );
+//   //
+//   // var v = vad.fromLongLrangeAndStride( [ -1, 1, -2, 2, -2, 3 ], 1, 3, 2 );
+//   // test.shouldThrowErrorSync( () => v.subarray( 10, 10 ) );
+//   //
+//   // var v = vec([ 1, 2, 3 ]);
+//   // test.shouldThrowErrorSync( () => v.subarray( 10, 10 ) );
+//
+// }
+//
+// subarray.timeOut = 15000;
 
 //
 
@@ -4212,7 +4187,6 @@ function abs( test )
 
   var expected = [ 1, 2, 3 ];
   var dst = [ -1, -2, -3 ];
-  debugger;
   var got = _.avector.abs( dst );
 
   test.identical( got, expected );
@@ -4404,9 +4378,7 @@ function reduceToMean( test )
   test.case = 'simple even, filtering'; /* */
 
   var expected = 2;
-  debugger;
   var got = _.avector.reduceToMeanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
-  debugger;
   test.equivalent( got, expected );
 
   test.case = 'simple odd, filtering'; /* */
@@ -4499,7 +4471,6 @@ function mean( test )
   test.case = 'simple even, filtering'; /* */
 
   var expected = 2;
-  debugger;
   var got = _.avector.meanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
   test.equivalent( got, expected );
 
@@ -4542,7 +4513,6 @@ mean.timeOut = 15000;
 
 function moment( test )
 {
-  debugger;
 
   test.case = 'first even'; /* */
 
@@ -4657,7 +4627,6 @@ function momentCentral( test )
   test.case = 'second odd'; /* */
 
   var expected = 2 / 3;
-  debugger;
   var got = _.avector.momentCentral( [ 1, 2, 3 ], 2, 2 );
   test.equivalent( got, expected );
 
@@ -4694,7 +4663,6 @@ function momentCentral( test )
   test.case = 'second odd'; /* */
 
   var expected = 2 / 3;
-  debugger;
   var got = _.avector.momentCentral( [ 1, 2, 3 ], 2 );
   test.equivalent( got, expected );
 
@@ -4731,7 +4699,6 @@ function momentCentral( test )
   test.case = 'second odd, with mean : null'; /* */
 
   var expected = 2 / 3;
-  debugger;
   var got = _.avector.momentCentral( [ 1, 2, 3 ], 2, null );
   test.equivalent( got, expected );
 
@@ -5137,7 +5104,6 @@ function homogeneousOnlyVectors( test )
   {
 
     var dst = [];
-    debugger;
     var got = _.avector[ rname ]( dst, [], [] );
     test.is( got === dst );
     test.identical( got , [] );
@@ -5776,10 +5742,6 @@ clamp.timeOut = 15000;
 function mix( test )
 {
 
-  // debugger;
-  // var r = _.avector.mix( null, [ 1, 2 ], [ 3, 4 ] );
-  // debugger;
-
   /* 3 arguments */
 
   test.case = 'all arrays, 3 arguments';
@@ -6109,7 +6071,6 @@ function assign( test )
   test.case = 'assign scalar by method';
 
   var src = vad.fromLong([ 1, 2, 3 ]);
-  debugger;
   var got = src.assign( 0 );
   var expected = vad.fromLong([ 0, 0, 0 ]);
   test.identical( expected, got );
@@ -6170,7 +6131,6 @@ function experiment( test )
   var summary = _.avector.distributionSummary([ 1, 2, 3, 4, 9 ]);
   logger.log( 'summary', summary );
 
-  debugger;
   test.identical( 1, 1 );
 }
 
@@ -6180,20 +6140,11 @@ experiment.experimental = 1;
 // proto
 // --
 
-/*
-
-- check subarray
-
-*/
-
 var Self =
 {
 
   name : 'Tools.Math.Vector.Long',
   silencing : 1,
-
-  // routine : 'abs',
-  // verbosity : 7,
 
   context :
   {
@@ -6298,7 +6249,7 @@ var Self =
     sort,
     dot,
     cross,
-    subarray,
+    // subarray,
 
     add,
     sub,
