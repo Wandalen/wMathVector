@@ -187,12 +187,17 @@ module:
           - ../proto/dwtools/amath/l3_vector/l3/LongMeta.s
           - ../proto/dwtools/amath/l3_vector/l3/OperationMeta.s
           - ../proto/dwtools/amath/l3_vector/l3/RoutineMeta.s
+          - ../proto/dwtools/amath/l3_vector/l3_from
+          - ../proto/dwtools/amath/l3_vector/l3_from/Long.s
+          - ../proto/dwtools/amath/l3_vector/l3_from/LongShrinked.s
+          - ../proto/dwtools/amath/l3_vector/l3_from/LongShrinkedWithStride.s
+          - ../proto/dwtools/amath/l3_vector/l3_from/Number.s
           - ../proto/dwtools/amath/l3_vector/l4
           - ../proto/dwtools/amath/l3_vector/l4/Operations.s
           - ../proto/dwtools/amath/l3_vector/l5
           - ../proto/dwtools/amath/l3_vector/l5/Routines.s
           - ../proto/dwtools/amath/l3_vector/l8
-          - ../proto/dwtools/amath/l3_vector/l8/Methods.s
+          - ../proto/dwtools/amath/l3_vector/l8/AdapterClass.s
           - ../proto/dwtools/amath/l3_vector.test
           - ../proto/dwtools/amath/l3_vector.test/VectorAdapter.test.s
           - ../proto/dwtools/amath/l3_vector.test/VectorLong.test.s
