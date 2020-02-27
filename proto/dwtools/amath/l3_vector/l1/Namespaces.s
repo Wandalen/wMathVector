@@ -37,15 +37,23 @@ _.VectorAdapter = VectorAdapter;
 // declare
 // --
 
-let VectorExtension =
+let AdapterClassExtension =
 {
+  vectorAdapter : _.vectorAdapter,
 }
 
-_.mapExtend( _.vectorAdapter, VectorExtension );
-_.mapExtend( _.VectorAdapter, VectorExtension );
+_.mapExtend( _.VectorAdapter, AdapterClassExtension );
+_.mapExtend( _.VectorAdapter.prototype, AdapterClassExtension );
 
-// Object.setPrototypeOf( _.vectorAdapter, _.withDefaultLong.Fx );
+//
+
+let AdapterExtension =
+{
+  vectorAdapter : _.vectorAdapter,
+}
+
 Object.setPrototypeOf( _.vectorAdapter, wTools );
+_.mapExtend( _.vectorAdapter, AdapterExtension );
 
 _.longDescriptorProducer.applyTo( _.vectorAdapter, 'Fx' );
 _.assert( Object.getPrototypeOf( _.vectorAdapter.withDefaultLong.Array ) === _.vectorAdapter );
@@ -64,7 +72,6 @@ let AvectorExtension =
 {
 }
 
-// Object.setPrototypeOf( _.avector, wTools );
 Object.setPrototypeOf( _.avector, wTools );
 _.mapExtend( _.avector, AvectorExtension );
 

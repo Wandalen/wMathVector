@@ -352,7 +352,8 @@ dop.onAtom = function addScaled( o )
 }
 
 dop.takingArguments = [ 3, 4 ];
-dop.input = [ 'vw', 'vr|s*2' ];
+dop.takingVectors = [ 0, 4 ];
+dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -365,7 +366,8 @@ dop.onAtom = function subScaled( o )
 }
 
 dop.takingArguments = [ 3, 4 ];
-dop.input = [ 'vw', 'vr|s*2' ];
+dop.takingVectors = [ 0, 4 ];
+dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -378,7 +380,8 @@ dop.onAtom = function mulScaled( o )
 }
 
 dop.takingArguments = [ 3, 4 ];
-dop.input = [ 'vw', 'vr|s*2' ];
+dop.takingVectors = [ 0, 4 ];
+dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -391,7 +394,8 @@ dop.onAtom = function divScaled( o )
 }
 
 dop.takingArguments = [ 3, 4 ];
-dop.input = [ 'vw', 'vr|s*2' ];
+dop.takingVectors = [ 0, 4 ];
+dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -403,12 +407,15 @@ dop.onAtom = function clamp( o )
   o.dstElement = _min( _max( o.srcElements[ 0 ] , o.srcElements[ 1 ] ), o.srcElements[ 2 ] );
 }
 
+dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.takingArguments = [ 3, 4 ];
+dop.takingVectors = [ 0, 4 ];
+// dop.takingArguments = [ 3, 4 ];
 dop.returningNumber = true;
 dop.returningPrimitive = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
-dop.input = [ 'vw|s', 'vr|s*3' ];
+// dop.input = [ 'vw|s', 'vr|s', 'vr|s' ];
 
 //
 
@@ -428,13 +435,16 @@ dop.onAtom = function mix( o )
 
 }
 
+dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
+// dop.takingArguments = [ 3, 4 ];
+// dop.takingVectors = [ 0, 4 ];
 dop.returningNumber = true;
 dop.returningPrimitive = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
-dop.input = [ 'vw|s', 'vr|s*3' ];
+// dop.input = [ 'vw|s', 'vr|s', 'vr|s' ];
 
 // --
 // atomWiseReducing
@@ -442,43 +452,44 @@ dop.input = [ 'vw|s', 'vr|s*3' ];
 
 let polynomApply = dop = Object.create( null );
 
-polynomApply.onAtom = function polynomApply( o )
+dop.onAtom = function polynomApply( o )
 {
   let x = o.args[ 1 ];
   o.result += o.element * _pow( x, o.key );
 }
 
-polynomApply.onAtomsBegin = function( o )
+dop.onAtomsBegin = function( o )
 {
   o.result = 0;
 }
 
-polynomApply.onAtomsEnd = function( o )
+dop.onAtomsEnd = function( o )
 {
 }
 
-polynomApply.takingArguments = [ 2, 2 ];
-polynomApply.takingVectors = [ 1, 1 ];
-polynomApply.takingVectorsOnly = false;
+dop.input = 'vr s';
+// dop.takingArguments = [ 2, 2 ];
+// dop.takingVectors = [ 1, 1 ];
+dop.takingVectorsOnly = false;
 
 //
 
 let mean = dop = Object.create( null );
 
-mean.onAtom = function mean( o )
+dop.onAtom = function mean( o )
 {
   o.result.total += o.element;
   o.result.nelement += 1;
 }
 
-mean.onAtomsBegin = function( o )
+dop.onAtomsBegin = function( o )
 {
   o.result = dop = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
 }
 
-mean.onAtomsEnd = function( o )
+dop.onAtomsEnd = function( o )
 {
   if( o.result.nelement )
   o.result = o.result.total / o.result.nelement;
@@ -486,21 +497,21 @@ mean.onAtomsEnd = function( o )
   o.result = 0;
 }
 
-mean.input = [ 'vr' ];
-mean.takingArguments = 1;
-mean.takingVectors = 1;
+dop.input = 'vr';
+// dop.takingArguments = 1;
+// dop.takingVectors = 1;
 
 //
 
 let moment = dop = Object.create( null );
 
-moment.onAtom = function moment( o )
+dop.onAtom = function moment( o )
 {
   o.result.total += _pow( o.element, o.args[ 1 ] );
   o.result.nelement += 1;
 }
 
-moment.onAtomsBegin = function( o )
+dop.onAtomsBegin = function( o )
 {
   // o.result = dop = Object.create( null );
   o.result = Object.create( null );
@@ -508,7 +519,7 @@ moment.onAtomsBegin = function( o )
   o.result.nelement = 0;
 }
 
-moment.onAtomsEnd = function( o )
+dop.onAtomsEnd = function( o )
 {
   if( o.result.nelement )
   o.result = o.result.total / o.result.nelement;
@@ -516,15 +527,15 @@ moment.onAtomsEnd = function( o )
   o.result = 0;
 }
 
-moment.input = [ 'vr', 's' ];
-moment.takingArguments = 2;
-moment.takingVectors = 1;
+dop.input = 'vr s';
+// dop.takingArguments = 2;
+// dop.takingVectors = 1;
 
 //
 
 let _momentCentral = dop = Object.create( null );
 
-_momentCentral.onAtom = function _momentCentral( o )
+dop.onAtom = function _momentCentral( o )
 {
   let degree = o.args[ 1 ];
   let mean = o.args[ 2 ];
@@ -532,7 +543,7 @@ _momentCentral.onAtom = function _momentCentral( o )
   o.result.nelement += 1;
 }
 
-_momentCentral.onAtomsBegin = function( o )
+dop.onAtomsBegin = function( o )
 {
   let degree = o.args[ 1 ];
   let mean = o.args[ 2 ];
@@ -544,7 +555,7 @@ _momentCentral.onAtomsBegin = function( o )
   o.result.nelement = 0;
 }
 
-_momentCentral.onAtomsEnd = function( o )
+dop.onAtomsEnd = function( o )
 {
   if( o.result.nelement )
   o.result = o.result.total / o.result.nelement;
@@ -552,21 +563,21 @@ _momentCentral.onAtomsEnd = function( o )
   o.result = 0;
 }
 
-_momentCentral.input = [ 'vr', 's', 's' ];
-_momentCentral.takingArguments = [ 3, 3 ];
-_momentCentral.takingVectors = 1;
+dop.input = [ 'vr', 's', 's' ];
+// dop.takingArguments = [ 3, 3 ];
+// dop.takingVectors = 1;
 
 //
 
 let reduceToMean = dop = Object.create( null );
 
-reduceToMean.onAtom = function reduceToMean( o )
+dop.onAtom = function reduceToMean( o )
 {
   o.result.total += o.element;
   o.result.nelement += 1;
 }
 
-reduceToMean.onAtomsBegin = function( o )
+dop.onAtomsBegin = function( o )
 {
   // o.result = dop = Object.create( null );
   o.result = Object.create( null );
@@ -574,7 +585,7 @@ reduceToMean.onAtomsBegin = function( o )
   o.result.nelement = 0;
 }
 
-reduceToMean.onAtomsEnd = function( o )
+dop.onAtomsEnd = function( o )
 {
   // if( o.result.nelement )
   o.result = o.result.total / o.result.nelement;
@@ -586,12 +597,12 @@ reduceToMean.onAtomsEnd = function( o )
 
 let reduceToProduct = dop = Object.create( null );
 
-reduceToProduct.onAtom = function reduceToProduct( o )
+dop.onAtom = function reduceToProduct( o )
 {
   o.result *= o.element;
 }
 
-reduceToProduct.onAtomsBegin = function( o )
+dop.onAtomsBegin = function( o )
 {
   o.result = 1;
 }
@@ -600,12 +611,12 @@ reduceToProduct.onAtomsBegin = function( o )
 
 let reduceToSum = dop = Object.create( null );
 
-reduceToSum.onAtom = function reduceToSum( o )
+dop.onAtom = function reduceToSum( o )
 {
   o.result += o.element;
 }
 
-reduceToSum.onAtomsBegin = function( o )
+dop.onAtomsBegin = function( o )
 {
   o.result = 0;
 }
@@ -614,13 +625,13 @@ reduceToSum.onAtomsBegin = function( o )
 
 let reduceToAbsSum = dop = Object.create( null );
 
-reduceToAbsSum.onAtom = function reduceToAbsSum( o )
+dop.onAtom = function reduceToAbsSum( o )
 {
   debugger;
   o.result += abs( o.element );
 }
 
-reduceToAbsSum.onAtomsBegin = function( o )
+dop.onAtomsBegin = function( o )
 {
   o.result = 0;
 }
@@ -629,12 +640,12 @@ reduceToAbsSum.onAtomsBegin = function( o )
 
 let reduceToMagSqr = dop = Object.create( null );
 
-reduceToMagSqr.onAtom = function reduceToMagSqr( o )
+dop.onAtom = function reduceToMagSqr( o )
 {
   o.result += _sqr( o.element );
 }
 
-reduceToMagSqr.onAtomsBegin = function( o )
+dop.onAtomsBegin = function( o )
 {
   o.result = 0;
 }
@@ -643,7 +654,7 @@ reduceToMagSqr.onAtomsBegin = function( o )
 
 let reduceToMag = _.mapExtend( null, reduceToMagSqr );
 
-reduceToMag.onAtomsEnd = function reduceToMag( o )
+dop.onAtomsEnd = function reduceToMag( o )
 {
   o.result = _sqrt( o.result );
 }

@@ -31,11 +31,16 @@ if( module !== 'undefined' )
   require( './l3/OperationMeta.s' );
   require( './l3/RoutineMeta.s' );
 
+  require( './l3_from/Long.s' );
+  require( './l3_from/LongShrinked.s' );
+  require( './l3_from/LongShrinkedWithStride.s' );
+  require( './l3_from/Number.s' );
+
   require( './l4/Operations.s' );
 
   require( './l5/Routines.s' );
 
-  require( './l8/Methods.s' );
+  require( './l8/AdapterClass.s' );
 
 }
 

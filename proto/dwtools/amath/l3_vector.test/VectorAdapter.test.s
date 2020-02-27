@@ -19,7 +19,7 @@ if( typeof module !== 'undefined' )
 var _ = _global_.wTools.withDefaultLong.Fx;
 var Space = _.Matrix;
 var vad = _.vectorAdapter;
-var vec = _.vectorAdapter.FromLong;
+var vec = _.vectorAdapter.fromLong;
 var avector = _.avector;
 var sqrt = _.math.sqrt;
 
@@ -42,10 +42,10 @@ function map( test )
   {
     return - 5 < src && src < 0 ; /* numbers in range */
   }
-  var src = _.vectorAdapter.From( [ -1, -1.5, -2 ] );
+  var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
   var got = _.vectorAdapter.map( src, onElement1 );
 
-  var exp = _.vectorAdapter.From( [ true, true, true ] );
+  var exp = _.vectorAdapter.from( [ true, true, true ] );
   test.identical( got, exp );
   test.is( got === src );
 
@@ -57,13 +57,13 @@ function map( test )
   {
     return - 5 < src && src < 0 ; /* numbers in range */
   }
-  var src = _.vectorAdapter.From( [ -1, -1.5, -2 ] );
+  var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
   var got = _.vectorAdapter.map( null, src, onElement1 );
 
-  var exp = _.vectorAdapter.Make( [ 1, 1, 1 ] );
+  var exp = _.vectorAdapter.make( [ 1, 1, 1 ] );
   test.identical( got, exp ); debugger;
 
-  var exp = _.vectorAdapter.From( [ -1, -1.5, -2 ] )
+  var exp = _.vectorAdapter.from( [ -1, -1.5, -2 ] )
   test.equivalent( src, exp );
 
   /* */
@@ -74,10 +74,10 @@ function map( test )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var src = _.vectorAdapter.From( [ ] );
+  var src = _.vectorAdapter.from( [ ] );
   var got = _.vectorAdapter.map( src, positiveNumber );
 
-  var exp = _.vectorAdapter.From( [ ] );
+  var exp = _.vectorAdapter.from( [ ] );
   test.identical( got, exp );
 
   /* */
@@ -88,10 +88,10 @@ function map( test )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var src = _.vectorAdapter.From( [ 0, 1, 0, 2, 1000, 307 ] );
+  var src = _.vectorAdapter.from( [ 0, 1, 0, 2, 1000, 307 ] );
   var got = _.vectorAdapter.map( src, positiveNumber );
 
-  var exp = _.vectorAdapter.From( [ true, true, true, true, true, true ] );
+  var exp = _.vectorAdapter.from( [ true, true, true, true, true, true ] );
   test.identical( got, exp );
 
   /* */
@@ -102,10 +102,10 @@ function map( test )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var src = _.vectorAdapter.From( [ 0, - 1, 0, 2, 1000, '307' ] );
+  var src = _.vectorAdapter.from( [ 0, - 1, 0, 2, 1000, '307' ] );
   var got = _.vectorAdapter.map( src, positiveNumber );
 
-  var exp = _.vectorAdapter.From( [ true, false, true, true, true, false ] );
+  var exp = _.vectorAdapter.from( [ true, false, true, true, true, false ] );
   test.identical( got, exp );
 
   /* */
@@ -116,10 +116,10 @@ function map( test )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var src = _.vectorAdapter.From( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
+  var src = _.vectorAdapter.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
   var got = _.vectorAdapter.map( src, positiveNumber );
 
-  var exp = _.vectorAdapter.From( [ false, false, false, false, false ] );
+  var exp = _.vectorAdapter.from( [ false, false, false, false, false ] );
   test.identical( got, exp );
 
   /* */
@@ -130,10 +130,10 @@ function map( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; /* str starts with H */
   }
-  var src = _.vectorAdapter.From( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
+  var src = _.vectorAdapter.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
   var got = _.vectorAdapter.map( src, stringLengthThree );
 
-  var expectedStr = _.vectorAdapter.From( [ true, true, true, true, true, true, true, true ] );
+  var expectedStr = _.vectorAdapter.from( [ true, true, true, true, true, true, true, true ] );
   test.identical( got, expectedStr );
 
   /* */
@@ -144,10 +144,10 @@ function map( test )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; /* str starts with H */
   }
-  var src = _.vectorAdapter.From( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
+  var src = _.vectorAdapter.from( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
   var got = _.vectorAdapter.map( src, stringLengthThree );
 
-  var exp = _.vectorAdapter.From( [ false, true, false, false, false ] );
+  var exp = _.vectorAdapter.from( [ false, true, false, false, false ] );
   test.identical( got, exp );
 
   /* */
@@ -158,10 +158,10 @@ function map( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; /* arrays of length 4 */
   }
-  var src = _.vectorAdapter.From( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
+  var src = _.vectorAdapter.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
   var got = _.vectorAdapter.map( src, arrayLength );
 
-  var expectedArr = _.vectorAdapter.From( [ true, true ] );
+  var expectedArr = _.vectorAdapter.from( [ true, true ] );
   test.identical( got, expectedArr );
 
   /* */
@@ -172,17 +172,17 @@ function map( test )
   {
     return _.arrayIs( src ) && src.length === 4 ; /* arrays of length 4 */
   }
-  var src = _.vectorAdapter.From( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
+  var src = _.vectorAdapter.from( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
   var got = _.vectorAdapter.map( src, arrayLength );
 
-  var exp =  _.vectorAdapter.From( [ false, false ] );
+  var exp =  _.vectorAdapter.from( [ false, false ] );
   test.identical( got, exp );
 
   /* */
 
   test.case = 'single argument';
 
-  var dst = _.vectorAdapter.From( [ 2, 3, 4 ] );
+  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
   var got = _.vectorAdapter.map( dst );
   test.is( got === dst );
 
@@ -190,7 +190,7 @@ function map( test )
 
   test.case = 'dst and undefined';
 
-  var dst = _.vectorAdapter.From( [ 2, 3, 4 ] );
+  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
   var got = _.vectorAdapter.map( dst, undefined );
   test.is( got === dst );
 
@@ -214,11 +214,11 @@ function map( test )
 
   test.case = 'Wrong second argument';
 
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.From( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.From( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.From( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.From( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.From( [ 2, 3, 4 ] ), _.vectorAdapter.From( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
 
   /* */
 
@@ -249,11 +249,11 @@ function filter( test )
   {
     return src + 10;
   }
-  var src = _.vectorAdapter.From( [ -1, -1.5, -2 ] );
+  var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
   var got = _.vectorAdapter.filter( null, src, onElement1 );
-  var exp = _.vectorAdapter.Make( [ 9, 8.5, 8 ] );
+  var exp = _.vectorAdapter.make( [ 9, 8.5, 8 ] );
   test.identical( got, exp );
-  var exp = _.vectorAdapter.From( [ -1, -1.5, -2 ] )
+  var exp = _.vectorAdapter.from( [ -1, -1.5, -2 ] )
   test.equivalent( src, exp );
 
   /* */
@@ -272,11 +272,11 @@ function _while( test )
   {
     return src < 2 ? src : undefined;
   }
-  var src = _.vectorAdapter.From([ 0, 1, 2, 3 ]);
+  var src = _.vectorAdapter.from([ 0, 1, 2, 3 ]);
   var got = _.vectorAdapter.while( null, src, onElement1 );
-  var exp = _.vectorAdapter.Make( [ 0, 1 ] );
+  var exp = _.vectorAdapter.make( [ 0, 1 ] );
   test.identical( got, exp );
-  var exp = _.vectorAdapter.From([ 0, 1, 2, 3 ]);
+  var exp = _.vectorAdapter.from([ 0, 1, 2, 3 ]);
   test.equivalent( src, exp );
 
   /* */
@@ -286,11 +286,11 @@ function _while( test )
   {
     return src + 10;
   }
-  var dst = _.vectorAdapter.From([ 0, 1, 2, 3 ]);
+  var dst = _.vectorAdapter.from([ 0, 1, 2, 3 ]);
   var got = _.vectorAdapter.while( dst, onElement2 );
-  var exp = _.vectorAdapter.From([ 10, 11, 12, 13 ]);
+  var exp = _.vectorAdapter.from([ 10, 11, 12, 13 ]);
   test.identical( got, exp );
-  var exp = _.vectorAdapter.From([ 10, 11, 12, 13 ]);
+  var exp = _.vectorAdapter.from([ 10, 11, 12, 13 ]);
   test.equivalent( dst, exp );
 
   /* */
@@ -310,11 +310,11 @@ function all( test )
   {
     return src < 13;
   }
-  var src = _.vectorAdapter.From( [ 5, 10, 15 ] );
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
   var got = _.vectorAdapter.all( src, onElement1 );
   var exp = false;
   test.identical( got, exp );
-  var exp = _.vectorAdapter.From( [ 5, 10, 15 ] )
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
   test.equivalent( src, exp );
 
   /* */
@@ -325,11 +325,11 @@ function all( test )
   {
     return src < 130;
   }
-  var src = _.vectorAdapter.From( [ 5, 10, 15 ] );
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
   var got = _.vectorAdapter.all( src, onElement2 );
   var exp = true;
   test.identical( got, exp );
-  var exp = _.vectorAdapter.From( [ 5, 10, 15 ] )
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
   test.equivalent( src, exp );
 
   /* */
@@ -345,16 +345,16 @@ function all( test )
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'string' ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( 2 ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.From( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
 
   test.case = 'Wrong second argument'; //
 
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.From( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.From( [ 2, 3, 4 ] ), NaN ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.From( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.From( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.From( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.From( [ 2, 3, 4 ] ), _.vectorAdapter.From( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong first argument'; //
 
@@ -383,11 +383,11 @@ function any( test )
   {
     return src < 0;
   }
-  var src = _.vectorAdapter.From( [ 5, 10, 15 ] );
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
   var got = _.vectorAdapter.any( src, onElement1 );
   var exp = false;
   test.identical( got, exp );
-  var exp = _.vectorAdapter.From( [ 5, 10, 15 ] )
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
   test.equivalent( src, exp );
 
   /* */
@@ -398,11 +398,11 @@ function any( test )
   {
     return src < 13;
   }
-  var src = _.vectorAdapter.From( [ 5, 10, 15 ] );
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
   var got = _.vectorAdapter.any( src, onElement2 );
   var exp = true;
   test.identical( got, exp );
-  var exp = _.vectorAdapter.From( [ 5, 10, 15 ] )
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
   test.equivalent( src, exp );
 
   /* */
@@ -418,16 +418,16 @@ function any( test )
   test.shouldThrowErrorSync( () => _.vectorAdapter.any( undefined ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.any( 'string' ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.any( 2 ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.From( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
 
   test.case = 'Wrong second argument'; //
 
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.From( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.From( [ 2, 3, 4 ] ), NaN ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.From( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.From( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.From( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.From( [ 2, 3, 4 ] ), _.vectorAdapter.From( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong first argument'; //
 
@@ -456,11 +456,11 @@ function none( test )
   {
     return src < 13;
   }
-  var src = _.vectorAdapter.From( [ 5, 10, 15 ] );
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
   var got = _.vectorAdapter.none( src, onElement1 );
   var exp = false;
   test.identical( got, exp );
-  var exp = _.vectorAdapter.From( [ 5, 10, 15 ] )
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
   test.equivalent( src, exp );
 
   /* */
@@ -471,11 +471,11 @@ function none( test )
   {
     return src < 0;
   }
-  var src = _.vectorAdapter.From( [ 5, 10, 15 ] );
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
   var got = _.vectorAdapter.none( src, onElement2 );
   var exp = true;
   test.identical( got, exp );
-  var exp = _.vectorAdapter.From( [ 5, 10, 15 ] )
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
   test.equivalent( src, exp );
 
   /* */
@@ -491,16 +491,16 @@ function none( test )
   test.shouldThrowErrorSync( () => _.vectorAdapter.none( undefined ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.none( 'string' ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.none( 2 ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.From( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
 
   test.case = 'Wrong second argument'; //
 
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.From( [ 2, 3, 4 ] ), null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.From( [ 2, 3, 4 ] ), NaN ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.From( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.From( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.From( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.From( [ 2, 3, 4 ] ), _.vectorAdapter.From( [ 2, 3, 4 ] ) ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
 
   test.case = 'Wrong first argument'; //
 
@@ -524,11 +524,150 @@ function distributionRangeSummaryValue( test )
 {
 
   test.case = 'basic';
-  var a = vad.From( new I32x([ 1, 2, 3 ]) );
-  var b = vad.From( new I32x([ 3, 4, 5 ]) );
+  var a = vad.from( new I32x([ 1, 2, 3 ]) );
+  var b = vad.from( new I32x([ 3, 4, 5 ]) );
   var exp = [ 1, 5 ];
   var got = vad.distributionRangeSummaryValue( a, b );
   test.identical( got, exp );
+
+}
+
+//
+
+function shrinkView( test )
+{
+
+  /* */
+
+  test.case = 'fromNumber';
+
+  var exp = vad.from( vad.long.longMake([ 1, 1, 1, 1 ]) );
+  var vad1 = vad.fromNumber( 1, 4 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 1, 1 ]) );
+  var vad1 = vad.fromNumber( 1, 4 );
+  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer !== got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromNumber( 1, 4 );
+    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromNumber( 1, 4 );
+    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLong';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLongLrange';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLongLrangeAndStride';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLongWithStride';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+  var got = vad.shrinkView( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+    var got = vad.shrinkView( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+    var got = vad.shrinkView( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
 
 }
 
@@ -567,6 +706,8 @@ var Self =
     // etc
 
     distributionRangeSummaryValue,
+
+    shrinkView,
 
   },
 

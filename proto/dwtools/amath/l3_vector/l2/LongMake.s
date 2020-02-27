@@ -20,15 +20,15 @@ let _sqr = _.math.sqr;
 * @param {Number} length Length of array.
 *
 * @example
-* var vec = wTools.vector.Make( 3 );
+* var vec = wTools.vector.make( 3 );
 * console.log( 'vec: ', vec );
 * console.log( 'vec.toStr(): ', vec.toStr() );
 *
-* @function Make
+* @function make
 * @memberof module:Tools/math/Vector.wTools.avector
 */
 
-function Make( length )
+function make( length )
 {
   let self = this;
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -46,15 +46,15 @@ function Make( length )
 * @param {} value Element for fill operation.
 *
 * @example
-* var vec = wTools.vector.MakeFilling( 3, 0 );
+* var vec = wTools.vector.makeFilling( 3, 0 );
 * console.log( 'vec: ', vec );
 * console.log( 'vec.toStr(): ', vec.toStr() );
 *
-* @function MakeFilling
+* @function makeFilling
 * @memberof module:Tools/math/Vector.wTools.avector
 */
 
-function MakeFilling( length, value )
+function makeFilling( length, value )
 {
   let self = this;
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -73,8 +73,8 @@ function MakeFilling( length, value )
 let _routinesFrom =
 {
 
-  Make, /*makeArrayOfLength*/
-  MakeFilling,
+  make, /*makeArrayOfLength*/
+  makeFilling,
 
 }
 

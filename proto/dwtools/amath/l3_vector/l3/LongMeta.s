@@ -97,11 +97,11 @@ function _routineLongWrap_functor( o )
     }
     else if( op.returningSelf )
     {
-      return result.toArray();
+      return result.toLong();
     }
     else if( op.returningNew && _.vectorAdapterIs( result ) )
     {
-      return result.toArray();
+      return result.toLong();
     }
     else if( op.returningLong )
     {
@@ -120,7 +120,7 @@ function _routineLongWrap_functor( o )
 
     // if( _hasLength( arg ) && ( !_.Matrix || !( arg instanceof _.Matrix ) ) )
     if( _.longIs( arg ) )
-    return _.vectorAdapter.FromLong( arg );
+    return _.vectorAdapter.fromLong( arg );
     return arg;
   }
 
