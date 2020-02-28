@@ -2715,6 +2715,7 @@ function _operationReduceToScalar_functor( o )
     }
     else
     {
+      _.assert( _.strIs( operation.input ) ); /* xxx */
       if( _.strIs( operation.input ) )
       operation.input += ' s';
     }

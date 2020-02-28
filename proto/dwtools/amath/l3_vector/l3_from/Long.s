@@ -13,7 +13,7 @@ let Self = function VectorAdapterFromLong(){};
 
 //
 
-function _shrinkView( crange )
+function _review( crange )
 {
   debugger;
   let offset = crange[ 0 ];
@@ -35,14 +35,22 @@ function _toLong()
 
 //
 
+function _bufferConstructorGet()
+{
+  return this._vectorBuffer.constructor;
+}
+
+//
+
 Self.prototype =
 {
   constructor : Self,
   _lengthGet : function(){ return this._vectorBuffer.length; },
   eGet : function( index ){ return this._vectorBuffer[ index ]; },
   eSet : function( index, src ){ this._vectorBuffer[ index ] = src; },
-  _shrinkView,
+  _review,
   _toLong,
+  _bufferConstructorGet,
 }
 
 _.accessor.readOnly

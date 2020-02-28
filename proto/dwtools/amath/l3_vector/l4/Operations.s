@@ -563,7 +563,8 @@ dop.onAtomsEnd = function( o )
   o.result = 0;
 }
 
-dop.input = [ 'vr', 's', 's' ];
+dop.input = 'vr s s';
+// dop.input = [ 'vr', 's', 's' ];
 // dop.takingArguments = [ 3, 3 ];
 // dop.takingVectors = 1;
 
