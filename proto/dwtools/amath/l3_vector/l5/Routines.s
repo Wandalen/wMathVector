@@ -876,7 +876,7 @@ function filter( dst, src, onEach )
       dsti += 1;
     }
     if( dst.length !== dsti )
-    dst = dst.slicedAdapter( 0, dsti );
+    dst = dst.shrinkAdapter([ 0, dsti-1 ]);
   }
 
   return dst;
@@ -951,7 +951,7 @@ function _while( dst, src, onEach )
     }
     debugger;
     if( dst.length !== dsti )
-    dst = dst.slicedAdapter( 0, dsti );
+    dst = dst.shrinkAdapter([ 0, dsti-1 ]);
   }
 
   return dst;
