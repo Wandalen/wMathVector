@@ -6125,6 +6125,21 @@ assign.timeOut = 15000;
 
 //
 
+function mag( test )
+{
+
+  test.case = 'basic';
+  var a = [ 0, 0, 2 ];
+  var exp = 2;
+  debugger;
+  var got = _.avector.mag( a );
+  debugger;
+  test.identical( got, exp );
+
+}
+
+//
+
 function experiment( test )
 {
 
@@ -6276,6 +6291,7 @@ var Self =
     polynomApply,
 
     assign,
+    mag,
 
     experiment,
 
