@@ -385,7 +385,7 @@ function growLong( src, crange, val )
   crange[ 1 ] = src.length-1;
 
   let l = crange[ 1 ] - crange[ 0 ] + 1;
-  let result = this.longMakeUndefined( src, l );
+  let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
 
   /* qqq : optimize */
 
