@@ -123,7 +123,7 @@ function fromLongLrangeAndStride( srcLong, offset, length, stride ) /* xxx */
 {
 
   _.assert( arguments.length === 4 );
-  _.assert( 0 <= stride );
+  // _.assert( 0 <= stride );
   _.assert( _.numberIs( offset ) );
   _.assert( _.numberIs( length ) );
   _.assert( offset+(length-1)*stride < srcLong.length );

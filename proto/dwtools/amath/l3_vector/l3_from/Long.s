@@ -15,7 +15,6 @@ let Self = function VectorAdapterFromLong(){};
 
 function _review( crange )
 {
-  debugger;
   let offset = crange[ 0 ];
   let length = crange[ 1 ]-crange[ 0 ]+1;
   _.assert( crange[ 0 ] >= 0 );

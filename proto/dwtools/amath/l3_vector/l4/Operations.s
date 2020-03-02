@@ -653,7 +653,7 @@ dop.onAtomsBegin = function( o )
 
 //
 
-let reduceToMag = _.mapExtend( null, reduceToMagSqr );
+let reduceToMag = dop = _.mapExtend( null, reduceToMagSqr );
 
 dop.onAtomsEnd = function reduceToMag( o )
 {
