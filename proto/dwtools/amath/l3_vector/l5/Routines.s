@@ -385,7 +385,7 @@ function growLong( src, crange, val )
   crange[ 1 ] = src.length-1;
 
   let l = crange[ 1 ] - crange[ 0 ] + 1;
-  let result = this.longMakeUndefined( src, l );
+  let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
 
   /* qqq : optimize */
 
@@ -876,7 +876,7 @@ function filter( dst, src, onEach )
       dsti += 1;
     }
     if( dst.length !== dsti )
-    dst = dst.slicedAdapter( 0, dsti );
+    dst = dst.shrinkAdapter([ 0, dsti-1 ]);
   }
 
   return dst;
@@ -951,7 +951,7 @@ function _while( dst, src, onEach )
     }
     debugger;
     if( dst.length !== dsti )
-    dst = dst.slicedAdapter( 0, dsti );
+    dst = dst.shrinkAdapter([ 0, dsti-1 ]);
   }
 
   return dst;

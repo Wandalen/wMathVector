@@ -2411,10 +2411,12 @@ function __operationReduceToScalar_functor( operation )
   let onAtomsEnd0 = operation.onAtomsEnd[ 0 ];
   let onVectorsBegin0 = operation.onVectorsBegin[ 0 ];
   let onVectorsEnd0 = operation.onVectorsEnd[ 0 ];
-
   let conditional = operation.conditional;
   let takingArguments = operation.takingArguments;
   let takingVectors = operation.takingVectors;
+
+  if( _.strHas( operation.name, 'mag' ) || _.strHas( operation.name, 'Mag' ) )
+  debugger;
 
   // if( operation.conditional ) /* yyy */
   // takingArguments[ 1 ] += 1;
