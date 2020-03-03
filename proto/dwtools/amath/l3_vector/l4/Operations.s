@@ -228,6 +228,18 @@ dop.onAtom = function isGreaterEqual( o )
 
 //
 
+let isGreaterEquivalent = dop = Object.create( null );
+
+dop.onAtom = function isGreaterEquivalent( o )
+{ 
+  let result = o.dstElement > o.srcElement;
+  if( !result )
+  result = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+  o.dstElement = result;
+}
+
+//
+
 let isLess = dop = Object.create( null );
 
 dop.onAtom = function isLess( o )
@@ -242,6 +254,18 @@ let isLessEqual = dop = Object.create( null );
 dop.onAtom = function isLessEqual( o )
 {
   o.dstElement = o.dstElement <= o.srcElement;
+}
+
+//
+
+let isLessEquivalent = dop = Object.create( null );
+
+dop.onAtom = function isLessEquivalent( o )
+{
+  let result = o.dstElement < o.srcElement;
+  if( !result )
+  result = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+  o.dstElement = result;
 }
 
 // --
@@ -708,9 +732,10 @@ let logical2 = //
   isNotEquivalent,
   isGreater,
   isGreaterEqual,
+  isGreaterEquivalent,
   isLess,
   isLessEqual,
-
+  isLessEquivalent
 }
 
 /* operationHomogeneousAdjust, */

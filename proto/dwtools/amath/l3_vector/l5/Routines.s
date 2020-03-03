@@ -3133,9 +3133,10 @@ let _routinesMathematical =
   isNotEquivalent : Routines.isNotEquivalent,
   isGreater : Routines.isGreater,
   isGreaterEqual : Routines.isGreaterEqual,
+  isGreaterEquivalent : Routines.isGreaterEquivalent,
   isLess : Routines.isLess,
   isLessEqual : Routines.isLessEqual,
-
+  isLessEquivalent : Routines.isLessEquivalent,
     // logical2 reductor
 
   allIdentical : Routines.allIdentical,
@@ -3144,8 +3145,10 @@ let _routinesMathematical =
   allNotEquivalent : Routines.allNotEquivalent,
   allGreater : Routines.allGreater,
   allGreaterEqual : Routines.allGreaterEqual,
+  allGreaterEquivalent : Routines.allGreaterEquivalent,
   allLess : Routines.allLess,
   allLessEqual : Routines.allLessEqual,
+  allLessEquivalent : Routines.allLessEquivalent,
 
   anyIdentical : Routines.anyIdentical,
   anyNotIdentical : Routines.anyNotIdentical,
@@ -3153,8 +3156,10 @@ let _routinesMathematical =
   anyNotEquivalent : Routines.anyNotEquivalent,
   anyGreater : Routines.anyGreater,
   anyGreaterEqual : Routines.anyGreaterEqual,
+  anyGreaterEquivalent : Routines.anyGreaterEquivalent,
   anyLess : Routines.anyLess,
   anyLessEqual : Routines.anyLessEqual,
+  anyLessEquivalent : Routines.anyLessEquivalent,
 
   noneIdentical : Routines.noneIdentical,
   noneNotIdentical : Routines.noneNotIdentical,
@@ -3162,8 +3167,10 @@ let _routinesMathematical =
   noneNotEquivalent : Routines.noneNotEquivalent,
   noneGreater : Routines.noneGreater,
   noneGreaterEqual : Routines.noneGreaterEqual,
+  noneGreaterEquivalent : Routines.noneGreaterEquivalent,
   noneLess : Routines.noneLess,
   noneLessEqual : Routines.noneLessEqual,
+  noneLessEquivalent : Routines.noneLessEquivalent,
 
   dot,
   distance,
