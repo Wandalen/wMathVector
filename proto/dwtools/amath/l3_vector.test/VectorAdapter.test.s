@@ -671,21 +671,6 @@ function review( test )
 
 }
 
-//
-
-function fromNumber( test )
-{  
-  var got = vad.fromNumber( 1.0, 1 );
-  test.is( got._vectorBuffer instanceof Float32Array )
-  test.identical( got.length, 1 )
-  test.identical( got.eGet( 0 ), 1.0 )
-  
-  var got = vad.fromNumber( Math.PI, 1 );
-  test.is( got._vectorBuffer instanceof Float64Array )
-  test.identical( got.length, 1 )
-  test.identical( got.eGet( 0 ), Math.PI )
-}
-
 // --
 // proto
 // --
@@ -717,8 +702,6 @@ var Self =
     distributionRangeSummaryValue,
 
     review,
-    
-    fromNumber,
 
   },
 
