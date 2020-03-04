@@ -228,9 +228,9 @@ dop.onAtom = function isGreaterEqual( o )
 
 //
 
-let isGreaterEquivalent = dop = Object.create( null );
+let isGreaterAprox = dop = Object.create( null );
 
-dop.onAtom = function isGreaterEquivalent( o )
+dop.onAtom = function isGreaterAprox( o )
 { 
   let result = o.dstElement > o.srcElement;
   if( !result )
@@ -258,9 +258,9 @@ dop.onAtom = function isLessEqual( o )
 
 //
 
-let isLessEquivalent = dop = Object.create( null );
+let isLessAprox = dop = Object.create( null );
 
-dop.onAtom = function isLessEquivalent( o )
+dop.onAtom = function isLessAprox( o )
 {
   let result = o.dstElement < o.srcElement;
   if( !result )
@@ -732,10 +732,10 @@ let logical2 = //
   isNotEquivalent,
   isGreater,
   isGreaterEqual,
-  isGreaterEquivalent,
+  isGreaterAprox,
   isLess,
   isLessEqual,
-  isLessEquivalent
+  isLessAprox
 }
 
 /* operationHomogeneousAdjust, */

@@ -1038,19 +1038,19 @@ function isLessEqual( test )
 
 //
 
-function isLessEquivalent( test )
+function isLessAprox( test )
 {
-  this._isLessEquivalent( test, 'isLessEquivalent', true, function()
+  this._isLessAprox( test, 'isLessAprox', true, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
   });
 
-  this._isLessEquivalent( test, 'isLessEquivalent', true, function()
+  this._isLessAprox( test, 'isLessAprox', true, function()
   {
     return _.longMake/*longMakeUndefined*/( F32x, arguments );
   });
 
-  this._isLessEquivalent( test, 'isLessEquivalent', true, function()
+  this._isLessAprox( test, 'isLessAprox', true, function()
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
@@ -1185,7 +1185,7 @@ function _isLess( test, r, t, array )
 
 //
 
-function _isLessEquivalent( test, r, t, array )
+function _isLessAprox( test, r, t, array )
 {
   var f = !t;
   
@@ -1341,7 +1341,7 @@ function _isLessEquivalent( test, r, t, array )
 
 //
 
-function _isGreaterEquivalent( test, r, t, array )
+function _isGreaterAprox( test, r, t, array )
 {
   var f = !t;
   
@@ -1572,19 +1572,19 @@ function isGreaterEqual( test )
 
 //
 
-function isGreaterEquivalent( test )
+function isGreaterAprox( test )
 {
-  this._isGreaterEquivalent( test, 'isGreaterEquivalent', true, function()
+  this._isGreaterAprox( test, 'isGreaterAprox', true, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
   });
 
-  this._isGreaterEquivalent( test, 'isGreaterEquivalent', true, function()
+  this._isGreaterAprox( test, 'isGreaterAprox', true, function()
   {
     return _.longMake/*longMakeUndefined*/( F32x, arguments );
   });
 
-  this._isGreaterEquivalent( test, 'isGreaterEquivalent', true, function()
+  this._isGreaterAprox( test, 'isGreaterAprox', true, function()
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
@@ -1971,7 +1971,7 @@ function _allEquivalent( test, r, t, Array, array )
 
 //
 
-function _allLessEquivalent( test, r, t, Array, array )
+function _allLessAprox( test, r, t, Array, array )
 {
   var f = !t;
   var e = _.accuracy * 0.5;
@@ -2033,7 +2033,7 @@ function _allLessEquivalent( test, r, t, Array, array )
 
 //
 
-function _allGreaterEquivalent( test, r, t, Array, array )
+function _allGreaterAprox( test, r, t, Array, array )
 {
   var f = !t;
   var e = _.accuracy * 0.5;
@@ -2243,47 +2243,47 @@ allGreater.timeOut = 150000;
 
 //
 
-function allGreaterEquivalent( test )
+function allGreaterAprox( test )
 {
-  this._allGreaterEquivalent( test, 'allGreaterEquivalent', true, Array, function()
+  this._allGreaterAprox( test, 'allGreaterAprox', true, Array, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
   });
 
-  this._allGreaterEquivalent( test, 'allGreaterEquivalent', true, F32x, function()
+  this._allGreaterAprox( test, 'allGreaterAprox', true, F32x, function()
   {
     return _.longMake/*longMakeUndefined*/( F32x, arguments );
   });
 
-  this._allGreaterEquivalent( test, 'allGreaterEquivalent', true, U32x, function()
+  this._allGreaterAprox( test, 'allGreaterAprox', true, U32x, function()
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
 }
 
-allGreaterEquivalent.timeOut = 150000;
+allGreaterAprox.timeOut = 150000;
 
 //
 
-function allLessEquivalent( test )
+function allLessAprox( test )
 {
-  this._allLessEquivalent( test, 'allLessEquivalent', true, Array, function()
+  this._allLessAprox( test, 'allLessAprox', true, Array, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
   });
 
-  this._allLessEquivalent( test, 'allLessEquivalent', true, F32x, function()
+  this._allLessAprox( test, 'allLessAprox', true, F32x, function()
   {
     return _.longMake/*longMakeUndefined*/( F32x, arguments );
   });
 
-  this._allLessEquivalent( test, 'allLessEquivalent', true, U32x, function()
+  this._allLessAprox( test, 'allLessAprox', true, U32x, function()
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
 }
 
-allLessEquivalent.timeOut = 150000;
+allLessAprox.timeOut = 150000;
 
 
 //
@@ -2415,7 +2415,7 @@ function _anyEquivalent( test, r, t, Array, array )
 
 //
 
-function _anyLessEquivalent( test, r, t, Array, array )
+function _anyLessAprox( test, r, t, Array, array )
 {
   var f = !t;
   var e = _.accuracy * 0.5;
@@ -2477,7 +2477,7 @@ function _anyLessEquivalent( test, r, t, Array, array )
 
 //
 
-function _anyGreaterEquivalent( test, r, t, Array, array )
+function _anyGreaterAprox( test, r, t, Array, array )
 {
   var f = !t;
   var e = _.accuracy * 0.5;
@@ -2686,47 +2686,47 @@ anyGreater.timeOut = 15000;
 
 //
 
-function anyGreaterEquivalent( test )
+function anyGreaterAprox( test )
 {
-  this._anyGreaterEquivalent( test, 'anyGreaterEquivalent', true, Array, function()
+  this._anyGreaterAprox( test, 'anyGreaterAprox', true, Array, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
   });
 
-  this._anyGreaterEquivalent( test, 'anyGreaterEquivalent', true, F32x, function()
+  this._anyGreaterAprox( test, 'anyGreaterAprox', true, F32x, function()
   {
     return _.longMake/*longMakeUndefined*/( F32x, arguments );
   });
 
-  this._anyGreaterEquivalent( test, 'anyGreaterEquivalent', true, U32x, function()
+  this._anyGreaterAprox( test, 'anyGreaterAprox', true, U32x, function()
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
 }
 
-anyGreaterEquivalent.timeOut = 15000;
+anyGreaterAprox.timeOut = 15000;
 
 //
 
-function anyLessEquivalent( test )
+function anyLessAprox( test )
 {
-  this._anyLessEquivalent( test, 'anyLessEquivalent', true, Array, function()
+  this._anyLessAprox( test, 'anyLessAprox', true, Array, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
   });
 
-  this._anyLessEquivalent( test, 'anyLessEquivalent', true, F32x, function()
+  this._anyLessAprox( test, 'anyLessAprox', true, F32x, function()
   {
     return _.longMake/*longMakeUndefined*/( F32x, arguments );
   });
 
-  this._anyLessEquivalent( test, 'anyLessEquivalent', true, U32x, function()
+  this._anyLessAprox( test, 'anyLessAprox', true, U32x, function()
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
 }
 
-anyGreaterEquivalent.timeOut = 15000;
+anyGreaterAprox.timeOut = 15000;
 
 //
 
@@ -2842,7 +2842,7 @@ function _noneEquivalent( test, r, t, Array, array )
 
 //
 
-function _noneGreaterEquivalent( test, r, t, Array, array )
+function _noneGreaterAprox( test, r, t, Array, array )
 {
   var f = !t;
   var e = _.accuracy * 0.5;
@@ -2910,7 +2910,7 @@ function _noneGreaterEquivalent( test, r, t, Array, array )
 
 //
 
-function _noneLessEquivalent( test, r, t, Array, array )
+function _noneLessAprox( test, r, t, Array, array )
 {
   var f = !t;
   var e = _.accuracy * 0.5;
@@ -3126,47 +3126,47 @@ noneGreater.timeOut = 15000;
 
 //
 
-function noneGreaterEquivalent( test )
+function noneGreaterAprox( test )
 {
-  this._noneGreaterEquivalent( test, 'noneGreaterEquivalent', true, Array, function()
+  this._noneGreaterAprox( test, 'noneGreaterAprox', true, Array, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
   });
 
-  this._noneGreaterEquivalent( test, 'noneGreaterEquivalent', true, F32x, function()
+  this._noneGreaterAprox( test, 'noneGreaterAprox', true, F32x, function()
   {
     return _.longMake/*longMakeUndefined*/( F32x, arguments );
   });
 
-  this._noneGreaterEquivalent( test, 'noneGreaterEquivalent', true, U32x, function()
+  this._noneGreaterAprox( test, 'noneGreaterAprox', true, U32x, function()
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
 }
 
-noneGreaterEquivalent.timeOut = 150000;
+noneGreaterAprox.timeOut = 150000;
 
 //
 
-function noneLessEquivalent( test )
+function noneLessAprox( test )
 {
-  this._noneLessEquivalent( test, 'noneLessEquivalent', true, Array, function()
+  this._noneLessAprox( test, 'noneLessAprox', true, Array, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
   });
 
-  this._noneLessEquivalent( test, 'noneLessEquivalent', true, F32x, function()
+  this._noneLessAprox( test, 'noneLessAprox', true, F32x, function()
   {
     return _.longMake/*longMakeUndefined*/( F32x, arguments );
   });
 
-  this._noneLessEquivalent( test, 'noneLessEquivalent', true, U32x, function()
+  this._noneLessAprox( test, 'noneLessAprox', true, U32x, function()
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
 }
 
-noneLessEquivalent.timeOut = 150000;
+noneLessAprox.timeOut = 150000;
 
 //
 
@@ -7039,27 +7039,27 @@ var Self =
     _isGreater,
     _isLess,
     
-    _isLessEquivalent,
-    _isGreaterEquivalent,
+    _isLessAprox,
+    _isGreaterAprox,
 
     _allIdentical,
     _allNotIdentical,
     _allEquivalent,
-    _allLessEquivalent,
+    _allLessAprox,
     _allGreater,
-    _allGreaterEquivalent,
+    _allGreaterAprox,
 
     _anyIdentical,
     _anyNotIdentical,
     _anyGreater,
-    _anyGreaterEquivalent,
-    _anyLessEquivalent,
+    _anyGreaterAprox,
+    _anyLessAprox,
     _anyEquivalent,
 
     _noneIdentical,
     _noneGreater,
-    _noneGreaterEquivalent,
-    _noneLessEquivalent,
+    _noneGreaterAprox,
+    _noneLessAprox,
     _noneEquivalent,
 
     _isZero,
@@ -7094,9 +7094,9 @@ var Self =
     isGreater,
     isLessEqual,
     isLess,
-    isLessEquivalent,
+    isLessAprox,
     isGreaterEqual,
-    isGreaterEquivalent,
+    isGreaterAprox,
 
     logical2ArgsZipperWithBadArguments,
 
@@ -7108,8 +7108,8 @@ var Self =
     allEquivalent2,
     allNotEquivalent,
     allGreater,
-    allGreaterEquivalent,
-    allLessEquivalent,
+    allGreaterAprox,
+    allLessAprox,
 
     anyIdentical,
     anyNotIdentical,
@@ -7117,8 +7117,8 @@ var Self =
     anyEquivalent2,
     anyNotEquivalent,
     anyGreater,
-    anyGreaterEquivalent,
-    anyLessEquivalent,
+    anyGreaterAprox,
+    anyLessAprox,
 
     noneIdentical,
     noneNotIdentical,
@@ -7126,8 +7126,8 @@ var Self =
     noneEquivalent2,
     noneNotEquivalent,
     noneGreater,
-    noneGreaterEquivalent,
-    noneLessEquivalent,
+    noneGreaterAprox,
+    noneLessAprox,
 
     logical2ArgsReducerWithBadArguments,
 
