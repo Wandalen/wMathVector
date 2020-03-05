@@ -3124,8 +3124,12 @@ let _routinesMathematical =
 
   gt : Routines.isGreater,
   ge : Routines.isGreaterEqual,
+  ga : Routines.isGreaterAprox,
+  gea : Routines.isGreaterEqualAprox,
   lt : Routines.isLess,
   le : Routines.isLessEqual,
+  la : Routines.isLessAprox,
+  lea : Routines.isLessEqualAprox,
 
   isIdentical : Routines.isIdentical,
   isNotIdentical : Routines.isNotIdentical,
