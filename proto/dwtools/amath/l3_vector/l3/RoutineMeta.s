@@ -3238,9 +3238,6 @@ function declareLogic1Routines()
   {
     let atomOperation = operations.logical1[ name ];
 
-    // if( name === 'isZero' )
-    // debugger;
-
     let routineName = 'all' + _.strRemoveBegin( name, 'is' );
     this._declareLogic1ReducingSinglerAllRoutine( null, atomOperation, routineName );
 
