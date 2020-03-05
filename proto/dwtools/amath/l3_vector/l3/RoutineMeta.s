@@ -1037,8 +1037,6 @@ function _vectorsCallBegin( o, dop )
     _.assert( dop.takingArguments[ 1 ] - dop.takingArguments[ 0 ] <= 1 );
   }
 
-  // debugger;
-
   if( !dop.reducing && !dop.usingDstAsSrc )
   if( minimalCall && dstProvided )
   {
@@ -1061,7 +1059,6 @@ function _vectorsCallBegin( o, dop )
       o.srcContainers = o.args.slice( 1 );
       else
       o.srcContainers = o.args.slice( 0 );
-      // o.srcContainers = o.args.slice( minimalCall ? 0 : 1 );
     }
     else
     {
@@ -1078,7 +1075,6 @@ function _vectorsCallBegin( o, dop )
 
     if( dstIsNumber )
     {
-      // o.firstSrcContainer = dst;
 
       if( dop.usingDstAsSrc )
       {
@@ -1092,10 +1088,6 @@ function _vectorsCallBegin( o, dop )
           o.srcContainers = o.args.slice( 1 );
         }
 
-        // o.srcContainers = o.args.slice( minimalCall ? 0 : 1 );
-        // if( minimalCall )
-        // o.srcContainers[ 0 ] = dst;
-
       }
       else
       {
@@ -1105,8 +1097,6 @@ function _vectorsCallBegin( o, dop )
     }
     else
     {
-      // o.firstSrcContainer = o.args[ 1 ];
-      // o.srcContainers = o.args.slice( minimalCall ? 0 : 1 );
       o.srcContainers = o.args.slice( minimalCall ? 0 : 1 );
     }
 
@@ -1121,8 +1111,6 @@ function _vectorsCallBegin( o, dop )
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let src = o.args[ a ];
-      // _.assert( _.vectorAdapterIs( src ) || _.numberIs( src ) || typeof( src ) === 'function' );
-      // _.assert( _.numberIs( src )  || typeof( src ) === 'function' || dst.length === src.length, 'src and dst should have same length' );
       _.assert( _.vectorAdapterIs( src ) || _.numberIs( src ) );
       _.assert( _.numberIs( src ) || dst.length === src.length, 'src and dst should have same length' );
     }
@@ -1135,8 +1123,6 @@ function _vectorsCallBegin( o, dop )
 function _vectorsCallEnd( o, dop )
 {
   let result;
-
-  // debugger;
 
   if( dop.reducing )
   o.result = o.dstElement;
@@ -1171,8 +1157,6 @@ function _vectorsGenBegin( dop )
   _.assert( dop.onAtom.length > 1 );
   _.assert( dop.usingDstAsSrc !== undefined && dop.usingDstAsSrc !== null );
   _.assert( dop.usingExtraSrcs !== undefined && dop.usingExtraSrcs !== null );
-
-  // _.assert( dop.onVectorsBegin.length === 0 );
 
 }
 
@@ -1475,9 +1459,6 @@ function _routineForOperation_functor( dop )
   this.operationNormalizeInput( dop );
   this.operationNormalizeArity( dop );
 
-  // dop.inputWithoutLast = dop.input.args.slice( 0, dop.input.args.length-1 );
-  // dop.inputLast = dop.input.args[ dop.input.args.length-1 ];
-
   /* */
 
   if( dop.onAtom_functor )
@@ -1513,9 +1494,6 @@ function _routineForOperation_functor( dop )
   _.assert( dop.handleVectors === undefined );
   _.assert( dop.handleBegin === undefined );
   _.assert( dop.handleEnd === undefined );
-
-  // if( dop.name === 'addVectors' )
-  // debugger;
 
   return dop.onVectors[ 0 ];
 }
@@ -1794,9 +1772,6 @@ function declareHomogeneousTakingVectorsRoutines()
     _.assert( _.routineIs( atomOperation.onAtom ) );
     _.assert( !routines[ routineName ] );
 
-    // if( routineName === 'addVectors' )
-    // debugger;
-
     operation.atomOperation = atomOperation;
 
     if( !operation.takingArguments )
@@ -1819,8 +1794,6 @@ function declareHomogeneousTakingVectorsRoutines()
   _.assert( _.routineIs( routines.addVectors ) );
 
 }
-
-// declareHomogeneousTakingVectorsRoutines();
 
 // --
 // atom-wise, commutatuve, taking scalar
@@ -1856,8 +1829,6 @@ function declareHomogeneousTakingScalarRoutines()
   _.assert( routines.addScalar.operation.onAtom.length >= 2 );
 
 }
-
-// declareHomogeneousTakingScalarRoutines();
 
 // --
 // atom-wise
@@ -1978,7 +1949,6 @@ function _onAtomAtomwise_functor( dop )
     {
       let src = o.srcContainers[ a ];
 
-      //if( typeof( o.srcContainers[ 1 ] ) !== 'function' )
       o.srcElement = src.eGet( o.key );
 
       let r = onAtom0.call( this, o );
@@ -2007,7 +1977,6 @@ function _onAtomAtomwise_functor( dop )
     {
       let src = o.srcContainers[ a ];
 
-      //if( typeof( o.srcContainers[ 1 ] ) !== 'function' )
       o.srcElement = src.eGet( o.key );
 
       let r = onAtom0.call( this, o );
@@ -2300,8 +2269,6 @@ function routinesHomogeneousDeclare()
   {
     let atomOperation = operations.atomWiseHomogeneous[ routineName ];
     _.assert( atomOperation.usingDstAsSrc );
-    // if( routineName === 'add' )
-    // debugger;
     this._routineHomogeneousDeclare2( null, atomOperation, routineName );
   }
 
@@ -2314,8 +2281,6 @@ function routinesHomogeneousDeclare()
   _.assert( _.routineIs( routines.max ) );
 
 }
-
-// routinesHomogeneousDeclare();
 
 // --
 // atom-wise, heterogeneous
