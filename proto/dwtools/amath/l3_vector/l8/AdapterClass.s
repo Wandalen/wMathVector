@@ -239,7 +239,7 @@ equivalentWith.modifying = false;
 // {
 //   let src1 = this;
 //   _.assert( 0, 'not implemented' );
-//   debugger; /* xxx */
+//   debugger; /* zzz */
 //   _.assert( arguments.length === 1, 'Expects single argument' );
 //   if( src1._vectorBuffer !== src2._vectorBuffer )
 //   return false;
@@ -330,6 +330,6 @@ _.assert( _.routineIs( Self.prototype.slice ) );
 _.assert( _.routineIs( Self.prototype.allZero ) );
 
 _.assert( _.routineIs( _.vectorAdapter.toLong ) );
-_.assert( _.routineIs( _.vectorAdapter.toStr ) ); /* xxx : cover? */
+_.assert( _.routineIs( _.vectorAdapter.toStr ) ); 
 
 })();

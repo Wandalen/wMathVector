@@ -1123,10 +1123,6 @@ dop = sort.operation = Object.create( null );
 dop.input = 'vw ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
-// dop.takingArguments = [ 2, 2 ];
-// dop.takingVectors = [ 1, 1 ];
-// dop.takingVectorsOnly = false;
-// xxx
 dop.returningSelf = true;
 dop.returningNew = false;
 dop.modifying = true;
@@ -2524,11 +2520,12 @@ dop.homogeneous = true;
 
 //
 
-function areParallel( src1, src2, accuracy )
+function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
 {
   let length = src1.length;
   debugger;
-  accuracy = ( accuracy !== undefined ) ? accuracy : this.accuracy; /* xxx */
+  _.assert( 0, 'not tested' );
+  accuracy = ( accuracy !== undefined ) ? accuracy : this.accuracy;
 
   _.assert( _.numberIs( accuracy ) );
   _.assert( src1.length === src2.length, 'vector.distanceSqr :', 'src1 and src2 should have same length' );
@@ -2828,8 +2825,8 @@ let _routinesMathematical =
   makeSimilar,
 
   slice,
-  // slicedAdapter, /* xxx : deprecate */
-  // slicedLong, /* xxx : deprecate */
+  // slicedAdapter, /* zzz : deprecate */
+  // slicedLong, /* zzz : deprecate */
 
   /* qqq : implement routine shrinkLong and cover */
   /* qqq : implement routine shrinkAdapter and cover */
@@ -2844,11 +2841,11 @@ let _routinesMathematical =
   shrinkAdapter,
   shrinkLong,
 
-  // resizedAdapter, /* xxx : deprecate */
-  // resizedLong, /* xxx : deprecate */
+  // resizedAdapter, /* zzz : deprecate */
+  // resizedLong, /* zzz : deprecate */
 
   review, /* qqq : cover please */
-  // subarray, /* xxx : deprecate */
+  // subarray, /* zzz : deprecate */
 
   bufferConstructorOf,
 
@@ -2908,7 +2905,7 @@ let _routinesMathematical =
 
   normalize,
 
-  // atom-wise, assigning, mixed : self /* xxx qqq : deprecate */
+  // atom-wise, assigning, mixed : self /* zzz qqq : deprecate */
 
   /* meta._operationReturningSelfTakingVariantsComponentWise_functor */
   /* meta._operationReturningSelfTakingVariantsComponentWiseAct_functor */
@@ -2924,7 +2921,7 @@ let _routinesMathematical =
   // randomInRangeAssigning : randomInRange.assigning,
   // mixAssigning : mix.assigning,
 
-  // atom-wise, copying, mixed : self /* xxx qqq : deprecate */
+  // atom-wise, copying, mixed : self /* zzz qqq : deprecate */
 
   // addCopying : add.copying,
   // subCopying : sub.copying,

@@ -16,24 +16,44 @@ let OperationDescriptor0 = _.blueprint
   input : null,
   output : null,
 
+  onAtom : null,
+  onAtomsBegin : null,
+  onAtomsEnd : null,
+
+  takingArguments : null,
+  takingVectors : null,
+  takingVectorsOnly : null,
+
+  usingDstAsSrc : null,
+
+  returningNumber : null,
+  returningNew : null,
+  returningPrimitive : null,
+
 })
+
+/*
+
+"onAtom", "kind", "takingArguments", "homogeneous", "atomWise", "usingExtraSrcs", "usingDstAsSrc"
+
+*/
 
 let OperationDescriptor1 = _.blueprint
 .define
 ({
   extension : _.define.extension( OperationDescriptor0 ),
 
-  takingArguments : null,
-  takingVectors : null,
+  // takingArguments : null,
+  // takingVectors : null,
   takingVectorsOnly : null,
 
   returningOnly : null,
   returningSelf : null,
-  returningNew : null,
+  // returningNew : null,
   returningLong : null,
-  returningNumber : null,
+  // returningNumber : null,
   returningBoolean : null,
-  returningPrimitive : null,
+  // returningPrimitive : null,
 
   modifying : null,
   reducing : null,
@@ -42,13 +62,13 @@ let OperationDescriptor1 = _.blueprint
   interruptible : null,
   homogeneous : null,
   atomWise : null,
-  usingDstAsSrc : null,
+  // usingDstAsSrc : null,
   usingExtraSrcs : null,
 
+  // onAtom : null,
   onContinue : null,
-  onAtom : null,
-  onAtomsBegin : null,
-  onAtomsEnd : null,
+  // onAtomsBegin : null,
+  // onAtomsEnd : null,
   onVectorsBegin : null,
   onVectorsEnd : null,
   onVectors : null,

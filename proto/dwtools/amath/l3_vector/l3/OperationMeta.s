@@ -132,6 +132,370 @@ function _operationLogicalReducerAdjust( operation )
 
 //
 
+function operationNormalizeInput( operation, routineName )
+{
+
+  let delimeter = [ 'w', 'r', 'v', 's', 'm', 't', 'a', 'n', '?', '*', '+', '!' ];
+  var tokenRoutine =
+  {
+    'w' : tokenWrite,
+    'r' : tokenRead,
+    'v' : tokenVector,
+    's' : tokenScalar,
+    'm' : tokenMatrix,
+    't' : tokenSomething,
+    'a' : tokenAnything,
+    'n' : tokenNull,
+    '?' : tokenTimesOptional,
+    '*' : tokenTimesAny,
+    '+' : tokenTimesAtLeast,
+    '!' : tokenBut,
+  }
+
+  if( _.strIs( operation.input ) )
+  operation.input = operation.input.split( ' ' );
+
+  if( _.mapIs( operation.input ) )
+  return operation.input;
+
+  routineName = routineName || operation.name;
+
+  _.assert( _.strDefined( routineName ) );
+  _.assert( _.longIs( operation.input ), () => `Routine::${routineName} does not have operation.input` );
+
+  operation.input = _.longShrink( operation.input );
+
+  // logger.log( `operationNormalizeInput ${routineName}` );
+
+  let definition = operation.input.join( ' ' );
+
+  for( let i = 0 ; i < operation.input.length ; i++ )
+  {
+    operation.input[ i ] = argParse( operation.input[ i ] );
+  }
+
+  let inputDescriptor = Object.create( null );
+  inputDescriptor.definition = definition;
+  inputDescriptor.args = operation.input;
+  inputDescriptor.takingArguments = [ 0, 0 ];
+  inputDescriptor.takingVectors = [ 0, 0 ];
+  inputDescriptor.takingVectorsOnly = true;
+  operation.input = inputDescriptor;
+
+  for( let i = 0 ; i < inputDescriptor.args.length ; i++ )
+  {
+    let argDescriptor = inputDescriptor.args[ i ];
+    inputDescriptor.takingArguments[ 0 ] += argDescriptor.times[ 0 ];
+    inputDescriptor.takingArguments[ 1 ] += argDescriptor.times[ 1 ];
+    if( argDescriptor.isVector )
+    {
+      if( argDescriptor.isVector === true )
+      inputDescriptor.takingVectors[ 0 ] += argDescriptor.times[ 0 ];
+      inputDescriptor.takingVectors[ 1 ] += argDescriptor.times[ 1 ];
+      if( argDescriptor.isVector === _.maybe )
+      inputDescriptor.takingVectorsOnly = false;
+    }
+    else
+    {
+      inputDescriptor.takingVectorsOnly = false;
+    }
+  }
+
+  return inputDescriptor;
+
+  /* */
+
+  function argParse( definition )
+  {
+    let argDescriptor = Object.create( null );
+    argDescriptor.types = [];
+    argDescriptor.readable = false;
+    argDescriptor.writable = false;
+    argDescriptor.alternatives = [];
+    argDescriptor.definition = definition;
+    argDescriptor.times = [ Infinity, 0 ];
+    argDescriptor.isVector = null;
+    let alternatives = definition.split( '|' );
+    for( let i = 0 ; i < alternatives.length ; i++ )
+    {
+      let typeDescriptor = typeParse( alternatives[ i ] )
+      typeCollect( argDescriptor, typeDescriptor );
+    }
+    return argDescriptor;
+  }
+
+  /* */
+
+  function typeCollect( argDescriptor, typeDescriptor )
+  {
+
+    _.assert( _.strIs( typeDescriptor.type ) );
+    argDescriptor.types.push( typeDescriptor.type );
+
+    _.assert( _.boolIs( typeDescriptor.writable ) )
+    if( typeDescriptor.writable )
+    argDescriptor.writable = typeDescriptor.writable;
+
+    _.assert( _.boolIs( typeDescriptor.readable ) )
+    if( typeDescriptor.readable )
+    argDescriptor.readable = typeDescriptor.readable;
+
+    argDescriptor.times[ 0 ] = Math.min( argDescriptor.times[ 0 ], typeDescriptor.times[ 0 ] );
+    argDescriptor.times[ 1 ] = Math.max( argDescriptor.times[ 1 ], typeDescriptor.times[ 1 ] );
+
+    _.assert( typeDescriptor.isVector === _.maybe || _.boolIs( typeDescriptor.isVector ) );
+
+    // argDescriptor.isVector = _.fuzzy.and( argDescriptor.isVector, argDescriptor.isVector ); /* zzz */
+
+    if( argDescriptor.isVector === null )
+    {
+      argDescriptor.isVector = typeDescriptor.isVector;
+    }
+    else if( argDescriptor.isVector !== _.maybe && typeDescriptor.type !== 'n' )
+    {
+      if( typeDescriptor.isVector === _.maybe || argDescriptor.isVector === _.maybe )
+      argDescriptor.isVector = _.maybe;
+      else if( typeDescriptor.isVector === false && argDescriptor.isVector === true )
+      argDescriptor.isVector = _.maybe;
+      else if( typeDescriptor.isVector === true && argDescriptor.isVector === false )
+      argDescriptor.isVector = _.maybe;
+      else
+      argDescriptor.isVector = typeDescriptor.isVector;
+    }
+
+  }
+
+  /* */
+
+  function tokenWrite( c )
+  {
+    c.typeDescriptor.writable = true;
+  }
+
+  /* */
+
+  function tokenRead( c )
+  {
+    c.typeDescriptor.readable = true;
+  }
+
+  /* */
+
+  function tokenVector( c )
+  {
+    _.assert( c.typeDescriptor.type === null );
+    c.typeDescriptor.type = 'v';
+    if( !_.longHas( c.splits, '!' ) )
+    {
+      _.assert( c.typeDescriptor.isVector === null );
+      c.typeDescriptor.isVector = true;
+    }
+
+  }
+
+  /* */
+
+  function tokenScalar( c )
+  {
+    c.typeDescriptor.readable = true;
+    _.assert( c.typeDescriptor.type === null );
+    c.typeDescriptor.type = 's';
+    _.assert( c.typeDescriptor.isVector === null );
+    c.typeDescriptor.isVector = false;
+  }
+
+  /* */
+
+  function tokenMatrix( c )
+  {
+    _.assert( c.typeDescriptor.type === null );
+    c.typeDescriptor.type = 'm';
+    _.assert( c.typeDescriptor.isVector === null );
+    c.typeDescriptor.isVector = false;
+  }
+
+  /* */
+
+  function tokenSomething( c )
+  {
+    _.assert( c.typeDescriptor.type === null );
+    c.typeDescriptor.type = 't';
+    if( !_.longHas( c.splits, '!' ) )
+    {
+      _.assert( c.typeDescriptor.isVector === null );
+      c.typeDescriptor.isVector = false;
+    }
+  }
+
+  /* */
+
+  function tokenAnything( c )
+  {
+    _.assert( c.typeDescriptor.type === null );
+    c.typeDescriptor.type = 'a';
+    if( !_.longHas( c.splits, '!' ) )
+    {
+      _.assert( c.typeDescriptor.isVector === null );
+      c.typeDescriptor.isVector = _.maybe;
+    }
+  }
+
+  /* */
+
+  function tokenNull( c )
+  {
+    _.assert( c.typeDescriptor.type === null );
+    c.typeDescriptor.type = 'n';
+    _.assert( c.typeDescriptor.isVector === null );
+    c.typeDescriptor.isVector = false;
+  }
+
+  /* */
+
+  function tokenTimesOptional( c )
+  {
+    _.assert( c.typeDescriptor.times[ 0 ] === 1 );
+    c.typeDescriptor.times[ 0 ] = 0;
+  }
+
+  /* */
+
+  function tokenTimesAny( c )
+  {
+    if( c.i > 0 && !_.longHas( delimeter, c.splits[ c.i-1 ] ) )
+    return;
+    _.assert( c.typeDescriptor.times[ 0 ] === 1 );
+    _.assert( c.typeDescriptor.times[ 1 ] === 1 );
+    c.typeDescriptor.times[ 0 ] = 0;
+    c.typeDescriptor.times[ 1 ] = Infinity;
+  }
+
+  /* */
+
+  function tokenTimesAtLeast( c )
+  {
+    _.assert( c.typeDescriptor.times[ 0 ] === 1 );
+    _.assert( c.typeDescriptor.times[ 1 ] === 1 );
+    c.typeDescriptor.times[ 0 ] = 1;
+    c.typeDescriptor.times[ 1 ] = Infinity;
+  }
+
+  /* */
+
+  function tokenBut( c )
+  {
+    _.assert( c.splits.length > c.i+1 );
+    let next = c.splits[ c.i+1 ];
+    c.typeDescriptor.type = '!' + next;
+    c.i += 1;
+    _.assert( c.typeDescriptor.isVector === null );
+    if( next === 'v' || next === 'a' )
+    c.typeDescriptor.isVector = false;
+    else
+    c.typeDescriptor.isVector = _.maybe;
+  }
+
+  /* */
+
+  function tokenEtc( c )
+  {
+    // debugger;
+    let times = _.numberFromStr( c.split );
+    _.assert( _.numberDefined( times ) );
+    _.assert( c.splits[ c.i+1 ] === '*' );
+    _.assert( c.typeDescriptor.times[ 0 ] === 1 );
+    _.assert( c.typeDescriptor.times[ 1 ] === 1 );
+    c.typeDescriptor.times[ 0 ] = times;
+    c.typeDescriptor.times[ 1 ] = times;
+  }
+
+  /* */
+
+  function typeParse( definition )
+  {
+    let c = Object.create( null );
+    c.typeDescriptor = Object.create( null );
+    c.typeDescriptor.type = null;
+    c.typeDescriptor.readable = false;
+    c.typeDescriptor.writable = false;
+    c.typeDescriptor.definition = definition;
+    c.typeDescriptor.times = [ 1, 1 ];
+    c.typeDescriptor.isVector = null;
+    c.splits = _.strSplitFast({ src : definition, delimeter : delimeter, preservingEmpty : 0 });
+
+    for( let i = 0 ; i < c.splits.length ; i++ )
+    {
+      c.split = c.splits[ i ];
+      c.i = i;
+
+      let routine = tokenRoutine[ c.split ];
+      if( !routine )
+      routine = tokenEtc;
+
+      routine( c );
+      i = c.i;
+    }
+
+    // if( c.typeDescriptor.isVector )
+    // if( c.typeDescriptor.times[ 0 ] === 0 )
+    // c.typeDescriptor.isVector = _.maybe;
+
+    return c.typeDescriptor;
+  }
+
+  /* */
+
+  /*
+
+  'vw' 'vw|s', 'vr|s', '?vr', '*a', '3*a'
+
+  */
+}
+
+//
+
+function operationNormalizeArity( operation )
+{
+
+  _.assert( !!operation.input );
+
+  if( operation.takingArguments === undefined || operation.takingArguments === null )
+  operation.takingArguments = operation.input.takingArguments;
+  // if( operation.takingArguments === undefined || operation.takingArguments === null )
+  // operation.takingArguments = operation.takingVectors;
+
+  if( operation.takingVectors === undefined || operation.takingVectors === null )
+  operation.takingVectors = operation.input.takingVectors;
+  // if( operation.takingVectors === undefined || operation.takingVectors === null )
+  // operation.takingVectors = operation.takingArguments;
+
+  if( operation.takingArguments === undefined || operation.takingArguments === null )
+  operation.takingArguments = [ 1, Infinity ];
+
+  if( operation.takingVectors === undefined || operation.takingVectors === null )
+  operation.takingVectors = [ 1, Infinity ];
+
+  operation.takingArguments = _.numbersFromNumber( operation.takingArguments, 2 ).slice();
+  operation.takingVectors = _.numbersFromNumber( operation.takingVectors, 2 ).slice();
+
+  if( operation.takingArguments[ 0 ] < operation.takingVectors[ 0 ] )
+  operation.takingArguments[ 0 ] = operation.takingVectors[ 0 ];
+
+  if( operation.takingVectorsOnly === undefined || operation.takingVectorsOnly === null )
+  operation.takingVectorsOnly = operation.input.takingVectorsOnly;
+
+  if( operation.takingVectorsOnly === undefined || operation.takingVectorsOnly === null )
+  if( operation.takingVectors[ 0 ] === operation.takingVectors[ 1 ] && operation.takingVectors[ 1 ] === operation.takingArguments[ 1 ] )
+  operation.takingVectorsOnly = true;
+
+  operation.inputWithoutLast = operation.input.args.slice( 0, operation.input.args.length-1 );
+  operation.inputLast = operation.input.args[ operation.input.args.length-1 ];
+
+  return operation;
+}
+
+//
+
 function operationNormalize1( operation )
 {
 
@@ -145,6 +509,8 @@ function operationNormalize1( operation )
 
   if( _.numberIs( operation.takingVectors ) )
   operation.takingVectors = [ operation.takingVectors, operation.takingVectors ];
+
+  _.assertMapHasOnly( operation, _.vectorAdapter.OperationDescriptor0.fields );
 
 }
 
@@ -165,6 +531,8 @@ function operationNormalize2( operation )
   _.assert( _.boolIs( operation.usingDstAsSrc ) );
 
   _.assert( _.strIs( operation.kind ) );
+
+  // _.assertMapHasOnly( operation, _.vectorAdapter.OperationDescriptor0.fields );
 
 }
 
@@ -370,10 +738,6 @@ function operationReducingAdjust()
     this.operationNormalize1( operation );
 
     operation.kind = 'reducing';
-
-    // if( operation.takingArguments === undefined )
-    // operation.takingArguments = [ 1, Infinity ];
-
     operation.homogeneous = false;
     operation.atomWise = true;
     operation.reducing = true;
@@ -383,8 +747,6 @@ function operationReducingAdjust()
     if( operation.usingDstAsSrc === undefined )
     operation.usingDstAsSrc = false;
 
-    // _.assert( _.arrayIs( operation.takingArguments ) );
-    // _.assert( operation.takingArguments.length === 2 );
     _.assert( !operations.atomWiseReducing[ name ] );
 
     this.operationNormalize2( operation );
@@ -403,6 +765,8 @@ let MetaExtension =
 
   operationSupplement,
   _operationLogicalReducerAdjust,
+  operationNormalizeInput,
+  operationNormalizeArity,
 
   operationNormalize1,
   operationNormalize2,
