@@ -262,7 +262,7 @@ dop.onAtom = function isGreaterEqualAprox( o )
 let isGreaterAprox = dop = Object.create( null );
 
 dop.onAtom = function isGreaterAprox( o )
-{ 
+{
   let result = o.dstElement > o.srcElement;
   if( !result )
   result = _.numbersAreEquivalent( o.dstElement, o.srcElement );
@@ -477,12 +477,10 @@ dop.onAtom = function clamp( o )
 dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
-// dop.takingArguments = [ 3, 4 ];
 dop.returningNumber = true;
 dop.returningPrimitive = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
-// dop.input = [ 'vw|s', 'vr|s', 'vr|s' ];
 
 //
 
@@ -490,28 +488,17 @@ let mix = dop = Object.create( null );
 
 dop.onAtom = function mix( o )
 {
-
-  // if( o.srcElements.length === 2 )
-  // o.dstElement = ( o.dstElement )*( 1-o.srcElements[ 1 ] ) + o.srcElements[ 0 ]*( o.srcElements[ 1 ] );
-  // else
-  // o.dstElement = ( o.srcElements[ 0 ] )*( 1-o.srcElements[ 2 ] ) + ( o.srcElements[ 1 ] )*( o.srcElements[ 2 ] );
-
   _.assert( o.srcElements.length === 3 );
-
   o.dstElement = ( o.srcElements[ 0 ] )*( 1-o.srcElements[ 2 ] ) + ( o.srcElements[ 1 ] )*( o.srcElements[ 2 ] );
-
 }
 
 dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
-// dop.takingArguments = [ 3, 4 ];
-// dop.takingVectors = [ 0, 4 ];
 dop.returningNumber = true;
 dop.returningPrimitive = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
-// dop.input = [ 'vw|s', 'vr|s', 'vr|s' ];
 
 // --
 // atomWiseReducing
@@ -535,8 +522,6 @@ dop.onAtomsEnd = function( o )
 }
 
 dop.input = 'vr s';
-// dop.takingArguments = [ 2, 2 ];
-// dop.takingVectors = [ 1, 1 ];
 dop.takingVectorsOnly = false;
 
 //
@@ -565,8 +550,7 @@ dop.onAtomsEnd = function( o )
 }
 
 dop.input = 'vr';
-// dop.takingArguments = 1;
-// dop.takingVectors = 1;
+dop.output = 's';
 
 //
 
@@ -781,7 +765,8 @@ let logical2 = //
   isLess,
   isLessEqual,
   isLessEqualAprox,
-  isLessAprox
+  isLessAprox,
+
 }
 
 /* operationHomogeneousAdjust, */
@@ -805,7 +790,7 @@ let atomWiseHomogeneous = //
 let atomWiseHeterogeneous = //
 {
 
-  // isEquivalent2,
+  /* isEquivalent2, */
 
   addScaled,
   subScaled,

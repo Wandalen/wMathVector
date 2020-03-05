@@ -8,10 +8,20 @@ let _ = _global_.wTools;
 // structure
 // --
 
-let OperationDescriptor1 = _.blueprint
-// .construct
+let OperationDescriptor0 = _.blueprint
 .define
 ({
+
+  name : null,
+  input : null,
+  output : null,
+
+})
+
+let OperationDescriptor1 = _.blueprint
+.define
+({
+  extension : _.define.extension( OperationDescriptor0 ),
 
   takingArguments : null,
   takingVectors : null,
@@ -43,13 +53,11 @@ let OperationDescriptor1 = _.blueprint
   onVectorsEnd : null,
   onVectors : null,
 
-  name : null,
   kind : null,
   generator : null,
   postfix : null,
   atomOperation : null,
 
-  input : null,
   inputWithoutLast : null,
   inputLast : null,
 
@@ -58,10 +66,8 @@ let OperationDescriptor1 = _.blueprint
 //
 
 let OperationDescriptor2 = _.blueprint
-// .construct
 .define
 ({
-
   extension : _.define.extension( OperationDescriptor1 ),
 
   special : null,
@@ -76,6 +82,7 @@ let OperationDescriptor2 = _.blueprint
 let VectorExtension =
 {
 
+  OperationDescriptor0,
   OperationDescriptor1,
   OperationDescriptor2,
 

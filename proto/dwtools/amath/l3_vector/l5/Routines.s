@@ -3,7 +3,6 @@
 'use strict';
 
 let _ = _global_.wTools;
-let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
 let _sqr = _.math.sqr;
 let _sqrt = _.math.sqrt;
@@ -40,11 +39,25 @@ function assign( dst )
 
   if( alength === 2 )
   {
-    if( _.numberIs( arguments[ 1 ] ) )
-    this.assignScalar( dst, arguments[ 1 ] );
-    else if( _hasLength( arguments[ 1 ] ) )
-    this.assignVector( dst, _.vectorAdapter.fromLong( arguments[ 1 ] ) );
+    let src = arguments[ 1 ];
+    if( _.numberIs( src ) )
+    {
+      for( let i = 0 ; i < dst.length ; i++ )
+      dst.eSet( i, src );
+    }
+    else if( _.hasLength( src ) )
+    {
+      src = _.vectorAdapter.fromLong( src );
+      _.assert( src.length === dst.length );
+      for( let i = 0 ; i < dst.length ; i++ )
+      dst.eSet( i, src.eGet( i ) );
+    }
     else _.assert( 0, 'unknown arguments' );
+    // if( _.numberIs( arguments[ 1 ] ) )
+    // this.assignScalar( dst, arguments[ 1 ] );
+    // else if( _.hasLength( arguments[ 1 ] ) )
+    // this.assignVector( dst, _.vectorAdapter.fromLong( arguments[ 1 ] ) );
+    // else _.assert( 0, 'unknown arguments' );
   }
   else if( alength === 1 + length )
   {
@@ -585,7 +598,7 @@ dop.modifying = false;
 
 //
 
-function toLong( src ) /* xxx : redo */
+function toLong( src )
 {
   let result;
   let length = src.length;
@@ -597,77 +610,24 @@ function toLong( src ) /* xxx : redo */
   return src;
 
   return src._toLong();
-
-  // if( src.stride !== 1 || src.offset !== 0 || src.length !== src._vectorBuffer.length )
-  // {
-  //   result = _.longMake( src._vectorBuffer, src.length ); debugger;
-  //   for( let i = 0 ; i < src.length ; i++ )
-  //   result[ i ] = src.eGet( i );
-  // }
-  // else
-  // {
-  //   result = src._vectorBuffer;
-  // }
-  //
-  // return result;
 }
 
 dop = toLong.operation = Object.create( null );
 dop.input = 'vr';
+dop.output = 'l';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 1;
-dop.takingVectors = [ 1, 1 ];
+dop.takingVectors = 1;
 dop.takingVectorsOnly = true;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningLong = true;
 dop.modifying = false;
 
-// //
-//
-// function toStr( src ) /* xxx : redo */
-// {
-//   let result;
-//   let length = src.length;
-//
-//   _.assert( _.vectorAdapterIs( src ) || _.longIs( src ), 'Expects vector as a single argument' );
-//   _.assert( arguments.length === 1 );
-//
-//   src = this.fromLong( src );
-//
-//   src.each( ( e ) =>
-//   {
-//
-//   });
-//
-//   // if( src.stride !== 1 || src.offset !== 0 || src.length !== src._vectorBuffer.length )
-//   // {
-//   //   result = _.longMake( src._vectorBuffer, src.length ); debugger;
-//   //   for( let i = 0 ; i < src.length ; i++ )
-//   //   result[ i ] = src.eGet( i );
-//   // }
-//   // else
-//   // {
-//   //   result = src._vectorBuffer;
-//   // }
-//   //
-//   // return result;
-// }
-//
-// dop = toStr.operation = Object.create( null );
-// dop.atomWise = false;
-// dop.homogeneous = false;
-// dop.takingArguments = 1;
-// dop.takingVectors = [ 0, 1 ];
-// dop.takingVectorsOnly = false;
-// dop.returningSelf = false;
-// dop.returningNew = false;
-// dop.returningLong = true;
-// dop.modifying = false;
-
 //
 
+/* zzz : redo */
 function _toStr( src, o )
 {
   let result = '';
@@ -709,7 +669,7 @@ function _toStr( src, o )
 }
 
 dop = _toStr.operation = Object.create( null );
-dop.input = 'vr ?s';
+dop.input = 'vr ?t';
 dop.atomWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
@@ -1742,292 +1702,292 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 // float / vector
 // --
 
-/**
- * @summary Add vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Long|VectorAdapter} dst Destination vector.
- * @param {Long|VectorAdapter} src Source vector.
- * @example
- * var a1 = [ 1, 2, 5, 9 ];
- * var a2 = [ 1, 2, 3, 4 ];
- * _.avector.add( a1, a2 );
- * console.log( 'a1', a1 );
- * console.log( 'a2', a2 );
- * //a1 [ 2, 4, 8, 13 ]
- * //a2 [ 1, 2, 3, 4 ]
- *
- * @function add
- * @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
-
-let add = meta._operationReturningSelfTakingVariantsComponentWise_functor
-({
-  takingArguments : [ 2, Infinity ],
-  input : 'vw +vr|+s',
-  homogenous : 1,
-  onEach : function add( dst, src, i )
-  {
-    let d = dst.eGet( i );
-    let s = src.eGet( i );
-
-    let r = d + s;
-
-    dst.eSet( i, r );
-  }
-});
-
+// /**
+//  * @summary Add vectors `src` and `dst`. Saves result in vector `dst`.
+//  * @param {Long|VectorAdapter} dst Destination vector.
+//  * @param {Long|VectorAdapter} src Source vector.
+//  * @example
+//  * var a1 = [ 1, 2, 5, 9 ];
+//  * var a2 = [ 1, 2, 3, 4 ];
+//  * _.avector.add( a1, a2 );
+//  * console.log( 'a1', a1 );
+//  * console.log( 'a2', a2 );
+//  * //a1 [ 2, 4, 8, 13 ]
+//  * //a2 [ 1, 2, 3, 4 ]
+//  *
+//  * @function add
+//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+// */
 //
-
-/**
- * @summary Subtracts vector `src` from vector `dst`. Saves result in vector `dst`.
- * @param {Long|VectorAdapter} dst Destination vector.
- * @param {Long|VectorAdapter} src Source vector.
- * @example
- * var a1 = [ 1, 2, 5, 9 ];
- * var a2 = [ 1, 2, 3, 4 ];
- * _.avector.sub( a1, a2 );
- * console.log( 'a1', a1 );
- * console.log( 'a2', a2 );
- * //a1 [ 0, 0, 2, 5 ]
- * //a2 [ 1, 2, 3, 4 ]
- *
- * @function sub
- * @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
-
-let sub = meta._operationReturningSelfTakingVariantsComponentWise_functor
-({
-  takingArguments : [ 2, Infinity ],
-  input : 'vw +vr|+s',
-  homogenous : 1,
-  onEach : function sub( dst, src, i )
-  {
-    let d = dst.eGet( i );
-    let s = src.eGet( i );
-
-    let r = d - s;
-
-    dst.eSet( i, r );
-  }
-});
-
+// let add = meta._operationReturningSelfTakingVariantsComponentWise_functor
+// ({
+//   takingArguments : [ 2, Infinity ],
+//   input : 'vw +vr|+s',
+//   homogenous : 1,
+//   onEach : function add( dst, src, i )
+//   {
+//     let d = dst.eGet( i );
+//     let s = src.eGet( i );
 //
-
-/**
- * @summary Multiplication of vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Long|VectorAdapter} dst Destination vector.
- * @param {Long|VectorAdapter} src Source vector.
- * @example
- * var a1 = [ 1, 2, 5, 9 ];
- * var a2 = [ 1, 2, 3, 4 ];
- * _.avector.mul( a1, a2 );
- * console.log( 'a1', a1 );
- * console.log( 'a2', a2 );
- * //a1 [1, 4, 15, 36]
- * //a2 [ 1, 2, 3, 4 ]
- *
- * @function mul
- * @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
-
-let mul = meta._operationReturningSelfTakingVariantsComponentWise_functor
-({
-  takingArguments : [ 2, Infinity ],
-  input : 'vw +vr|+s',
-  homogenous : 1,
-  onMakeIdentity : function( dst )
-  {
-    _.vectorAdapter.assignScalar( dst, 1 );
-  },
-  onEach : function mul( dst, src, i )
-  {
-    let d = dst.eGet( i );
-    let s = src.eGet( i );
-
-    let r = d * s;
-
-    dst.eSet( i, r );
-  }
-});
-
+//     let r = d + s;
 //
-
-/**
- * @summary Division of vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Long|VectorAdapter} dst Destination vector.
- * @param {Long|VectorAdapter} src Source vector.
- * @example
- * var a1 = [ 1, 4, 9, 16 ];
- * var a2 = [ 1, 2, 3, 4 ];
- * _.avector.div( a1, a2 );
- * console.log( 'a1', a1 );
- * console.log( 'a2', a2 );
- * //a1 [1, 2, 3, 4]
- * //a2 [ 1, 2, 3, 4 ]
- *
- * @function div
- * @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
-
-let div = meta._operationReturningSelfTakingVariantsComponentWise_functor
-({
-  takingArguments : [ 2, Infinity ],
-  input : 'vw +vr|+s',
-  homogenous : 1,
-  onMakeIdentity : function( dst )
-  {
-    debugger;
-    _.vectorAdapter.assignScalar( dst, 1 );
-  },
-  onEach : function div( dst, src, i )
-  {
-    debugger;
-    let d = dst.eGet( i );
-    let s = src.eGet( i );
-
-    let r = d / s;
-
-    dst.eSet( i, r );
-  }
-});
-
+//     dst.eSet( i, r );
+//   }
+// });
 //
-
-/**
- * @summary Finds minimum values from vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Long|VectorAdapter} dst Destination vector.
- * @param {Long|VectorAdapter} src Source vector.
- * @example
- * var a1 = [ 1, 4, 9, 16 ];
- * var a2 = [ 1, 2, 3, 4 ];
- * _.avector.min( a1, a2 );
- * console.log( 'a1', a1 );
- * console.log( 'a2', a2 );
- * //a1 [1, 2, 3, 4]
- * //a2 [ 1, 2, 3, 4 ]
- *
- * @function min
- * @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
-
-let min = meta._operationReturningSelfTakingVariantsComponentWise_functor
-({
-  takingArguments : [ 2, Infinity ],
-  homogenous : 1,
-  input : 'vw +vr|+s',
-  onMakeIdentity : function( dst )
-  {
-    debugger;
-    _.vectorAdapter.assignScalar( dst, +Infinity );
-  },
-  onEach : function min( dst, src, i )
-  {
-    let d = dst.eGet( i );
-    let s = src.eGet( i );
-
-    let r = _min( d, s );
-
-    dst.eSet( i, r );
-  }
-});
-
+// //
 //
-
-/**
- * @summary Finds maximal values from vectors `src` and `dst`. Saves result in vector `dst`.
- * @param {Long|VectorAdapter} dst Destination vector.
- * @param {Long|VectorAdapter} src Source vector.
- * @example
- * var a1 = [ 1, 4, 9, 16 ];
- * var a2 = [ 1, 2, 3, 4 ];
- * _.avector.max( a1, a2 );
- * console.log( 'a1', a1 );
- * console.log( 'a2', a2 );
- * //a1 [ 1, 4, 9, 16 ]
- * //a2 [ 1, 2, 3, 4 ]
- *
- * @function max
- * @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
-
-let max = meta._operationReturningSelfTakingVariantsComponentWise_functor
-({
-  takingArguments : [ 2, Infinity ],
-  homogenous : 1,
-  input : 'vw +vr|+s',
-  onMakeIdentity : function( dst )
-  {
-    debugger;
-    _.vectorAdapter.assignScalar( dst, -Infinity );
-  },
-  onEach : function max( dst, src, i )
-  {
-    let d = dst.eGet( i );
-    let s = src.eGet( i );
-
-    let r = _max( d, s );
-
-    dst.eSet( i, r );
-  }
-});
-
+// /**
+//  * @summary Subtracts vector `src` from vector `dst`. Saves result in vector `dst`.
+//  * @param {Long|VectorAdapter} dst Destination vector.
+//  * @param {Long|VectorAdapter} src Source vector.
+//  * @example
+//  * var a1 = [ 1, 2, 5, 9 ];
+//  * var a2 = [ 1, 2, 3, 4 ];
+//  * _.avector.sub( a1, a2 );
+//  * console.log( 'a1', a1 );
+//  * console.log( 'a2', a2 );
+//  * //a1 [ 0, 0, 2, 5 ]
+//  * //a2 [ 1, 2, 3, 4 ]
+//  *
+//  * @function sub
+//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+// */
 //
-
-/**
- * @summary Limits values of vector `dst` to values in orange [min, max].
- * @param {Long|VectorAdapter} dst Vector.
- * @example
- * var a1 = [ 1, 2, 3, 4 ];
- * _.avector.clamp( a1, 1, 2 );
- * console.log( 'a1', a1 );
- * //a1 [ 1, 2, 2, 2 ]
- *
- * @function clamp
- * @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
-
-let clamp = meta._operationReturningSelfTakingVariantsComponentWise_functor
-({
-  takingArguments : [ 3, 3 ],
-  input : 'vw vr|s vr|s',
-  onEach : function clamp( dst, min, max, i )
-  {
-    let vmin = min.eGet( i );
-    let vmax = max.eGet( i );
-    if( dst.eGet( i ) > vmax ) dst.eSet( i, vmax );
-    else if( dst.eGet( i ) < vmin ) dst.eSet( i, vmin );
-  }
-});
-
+// let sub = meta._operationReturningSelfTakingVariantsComponentWise_functor
+// ({
+//   takingArguments : [ 2, Infinity ],
+//   input : 'vw +vr|+s',
+//   homogenous : 1,
+//   onEach : function sub( dst, src, i )
+//   {
+//     let d = dst.eGet( i );
+//     let s = src.eGet( i );
 //
-
-let randomInRange = meta._operationReturningSelfTakingVariantsComponentWise_functor
-({
-  takingArguments : [ 3, 3 ],
-  input : 'vw vr|s vr|s',
-  onEach : function randomInRange( dst, min, max, i )
-  {
-    let vmin = min.eGet( i );
-    let vmax = max.eGet( i );
-    dst.eSet( i, vmin + Math.random()*( vmax-vmin ) );
-  }
-});
-
+//     let r = d - s;
 //
-
-let mix = meta._operationReturningSelfTakingVariantsComponentWise_functor
-({
-  takingArguments : [ 3, 3 ],
-  input : 'vw vr|s vr|s',
-  onEach : function mix( dst, src, progress, i )
-  {
-    debugger;
-    throw _.err( 'not tested' );
-    let v1 = dst.eGet( i );
-    let v2 = src.eGet( i );
-    let p = progress.eGet( i );
-    dst.eSet( i, v1*( 1-p ) + v2*( p ) );
-  }
-});
+//     dst.eSet( i, r );
+//   }
+// });
+//
+// //
+//
+// /**
+//  * @summary Multiplication of vectors `src` and `dst`. Saves result in vector `dst`.
+//  * @param {Long|VectorAdapter} dst Destination vector.
+//  * @param {Long|VectorAdapter} src Source vector.
+//  * @example
+//  * var a1 = [ 1, 2, 5, 9 ];
+//  * var a2 = [ 1, 2, 3, 4 ];
+//  * _.avector.mul( a1, a2 );
+//  * console.log( 'a1', a1 );
+//  * console.log( 'a2', a2 );
+//  * //a1 [1, 4, 15, 36]
+//  * //a2 [ 1, 2, 3, 4 ]
+//  *
+//  * @function mul
+//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+// */
+//
+// let mul = meta._operationReturningSelfTakingVariantsComponentWise_functor
+// ({
+//   takingArguments : [ 2, Infinity ],
+//   input : 'vw +vr|+s',
+//   homogenous : 1,
+//   onMakeIdentity : function( dst )
+//   {
+//     _.vectorAdapter.assignScalar( dst, 1 );
+//   },
+//   onEach : function mul( dst, src, i )
+//   {
+//     let d = dst.eGet( i );
+//     let s = src.eGet( i );
+//
+//     let r = d * s;
+//
+//     dst.eSet( i, r );
+//   }
+// });
+//
+// //
+//
+// /**
+//  * @summary Division of vectors `src` and `dst`. Saves result in vector `dst`.
+//  * @param {Long|VectorAdapter} dst Destination vector.
+//  * @param {Long|VectorAdapter} src Source vector.
+//  * @example
+//  * var a1 = [ 1, 4, 9, 16 ];
+//  * var a2 = [ 1, 2, 3, 4 ];
+//  * _.avector.div( a1, a2 );
+//  * console.log( 'a1', a1 );
+//  * console.log( 'a2', a2 );
+//  * //a1 [1, 2, 3, 4]
+//  * //a2 [ 1, 2, 3, 4 ]
+//  *
+//  * @function div
+//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+// */
+//
+// let div = meta._operationReturningSelfTakingVariantsComponentWise_functor
+// ({
+//   takingArguments : [ 2, Infinity ],
+//   input : 'vw +vr|+s',
+//   homogenous : 1,
+//   onMakeIdentity : function( dst )
+//   {
+//     debugger;
+//     _.vectorAdapter.assignScalar( dst, 1 );
+//   },
+//   onEach : function div( dst, src, i )
+//   {
+//     debugger;
+//     let d = dst.eGet( i );
+//     let s = src.eGet( i );
+//
+//     let r = d / s;
+//
+//     dst.eSet( i, r );
+//   }
+// });
+//
+// //
+//
+// /**
+//  * @summary Finds minimum values from vectors `src` and `dst`. Saves result in vector `dst`.
+//  * @param {Long|VectorAdapter} dst Destination vector.
+//  * @param {Long|VectorAdapter} src Source vector.
+//  * @example
+//  * var a1 = [ 1, 4, 9, 16 ];
+//  * var a2 = [ 1, 2, 3, 4 ];
+//  * _.avector.min( a1, a2 );
+//  * console.log( 'a1', a1 );
+//  * console.log( 'a2', a2 );
+//  * //a1 [1, 2, 3, 4]
+//  * //a2 [ 1, 2, 3, 4 ]
+//  *
+//  * @function min
+//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+// */
+//
+// let min = meta._operationReturningSelfTakingVariantsComponentWise_functor
+// ({
+//   takingArguments : [ 2, Infinity ],
+//   homogenous : 1,
+//   input : 'vw +vr|+s',
+//   onMakeIdentity : function( dst )
+//   {
+//     debugger;
+//     _.vectorAdapter.assignScalar( dst, +Infinity );
+//   },
+//   onEach : function min( dst, src, i )
+//   {
+//     let d = dst.eGet( i );
+//     let s = src.eGet( i );
+//
+//     let r = _min( d, s );
+//
+//     dst.eSet( i, r );
+//   }
+// });
+//
+// //
+//
+// /**
+//  * @summary Finds maximal values from vectors `src` and `dst`. Saves result in vector `dst`.
+//  * @param {Long|VectorAdapter} dst Destination vector.
+//  * @param {Long|VectorAdapter} src Source vector.
+//  * @example
+//  * var a1 = [ 1, 4, 9, 16 ];
+//  * var a2 = [ 1, 2, 3, 4 ];
+//  * _.avector.max( a1, a2 );
+//  * console.log( 'a1', a1 );
+//  * console.log( 'a2', a2 );
+//  * //a1 [ 1, 4, 9, 16 ]
+//  * //a2 [ 1, 2, 3, 4 ]
+//  *
+//  * @function max
+//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+// */
+//
+// let max = meta._operationReturningSelfTakingVariantsComponentWise_functor
+// ({
+//   takingArguments : [ 2, Infinity ],
+//   homogenous : 1,
+//   input : 'vw +vr|+s',
+//   onMakeIdentity : function( dst )
+//   {
+//     debugger;
+//     _.vectorAdapter.assignScalar( dst, -Infinity );
+//   },
+//   onEach : function max( dst, src, i )
+//   {
+//     let d = dst.eGet( i );
+//     let s = src.eGet( i );
+//
+//     let r = _max( d, s );
+//
+//     dst.eSet( i, r );
+//   }
+// });
+//
+// //
+//
+// /**
+//  * @summary Limits values of vector `dst` to values in orange [min, max].
+//  * @param {Long|VectorAdapter} dst Vector.
+//  * @example
+//  * var a1 = [ 1, 2, 3, 4 ];
+//  * _.avector.clamp( a1, 1, 2 );
+//  * console.log( 'a1', a1 );
+//  * //a1 [ 1, 2, 2, 2 ]
+//  *
+//  * @function clamp
+//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+// */
+//
+// let clamp = meta._operationReturningSelfTakingVariantsComponentWise_functor
+// ({
+//   takingArguments : [ 3, 3 ],
+//   input : 'vw vr|s vr|s',
+//   onEach : function clamp( dst, min, max, i )
+//   {
+//     let vmin = min.eGet( i );
+//     let vmax = max.eGet( i );
+//     if( dst.eGet( i ) > vmax ) dst.eSet( i, vmax );
+//     else if( dst.eGet( i ) < vmin ) dst.eSet( i, vmin );
+//   }
+// });
+//
+// //
+//
+// let randomInRange = meta._operationReturningSelfTakingVariantsComponentWise_functor
+// ({
+//   takingArguments : [ 3, 3 ],
+//   input : 'vw vr|s vr|s',
+//   onEach : function randomInRange( dst, min, max, i )
+//   {
+//     let vmin = min.eGet( i );
+//     let vmax = max.eGet( i );
+//     dst.eSet( i, vmin + Math.random()*( vmax-vmin ) );
+//   }
+// });
+//
+// //
+//
+// let mix = meta._operationReturningSelfTakingVariantsComponentWise_functor
+// ({
+//   takingArguments : [ 3, 3 ],
+//   input : 'vw vr|s vr|s',
+//   onEach : function mix( dst, src, progress, i )
+//   {
+//     debugger;
+//     throw _.err( 'not tested' );
+//     let v1 = dst.eGet( i );
+//     let v2 = src.eGet( i );
+//     let p = progress.eGet( i );
+//     dst.eSet( i, v1*( 1-p ) + v2*( p ) );
+//   }
+// });
 
   // add,
   // sub,
@@ -2953,62 +2913,61 @@ let _routinesMathematical =
   /* meta._operationReturningSelfTakingVariantsComponentWise_functor */
   /* meta._operationReturningSelfTakingVariantsComponentWiseAct_functor */
 
-  addAssigning : add.assigning,
-  subAssigning : sub.assigning,
-  mulAssigning : mul.assigning,
-  divAssigning : div.assigning,
-
-  minAssigning : min.assigning,
-  maxAssigning : max.assigning,
-  clampAssigning : clamp.assigning,
-  randomInRangeAssigning : randomInRange.assigning,
-  mixAssigning : mix.assigning,
+  // addAssigning : add.assigning,
+  // subAssigning : sub.assigning,
+  // mulAssigning : mul.assigning,
+  // divAssigning : div.assigning,
+  //
+  // minAssigning : min.assigning,
+  // maxAssigning : max.assigning,
+  // clampAssigning : clamp.assigning,
+  // randomInRangeAssigning : randomInRange.assigning,
+  // mixAssigning : mix.assigning,
 
   // atom-wise, copying, mixed : self /* xxx qqq : deprecate */
 
-  addCopying : add.copying,
-  subCopying : sub.copying,
-  mulCopying : mul.copying,
-  divCopying : div.copying,
-
-  minCopying : min.copying,
-  maxCopying : max.copying,
-  clampCopying : clamp.copying,
-  randomInRangeCopying : randomInRange.copying,
-  mixCopying : mix.copying,
+  // addCopying : add.copying,
+  // subCopying : sub.copying,
+  // mulCopying : mul.copying,
+  // divCopying : div.copying,
+  //
+  // minCopying : min.copying,
+  // maxCopying : max.copying,
+  // clampCopying : clamp.copying,
+  // randomInRangeCopying : randomInRange.copying,
+  // mixCopying : mix.copying,
 
   // atom-wise, homogeneous, taking vectors
   // vectors only -> self
 
-  /*
-  declareHomogeneousTakingVectorsRoutines,
-  */
+  // /*
+  // declareHomogeneousTakingVectorsRoutines,
+  // */
 
-  addVectors : Routines.addVectors,
-  subVectors : Routines.subVectors,
-  mulVectors : Routines.mulVectors,
-  divVectors : Routines.divVectors,
-
-  assignVectors : Routines.assignVectors,
-  minVectors : Routines.minVectors,
-  maxVectors : Routines.maxVectors,
-
-  // atom-wise, homogeneous, taking scalar
-  // 1 vector , 1 scalar -> self
-
-  /*
-  declareHomogeneousTakingScalarRoutines,
-  */
-
-  addScalar : Routines.addScalar,
-  subScalar : Routines.subScalar,
-  mulScalar : Routines.mulScalar,
-  divScalar : Routines.divScalar,
-
-  assignScalar : Routines.assignScalar,
-  minScalar : Routines.minScalar,
-  maxScalar : Routines.maxScalar,
-
+  // addVectors : Routines.addVectors,
+  // subVectors : Routines.subVectors,
+  // mulVectors : Routines.mulVectors,
+  // divVectors : Routines.divVectors,
+  //
+  // assignVectors : Routines.assignVectors,
+  // minVectors : Routines.minVectors,
+  // maxVectors : Routines.maxVectors,
+  //
+  // // atom-wise, homogeneous, taking scalar
+  // // 1 vector , 1 scalar -> self
+  //
+  // /*
+  // declareHomogeneousTakingScalarRoutines,
+  // */
+  //
+  // addScalar : Routines.addScalar,
+  // subScalar : Routines.subScalar,
+  // mulScalar : Routines.mulScalar,
+  // divScalar : Routines.divScalar,
+  //
+  // assignScalar : Routines.assignScalar,
+  // minScalar : Routines.minScalar,
+  // maxScalar : Routines.maxScalar,
 
   // atom-wise
 
@@ -3033,7 +2992,6 @@ let _routinesMathematical =
   min : Routines.min,
   max : Routines.max,
 
-
 // atom-wise, heterogeneous
 
   /*
@@ -3048,7 +3006,6 @@ let _routinesMathematical =
 
   clamp : Routines.clamp,
   mix : Routines.mix,
-
 
   // scalarReductor
 
@@ -3094,7 +3051,6 @@ let _routinesMathematical =
   // anyNanConditional : Routines.anyNanConditional,
   // allIntConditional : Routines.allIntConditional,
   // allZeroConditional : Routines.allZeroConditional,
-
 
   // extremal reductor
 
@@ -3305,7 +3261,7 @@ _.assert( _.objectIs( _routinesMathematical.assign.operation ) );
 _.assert( _.arrayIs( _routinesMathematical.assign.operation.takingArguments ) );
 
 for( let r in _routinesMathematical )
-meta._routinePostFrom( _routinesMathematical[ r ], r );
+meta._routinePostForm( _routinesMathematical[ r ], r );
 
 // --
 // declare

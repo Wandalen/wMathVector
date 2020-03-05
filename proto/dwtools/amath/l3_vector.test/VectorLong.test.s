@@ -465,7 +465,9 @@ function _isIdentical( test, r, t, array )
   test.identical( got, expected );
 
   var expected = array( f, f, t );
+  debugger;
   var got = _.avector[ r ]( 3, array( 1, 2, 3 ) );
+  debugger;
   test.identical( got, expected );
 
   test.case = 'scalar and scalar'; /* */
@@ -1057,7 +1059,7 @@ function isLessEqualAprox( test )
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
-  
+
   this._isLessAprox( test, 'isLessEqualAprox', true, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
@@ -1226,11 +1228,11 @@ function _isLess( test, r, t, array )
 function _isLessAprox( test, r, t, array )
 {
   var f = !t;
-  
+
   var e = _.accuracy * 0.5;
-  
+
   /* */
-  
+
   test.case = ' trivial'; /* */
   var expected = array( t, t, t );
   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3 + e, 4, 3 ) );
@@ -1238,7 +1240,7 @@ function _isLessAprox( test, r, t, array )
   var expected = array( t, f, t );
   var got = _.avector[ r ]( array( 1 + e, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
-  
+
   test.case = 'vector and scalar'; /* */
   var expected = array( t, t, t );
   var got = _.avector[ r ]( array( 1, 2, 3 ), 3 + e );
@@ -1247,7 +1249,7 @@ function _isLessAprox( test, r, t, array )
   var expected = array( f, t, t );
   var got = _.avector[ r ]( 2, array( 1, 2, 3 - e ) );
   test.identical( got, expected );
-  
+
   test.case = 'scalar and scalar'; /* */
   var expected = f;
   var got = _.avector[ r ]( 4, 3 + e );
@@ -1265,7 +1267,7 @@ function _isLessAprox( test, r, t, array )
   var expected = array( t, f, t );
   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
-  
+
   test.case = 'vector and scalar'; /* */
   var expected = array( t, t, t );
   var got = _.avector[ r ]( array( 1, 2, 3 ), 3 );
@@ -1274,7 +1276,7 @@ function _isLessAprox( test, r, t, array )
   var expected = array( f, t, t );
   var got = _.avector[ r ]( 2, array( 1, 2, 3 ) );
   test.identical( got, expected );
-  
+
   test.case = 'scalar and scalar'; /* */
   var expected = f;
   var got = _.avector[ r ]( 4, 3 );
@@ -1292,7 +1294,7 @@ function _isLessAprox( test, r, t, array )
   var expected = array( t, f, t );
   var got = _.avector[ r ]( null, array( 1, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
-  
+
   test.case = 'vector and scalar, with null dst'; /* */
   var expected = array( t, t, f );
   var got = _.avector[ r ]( null, array( 1, 2, 3 ), 2 );
@@ -1308,7 +1310,7 @@ function _isLessAprox( test, r, t, array )
   var expected = t;
   var got = _.avector[ r ]( null, 3, 4 );
   test.identical( got, expected );
-  
+
   /* */
 
   test.case = 'trivial, with dst'; /* */
@@ -1322,7 +1324,7 @@ function _isLessAprox( test, r, t, array )
   var got = _.avector[ r ]( dst, array( 1, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
   test.is( got === dst );
-  
+
   test.case = 'vector and scalar, with dst'; /* */
   var expected = array( t, t, f );
   var dst = array( -1, -1, -1 );
@@ -1382,9 +1384,9 @@ function _isLessAprox( test, r, t, array )
 function _isGreaterAprox( test, r, t, array )
 {
   var f = !t;
-  
+
   var e = _.accuracy * 0.5;
-  
+
   /* */
 
   test.case = ' trivial'; /* */
@@ -1394,8 +1396,8 @@ function _isGreaterAprox( test, r, t, array )
   var expected = array( t, t, f );
   var got = _.avector[ r ]( array( 1 + e, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
-  
-  
+
+
   test.case = 'vector and scalar'; /* */
   var expected = array( f, f, t );
   var got = _.avector[ r ]( array( 1, 2, 3 + e ), 3 );
@@ -1404,7 +1406,7 @@ function _isGreaterAprox( test, r, t, array )
   var expected = array( t, t, f );
   var got = _.avector[ r ]( 2 + e, array( 1, 2, 3 ) );
   test.identical( got, expected );
-  
+
   test.case = 'scalar and scalar'; /* */
   var expected = t;
   var got = _.avector[ r ]( 4, 3 + e );
@@ -1422,7 +1424,7 @@ function _isGreaterAprox( test, r, t, array )
   var expected = array( t, t, f );
   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
-  
+
   test.case = 'vector and scalar'; /* */
   var expected = array( f, f, t );
   var got = _.avector[ r ]( array( 1, 2, 3 ), 3 );
@@ -1431,7 +1433,7 @@ function _isGreaterAprox( test, r, t, array )
   var expected = array( t, t, f );
   var got = _.avector[ r ]( 2, array( 1, 2, 3 ) );
   test.identical( got, expected );
-  
+
   test.case = 'scalar and scalar'; /* */
   var expected = t;
   var got = _.avector[ r ]( 4, 3 );
@@ -1449,7 +1451,7 @@ function _isGreaterAprox( test, r, t, array )
   var expected = array( t, t, f );
   var got = _.avector[ r ]( null, array( 1, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
-  
+
   test.case = 'vector and scalar, with null dst'; /* */
   var expected = array( f, t, t );
   var got = _.avector[ r ]( null, array( 1, 2, 3 ), 2 );
@@ -1465,9 +1467,9 @@ function _isGreaterAprox( test, r, t, array )
   var expected = f;
   var got = _.avector[ r ]( null, 3, 4 );
   test.identical( got, expected );
-  
+
   /* */
-  
+
   test.case = 'trivial, with dst'; /* */
   var expected = array( f, f, t );
   var dst = array( -1, -1, -1 );
@@ -1479,7 +1481,7 @@ function _isGreaterAprox( test, r, t, array )
   var got = _.avector[ r ]( dst, array( 1, 2, 3 ), array( 1, 1, 9 ) );
   test.identical( got, expected );
   test.is( got === dst );
-  
+
   test.case = 'vector and scalar, with dst'; /* */
   var expected = array( f, t, t );
   var dst = array( -1, -1, -1 );
@@ -1503,7 +1505,7 @@ function _isGreaterAprox( test, r, t, array )
   var got = _.avector[ r ]( dst, 4, 3 );
   test.identical( got, expected );
   test.is( got === dst );
-  
+
   test.case = 'scalar and scalar, with vector dst'; /* */
   var expected = array( t, t, t );
   var dst = array( -1, -1, -1 );
@@ -1611,7 +1613,7 @@ function isGreaterEqual( test )
 //
 
 function isGreaterEqualAprox( test )
-{ 
+{
   this._isLess( test, 'isGreaterEqualAprox', false, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
@@ -1626,7 +1628,7 @@ function isGreaterEqualAprox( test )
   {
     return _.longMake/*longMakeUndefined*/( U32x, arguments );
   });
-  
+
   this._isGreaterAprox( test, 'isGreaterEqualAprox', true, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
@@ -2256,7 +2258,7 @@ function _allGreaterEqualAprox( test, r, t, Array, array )
   var expected = t
   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
   test.identical( got, expected );
-  
+
   if( Array !== U32x )
   {
 
@@ -6151,355 +6153,355 @@ function momentCentral( test )
 
 momentCentral.timeOut = 15000;
 
+// //
 //
-
-function homogeneousWithScalar( test )
-{
-
-  test.case = 'assignScalar'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  _.avector.assignScalar( dst, 5 );
-  test.identical( dst, [ 5, 5, 5 ] );
-
-  var dst = vec([ 1, 2, 3 ]);
-  _.vectorAdapter.assignScalar( dst, 5 );
-  test.identical( dst, vec([ 5, 5, 5 ]) );
-
-  var dst = [];
-  _.avector.assignScalar( dst, 5 );
-  test.identical( dst, [] );
-
-  test.case = 'addScalar'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  _.avector.addScalar( dst, 5 );
-  test.identical( dst, [ 6, 7, 8 ] );
-
-  var dst = vec([ 1, 2, 3 ]);
-  _.vectorAdapter.addScalar( dst, 5 );
-  test.identical( dst, vec([ 6, 7, 8 ]) );
-
-  var dst = [];
-  _.avector.addScalar( dst, 5 );
-  test.identical( dst, [] );
-
-  test.case = 'subScalar'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  _.avector.subScalar( dst, 5 );
-  test.identical( dst, [ -4, -3, -2 ] );
-
-  var dst = vec([ 1, 2, 3 ]);
-  _.vectorAdapter.subScalar( dst, 5 );
-  test.identical( dst, vec([ -4, -3, -2 ]) );
-
-  var dst = [];
-  _.avector.subScalar( dst, 5 );
-  test.identical( dst, [] );
-
-  test.case = 'mulScalar'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  _.avector.mulScalar( dst, 5 );
-  test.identical( dst, [ 5, 10, 15 ] );
-
-  var dst = vec([ 1, 2, 3 ]);
-  _.vectorAdapter.mulScalar( dst, 5 );
-  test.identical( dst, vec([ 5, 10, 15 ]) );
-
-  var dst = [];
-  _.avector.mulScalar( dst, 5 );
-  test.identical( dst, [] );
-
-  test.case = 'divScalar'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  _.avector.divScalar( dst, 5 );
-  test.identical( dst, [ 1/5, 2/5, 3/5 ] );
-
-  var dst = vec([ 1, 2, 3 ]);
-  _.vectorAdapter.divScalar( dst, 5 );
-  test.identical( dst, vec([ 1/5, 2/5, 3/5 ]) );
-
-  var dst = [];
-  _.avector.divScalar( dst, 5 );
-  test.identical( dst, [] );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  shouldThrowErrorOfAnyKind( 'assignScalar' );
-  shouldThrowErrorOfAnyKind( 'addScalar' );
-  shouldThrowErrorOfAnyKind( 'subScalar' );
-  shouldThrowErrorOfAnyKind( 'mulScalar' );
-  shouldThrowErrorOfAnyKind( 'divScalar' );
-
-  function shouldThrowErrorOfAnyKind( name )
-  {
-
-    test.shouldThrowErrorSync( () => _.avector[ name ]() );
-    test.shouldThrowErrorSync( () => _.avector[ name ]( 1 ) );
-    // test.shouldThrowErrorSync( () => _.avector[ name ]( 1, 3 ) );
-    test.shouldThrowErrorSync( () => _.avector[ name ]( '1', '3' ) );
-    test.shouldThrowErrorSync( () => _.avector[ name ]( [], [] ) );
-    test.shouldThrowErrorSync( () => _.avector[ name ]( [], 1, 3 ) );
-    test.shouldThrowErrorSync( () => _.avector[ name ]( [], 1, undefined ) );
-    test.shouldThrowErrorSync( () => _.avector[ name ]( [], undefined ) );
-
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]() );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( 1 ) );
-    // test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( 1, 3 ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( '1', '3' ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], [] ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], 1, 3 ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], 1, undefined ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], undefined ) );
-
-  }
-
-}
-
-homogeneousWithScalar.timeOut = 15000;
-
+// function homogeneousWithScalar( test )
+// {
 //
+//   test.case = 'assignScalar'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   _.avector.assignScalar( dst, 5 );
+//   test.identical( dst, [ 5, 5, 5 ] );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   _.vectorAdapter.assignScalar( dst, 5 );
+//   test.identical( dst, vec([ 5, 5, 5 ]) );
+//
+//   var dst = [];
+//   _.avector.assignScalar( dst, 5 );
+//   test.identical( dst, [] );
+//
+//   test.case = 'addScalar'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   _.avector.addScalar( dst, 5 );
+//   test.identical( dst, [ 6, 7, 8 ] );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   _.vectorAdapter.addScalar( dst, 5 );
+//   test.identical( dst, vec([ 6, 7, 8 ]) );
+//
+//   var dst = [];
+//   _.avector.addScalar( dst, 5 );
+//   test.identical( dst, [] );
+//
+//   test.case = 'subScalar'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   _.avector.subScalar( dst, 5 );
+//   test.identical( dst, [ -4, -3, -2 ] );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   _.vectorAdapter.subScalar( dst, 5 );
+//   test.identical( dst, vec([ -4, -3, -2 ]) );
+//
+//   var dst = [];
+//   _.avector.subScalar( dst, 5 );
+//   test.identical( dst, [] );
+//
+//   test.case = 'mulScalar'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   _.avector.mulScalar( dst, 5 );
+//   test.identical( dst, [ 5, 10, 15 ] );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   _.vectorAdapter.mulScalar( dst, 5 );
+//   test.identical( dst, vec([ 5, 10, 15 ]) );
+//
+//   var dst = [];
+//   _.avector.mulScalar( dst, 5 );
+//   test.identical( dst, [] );
+//
+//   test.case = 'divScalar'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   _.avector.divScalar( dst, 5 );
+//   test.identical( dst, [ 1/5, 2/5, 3/5 ] );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   _.vectorAdapter.divScalar( dst, 5 );
+//   test.identical( dst, vec([ 1/5, 2/5, 3/5 ]) );
+//
+//   var dst = [];
+//   _.avector.divScalar( dst, 5 );
+//   test.identical( dst, [] );
+//
+//   test.case = 'bad arguments'; /* */
+//
+//   if( !Config.debug )
+//   return;
+//
+//   shouldThrowErrorOfAnyKind( 'assignScalar' );
+//   shouldThrowErrorOfAnyKind( 'addScalar' );
+//   shouldThrowErrorOfAnyKind( 'subScalar' );
+//   shouldThrowErrorOfAnyKind( 'mulScalar' );
+//   shouldThrowErrorOfAnyKind( 'divScalar' );
+//
+//   function shouldThrowErrorOfAnyKind( name )
+//   {
+//
+//     test.shouldThrowErrorSync( () => _.avector[ name ]() );
+//     test.shouldThrowErrorSync( () => _.avector[ name ]( 1 ) );
+//     // test.shouldThrowErrorSync( () => _.avector[ name ]( 1, 3 ) );
+//     test.shouldThrowErrorSync( () => _.avector[ name ]( '1', '3' ) );
+//     test.shouldThrowErrorSync( () => _.avector[ name ]( [], [] ) );
+//     test.shouldThrowErrorSync( () => _.avector[ name ]( [], 1, 3 ) );
+//     test.shouldThrowErrorSync( () => _.avector[ name ]( [], 1, undefined ) );
+//     test.shouldThrowErrorSync( () => _.avector[ name ]( [], undefined ) );
+//
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]() );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( 1 ) );
+//     // test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( 1, 3 ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( '1', '3' ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], [] ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], 1, 3 ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], 1, undefined ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ name ]( [], undefined ) );
+//
+//   }
+//
+// }
+//
+// homogeneousWithScalar.timeOut = 15000;
 
-function homogeneousOnlyVectors( test )
-{
-
-  test.case = 'addVectors anarrays'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  _.avector.addVectors( dst, src1 );
-  test.identical( dst, [ 4, 4, 4 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 11, 12, 13 ];
-  _.avector.addVectors( dst, src1, src2 );
-  test.identical( dst, [ 15, 16, 17 ] );
-
-  test.case = 'addVectors vectors'; /* */
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  _.avector.addVectors( dst, src1 );
-  test.identical( dst, vec([ 4, 4, 4 ]) );
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 11, 12, 13 ]);
-  _.avector.addVectors( dst, src1, src2 );
-  test.identical( dst, vec([ 15, 16, 17 ]) );
-
-  test.case = 'addVectors anarrays'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  _.avector.addVectors( dst, src1 );
-  test.identical( dst, [ 4, 4, 4 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 11, 12, 13 ];
-  _.avector.addVectors( dst, src1, src2 );
-  test.identical( dst, [ 15, 16, 17 ] );
-
-  test.case = 'subVectors anarrays'; /* */
-
-  var dst = ([ 1, 2, 3 ]);
-  var src1 = ([ 3, 2, 1 ]);
-  _.avector.subVectors( dst, src1 );
-  test.identical( dst, ([ -2, 0, +2 ]) );
-
-  var dst = ([ 1, 2, 3 ]);
-  var src1 = ([ 3, 2, 1 ]);
-  var src2 = ([ 11, 12, 13 ]);
-  _.avector.subVectors( dst, src1, src2 );
-  test.identical( dst, ([ -13, -12, -11 ]) );
-
-  test.case = 'subVectors vectors'; /* */
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  _.avector.subVectors( dst, src1 );
-  test.identical( dst, vec([ -2, 0, +2 ]) );
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 11, 12, 13 ]);
-  _.avector.subVectors( dst, src1, src2 );
-  test.identical( dst, vec([ -13, -12, -11 ]) );
-
-  test.case = 'mulVectors vectors'; /* */
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  _.avector.mulVectors( dst, src1 );
-  test.identical( dst, vec([ 3, 4, 3 ]) );
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 11, 12, 13 ]);
-  _.avector.mulVectors( dst, src1, src2 );
-  test.identical( dst, vec([ 33, 48, 39 ]) );
-
-  test.case = 'mulVectors anarrays'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  _.avector.mulVectors( dst, src1 );
-  test.identical( dst, [ 3, 4, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 11, 12, 13 ];
-  _.avector.mulVectors( dst, src1, src2 );
-  test.identical( dst, [ 33, 48, 39 ] );
-
-  test.case = 'divVectors vectors'; /* */
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  _.avector.divVectors( dst, src1 );
-  test.identical( dst, vec([ 1/3, 1, 3 ]) );
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 11, 12, 13 ]);
-  _.avector.divVectors( dst, src1, src2 );
-  test.identical( dst, vec([ 1/3/11, 1/12, 3/13 ]) );
-
-  test.case = 'divVectors anarrays'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  _.avector.divVectors( dst, src1 );
-  test.identical( dst, [ 1/3, 1, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 11, 12, 13 ];
-  _.avector.divVectors( dst, src1, src2 );
-  test.identical( dst, [ 1/3/11, 1/12, 3/13 ] );
-
-  test.case = 'minVectors vectors'; /* */
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  _.avector.minVectors( dst, src1 );
-  test.identical( dst, vec([ 1, 2, 1 ]) );
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 11, 0, 13 ]);
-  _.avector.minVectors( dst, src1, src2 );
-  test.identical( dst, vec([ 1, 0, 1 ]) );
-
-  test.case = 'minVectors anarrays'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  _.avector.minVectors( dst, src1 );
-  test.identical( dst, [ 1, 2, 1 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 11, 0, 13 ];
-  _.avector.minVectors( dst, src1, src2 );
-  test.identical( dst, [ 1, 0, 1 ] );
-
-  test.case = 'maxVectors vectors'; /* */
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  _.avector.maxVectors( dst, src1 );
-  test.identical( dst, vec([ 3, 2, 3 ]) );
-
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 11, 0, 13 ]);
-  _.avector.maxVectors( dst, src1, src2 );
-  test.identical( dst, vec([ 11, 2, 13 ]) );
-
-  test.case = 'maxVectors anarrays'; /* */
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  _.avector.maxVectors( dst, src1 );
-  test.identical( dst, [ 3, 2, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 11, 0, 13 ];
-  _.avector.maxVectors( dst, src1, src2 );
-  test.identical( dst, [ 11, 2, 13 ] );
-
-  test.case = 'empty vector'; /* */
-
-  function checkEmptyVector( rname )
-  {
-
-    var dst = [];
-    var got = _.avector[ rname ]( dst, [], [] );
-    test.is( got === dst );
-    test.identical( got , [] );
-
-    var dst = vec([]);
-    var got = _.vectorAdapter[ rname ]( dst, vec([]), vec([]) );
-    test.is( got === dst );
-    test.identical( got , vec([]) );
-
-  }
-
-  checkEmptyVector( 'assignVectors' );
-  checkEmptyVector( 'addVectors' );
-  checkEmptyVector( 'subVectors' );
-  checkEmptyVector( 'mulVectors' );
-  checkEmptyVector( 'subVectors' );
-  checkEmptyVector( 'minVectors' );
-  checkEmptyVector( 'maxVectors' );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  function shouldThrowErrorOfAnyKind( rname )
-  {
-
-    test.shouldThrowErrorSync( () => _.avector[ rname ]() );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], 1 ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], undefined ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], '1' ) );
-
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]() );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]) ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), 1 ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
-
-  }
-
-  shouldThrowErrorOfAnyKind( 'assignVectors' );
-  shouldThrowErrorOfAnyKind( 'addVectors' );
-  shouldThrowErrorOfAnyKind( 'subVectors' );
-  shouldThrowErrorOfAnyKind( 'mulVectors' );
-  shouldThrowErrorOfAnyKind( 'subVectors' );
-  shouldThrowErrorOfAnyKind( 'minVectors' );
-  shouldThrowErrorOfAnyKind( 'maxVectors' );
-
-}
-
-homogeneousOnlyVectors.timeOut = 15000;
+// //
+//
+// function homogeneousOnlyVectors( test )
+// {
+//
+//   test.case = 'addVectors anarrays'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   _.avector.addVectors( dst, src1 );
+//   test.identical( dst, [ 4, 4, 4 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   var src2 = [ 11, 12, 13 ];
+//   _.avector.addVectors( dst, src1, src2 );
+//   test.identical( dst, [ 15, 16, 17 ] );
+//
+//   test.case = 'addVectors vectors'; /* */
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   _.avector.addVectors( dst, src1 );
+//   test.identical( dst, vec([ 4, 4, 4 ]) );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   var src2 = vec([ 11, 12, 13 ]);
+//   _.avector.addVectors( dst, src1, src2 );
+//   test.identical( dst, vec([ 15, 16, 17 ]) );
+//
+//   test.case = 'addVectors anarrays'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   _.avector.addVectors( dst, src1 );
+//   test.identical( dst, [ 4, 4, 4 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   var src2 = [ 11, 12, 13 ];
+//   _.avector.addVectors( dst, src1, src2 );
+//   test.identical( dst, [ 15, 16, 17 ] );
+//
+//   test.case = 'subVectors anarrays'; /* */
+//
+//   var dst = ([ 1, 2, 3 ]);
+//   var src1 = ([ 3, 2, 1 ]);
+//   _.avector.subVectors( dst, src1 );
+//   test.identical( dst, ([ -2, 0, +2 ]) );
+//
+//   var dst = ([ 1, 2, 3 ]);
+//   var src1 = ([ 3, 2, 1 ]);
+//   var src2 = ([ 11, 12, 13 ]);
+//   _.avector.subVectors( dst, src1, src2 );
+//   test.identical( dst, ([ -13, -12, -11 ]) );
+//
+//   test.case = 'subVectors vectors'; /* */
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   _.avector.subVectors( dst, src1 );
+//   test.identical( dst, vec([ -2, 0, +2 ]) );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   var src2 = vec([ 11, 12, 13 ]);
+//   _.avector.subVectors( dst, src1, src2 );
+//   test.identical( dst, vec([ -13, -12, -11 ]) );
+//
+//   test.case = 'mulVectors vectors'; /* */
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   _.avector.mulVectors( dst, src1 );
+//   test.identical( dst, vec([ 3, 4, 3 ]) );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   var src2 = vec([ 11, 12, 13 ]);
+//   _.avector.mulVectors( dst, src1, src2 );
+//   test.identical( dst, vec([ 33, 48, 39 ]) );
+//
+//   test.case = 'mulVectors anarrays'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   _.avector.mulVectors( dst, src1 );
+//   test.identical( dst, [ 3, 4, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   var src2 = [ 11, 12, 13 ];
+//   _.avector.mulVectors( dst, src1, src2 );
+//   test.identical( dst, [ 33, 48, 39 ] );
+//
+//   test.case = 'divVectors vectors'; /* */
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   _.avector.divVectors( dst, src1 );
+//   test.identical( dst, vec([ 1/3, 1, 3 ]) );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   var src2 = vec([ 11, 12, 13 ]);
+//   _.avector.divVectors( dst, src1, src2 );
+//   test.identical( dst, vec([ 1/3/11, 1/12, 3/13 ]) );
+//
+//   test.case = 'divVectors anarrays'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   _.avector.divVectors( dst, src1 );
+//   test.identical( dst, [ 1/3, 1, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   var src2 = [ 11, 12, 13 ];
+//   _.avector.divVectors( dst, src1, src2 );
+//   test.identical( dst, [ 1/3/11, 1/12, 3/13 ] );
+//
+//   test.case = 'minVectors vectors'; /* */
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   _.avector.minVectors( dst, src1 );
+//   test.identical( dst, vec([ 1, 2, 1 ]) );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   var src2 = vec([ 11, 0, 13 ]);
+//   _.avector.minVectors( dst, src1, src2 );
+//   test.identical( dst, vec([ 1, 0, 1 ]) );
+//
+//   test.case = 'minVectors anarrays'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   _.avector.minVectors( dst, src1 );
+//   test.identical( dst, [ 1, 2, 1 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   var src2 = [ 11, 0, 13 ];
+//   _.avector.minVectors( dst, src1, src2 );
+//   test.identical( dst, [ 1, 0, 1 ] );
+//
+//   test.case = 'maxVectors vectors'; /* */
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   _.avector.maxVectors( dst, src1 );
+//   test.identical( dst, vec([ 3, 2, 3 ]) );
+//
+//   var dst = vec([ 1, 2, 3 ]);
+//   var src1 = vec([ 3, 2, 1 ]);
+//   var src2 = vec([ 11, 0, 13 ]);
+//   _.avector.maxVectors( dst, src1, src2 );
+//   test.identical( dst, vec([ 11, 2, 13 ]) );
+//
+//   test.case = 'maxVectors anarrays'; /* */
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   _.avector.maxVectors( dst, src1 );
+//   test.identical( dst, [ 3, 2, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var src1 = [ 3, 2, 1 ];
+//   var src2 = [ 11, 0, 13 ];
+//   _.avector.maxVectors( dst, src1, src2 );
+//   test.identical( dst, [ 11, 2, 13 ] );
+//
+//   test.case = 'empty vector'; /* */
+//
+//   function checkEmptyVector( rname )
+//   {
+//
+//     var dst = [];
+//     var got = _.avector[ rname ]( dst, [], [] );
+//     test.is( got === dst );
+//     test.identical( got , [] );
+//
+//     var dst = vec([]);
+//     var got = _.vectorAdapter[ rname ]( dst, vec([]), vec([]) );
+//     test.is( got === dst );
+//     test.identical( got , vec([]) );
+//
+//   }
+//
+//   checkEmptyVector( 'assignVectors' );
+//   checkEmptyVector( 'addVectors' );
+//   checkEmptyVector( 'subVectors' );
+//   checkEmptyVector( 'mulVectors' );
+//   checkEmptyVector( 'subVectors' );
+//   checkEmptyVector( 'minVectors' );
+//   checkEmptyVector( 'maxVectors' );
+//
+//   test.case = 'bad arguments'; /* */
+//
+//   if( !Config.debug )
+//   return;
+//
+//   function shouldThrowErrorOfAnyKind( rname )
+//   {
+//
+//     test.shouldThrowErrorSync( () => _.avector[ rname ]() );
+//     test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ] ) );
+//     test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ] ) );
+//     test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
+//     test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], 1 ) );
+//     test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], undefined ) );
+//     test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], '1' ) );
+//
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]() );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]) ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), 1 ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+//     test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+//
+//   }
+//
+//   shouldThrowErrorOfAnyKind( 'assignVectors' );
+//   shouldThrowErrorOfAnyKind( 'addVectors' );
+//   shouldThrowErrorOfAnyKind( 'subVectors' );
+//   shouldThrowErrorOfAnyKind( 'mulVectors' );
+//   shouldThrowErrorOfAnyKind( 'subVectors' );
+//   shouldThrowErrorOfAnyKind( 'minVectors' );
+//   shouldThrowErrorOfAnyKind( 'maxVectors' );
+//
+// }
+//
+// homogeneousOnlyVectors.timeOut = 15000;
 
 //
 
@@ -7508,7 +7510,7 @@ var Self =
     _isEquivalent,
     _isGreater,
     _isLess,
-    
+
     _isLessAprox,
     _isGreaterAprox,
 
@@ -7649,8 +7651,8 @@ var Self =
     moment,
     momentCentral,
 
-    homogeneousWithScalar,
-    homogeneousOnlyVectors,
+    // homogeneousWithScalar,
+    // homogeneousOnlyVectors,
     heterogeneous,
 
     clamp,

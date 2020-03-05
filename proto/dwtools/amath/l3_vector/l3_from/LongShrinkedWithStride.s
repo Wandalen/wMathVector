@@ -76,7 +76,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 
 //
 
-function fromLongLrangeAndStride( srcLong, offset, length, stride ) /* xxx */
+function fromLongLrangeAndStride( srcLong, offset, length, stride )
 {
 
   if( _.rangeIs( arguments[ 1 ] ) ) /* qqq : make sure it is covered */

@@ -136,7 +136,7 @@ function _operationLogicalReducerAdjust( operation )
 function operationNormalizeInput( operation, routineName )
 {
 
-  let delimeter = [ 'w', 'r', 'v', 's', 'm', 'a', 'n', '?', '*', '+', '!' ];
+  let delimeter = [ 'w', 'r', 'v', 's', 'm', 't', 'a', 'n', '?', '*', '+', '!' ];
   var tokenRoutine =
   {
     'w' : tokenWrite,
@@ -144,6 +144,7 @@ function operationNormalizeInput( operation, routineName )
     'v' : tokenVector,
     's' : tokenScalar,
     'm' : tokenMatrix,
+    't' : tokenSomething,
     'a' : tokenAnything,
     'n' : tokenNull,
     '?' : tokenTimesOptional,
@@ -316,6 +317,19 @@ function operationNormalizeInput( operation, routineName )
 
   /* */
 
+  function tokenSomething( c )
+  {
+    _.assert( c.typeDescriptor.type === null );
+    c.typeDescriptor.type = 't';
+    if( !_.longHas( c.splits, '!' ) )
+    {
+      _.assert( c.typeDescriptor.isVector === null );
+      c.typeDescriptor.isVector = false;
+    }
+  }
+
+  /* */
+
   function tokenAnything( c )
   {
     _.assert( c.typeDescriptor.type === null );
@@ -483,13 +497,13 @@ function operationNormalizeArity( operation )
 
 //
 
-function _routinePostFrom( theRoutine, routineName )
+function _routinePostForm( theRoutine, routineName )
 {
 
   if( _.objectIs( theRoutine ) )
   {
     for( let r in theRoutine )
-    _routinePostFrom( theRoutine[ r ], r );
+    _routinePostForm( theRoutine[ r ], r );
     return;
   }
 
@@ -661,8 +675,8 @@ function _routinePostFrom( theRoutine, routineName )
 function _routinesDeclare()
 {
 
-  this.declareHomogeneousTakingVectorsRoutines();
-  this.declareHomogeneousTakingScalarRoutines();
+  // this.declareHomogeneousTakingVectorsRoutines();
+  // this.declareHomogeneousTakingScalarRoutines();
 
   this.routinesHomogeneousDeclare();
   this.routinesHeterogeneousDeclare();
@@ -1007,7 +1021,7 @@ function _vectorizeSrcs( o, first )
   {
     let src = o.args[ a ];
 
-    // xxx
+    // xxx : ?
     if( !_.routineIs( src ) )
     {
       src = o.args[ a ] = this.vectorAdapter.fromMaybeNumber( src, o.dstContainer.length );
@@ -1416,8 +1430,7 @@ function _routineForOperation_functor( dop )
 {
   let meta = this;
 
-  if( _.routineIs( dop ) )
-  debugger;
+  _.assert( _.mapIs( dop ) );
 
   if( _.routineIs( dop ) )
   dop = _.mapExtend( null, { onAtom : dop } );
@@ -1456,14 +1469,14 @@ function _routineForOperation_functor( dop )
   if( dop.input === null )
   dop.input = onAtom.input;
 
-  this.operationNormalizeInput( dop );
-  this.operationNormalizeArity( dop );
+  meta.operationNormalizeInput( dop );
+  meta.operationNormalizeArity( dop );
 
   /* */
 
   if( dop.onAtom_functor )
   {
-    dop.onAtom_functor.call( this, dop );
+    dop.onAtom_functor.call( meta, dop );
     delete dop.onAtom_functor;
   }
   else
@@ -1475,12 +1488,12 @@ function _routineForOperation_functor( dop )
 
   if( dop.onVectors_functor )
   {
-    dop.onVectors_functor.call( this, dop );
+    dop.onVectors_functor.call( meta, dop );
     delete dop.onVectors_functor;
   }
   else
   {
-    this._onVectorsForRoutine_functor( dop );
+    meta._onVectorsForRoutine_functor( dop );
   }
 
   /* */
@@ -1765,7 +1778,7 @@ function declareHomogeneousTakingVectorsRoutines()
 
     let atomOperation = operations.atomWiseHomogeneous[ _routineName ];
     let routineName = _routineName + ( atomOperation.postfix !== undefined && atomOperation.postfix !== null ? atomOperation.postfix : 'Vectors' );
-    let operation = this.operationSupplement( null, atomOperation );
+    let operation = meta.operationSupplement( null, atomOperation );
 
     _.assert( operation.atomOperation === undefined );
     _.assert( _.strDefined( operation.name ) );
@@ -2198,7 +2211,7 @@ function _routineHomogeneousDeclare( operation, atomOperation, routineName )
   let operations = _.vectorAdapter.operations;
   let routines = _.vectorAdapter._meta.routines;
 
-  operation = this.operationSupplement( operation, atomOperation );
+  operation = meta.operationSupplement( operation, atomOperation );
 
   _.assert( operation.atomOperation === undefined );
   _.assert( _.strDefined( operation.name ) );
@@ -2637,6 +2650,7 @@ __operationReduceToScalar_functor.defaults =
   takingArguments : [ 0, Infinity ],
   takingVectors : [ 0, Infinity ],
   reducing : true,
+
 }
 
 __operationReduceToScalar_functor.atomDefaults =
@@ -2654,6 +2668,7 @@ __operationReduceToScalar_functor.atomDefaults =
 
 function _operationReduceToScalar_functor( o )
 {
+  let meta = this;
   let result = Object.create( null );
   let conditional = o.conditional;
 
@@ -2662,7 +2677,7 @@ function _operationReduceToScalar_functor( o )
   _.assertMapHasOnly( o, _operationReduceToScalar_functor.defaults );
 
   {
-    let operation = this.operationSupplement( null, o );
+    let operation = meta.operationSupplement( null, o );
     operation.conditional = false;
     if( operation.input === undefined || operation.input === null )
     operation.input = '+vr';
@@ -2670,7 +2685,7 @@ function _operationReduceToScalar_functor( o )
   }
 
   {
-    let operation = this.operationSupplement( null, o );
+    let operation = meta.operationSupplement( null, o );
     operation.conditional = true;
     operation.name += 'Conditional';
     if( operation.input === undefined || operation.input === null )
@@ -2698,13 +2713,14 @@ _operationReduceToScalar_functor.defaults =
 
 function declareReducingRoutines()
 {
+  let meta = this;
   let operations = _.vectorAdapter.operations;
   let routines = _.vectorAdapter._meta.routines;
 
   for( let routineName in operations.atomWiseReducing )
   {
     let atomOperation = operations.atomWiseReducing[ routineName ];
-    let operation = this.operationSupplement( null, atomOperation );
+    let operation = meta.operationSupplement( null, atomOperation );
 
     _.assert( operation.atomOperation === undefined );
     _.assert( _.strDefined( operation.name ) );
@@ -2718,7 +2734,7 @@ function declareReducingRoutines()
     if( operation.interruptible === undefined || operation.interruptible === null )
     operation.interruptible = false;
 
-    let r = this._operationReduceToScalar_functor( operation );
+    let r = meta._operationReduceToScalar_functor( operation );
     routines[ r.trivial.operation.name ] = r.trivial;
     routines[ r.conditional.operation.name ] = r.conditional;
 
@@ -2828,24 +2844,20 @@ _operationReduceToExtremal_functor.defaults =
 
 function _declareHomogeneousLogical2NotReducingRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
+  let meta = this;
+
+  operation = meta.operationSupplement( operation, atomOperation );
 
   operation.reducing = 0;
-
-  // operation.takingArguments = [ 2, 3 ];
-  // operation.takingVectors = [ 0, 3 ];
 
   if( !operation.input )
   operation.input = [ 'vw?|n?', 'vr|s', 'vr|s' ];
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
 
-  // debugger;
-  let result = this._routineHomogeneousDeclare( operation, atomOperation, routineName );
+  let result = meta._routineHomogeneousDeclare( operation, atomOperation, routineName );
 
   _.assert( result.operation.zipping === true );
-
-  // return this._declareHomogeneousLogical2Routine( operation, atomOperation, routineName );
 
   return result;
 }
@@ -2854,26 +2866,27 @@ function _declareHomogeneousLogical2NotReducingRoutine( operation, atomOperation
 
 function _declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
+  let meta = this;
+
+  operation = meta.operationSupplement( operation, atomOperation );
   operation.name = routineName;
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
 
-  this._operationLogicalReducerAdjust( operation );
+  meta._operationLogicalReducerAdjust( operation );
 
   if( operation.input )
   {
 
-    this.operationNormalizeInput( operation );
+    meta.operationNormalizeInput( operation );
 
     if( _.longIdentical( operation.input.args[ 0 ].times, [ 0, 1 ] ) )
     {
       operation.input = operation.input.args.slice( 1 ).map( ( arg ) => arg.definition ).join( ' ' );
       delete operation.takingArguments;
       delete operation.takingVectors;
-      this.operationNormalizeInput( operation );
-      this.operationNormalizeArity( operation );
-      // debugger;
+      meta.operationNormalizeInput( operation );
+      meta.operationNormalizeArity( operation );
     }
     else
     {
@@ -2889,7 +2902,7 @@ function _declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, r
 
   _.assert( _.arrayIs( operation.onContinue ) && operation.onContinue.length );
 
-  return this._routineHomogeneousDeclare( operation, atomOperation, routineName );
+  return meta._routineHomogeneousDeclare( operation, atomOperation, routineName );
 
   function operationAdjust( operation )
   {
@@ -2911,12 +2924,14 @@ function _declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, r
 
 function _declareHomogeneousLogical2ReducingAllRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
+  let meta = this;
+
+  operation = meta.operationSupplement( operation, atomOperation );
 
   operation.onContinue.unshift( onContinue );
   operation.onVectorsEnd.unshift( onVectorsEnd );
 
-  return this._declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName );
+  return meta._declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName );
 
   function onContinue( o )
   {
@@ -2936,7 +2951,9 @@ function _declareHomogeneousLogical2ReducingAllRoutine( operation, atomOperation
 
 function _declareHomogeneousLogical2ReducingAnyRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
+  let meta = this;
+
+  operation = meta.operationSupplement( operation, atomOperation );
 
   function onContinue( o )
   {
@@ -2953,14 +2970,16 @@ function _declareHomogeneousLogical2ReducingAnyRoutine( operation, atomOperation
   operation.onContinue.unshift( onContinue );
   operation.onVectorsEnd.unshift( onVectorsEnd );
 
-  return this._declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName );
+  return meta._declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName );
 }
 
 //
 
 function _declareHomogeneousLogical2ReducingNoneRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
+  let meta = this;
+
+  operation = meta.operationSupplement( operation, atomOperation );
 
   _.assert( !operation.onContinue.length );
   _.assert( !operation.onVectorsEnd.length );
@@ -2968,7 +2987,7 @@ function _declareHomogeneousLogical2ReducingNoneRoutine( operation, atomOperatio
   operation.onContinue.unshift( onContinue );
   operation.onVectorsEnd.unshift( onVectorsEnd );
 
-  return this._declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName );
+  return meta._declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName );
 
   function onContinue( o )
   {
@@ -3042,15 +3061,15 @@ function declareHomogeneousLogical2Routines()
 
 }
 
-// declareHomogeneousLogical2Routines();
-
 // --
 // logical1 singler
 // --
 
 function _declareLogic1SinglerRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
+  let meta = this;
+
+  operation = meta.operationSupplement( operation, atomOperation );
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
@@ -3074,19 +3093,21 @@ function _declareLogic1SinglerRoutine( operation, atomOperation, routineName )
 
   _.mapExtend( operation, def );
 
-  return this._routineHomogeneousDeclare( operation, atomOperation, routineName );
+  return meta._routineHomogeneousDeclare( operation, atomOperation, routineName );
 }
 
 //
 
 function _declareLogic1ReducingSinglerRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
+  let meta = this;
+
+  operation = meta.operationSupplement( operation, atomOperation );
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  this._operationLogicalReducerAdjust( operation );
+  meta._operationLogicalReducerAdjust( operation );
 
   let def =
   {
@@ -3098,19 +3119,18 @@ function _declareLogic1ReducingSinglerRoutine( operation, atomOperation, routine
 
   _.mapExtend( operation, def );
 
-  return this._routineHomogeneousDeclare( operation, atomOperation, routineName );
+  return meta._routineHomogeneousDeclare( operation, atomOperation, routineName );
 }
 
 //
 
 function _declareLogic1ReducingSinglerAllRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
-
+  let meta = this;
+  operation = meta.operationSupplement( operation, atomOperation );
   operation.onContinue.unshift( onContinue );
   operation.onVectorsEnd.unshift( onVectorsEnd );
-
-  return this._declareLogic1ReducingSinglerRoutine( operation, atomOperation, routineName );
+  return meta._declareLogic1ReducingSinglerRoutine( operation, atomOperation, routineName );
 
   function onContinue( o )
   {
@@ -3130,12 +3150,14 @@ function _declareLogic1ReducingSinglerAllRoutine( operation, atomOperation, rout
 
 function _declareLogic1ReducingSinglerAnyRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
+  let meta = this;
+
+  operation = meta.operationSupplement( operation, atomOperation );
 
   operation.onContinue.unshift( onContinue );
   operation.onVectorsEnd.unshift( onVectorsEnd );
 
-  return this._declareLogic1ReducingSinglerRoutine( operation, atomOperation, routineName );
+  return meta._declareLogic1ReducingSinglerRoutine( operation, atomOperation, routineName );
 
   function onContinue( o )
   {
@@ -3155,12 +3177,14 @@ function _declareLogic1ReducingSinglerAnyRoutine( operation, atomOperation, rout
 
 function _declareLogic1ReducingSinglerNoneRoutine( operation, atomOperation, routineName )
 {
-  operation = this.operationSupplement( operation, atomOperation );
+  let meta = this;
+
+  operation = meta.operationSupplement( operation, atomOperation );
 
   operation.onContinue.unshift( onContinue );
   operation.onVectorsEnd.unshift( onVectorsEnd );
 
-  return this._declareLogic1ReducingSinglerRoutine( operation, atomOperation, routineName );
+  return meta._declareLogic1ReducingSinglerRoutine( operation, atomOperation, routineName );
 
   function onContinue( o )
   {
@@ -3236,7 +3260,7 @@ let MetaExtension =
   operationNormalizeInput,
   operationNormalizeArity,
 
-  _routinePostFrom,
+  _routinePostForm,
   _routinesDeclare,
 
   _staticRoutinesDeclare,
@@ -3257,7 +3281,6 @@ let MetaExtension =
   _vectorsGenBegin,
   _vectorsGenEnd,
   _onVectorsForRoutine_functor,
-
   _routineForOperation_functor,
 
   // atom-wise, modifying, taking single vector : self
