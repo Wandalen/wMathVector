@@ -2321,8 +2321,6 @@ function routinesHeterogeneousDeclare()
 
 }
 
-// routinesHeterogeneousDeclare();
-
 // --
 // reduce to element
 // --
