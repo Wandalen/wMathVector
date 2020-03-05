@@ -48,7 +48,10 @@ let OperationDescriptor1 = _.blueprint
   generator : null,
   postfix : null,
   atomOperation : null,
+
   input : null,
+  inputWithoutLast : null,
+  inputLast : null,
 
 })
 
@@ -62,9 +65,6 @@ let OperationDescriptor2 = _.blueprint
   extension : _.define.extension( OperationDescriptor1 ),
 
   special : null,
-
-  inputWithoutLast : null,
-  inputLast : null,
 
 })
 

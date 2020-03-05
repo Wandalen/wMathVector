@@ -182,22 +182,22 @@ function copy( src )
 //
 //   return this.vectorAdapter._toStr( self, o );
 // }
-
 //
-
-function equalWith( src2, it )
-{
-  let src1 = this;
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  return this.vectorAdapter.equalAre( src2, src1, it );
-}
-
-equalWith.takingArguments = 2;
-equalWith.takingVectors = 2;
-equalWith.takingVectorsOnly = true;
-equalWith.returningSelf = false;
-equalWith.returningNew = false;
-equalWith.modifying = false;
+// //
+//
+// function equalWith( src2, it )
+// {
+//   let src1 = this;
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   return this.vectorAdapter.equalAre( src2, src1, it );
+// }
+//
+// equalWith.takingArguments = 2;
+// equalWith.takingVectors = 2;
+// equalWith.takingVectorsOnly = true;
+// equalWith.returningSelf = false;
+// equalWith.returningNew = false;
+// equalWith.modifying = false;
 
 //
 
@@ -205,7 +205,7 @@ function identicalWith( src2, it )
 {
   let src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( 0, 'not implemented' );
+  _.assert( 0, 'not tested' );
   return this.vectorAdapter.identicalAre( src2, src1, it );
 }
 
@@ -222,7 +222,7 @@ function equivalentWith( src2, it )
 {
   let src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( 0, 'not implemented' );
+  _.assert( 0, 'not tested' );
   return this.vectorAdapter.equivalentAre( src2, src1, it );
 }
 
@@ -233,30 +233,30 @@ equivalentWith.returningSelf = false;
 equivalentWith.returningNew = false;
 equivalentWith.modifying = false;
 
+// //
 //
-
-function sameWith( src2 )
-{
-  let src1 = this;
-  _.assert( 0, 'not implemented' );
-  debugger; /* xxx */
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  if( src1._vectorBuffer !== src2._vectorBuffer )
-  return false;
-  if( src1.offset !== src2.offset )
-  return false;
-  if( src1.length !== src2.length )
-  return false;
-  debugger;
-  return true;
-}
-
-sameWith.takingArguments = [ 2, 3 ];
-sameWith.takingVectors = 2;
-sameWith.takingVectorsOnly = false;
-sameWith.returningSelf = false;
-sameWith.returningNew = false;
-sameWith.modifying = false;
+// function sameWith( src2 )
+// {
+//   let src1 = this;
+//   _.assert( 0, 'not implemented' );
+//   debugger; /* xxx */
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   if( src1._vectorBuffer !== src2._vectorBuffer )
+//   return false;
+//   if( src1.offset !== src2.offset )
+//   return false;
+//   if( src1.length !== src2.length )
+//   return false;
+//   debugger;
+//   return true;
+// }
+//
+// sameWith.takingArguments = [ 2, 3 ];
+// sameWith.takingVectors = 2;
+// sameWith.takingVectorsOnly = false;
+// sameWith.returningSelf = false;
+// sameWith.returningNew = false;
+// sameWith.modifying = false;
 
 //
 
@@ -302,10 +302,10 @@ let Proto =
 
   // toStr,
 
-  equalWith,
+  // equalWith,
   identicalWith,
   equivalentWith,
-  sameWith,
+  // sameWith,
 
   hasShape,
 
@@ -317,7 +317,7 @@ _.mapExtend( Self.prototype, Proto );
 // declare
 // --
 
-meta._adapterClassRoutinesDeclare();
+meta._adapterClassDeclare();
 
 _.assert( _.routineIs( Self.prototype.mag ) );
 _.assert( _.routineIs( Self.prototype.magSqr ) );

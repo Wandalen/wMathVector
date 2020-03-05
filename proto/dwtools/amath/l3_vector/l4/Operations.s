@@ -201,6 +201,25 @@ dop.onAtom = function isEquivalent( o )
 
 //
 
+// let isEquivalent = dop = Object.create( null );
+//
+// dop.onAtom = function isEquivalent( o )
+// {
+//   _.assert( o.args.length <= 4 );
+//
+//   if( o.args.length === 4 )
+//   o.dstElement = _.numbersAreEquivalent( o.srcContainers[ 0 ].eGet( o.key ), o.srcContainers[ 1 ].eGet( o.key ), o.srcContainers[ 2 ].eGet( o.key ) );
+//   else
+//   o.dstElement = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+// }
+//
+// dop.takingArguments = [ 2, 4 ];
+// dop.takingVectors = [ 0, 3 ];
+// dop.input = '?vw|?n vr|s vr|s ?s';
+// dop.usingExtraSrcs = true;
+
+//
+
 let isNotEquivalent = dop = Object.create( null );
 
 dop.onAtom = function isNotEquivalent( o )
@@ -753,6 +772,7 @@ let logical2 = //
   isIdentical,
   isNotIdentical,
   isEquivalent,
+  // isEquivalent2,
   isNotEquivalent,
   isGreater,
   isGreaterEqual,
@@ -784,6 +804,8 @@ let atomWiseHomogeneous = //
 
 let atomWiseHeterogeneous = //
 {
+
+  // isEquivalent2,
 
   addScaled,
   subScaled,

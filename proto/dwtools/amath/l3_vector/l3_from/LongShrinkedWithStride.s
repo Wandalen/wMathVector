@@ -74,58 +74,24 @@ Self.prototype =
 
 Object.setPrototypeOf( Self.prototype, Parent.prototype );
 
-// //
-//
-// function fromLongLrangeAndStride( srcLong, crange, stride )
-// {
-//
-//   _.assert( arguments.length === 3 );
-//   _.assert( 0 <= stride );
-//   _.assert( _.rangeIs( crange ); )
-//   _.assert( crange[ 0 ] + crange[ 1 ]*stride < srcLong.length );
-//
-//   if( stride === 1 )
-//   return fromLongLrange( srcLong, offset, length );
-//
-//   if( srcLong._vectorBuffer )
-//   {
-//     throw _.err( 'not implemented' );
-//   }
-//
-//   let result = new Self();
-//   result._vectorBuffer = srcLong;
-//   result.length = length;
-//   result.offset = offset;
-//   result.stride = stride;
-//
-//   Object.freeze( result );
-//   return result;
-// }
-//
-// //
-//
-// function fromLongLrangeAndStride_old( srcLong, offset, length, stride )
-// {
-//
-//   _.assert( arguments.length === 4 );
-//   _.assert( 0 <= stride );
-//   _.assert( _.numberIs( offset ) );
-//   _.assert( _.numberIs( length ) );
-//   _.assert( offset+(length-1)*stride < srcLong.length );
-//
-//   return this.fromLongLrangeAndStride( srcLong, [ offset, offset + length - 1 ], stride );
-// }
-
-
 //
 
 function fromLongLrangeAndStride( srcLong, offset, length, stride ) /* xxx */
 {
 
-  _.assert( arguments.length === 4 );
-  // _.assert( 0 <= stride );
-  _.assert( _.numberIs( offset ) );
-  _.assert( _.numberIs( length ) );
+  if( _.rangeIs( arguments[ 1 ] ) ) /* qqq : make sure it is covered */
+  {
+    [ offset, length ] = arguments[ 1 ];
+    stride = arguments[ 2 ];
+    _.assert( arguments.length === 3 );
+  }
+  else
+  {
+    _.assert( arguments.length === 4 );
+  }
+
+  _.assert( offset >= 0 );
+  _.assert( length <= srcLong.length-offset );
   _.assert( offset+(length-1)*stride < srcLong.length );
 
   if( stride === 1 )
@@ -162,7 +128,6 @@ let _routinesFrom =
 {
 
   fromLongLrangeAndStride,
-  // fromLongLrangeAndStride_old,
   fromLongWithStride,
 
 }
