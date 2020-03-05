@@ -1009,8 +1009,8 @@ var Self =
     entityEqual,
     review,
 
-    isEquivalent,
-    allEquivalent,
+    // isEquivalent,
+    // allEquivalent,
 
   },
 
