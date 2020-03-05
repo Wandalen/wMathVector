@@ -3134,8 +3134,12 @@ let _routinesMathematical =
 
   gt : Routines.isGreater,
   ge : Routines.isGreaterEqual,
+  ga : Routines.isGreaterAprox,
+  gea : Routines.isGreaterEqualAprox,
   lt : Routines.isLess,
   le : Routines.isLessEqual,
+  la : Routines.isLessAprox,
+  lea : Routines.isLessEqualAprox,
 
   isIdentical : Routines.isIdentical,
   isNotIdentical : Routines.isNotIdentical,
@@ -3144,9 +3148,12 @@ let _routinesMathematical =
   isNotEquivalent : Routines.isNotEquivalent,
   isGreater : Routines.isGreater,
   isGreaterEqual : Routines.isGreaterEqual,
+  isGreaterEqualAprox : Routines.isGreaterEqualAprox,
+  isGreaterAprox : Routines.isGreaterAprox,
   isLess : Routines.isLess,
   isLessEqual : Routines.isLessEqual,
-
+  isLessEqualAprox : Routines.isLessEqualAprox,
+  isLessAprox : Routines.isLessAprox,
     // logical2 reductor
 
   allIdentical : Routines.allIdentical,
@@ -3156,8 +3163,12 @@ let _routinesMathematical =
   allNotEquivalent : Routines.allNotEquivalent,
   allGreater : Routines.allGreater,
   allGreaterEqual : Routines.allGreaterEqual,
+  allGreaterEqualAprox : Routines.allGreaterEqualAprox,
+  allGreaterAprox : Routines.allGreaterAprox,
   allLess : Routines.allLess,
   allLessEqual : Routines.allLessEqual,
+  allLessEqualAprox : Routines.allLessEqualAprox,
+  allLessAprox : Routines.allLessAprox,
 
   anyIdentical : Routines.anyIdentical,
   anyNotIdentical : Routines.anyNotIdentical,
@@ -3166,8 +3177,12 @@ let _routinesMathematical =
   anyNotEquivalent : Routines.anyNotEquivalent,
   anyGreater : Routines.anyGreater,
   anyGreaterEqual : Routines.anyGreaterEqual,
+  anyGreaterEqualAprox : Routines.anyGreaterEqualAprox,
+  anyGreaterAprox : Routines.anyGreaterAprox,
   anyLess : Routines.anyLess,
   anyLessEqual : Routines.anyLessEqual,
+  anyLessEqualAprox : Routines.anyLessEqualAprox,
+  anyLessAprox : Routines.anyLessAprox,
 
   noneIdentical : Routines.noneIdentical,
   noneNotIdentical : Routines.noneNotIdentical,
@@ -3176,8 +3191,12 @@ let _routinesMathematical =
   noneNotEquivalent : Routines.noneNotEquivalent,
   noneGreater : Routines.noneGreater,
   noneGreaterEqual : Routines.noneGreaterEqual,
+  noneGreaterEqualAprox : Routines.noneGreaterEqualAprox,
+  noneGreaterAprox : Routines.noneGreaterAprox,
   noneLess : Routines.noneLess,
   noneLessEqual : Routines.noneLessEqual,
+  noneLessEqualAprox : Routines.noneLessEqualAprox,
+  noneLessAprox : Routines.noneLessAprox,
 
   dot,
   distance,
