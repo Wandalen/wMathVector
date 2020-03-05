@@ -140,7 +140,7 @@ let _routinesFrom =
 let VectorExtension =
 {
 
-  _routinesFrom : _routinesFrom,
+  _routinesFrom,
 
 }
 

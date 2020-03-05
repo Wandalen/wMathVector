@@ -15,7 +15,6 @@ let Self = function VectorAdapterFromLongShrinked(){};
 
 function _review( crange )
 {
-  debugger;
   let offset = this.offset + crange[ 0 ];
   let length = crange[ 1 ]-crange[ 0 ]+1;
   _.assert( crange[ 0 ] >= 0 );
@@ -94,81 +93,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 * @memberof module:Tools/math/Vector.wTools.vectorAdapter
 */
 
-// // function fromLongLrange( srcLong, offset, length )
-// function fromLongLrange( srcLong, crange )
-// {
-//
-//   // if( offset === undefined )
-//   // offset = 0;
-//   //
-//   // if( length === undefined )
-//   // length = srcLong.length-offset;
-//
-//   // _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.longIs( srcLong ) );
-//   _.assert( _.rangeIs( crange ) );
-//   _.assert( crange[ 1 ]+1 <= srcLong.length );
-//   // _.assert( offset+length <= srcLong.length );
-//
-//   if( srcLong._vectorBuffer )
-//   {
-//
-//     debugger; xxx
-//     return srcLong._review( crange );
-//
-//     // if( srcLong.offset )
-//     // offset = srcLong.offset + offset*( srcLong.stride || 1 );
-//     //
-//     // length = Math.min( length, srcLong.length );
-//     //
-//     // if( srcLong.stride )
-//     // return fromLongLrangeAndStride( srcLong._vectorBuffer, offset, length, srcLong.stride );
-//     //
-//     // srcLong = srcLong._vectorBuffer;
-//
-//   }
-//
-//   let result = new Self();
-//   result._vectorBuffer = srcLong;
-//   result.length = length;
-//   result.offset = offset;
-//
-//   Object.freeze( result );
-//   return result;
-// }
-//
-// //
-//
-// /**
-// * @summary Creates vector from part of source array `srcLong`.
-// * @param {Array} srcLong Source array.
-// * @param {Array} offset Offset to sub array in source array `srcLong`.
-// * @param {Array} length Length of new vector.
-// *
-// * @example
-// * var srcLong = [ 1, 2, 3 ];
-// * var vec = wTools.vector.fromLongLrange( srcLong, 0, 2 );
-// * console.log( 'vec: ', vec );
-// * console.log( 'vec.toStr(): ', vec.toStr() );
-// *
-// * @function fromLongLrange
-// * @memberof module:Tools/math/Vector.wTools.vectorAdapter
-// */
-//
-// function fromLongLrange_old( srcLong, offset, length )
-// {
-//
-//   if( offset === undefined )
-//   offset = 0;
-//
-//   if( length === undefined )
-//   length = srcLong.length-offset;
-//
-//   return this.fromLongLrange( srcLong, [ offset, offset + length - 1 ] );
-// }
-
-function fromLongLrange( srcLong, offset, length )  /* xxx */
+function fromLongLrange( srcLong, offset, length )
 {
 
   if( offset === undefined )
@@ -177,26 +102,16 @@ function fromLongLrange( srcLong, offset, length )  /* xxx */
   if( length === undefined )
   length = srcLong.length-offset;
 
+  if( _.rangeIs( arguments[ 1 ] ) ) /* qqq : make sure it is covered */
+  [ offset, length ] = arguments[ 1 ];
+
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( !!srcLong );
   _.assert( offset+length <= srcLong.length );
 
   if( _.vectorAdapterIs( srcLong ) )
   {
-
-    // if( srcLong.offset )
-    // offset = srcLong.offset + offset*( srcLong.stride || 1 );
-    //
-    // length = Math.min( length, srcLong.length );
-
-    // debugger;
     return srcLong._review([ offset, offset+length-1 ]);
-
-    // if( srcLong.stride )
-    // return this.fromLongLrangeAndStride( srcLong._vectorBuffer, offset, length, srcLong.stride );
-    //
-    // srcLong = srcLong._vectorBuffer;
-
   }
 
   let result = new Self();
@@ -215,8 +130,7 @@ function fromLongLrange( srcLong, offset, length )  /* xxx */
 let _routinesFrom =
 {
 
-  fromLongLrange, /* qqq : cover this and all from* routines */
-  // fromLongLrange_old,
+  fromLongLrange, /* qqq : cover routine _.vectorAdapter.fromLongLrange and all _.vectorAdapter.from* routines. coverage should be perfect */
 
 }
 

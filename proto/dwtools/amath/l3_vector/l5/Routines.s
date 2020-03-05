@@ -2421,10 +2421,20 @@ function _equalAre( it )
   if( !( it.src2.length >= 0 ) )
   return false;
 
-  if( !_.vectorAdapterIs( it.src ) )
-  return false;
-  if( !_.vectorAdapterIs( it.src2 ) )
-  return false;
+  if( !it.strictContainer )
+  {
+    if( !_.vectorAdapterIs( it.src ) && _.longIs( it.src ) )
+    it.src = this.fromLong( it.src );
+    if( !_.vectorAdapterIs( it.src2 ) && _.longIs( it.src2 ) )
+    it.src2 = this.fromLong( it.src2 );
+  }
+  else
+  {
+    if( !_.vectorAdapterIs( it.src ) )
+    return false;
+    if( !_.vectorAdapterIs( it.src2 ) )
+    return false;
+  }
 
   if( it.strictTyping )
   if( it.src._vectorBuffer.constructor !== it.src2._vectorBuffer.constructor )
@@ -3130,6 +3140,7 @@ let _routinesMathematical =
   isIdentical : Routines.isIdentical,
   isNotIdentical : Routines.isNotIdentical,
   isEquivalent : Routines.isEquivalent,
+  // isEquivalent2 : Routines.isEquivalent2,
   isNotEquivalent : Routines.isNotEquivalent,
   isGreater : Routines.isGreater,
   isGreaterEqual : Routines.isGreaterEqual,
@@ -3141,6 +3152,7 @@ let _routinesMathematical =
   allIdentical : Routines.allIdentical,
   allNotIdentical : Routines.allNotIdentical,
   allEquivalent : Routines.allEquivalent,
+  // allEquivalent2 : Routines.allEquivalent2,
   allNotEquivalent : Routines.allNotEquivalent,
   allGreater : Routines.allGreater,
   allGreaterEqual : Routines.allGreaterEqual,
@@ -3150,6 +3162,7 @@ let _routinesMathematical =
   anyIdentical : Routines.anyIdentical,
   anyNotIdentical : Routines.anyNotIdentical,
   anyEquivalent : Routines.anyEquivalent,
+  // anyEquivalent2 : Routines.anyEquivalent2,
   anyNotEquivalent : Routines.anyNotEquivalent,
   anyGreater : Routines.anyGreater,
   anyGreaterEqual : Routines.anyGreaterEqual,
@@ -3159,6 +3172,7 @@ let _routinesMathematical =
   noneIdentical : Routines.noneIdentical,
   noneNotIdentical : Routines.noneNotIdentical,
   noneEquivalent : Routines.noneEquivalent,
+  // noneEquivalent2 : Routines.noneEquivalent2,
   noneNotEquivalent : Routines.noneNotEquivalent,
   noneGreater : Routines.noneGreater,
   noneGreaterEqual : Routines.noneGreaterEqual,

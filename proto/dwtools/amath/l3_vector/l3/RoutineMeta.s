@@ -475,6 +475,9 @@ function operationNormalizeArity( operation )
   if( operation.takingVectors[ 0 ] === operation.takingVectors[ 1 ] && operation.takingVectors[ 1 ] === operation.takingArguments[ 1 ] )
   operation.takingVectorsOnly = true;
 
+  operation.inputWithoutLast = operation.input.args.slice( 0, operation.input.args.length-1 );
+  operation.inputLast = operation.input.args[ operation.input.args.length-1 ];
+
   return operation;
 }
 
@@ -631,8 +634,8 @@ function _routinePostFrom( theRoutine, routineName )
     _.assert( op.takingArguments[ 0 ] >= op.takingVectors[ 0 ] );
     _.assert( op.takingArguments[ 1 ] >= op.takingVectors[ 1 ] );
     _.assert( !( op.returningNumber && op.returningBoolean ), 'Cant return both' );
-
     _.assert( _.mapIs( op.input ), () => `Routine::${routineName} does not have op.input` );
+
     let good = true;
     good = good && op.input.takingArguments[ 0 ] === op.takingArguments[ 0 ];
     good = good && op.input.takingArguments[ 1 ] === op.takingArguments[ 1 ];
@@ -824,10 +827,46 @@ function _methodsDeclare()
 
 //
 
-function _adapterClassRoutinesDeclare()
+function _containerTypeDeclare()
+{
+  let type = Object.create( null );
+
+  type.name = 'VectorAdapter';
+  type._elementGet = function _elementGet( container, key )
+  {
+    return container.eGet( key );
+  }
+  type._elementSet = function _elementSet( container, key, val )
+  {
+    return container.eSet( key, val );
+  }
+  type._is = function _is( src )
+  {
+    return _.vectorAdapterIs( src );
+  }
+  type._while = function _while( container, onEach )
+  {
+    let l = container.length;
+    _.assert( _.routineIs( container.eGet ) );
+    for( let i = 0 ; i < l ; i++ )
+    {
+      let r = onEach( container.eGet( i ), i, container );
+      if( !r )
+      return false;
+    }
+    return true;
+  }
+
+  return _.container.typeDeclare( type );
+}
+
+//
+
+function _adapterClassDeclare()
 {
   this._methodsDeclare();
   this._staticRoutinesDeclare();
+  this._containerTypeDeclare();
 }
 
 //
@@ -914,6 +953,8 @@ function _onAtomForRoutine_functor( dop )
   // else if( _.longIdentical( dop.input , [ 'vw', 's' ] ) || _.longIdentical( dop.input , [ 'vw|s', 's' ] ) )
   else if( dop.input.definition === 'vw s' || dop.input.definition === 'vw|s s' )
   {
+
+    /* xxx : move out subroutines */
 
     // let allowingDstScalar = _.strHasAny( dop.inputWithoutLast[ 0 ] , [ '|s', 's|' ] );
     // debugger;
@@ -1257,62 +1298,8 @@ function _onVectorsForRoutine_functor( dop )
   if( dop.input.definition === 'vw +vr' || dop.input.definition === 'vw *vr' )
   {
 
-    onVectorsBegin = function onVectorsBegin( dst, src )
-    {
-
-      dst = arguments[ 0 ];
-
-      let o = Object.create( null );
-      o.key = -1;
-      o.args = arguments;
-      o.result = null;
-      o.dstElement = null;
-      o.dstContainer = dst;
-      o.srcElement = null;
-      o.srcContainer = dst;
-      o.srcContainerIndex = -1;
-      o.srcContainers = _.longSlice( arguments, 1, arguments.length );
-      Object.preventExtensions( o );
-
-      if( onVectorsBegin0 )
-      onVectorsBegin0( o );
-
-      return o;
-    }
-
-    onVectors = function onVectors()
-    {
-
-      let dst = arguments[ 0 ];
-
-      let o = onVectorsBegin.apply( this, arguments );
-
-      /* */
-
-      if( Config.debug )
-      {
-        _.assert( _.vectorAdapterIs( dst ) );
-        _.assert( arguments.length >= 1, 'Expects at least one argument' );
-        _.assert( takingArguments[ 0 ] <= arguments.length && arguments.length <= takingArguments[ 1 ], 'Expects ', takingArguments, ' arguments' );
-        for( let a = 0 ; a < o.srcContainers.length ; a++ )
-        {
-          let src = o.srcContainers[ a ];
-          _.assert( _.vectorAdapterIs( src ) );
-          _.assert( dst.length === src.length, 'src and dst should have same length' );
-        }
-      }
-
-      /* */
-
-      for( let k = 0 ; k < dst.length ; k++ )
-      {
-        o.key = k;
-        o.dstElement = dst.eGet( k );
-        onAtom0.call( this, o );
-      }
-
-      return dst;
-    }
+    onVectorsBegin = vonlyVectorsBegin;
+    onVectors = vonlyVectors;
 
     onVectors.own = { onAtom : onAtom0 };
     onVectors.operation = dop;
@@ -1340,25 +1327,126 @@ function _onVectorsForRoutine_functor( dop )
     // let allowingDstScalar = _.strHasAny( dop.input.args[ 0 ].definition , [ '|s', 's|' ] );
     let allowingDstScalar = _.strHasAny( dop.input.args[ 0 ].definition , 's' );
 
-    onVectorsBegin = function onVectorsBegin( dst, src )
+    onVectorsBegin = vsVectorsBegin;
+    onVectors = vsVectors_functor( allowingDstScalar );
+
+    onVectors.own = { onAtom : onAtom0 };
+    onVectors.operation = dop;
+    dop.takingArguments = [ 2, 2 ];
+    if( !dop.takingVectors )
+    dop.takingVectors = [ 1, 1 ];
+    else
+    dop.takingVectors[ 1 ] = 1;
+    dop.takingVectorsOnly = false;
+    dop.homogeneous = true;
+    dop.atomWise = true;
+    dop.returningSelf = true;
+    dop.returningNew = false;
+    dop.returningLong = false;
+    dop.returningNumber = true;
+    dop.returningPrimitive = true;
+    dop.modifying = true;
+    // dop.operation = dop; /* yyy */
+
+    _.assert( takingArguments[ 0 ] === 2 && takingArguments[ 1 ] === 2 );
+    _.assert( dop.takingVectorsOnly === false );
+
+  }
+  else _.assert( 0, 'unknown kind of input', dop.input );
+
+  /* */
+
+  meta._vectorsGenEnd( dop, onVectors, onVectorsBegin );
+
+  return onVectors;
+
+  /* */
+
+  function vonlyVectorsBegin( dst, src )
+  {
+
+    dst = arguments[ 0 ];
+
+    let o = Object.create( null );
+    o.key = -1;
+    o.args = arguments;
+    o.result = null;
+    o.dstElement = null;
+    o.dstContainer = dst;
+    o.srcElement = null;
+    o.srcContainer = dst;
+    o.srcContainerIndex = -1;
+    o.srcContainers = _.longSlice( arguments, 1, arguments.length );
+    Object.preventExtensions( o );
+
+    if( onVectorsBegin0 )
+    onVectorsBegin0( o );
+
+    return o;
+  }
+
+  /* */
+
+  function vonlyVectors()
+  {
+
+    let dst = arguments[ 0 ];
+
+    let o = onVectorsBegin.apply( this, arguments );
+
+    /* */
+
+    if( Config.debug )
     {
-
-      let o = Object.create( null );
-      o.key = -1;
-      o.args = arguments;
-      o.dstContainer = dst;
-      o.srcElement = src;
-      o.dstElement = null;
-      o.result = null;
-      Object.preventExtensions( o );
-
-      if( onVectorsBegin0 )
-      onVectorsBegin0( o );
-
-      return o;
+      _.assert( _.vectorAdapterIs( dst ) );
+      _.assert( arguments.length >= 1, 'Expects at least one argument' );
+      _.assert( takingArguments[ 0 ] <= arguments.length && arguments.length <= takingArguments[ 1 ], 'Expects ', takingArguments, ' arguments' );
+      for( let a = 0 ; a < o.srcContainers.length ; a++ )
+      {
+        let src = o.srcContainers[ a ];
+        _.assert( _.vectorAdapterIs( src ) );
+        _.assert( dst.length === src.length, 'src and dst should have same length' );
+      }
     }
 
-    onVectors = function onVectors( dst, src )
+    /* */
+
+    for( let k = 0 ; k < dst.length ; k++ )
+    {
+      o.key = k;
+      o.dstElement = dst.eGet( k );
+      onAtom0.call( this, o );
+    }
+
+    return dst;
+  }
+
+  /* */
+
+  function vsVectorsBegin( dst, src )
+  {
+
+    let o = Object.create( null );
+    o.key = -1;
+    o.args = arguments;
+    o.dstContainer = dst;
+    o.srcElement = src;
+    o.dstElement = null;
+    o.result = null;
+    Object.preventExtensions( o );
+
+    if( onVectorsBegin0 )
+    onVectorsBegin0( o );
+
+    return o;
+  }
+
+  /* */
+
+  function vsVectors_functor( allowingDstScalar )
+  {
+
+    return function vsVectors( dst, src )
     {
 
       if( Config.debug )
@@ -1393,35 +1481,10 @@ function _onVectorsForRoutine_functor( dop )
       return dst;
     }
 
-    onVectors.own = { onAtom : onAtom0 };
-    onVectors.operation = dop;
-    dop.takingArguments = [ 2, 2 ];
-    if( !dop.takingVectors )
-    dop.takingVectors = [ 1, 1 ];
-    else
-    dop.takingVectors[ 1 ] = 1;
-    dop.takingVectorsOnly = false;
-    dop.homogeneous = true;
-    dop.atomWise = true;
-    dop.returningSelf = true;
-    dop.returningNew = false;
-    dop.returningLong = false;
-    dop.returningNumber = true;
-    dop.returningPrimitive = true;
-    dop.modifying = true;
-    // dop.operation = dop; /* yyy */
-
-    _.assert( takingArguments[ 0 ] === 2 && takingArguments[ 1 ] === 2 );
-    _.assert( dop.takingVectorsOnly === false );
-
   }
-  else _.assert( 0, 'unknown kind of input', dop.input );
 
   /* */
 
-  _vectorsGenEnd( dop, onVectors, onVectorsBegin );
-
-  return onVectors;
 }
 
 //
@@ -1468,7 +1531,7 @@ function _routineForOperation_functor( dop )
   _.assert( _.routineIs( onAtom ) );
   _.assert( dop.onAtom.length === 1 );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.arrayIs( dop.input ) || _.strIs( dop.input ) );
+  _.assert( _.arrayIs( dop.input ) || _.strIs( dop.input ) || _.mapIs( dop.input ) );
   _.assert( _.strDefined( dop.name ) );
   _.assert( _.boolIs( dop.homogeneous ) || _.boolIs( dop.homogeneous ) );
 
@@ -1477,9 +1540,6 @@ function _routineForOperation_functor( dop )
   _.assert( dop.handleVectors === undefined );
   _.assert( dop.handleBegin === undefined );
   _.assert( dop.handleEnd === undefined );
-
-  // if( dop.name === 'addVectors' )
-  // debugger;
 
   /* */
 
@@ -1492,8 +1552,8 @@ function _routineForOperation_functor( dop )
   this.operationNormalizeInput( dop );
   this.operationNormalizeArity( dop );
 
-  dop.inputWithoutLast = dop.input.args.slice( 0, dop.input.args.length-1 );
-  dop.inputLast = dop.input.args[ dop.input.args.length-1 ];
+  // dop.inputWithoutLast = dop.input.args.slice( 0, dop.input.args.length-1 );
+  // dop.inputLast = dop.input.args[ dop.input.args.length-1 ];
 
   /* */
 
@@ -1506,6 +1566,8 @@ function _routineForOperation_functor( dop )
   {
     _onAtomForRoutine_functor( dop );
   }
+
+  /* */
 
   if( dop.onVectors_functor )
   {
@@ -2043,47 +2105,8 @@ function _onVectorsAtomwise_functor( dop )
     // let allowingDstScalar = _.strHasAny( dop.input.args[ 0 ].definition , [ '|s', 's|' ] );
     let allowingDstScalar = _.strHasAny( dop.input.args[ 0 ].definition , 's' );
 
-    onVectorsBegin = function onVectorsBegin( dst )
-    {
-
-      let o = Object.create( null );
-      o.key = -1;
-      o.args = _.longSlice( arguments );;
-      o.dstElement = null
-      o.dstContainer = dst;
-      o.srcElements = [];
-      o.srcContainers = null;
-      o.unwrapping = 0;
-      o.result = null;
-      Object.preventExtensions( o );
-
-      if( onVectorsBegin0 )
-      onVectorsBegin0( o );
-
-      return o;
-    }
-
-    onVectors = function onVectors( dst )
-    {
-      let o = onVectorsBegin.apply( this, arguments );
-      meta._vectorsCallBegin( o, dop );
-
-      /* */
-
-      _.assert( takingArguments[ 0 ]-1 <= o.srcContainers.length && o.srcContainers.length <= takingArguments[ 1 ] );
-
-      dst = o.dstContainer;
-      for( let k = 0 ; k < dst.length ; k++ )
-      {
-        o.key = k;
-        o.dstElement = dst.eGet( k );
-        onAtom0.call( this, o );
-      }
-
-      /* */
-
-      return _vectorsCallEnd( o, dop );
-    }
+    onVectorsBegin = heterogenousVectorsBegin;
+    onVectors = heterogenousVectors;
 
     dop.takingArguments = takingArguments;
     if( _.nothingIs( dop.takingVectors ) )
@@ -2107,66 +2130,14 @@ function _onVectorsAtomwise_functor( dop )
   else if( dop.homogeneous === true )
   {
 
-    onVectorsBegin = function onVectorsBegin( dst )
-    {
+    // debugger; /* xxx : move out routines */
 
-      let o = Object.create( null );
-      o.dstElement = null;
-      o.dstContainer = dst;
-      o.srcContainers = null;
-      o.srcElement = null;
-      o.key = -1;
-      o.args = _.longSlice( arguments, 0, arguments.length );
-      o.unwrapping = 0;
-      o.onEvaluate = arguments[ 1 ]; /* yyy */
-      o.result = null;
-      Object.preventExtensions( o );
-
-      if( onVectorsBegin0 )
-      debugger;
-
-      if( onVectorsBegin0 )
-      onVectorsBegin0( o );
-
-      return o;
-    }
+    onVectorsBegin = homogenousVectorsBegin;
 
     if( dop.interruptible )
-    onVectors = function onVectors( dst )
-    {
-      debugger; //
-      let o = onVectorsBegin.apply( this, arguments );
-
-      meta._vectorsCallBegin( o, dop );
-
-      dst = o.dstContainer;
-      for( let k = 0 ; k < dst.length ; k++ )
-      {
-        o.key = k;
-        let r = onAtom0.call( this, o );
-        if( r === false )
-        break;
-      }
-
-      return _vectorsCallEnd( o, dop );
-    }
+    onVectors = homogenousInterruptibleVectors;
     else
-    onVectors = function onVectors()
-    {
-      let dst = arguments[ 0 ];
-      let o = onVectorsBegin.apply( this, arguments );
-
-      meta._vectorsCallBegin( o, dop );
-
-      dst = o.dstContainer;
-      for( let k = 0 ; k < dst.length ; k++ )
-      {
-        o.key = k;
-        onAtom0.call( this, o );
-      }
-
-      return _vectorsCallEnd( o, dop );
-    }
+    onVectors = homogenousUninterruptibleVectors;
 
     /* */
 
@@ -2193,9 +2164,123 @@ function _onVectorsAtomwise_functor( dop )
 
   /* */
 
-  _vectorsGenEnd( dop, onVectors, onVectorsBegin );
+  meta._vectorsGenEnd( dop, onVectors, onVectorsBegin );
 
   return onVectors;
+
+  /* */
+
+  function heterogenousVectorsBegin( dst )
+  {
+
+    let o = Object.create( null );
+    o.key = -1;
+    o.args = _.longSlice( arguments );;
+    o.dstElement = null
+    o.dstContainer = dst;
+    o.srcElements = [];
+    o.srcContainers = null;
+    o.unwrapping = 0;
+    o.result = null;
+    Object.preventExtensions( o );
+
+    if( onVectorsBegin0 )
+    onVectorsBegin0( o );
+
+    return o;
+  }
+
+  /* */
+
+  function heterogenousVectors( dst )
+  {
+    let o = onVectorsBegin.apply( this, arguments );
+    meta._vectorsCallBegin( o, dop );
+
+    /* */
+
+    _.assert( takingArguments[ 0 ]-1 <= o.srcContainers.length && o.srcContainers.length <= takingArguments[ 1 ] );
+
+    dst = o.dstContainer;
+    for( let k = 0 ; k < dst.length ; k++ )
+    {
+      o.key = k;
+      o.dstElement = dst.eGet( k );
+      onAtom0.call( this, o );
+    }
+
+    /* */
+
+    return _vectorsCallEnd( o, dop );
+  }
+
+  /* */
+
+  function homogenousVectorsBegin( dst )
+  {
+
+    let o = Object.create( null );
+    o.dstElement = null;
+    o.dstContainer = dst;
+    o.srcContainers = null;
+    o.srcElement = null;
+    o.key = -1;
+    o.args = _.longSlice( arguments, 0, arguments.length );
+    o.unwrapping = 0;
+    // o.onEvaluate = arguments[ 1 ]; /* yyy */
+    o.result = null;
+    Object.preventExtensions( o );
+
+    if( onVectorsBegin0 )
+    debugger;
+
+    if( onVectorsBegin0 )
+    onVectorsBegin0( o );
+
+    return o;
+  }
+
+  /* */
+
+  function homogenousInterruptibleVectors( dst )
+  {
+    let o = onVectorsBegin.apply( this, arguments );
+
+    meta._vectorsCallBegin( o, dop );
+
+    dst = o.dstContainer;
+    for( let k = 0 ; k < dst.length ; k++ )
+    {
+      o.key = k;
+      let r = onAtom0.call( this, o );
+      if( r === false )
+      break;
+    }
+
+    return _vectorsCallEnd( o, dop );
+  }
+
+  /* */
+
+  function homogenousUninterruptibleVectors()
+  {
+    let dst = arguments[ 0 ];
+    let o = onVectorsBegin.apply( this, arguments );
+
+    meta._vectorsCallBegin( o, dop );
+
+    dst = o.dstContainer;
+    for( let k = 0 ; k < dst.length ; k++ )
+    {
+      o.key = k;
+      onAtom0.call( this, o );
+    }
+
+    return _vectorsCallEnd( o, dop );
+  }
+
+  /* */
+
 }
 
 // --
@@ -2208,9 +2293,6 @@ function _routineHomogeneousDeclare( operation, atomOperation, routineName )
   let routines = _.vectorAdapter._meta.routines;
 
   operation = this.operationSupplement( operation, atomOperation );
-
-  // if( atomOperation.postfix )
-  // debugger;
 
   _.assert( operation.atomOperation === undefined );
   _.assert( _.strDefined( operation.name ) );
@@ -2415,8 +2497,8 @@ function __operationReduceToScalar_functor( operation )
   let takingArguments = operation.takingArguments;
   let takingVectors = operation.takingVectors;
 
-  if( _.strHas( operation.name, 'mag' ) || _.strHas( operation.name, 'Mag' ) )
-  debugger;
+  // if( _.strHas( operation.name, 'mag' ) || _.strHas( operation.name, 'Mag' ) )
+  // debugger;
 
   // if( operation.conditional ) /* yyy */
   // takingArguments[ 1 ] += 1;
@@ -2893,24 +2975,56 @@ function _declareHomogeneousLogical2NotReducingRoutine( operation, atomOperation
 function _declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName )
 {
   operation = this.operationSupplement( operation, atomOperation );
+  operation.name = routineName;
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
 
   this._operationLogicalReducerAdjust( operation );
 
-  let def =
+  if( operation.input )
   {
-    takingArguments : [ 2, 2 ],
-    takingVectors : [ 0, 2 ],
-    input : 'vr|s vr|s',
-    // input : [ 'vw?', 'vr', 'vr' ],
-  }
 
-  _.mapExtend( operation, def );
+    this.operationNormalizeInput( operation );
+
+    if( _.longIdentical( operation.input.args[ 0 ].times, [ 0, 1 ] ) )
+    {
+      operation.input = operation.input.args.slice( 1 ).map( ( arg ) => arg.definition ).join( ' ' );
+      delete operation.takingArguments;
+      delete operation.takingVectors;
+      this.operationNormalizeInput( operation );
+      this.operationNormalizeArity( operation );
+      // debugger;
+    }
+    else
+    {
+      debugger;
+      operationAdjust( operation );
+    }
+
+  }
+  else
+  {
+    operationAdjust( operation );
+  }
 
   _.assert( _.arrayIs( operation.onContinue ) && operation.onContinue.length );
 
   return this._routineHomogeneousDeclare( operation, atomOperation, routineName );
+
+  function operationAdjust( operation )
+  {
+
+    let def =
+    {
+      takingArguments : [ 2, 2 ],
+      takingVectors : [ 0, 2 ],
+      input : 'vr|s vr|s',
+    }
+
+    _.mapExtend( operation, def );
+
+  }
+
 }
 
 //
@@ -2918,6 +3032,11 @@ function _declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, r
 function _declareHomogeneousLogical2ReducingAllRoutine( operation, atomOperation, routineName )
 {
   operation = this.operationSupplement( operation, atomOperation );
+
+  operation.onContinue.unshift( onContinue );
+  operation.onVectorsEnd.unshift( onVectorsEnd );
+
+  return this._declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName );
 
   function onContinue( o )
   {
@@ -2931,10 +3050,6 @@ function _declareHomogeneousLogical2ReducingAllRoutine( operation, atomOperation
     o.result = true;
   }
 
-  operation.onContinue.unshift( onContinue );
-  operation.onVectorsEnd.unshift( onVectorsEnd );
-
-  return this._declareHomogeneousLogical2ReducingRoutine( operation, atomOperation, routineName );
 }
 
 //
@@ -3253,7 +3368,8 @@ let MetaExtension =
   // methodTwoArgumentsDeclare,
   _methodWrapDeclare,
   _methodsDeclare,
-  _adapterClassRoutinesDeclare,
+  _containerTypeDeclare,
+  _adapterClassDeclare,
 
   _onAtomGenBegin,
   _onAtomGenEnd,
