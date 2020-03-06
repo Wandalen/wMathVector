@@ -571,7 +571,7 @@ function _vectorsCallBegin( o, dop )
   if( Config.debug )
   {
     _.assert(  _.vectorAdapterIs( o.dstContainer ) || o.dstContainer === null || _.numberIs( o.dstContainer ) || _.boolIs( o.dstContainer ) );
-    _.assert( o.dstContainer !== null || o.args.length > dop.takingArguments[ 0 ] );
+    // _.assert( o.dstContainer !== null || o.args.length > dop.takingArguments[ 0 ] );
     if( dop.usingExtraSrcs )
     _.assert( dop.takingArguments[ 0 ] < dop.takingArguments[ 1 ] );
     else
