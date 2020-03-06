@@ -1364,10 +1364,10 @@ function quaternionApply2( dst, q )
   let qvector = this.fromLongLrange( dst, 0, 3 );
 
   let cross1 = this.cross( qvector, dst );
-  this.mulScalar( cross1, 2 );
+  this.mul( cross1, 2 );
 
   let cross2 = this.cross( qvector, cross1 );
-  this.mulScalar( cross1, q.eGet( 3 ) );
+  this.mul( cross1, q.eGet( 3 ) );
 
   dst.eSet( 0, dst.eSet( 0 ) + cross1.eGet( 0 ) + cross2.eGet( 0 ) );
   dst.eSet( 1, dst.eGet( 1 ) + cross1.eGet( 1 ) + cross2.eGet( 1 ) );
@@ -1421,7 +1421,7 @@ function reflect( v, normal )
   debugger;
   throw _.err( 'not tested' );
 
-  let result = this.mulScalar( normal.clone() , 2*this.dot( v, normal ) );
+  let result = this.mul( normal.clone() , 2*this.dot( v, normal ) );
 
   return result;
 }

@@ -564,7 +564,6 @@ dop.onAtom = function moment( o )
 
 dop.onAtomsBegin = function( o )
 {
-  // o.result = dop = Object.create( null );
   o.result = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
@@ -579,8 +578,6 @@ dop.onAtomsEnd = function( o )
 }
 
 dop.input = 'vr s';
-// dop.takingArguments = 2;
-// dop.takingVectors = 1;
 
 //
 
@@ -600,7 +597,6 @@ dop.onAtomsBegin = function( o )
   let mean = o.args[ 2 ];
   _.assert( _.numberIs( degree ) )
   _.assert( _.numberIs( mean ) )
-  // o.result = dop = Object.create( null );
   o.result = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
@@ -615,9 +611,6 @@ dop.onAtomsEnd = function( o )
 }
 
 dop.input = 'vr s s';
-// dop.input = [ 'vr', 's', 's' ];
-// dop.takingArguments = [ 3, 3 ];
-// dop.takingVectors = 1;
 
 //
 
@@ -631,7 +624,6 @@ dop.onAtom = function reduceToMean( o )
 
 dop.onAtomsBegin = function( o )
 {
-  // o.result = dop = Object.create( null );
   o.result = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
@@ -639,10 +631,7 @@ dop.onAtomsBegin = function( o )
 
 dop.onAtomsEnd = function( o )
 {
-  // if( o.result.nelement )
   o.result = o.result.total / o.result.nelement;
-  // else
-  // o.result = 0;
 }
 
 //

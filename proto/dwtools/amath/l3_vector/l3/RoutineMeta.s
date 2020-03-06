@@ -1365,8 +1365,9 @@ function declareHomogeneousTakingScalarRoutines()
 
   }
 
-  _.assert( _.routineIs( routines.addScalar ) );
-  _.assert( routines.addScalar.operation.onAtom.length >= 2 );
+  debugger;
+  // _.assert( _.routineIs( routines.addScalar ) ); /* xxx */
+  // _.assert( routines.addScalar.operation.onAtom.length >= 2 );
 
 }
 
