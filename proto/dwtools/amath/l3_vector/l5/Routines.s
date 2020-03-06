@@ -3002,6 +3002,7 @@ let _routinesMathematical =
   divScaled : Routines.divScaled,
 
   clamp : Routines.clamp,
+  randomInRange : Routines.randomInRange,
   mix : Routines.mix,
 
   // scalarReductor

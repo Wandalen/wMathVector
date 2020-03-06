@@ -7166,6 +7166,201 @@ clamp.timeOut = 15000;
 
 //
 
+function randomInRange( test )
+{
+  test.case = '2 scalar argument'; /* */
+  
+  var src1 = 0;
+  var src2 = 1;
+  var got = _.avector.randomInRange( src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
+  
+  test.case = 'null + 2 scalar argument'; /* */
+  
+  var src1 = 0;
+  var src2 = 1;
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
+  
+  test.case = '2 vectors argument'; /* */
+
+  var src1 = [ 0 ];
+  var src2 = [ 1 ];
+  var got = _.avector.randomInRange( src1, src2 );
+  test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 === got )
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = vec( [ 1 ] );
+  var got = _.vectorAdapter.randomInRange( src1, src2 );
+  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 === got )
+  
+  test.case = 'null + 2 vectors argument'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = [ 1 ];
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 !== got )
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = vec( [ 1 ] );
+  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 !== got )
+  
+  test.case = 'vector and scalar'; /* */
+
+  var src1 = [ 0 ];
+  var src2 = 1;
+  var got = _.avector.randomInRange( src1, src2 );
+  test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
+  test.is( src1 === got )
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = 1;
+  var got = _.vectorAdapter.randomInRange( src1, src2 );
+  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
+  test.is( src1 === got )
+  
+  test.case = 'scalar and vector'; /* */
+  
+  var src1 = 0;
+  var src2 = [ 1 ];
+  var got = _.avector.randomInRange( src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ]) );
+  test.is( _.numberIs( src1 ) )
+  
+  var src1 = 0;
+  var src2 = vec( [ 1 ] );
+  var got = _.vectorAdapter.randomInRange( src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( _.numberIs( src1 ) )
+  
+  test.case = 'null + vector and scalar'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = 1;
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
+  test.is( src1 !== got )
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = 1;
+  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
+  test.is( src1 !== got )
+  
+  test.case = 'null + scalar and vector'; /* */
+  
+  var src1 = 0;
+  var src2 = [ 1 ];
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ] ) );
+  test.is( _.numberIs( src1 ) )
+  
+  var src1 = 0;
+  var src2 = vec( [ 1 ] );
+  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 )) );
+  test.is( _.numberIs( src1 ) )
+  
+  test.case = 'scalar scalar scalar'; /* */
+  
+  var src1 = 0;
+  var src2 = 2;
+  var src3 = 3;
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
+  test.identical( src1, 0 );
+  
+  var src1 = 0;
+  var src2 = 2;
+  var src3 = 3;
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
+  test.identical( src1, 0 );
+  
+  test.case = 'vector scalar scalar'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = 2;
+  var src3 = 3;
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3 ], got[ 0 ] ) );
+  test.is( src1 === got );
+  
+  var src1 = vec([ 0 ]);
+  var src2 = 2;
+  var src3 = 3;
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3 ], got.eGet( 0 ) ) );
+  test.is( src1 === got );
+  
+  test.case = 'vector scalar vector'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = 2;
+  var src3 = [ 3 ];
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 === got );
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = 2;
+  var src3 = vec( [ 3 ] );
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 === got );
+  
+  test.case = 'vector vector vector'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = [ 2 ];
+  var src3 = [ 3 ];
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2[ 0 ], src3[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 === got );
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = vec( [ 2 ] );
+  var src3 = vec( [ 3 ] );
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2.eGet( 0 ), src3.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 === got );
+  
+  
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+  
+  test.shouldThrowErrorSync( () => _.avector.randomInRange() );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( null, [ 1 ], [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], '1' ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange() );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( null, vec([ 1 ]), vec([ 1 ]), vec([ 1 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+  
+}
+
+randomInRange.timeOut = 15000;
+
+//
+
 function mix( test )
 {
 
@@ -7741,6 +7936,7 @@ var Self =
     heterogeneous,
 
     clamp,
+    randomInRange,
     mix,
 
     swap,
