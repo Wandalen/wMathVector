@@ -484,6 +484,23 @@ dop.usingDstAsSrc = true;
 
 //
 
+let randomInRange = dop = Object.create( null );
+
+dop.onAtom = function randomInRange( o )
+{ 
+  o.dstElement = o.srcElements[ 0 ] + Math.random()*( o.srcElements[ 1 ]-o.srcElements[ 0 ] );
+}
+
+dop.input = 'vw|n vr|s vr|s';
+dop.takingArguments = [ 3, 3 ];
+dop.takingVectors = [ 1, 3 ];
+dop.returningNumber = true;
+dop.returningPrimitive = true;
+dop.returningNew = true;
+dop.usingDstAsSrc = true;
+
+//
+
 let mix = dop = Object.create( null );
 
 dop.onAtom = function mix( o )
@@ -787,6 +804,7 @@ let atomWiseHeterogeneous = //
   divScaled,
 
   clamp,
+  randomInRange,
   mix,
 
 }
