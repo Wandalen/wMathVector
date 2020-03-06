@@ -7015,6 +7015,91 @@ function clamp( test )
   var got = _.vectorAdapter.clamp( dst, src1, src2 );
   test.identical( got, expected );
   test.is( got !== dst );
+  
+  test.case = '3 arguments, all scalar'; /* */
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  test.case = 'null + 3 arguments, all scalar'; /* */
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  test.case = '3 arguments, 2 scalar 1 vector'; /* */
+  var expected = [ 16 ];
+  var dst = [ 15 ];
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  
+  var expected = vec( [ 16 ] );
+  var dst = vec( [ 15 ] );
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  
+  test.case = 'null + 3 arguments, 2 scalar 1 vector'; /* */
+  var expected = [ 16 ];
+  var dst = [ 15 ];
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  var expected = vec( [ 16 ] );
+  var dst = vec( [ 15 ] );
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  test.case = 'null + 3 scalar arguments;' /* */
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
 
   test.case = 'empty vectors, 3 arguments'; /* */
 
