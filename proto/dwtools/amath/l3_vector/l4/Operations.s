@@ -491,9 +491,9 @@ dop.onAtom = function randomInRange( o )
   o.dstElement = o.srcElements[ 0 ] + Math.random()*( o.srcElements[ 1 ]-o.srcElements[ 0 ] );
 }
 
-dop.input = [ '?vw|?n', '2*vr|2*s' ];
-dop.takingArguments = [ 2, 3 ];
-dop.takingVectors = [ 0, 3 ];
+dop.input = 'vw|n vr|s vr|s';
+dop.takingArguments = [ 3, 3 ];
+dop.takingVectors = [ 1, 3 ];
 dop.returningNumber = true;
 dop.returningPrimitive = true;
 dop.returningNew = true;

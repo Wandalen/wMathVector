@@ -7168,12 +7168,12 @@ clamp.timeOut = 15000;
 
 function randomInRange( test )
 {
-  test.case = '2 scalar argument'; /* */
+  // test.case = '2 scalar argument'; /* */
   
-  var src1 = 0;
-  var src2 = 1;
-  var got = _.avector.randomInRange( src1, src2 );
-  test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
+  // var src1 = 0;
+  // var src2 = 1;
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
   
   test.case = 'null + 2 scalar argument'; /* */
   
@@ -7182,19 +7182,19 @@ function randomInRange( test )
   var got = _.avector.randomInRange( null, src1, src2 );
   test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
   
-  test.case = '2 vectors argument'; /* */
+  // test.case = '2 vectors argument'; /* */
 
-  var src1 = [ 0 ];
-  var src2 = [ 1 ];
-  var got = _.avector.randomInRange( src1, src2 );
-  test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
-  test.is( src1 === got )
+  // var src1 = [ 0 ];
+  // var src2 = [ 1 ];
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
+  // test.is( src1 === got )
   
-  var src1 = vec( [ 0 ] );
-  var src2 = vec( [ 1 ] );
-  var got = _.vectorAdapter.randomInRange( src1, src2 );
-  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
-  test.is( src1 === got )
+  // var src1 = vec( [ 0 ] );
+  // var src2 = vec( [ 1 ] );
+  // var got = _.vectorAdapter.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  // test.is( src1 === got )
   
   test.case = 'null + 2 vectors argument'; /* */
   
@@ -7210,33 +7210,33 @@ function randomInRange( test )
   test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
   test.is( src1 !== got )
   
-  test.case = 'vector and scalar'; /* */
+  // test.case = 'vector and scalar'; /* */
 
-  var src1 = [ 0 ];
-  var src2 = 1;
-  var got = _.avector.randomInRange( src1, src2 );
-  test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
-  test.is( src1 === got )
+  // var src1 = [ 0 ];
+  // var src2 = 1;
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
+  // test.is( src1 === got )
   
-  var src1 = vec( [ 0 ] );
-  var src2 = 1;
-  var got = _.vectorAdapter.randomInRange( src1, src2 );
-  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
-  test.is( src1 === got )
+  // var src1 = vec( [ 0 ] );
+  // var src2 = 1;
+  // var got = _.vectorAdapter.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
+  // test.is( src1 === got )
   
-  test.case = 'scalar and vector'; /* */
+  // test.case = 'scalar and vector'; /* */
   
-  var src1 = 0;
-  var src2 = [ 1 ];
-  var got = _.avector.randomInRange( src1, src2 );
-  test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ]) );
-  test.is( _.numberIs( src1 ) )
+  // var src1 = 0;
+  // var src2 = [ 1 ];
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ]) );
+  // test.is( _.numberIs( src1 ) )
   
-  var src1 = 0;
-  var src2 = vec( [ 1 ] );
-  var got = _.vectorAdapter.randomInRange( src1, src2 );
-  test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 ) ) );
-  test.is( _.numberIs( src1 ) )
+  // var src1 = 0;
+  // var src2 = vec( [ 1 ] );
+  // var got = _.vectorAdapter.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  // test.is( _.numberIs( src1 ) )
   
   test.case = 'null + vector and scalar'; /* */
   
@@ -7266,21 +7266,21 @@ function randomInRange( test )
   test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 )) );
   test.is( _.numberIs( src1 ) )
   
-  test.case = 'scalar scalar scalar'; /* */
+  // test.case = 'scalar scalar scalar'; /* */
   
-  var src1 = 0;
-  var src2 = 2;
-  var src3 = 3;
-  var got = _.avector.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
-  test.identical( src1, 0 );
+  // var src1 = 0;
+  // var src2 = 2;
+  // var src3 = 3;
+  // var got = _.avector.randomInRange( src1, src2, src3 );
+  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
+  // test.identical( src1, 0 );
   
-  var src1 = 0;
-  var src2 = 2;
-  var src3 = 3;
-  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
-  test.identical( src1, 0 );
+  // var src1 = 0;
+  // var src2 = 2;
+  // var src3 = 3;
+  // var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
+  // test.identical( src1, 0 );
   
   test.case = 'vector scalar scalar'; /* */
   
