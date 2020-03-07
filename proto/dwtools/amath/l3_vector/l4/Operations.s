@@ -488,7 +488,7 @@ let randomInRange = dop = Object.create( null );
 
 dop.onAtom = function randomInRange( o )
 { 
-  o.dstElement = o.srcElements[ 0 ] + Math.random()*( o.srcElements[ 1 ]-o.srcElements[ 0 ] );
+  o.dstElement = o.srcElements[ 1 ] + Math.random()*( o.srcElements[ 2 ]-o.srcElements[ 1 ] );
 }
 
 dop.input = 'vw|n vr|s vr|s';
