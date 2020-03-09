@@ -5355,68 +5355,6 @@ function _anyLessEqualAprox( test, r, t, Array, array )
 
 //
 
-function _anyGreaterAprox( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
 function _anyGreaterEqualAprox( test, r, t, Array, array )
 {
   var f = !t;
@@ -5673,20 +5611,101 @@ anyGreaterEqualAprox.timeOut = 15000;
 
 function anyGreaterAprox( test )
 {
-  this._anyGreaterAprox( test, 'anyGreaterAprox', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _anyGreaterAprox( test, 'anyGreaterAprox', true, Array, function()
   {
-    return _.longMake/*longMakeUndefined*/( Array, arguments );
+    return _.longMake( Array, arguments );
   });
 
-  this._anyGreaterAprox( test, 'anyGreaterAprox', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _anyGreaterAprox( test, 'anyGreaterAprox', true, U32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( F32x, arguments );
+    return _.longMake( U32x, arguments );
   });
 
-  this._anyGreaterAprox( test, 'anyGreaterAprox', true, U32x, function()
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _anyGreaterAprox( test, 'anyGreaterAprox', true, F32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( U32x, arguments );
+    return _.longMake( F32x, arguments );
   });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _anyGreaterAprox( test, r, t, Array, array )
+  {
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+    
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    test.identical( got, expected );
+  }
 }
 
 anyGreaterAprox.timeOut = 15000;
@@ -7351,7 +7370,6 @@ var Self =
 
     _anyIdentical,
     _anyNotIdentical,
-    _anyGreaterAprox,
     _anyGreaterEqualAprox,
     _anyLessAprox,
     _anyLessEqualAprox,
