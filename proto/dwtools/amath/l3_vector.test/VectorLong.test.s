@@ -481,6 +481,22 @@ function cross( test )
 
 cross.timeOut = 15000;
 
+//
+
+function abs( test )
+{
+
+  test.case = 'trivial';
+
+  var expected = [ 1, 2, 3 ];
+  var dst = [ -1, -2, -3 ];
+  var got = _.avector.abs( dst );
+
+  test.identical( got, expected );
+  test.is( dst === got );
+
+}
+
 // --
 //
 // --
@@ -5320,24 +5336,6 @@ div.timeOut = 15000;
 
 //
 
-function abs( test )
-{
-
-  test.case = 'trivial';
-
-  var expected = [ 1, 2, 3 ];
-  var dst = [ -1, -2, -3 ];
-  var got = _.avector.abs( dst );
-
-  test.identical( got, expected );
-  test.is( dst === got );
-
-}
-
-abs.timeOut = 15000;
-
-//
-
 function distributionRangeSummary( test )
 {
 
@@ -7631,7 +7629,10 @@ var Self =
     allInt,
 
     map,
+
     cross,
+
+    abs,
 
     /* */
 
@@ -7713,8 +7714,6 @@ var Self =
     sub,
     mul,
     div,
-
-    abs,
 
     distributionRangeSummary,
     reduceToMean,
