@@ -4110,53 +4110,6 @@ logical1ArgsReducerWithBadArguments.timeOut = 30000;
 
 //
 
-function sort( test )
-{
-
-  // 13.00 13.00 10.00 10.00 10.00 2.00 10.00 15.00 2.00 14.00 10.00 6.00 6.000 15.00 4.00 8.00
-
-  var samples =
-  [
-
-    [ 0 ],
-
-    [ 0, 1 ],
-    [ 1, 0 ],
-
-    [ 1, 0, 2 ],
-    [ 2, 0, 1 ],
-    [ 0, 1, 2 ],
-    [ 0, 2, 1 ],
-    [ 2, 1, 0 ],
-    [ 1, 2, 0 ],
-
-    [ 0, 1, 1 ],
-    [ 1, 0, 1 ],
-    [ 1, 1, 0 ],
-
-    [ 0, 0, 1, 1 ],
-    [ 0, 1, 1, 0 ],
-    [ 1, 1, 0, 0 ],
-    [ 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1 ],
-
-  ];
-
-  for( var s = 0 ; s < samples.length ; s++ )
-  {
-    var sample1 = samples[ s ].slice();
-    var sample2 = samples[ s ].slice();
-    _.vectorAdapter.sort( _.vectorAdapter.fromLong( sample1 ) );
-    sample2.sort();
-    test.identical( sample1, sample2 );
-  }
-
-}
-
-sort.timeOut = 15000;
-
-//
-
 function dot( test )
 {
 
@@ -7745,7 +7698,6 @@ var Self =
 
     /* */
 
-    sort,
     dot,
     cross,
     // subarray,
