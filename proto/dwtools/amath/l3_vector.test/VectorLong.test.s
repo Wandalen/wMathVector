@@ -1639,6 +1639,682 @@ heterogeneous.timeOut = 15000;
 
 //
 
+function clamp( test )
+{
+
+  test.case = 'clamp vectors, 4 arguments'; /* */
+
+  var expected = [ 30, 20, 20, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = [ 30, 20, 20, 20, 10, 10 ];
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'clamp vectors, 3 arguments and null'; /* */
+
+  var expected = [ 30, 20, 20, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = [ 30, 20, 20, 20, 10, 10 ];
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'clamp vectors, 3 arguments'; /* */
+
+  var expected = [ 30, 20, 20, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = [ 30, 20, 20, 20, 10, 10 ];
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'clamp vector and scaler, 4 arguments'; /* */
+
+  var expected = [ 20, 20, 20, 20, 20, 15 ];
+  var dst = [ 10, 20, 10, 20, 20, 15 ];
+  var src1 = [ 20, 20, 20, 20, 10, 10 ];
+  var src2 = 20;
+  var got = _.avector.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
+  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
+  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
+  var src2 = 20;
+  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = [ 15, 20, 15, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = 15;
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = 15;
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'clamp vector and scaler, 3 arguments and null'; /* */
+
+  var expected = [ 20, 20, 20, 20, 20, 15 ];
+  var dst = [ 10, 20, 10, 20, 20, 15 ];
+  var src1 = [ 20, 20, 20, 20, 10, 10 ];
+  var src2 = 20;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
+  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
+  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
+  var src2 = 20;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = [ 15, 20, 15, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = 15;
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = 15;
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 17, 20, 17, 17, 10, 25 ]);
+  var dst = 17;
+  var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
+  var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'clamp vector and scaler, 3 arguments'; /* */
+
+  var expected = [ 20, 20, 20, 20, 20, 15 ];
+  var dst = [ 10, 20, 10, 20, 20, 15 ];
+  var src1 = [ 20, 20, 20, 20, 10, 10 ];
+  var src2 = 20;
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
+  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
+  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
+  var src2 = 20;
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = [ 15, 20, 15, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = 15;
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = 15;
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 17, 20, 17, 17, 10, 25 ]);
+  var dst = 17;
+  var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
+  var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  test.case = '3 arguments, all scalar'; /* */
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  test.case = 'null + 3 arguments, all scalar'; /* */
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  test.case = '3 arguments, 2 scalar 1 vector'; /* */
+  var expected = [ 16 ];
+  var dst = [ 15 ];
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  
+  var expected = vec( [ 16 ] );
+  var dst = vec( [ 15 ] );
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  
+  test.case = 'null + 3 arguments, 2 scalar 1 vector'; /* */
+  var expected = [ 16 ];
+  var dst = [ 15 ];
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  var expected = vec( [ 16 ] );
+  var dst = vec( [ 15 ] );
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  test.case = 'null + 3 scalar arguments;' /* */
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+  
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'empty vectors, 3 arguments'; /* */
+
+  var op = _.vectorAdapter.clamp.operation;
+
+  var args = _.dup( [], op.takingArguments[ 0 ] );
+  var got = _.avector.clamp.apply( _, args );
+  test.is( got === args[ 0 ] );
+  test.identical( got , [] );
+
+  var args = _.dup( vec([]), op.takingArguments[ 0 ] );
+  var got = _.vectorAdapter.clamp.apply( _, args );
+  test.is( got === args[ 0 ] );
+  test.identical( got , vec([]) );
+
+  test.case = 'empty vectors, 4 arguments'; /* */
+
+  var op = _.vectorAdapter.clamp.operation;
+
+  var dst = [];
+  var args = _.dup( [], op.takingArguments[ 0 ] );
+  args.unshift( dst );
+  var got = _.avector.clamp.apply( _, args );
+  test.is( got === dst );
+  test.identical( got , [] );
+
+  var dst = vec([]);
+  var args = _.dup( vec([]), op.takingArguments[ 0 ] );
+  args.unshift( dst );
+  var got = _.vectorAdapter.clamp.apply( _, args );
+  test.is( got === dst );
+  test.identical( got , vec([]) );
+
+  test.case = 'bad arguments'; /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+
+  test.shouldThrowErrorSync( () => _.avector.clamp() );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
+  // test.shouldThrowErrorSync( () => _.avector.clamp( 1, [ 3, 3 ], [ 5, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], '1' ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp() );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
+
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+
+}
+
+clamp.timeOut = 15000;
+
+//
+
+function randomInRange( test )
+{
+  // test.case = '2 scalar argument'; /* */
+  
+  // var src1 = 0;
+  // var src2 = 1;
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
+  
+  test.case = 'null + 2 scalar argument'; /* */
+  
+  var src1 = 0;
+  var src2 = 1;
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
+  
+  // test.case = '2 vectors argument'; /* */
+
+  // var src1 = [ 0 ];
+  // var src2 = [ 1 ];
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
+  // test.is( src1 === got )
+  
+  // var src1 = vec( [ 0 ] );
+  // var src2 = vec( [ 1 ] );
+  // var got = _.vectorAdapter.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  // test.is( src1 === got )
+  
+  test.case = 'null + 2 vectors argument'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = [ 1 ];
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 !== got )
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = vec( [ 1 ] );
+  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 !== got )
+  
+  // test.case = 'vector and scalar'; /* */
+
+  // var src1 = [ 0 ];
+  // var src2 = 1;
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
+  // test.is( src1 === got )
+  
+  // var src1 = vec( [ 0 ] );
+  // var src2 = 1;
+  // var got = _.vectorAdapter.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
+  // test.is( src1 === got )
+  
+  // test.case = 'scalar and vector'; /* */
+  
+  // var src1 = 0;
+  // var src2 = [ 1 ];
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ]) );
+  // test.is( _.numberIs( src1 ) )
+  
+  // var src1 = 0;
+  // var src2 = vec( [ 1 ] );
+  // var got = _.vectorAdapter.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  // test.is( _.numberIs( src1 ) )
+  
+  test.case = 'null + vector and scalar'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = 1;
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
+  test.is( src1 !== got )
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = 1;
+  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
+  test.is( src1 !== got )
+  
+  test.case = 'null + scalar and vector'; /* */
+  
+  var src1 = 0;
+  var src2 = [ 1 ];
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ] ) );
+  test.is( _.numberIs( src1 ) )
+  
+  var src1 = 0;
+  var src2 = vec( [ 1 ] );
+  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 )) );
+  test.is( _.numberIs( src1 ) )
+  
+  // test.case = 'scalar scalar scalar'; /* */
+  
+  // var src1 = 0;
+  // var src2 = 2;
+  // var src3 = 3;
+  // var got = _.avector.randomInRange( src1, src2, src3 );
+  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
+  // test.identical( src1, 0 );
+  
+  // var src1 = 0;
+  // var src2 = 2;
+  // var src3 = 3;
+  // var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
+  // test.identical( src1, 0 );
+  
+  test.case = 'vector scalar scalar'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = 2;
+  var src3 = 3;
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3 ], got[ 0 ] ) );
+  test.is( src1 === got );
+  
+  var src1 = vec([ 0 ]);
+  var src2 = 2;
+  var src3 = 3;
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3 ], got.eGet( 0 ) ) );
+  test.is( src1 === got );
+  
+  test.case = 'vector scalar vector'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = 2;
+  var src3 = [ 3 ];
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 === got );
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = 2;
+  var src3 = vec( [ 3 ] );
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 === got );
+  
+  test.case = 'vector vector vector'; /* */
+  
+  var src1 = [ 0 ];
+  var src2 = [ 2 ];
+  var src3 = [ 3 ];
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2[ 0 ], src3[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 === got );
+  
+  var src1 = vec( [ 0 ] );
+  var src2 = vec( [ 2 ] );
+  var src3 = vec( [ 3 ] );
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2.eGet( 0 ), src3.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 === got );
+  
+  
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+  
+  test.shouldThrowErrorSync( () => _.avector.randomInRange() );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( null, [ 1 ], [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], '1' ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange() );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( null, vec([ 1 ]), vec([ 1 ]), vec([ 1 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+  
+}
+
+randomInRange.timeOut = 15000;
+
+//
+
+function mix( test )
+{
+
+  /* 3 arguments */
+
+  test.case = 'all arrays, 3 arguments';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
+  var expected = [ 1.2 , 2.4 , 3.6 ];
+
+  test.equivalent( got, expected );
+  test.is( src === got );
+
+  test.case = 'mixed, 3 arguments';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( src, 5, 0.1 );
+  var expected = [ 1.4 , 2.3 , 3.2 ];
+
+  test.equivalent( got, expected );
+  test.is( src === got );
+
+  var src = [ 1, 2, 3 ]
+  var got = _.avector.mix( 5, src, 0.1 );
+  var expected = [ 4.6 , 4.7 , 4.8 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+
+  test.case = 'many elements in progress, 3 arguments';
+
+  var got = _.avector.mix( 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
+  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
+  test.equivalent( got, expected );
+
+  test.case = 'only scalars, 3 arguments';
+
+  var got = _.avector.mix( 1, 3, 0.5 );
+  var expected = 2;
+  test.equivalent( got, expected );
+
+  /* 4 arguments with null */
+
+  test.case = 'all arrays, 4 arguments, dst null';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( null, src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
+  var expected = [ 1.2 , 2.4 , 3.6 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+
+  test.case = 'mixed, 4 arguments, dst null';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( null, src, 5, 0.1 );
+  var expected = [ 1.4 , 2.3 , 3.2 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+
+  var src = [ 1, 2, 3 ]
+  var got = _.avector.mix( null, 5, src, 0.1 );
+  var expected = [ 4.6 , 4.7 , 4.8 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+
+  test.case = 'many elements in progress, 4 arguments, dst null';
+
+  var got = _.avector.mix( null, 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
+  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
+  test.equivalent( got, expected );
+
+  test.case = 'only scalars, 4 arguments, dst null';
+
+  var got = _.avector.mix( null, 1, 3, 0.5 );
+  var expected = 2;
+  test.equivalent( got, expected );
+
+  /* 4 arguments with provided container */
+
+  test.case = 'all arrays, 4 arguments, dst null';
+
+  var dst = [ -1, -1, -1 ];
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( dst, src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
+  var expected = [ 1.2 , 2.4 , 3.6 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+  test.is( dst === got );
+
+  test.case = 'mixed, 4 arguments, dst null';
+
+  var dst = [ -1, -1, -1 ];
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( dst, src, 5, 0.1 );
+  var expected = [ 1.4 , 2.3 , 3.2 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+  test.is( dst === got );
+
+  var dst = [ -1, -1, -1 ];
+  var src = [ 1, 2, 3 ]
+  var got = _.avector.mix( dst, 5, src, 0.1 );
+  var expected = [ 4.6 , 4.7 , 4.8 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+  test.is( dst === got );
+
+  test.case = 'many elements in progress, 4 arguments, dst null';
+
+  var dst = [ -1, -1, -1, -1, -1, -1 ];
+  var got = _.avector.mix( dst, 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
+  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
+  test.equivalent( got, expected );
+  test.is( dst === got );
+
+  test.case = 'only scalars, 4 arguments, dst null';
+
+  var dst = -1;
+  var got = _.avector.mix( dst, 1, 3, 0.5 );
+  var expected = 2;
+  test.equivalent( got, expected );
+
+  /* throwing error */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3 ], 0.5 ) );
+
+  test.shouldThrowErrorSync( () => _.avector.mix() );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( null, [ 1, 2 ], [ 3, 4 ] ) );
+  // test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( '0', [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( undefined, [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( undefined, [ 3, 4 ], [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( false, [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( true, [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], '0', [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], '0' ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 4, 4 ], [ 3, 4 ] ) );
+
+}
+
+mix.timeOut = 15000;
+
+//
+
 function mean( test )
 {
 
@@ -6631,682 +7307,6 @@ momentCentral.timeOut = 15000;
 
 //
 
-function clamp( test )
-{
-
-  test.case = 'clamp vectors, 4 arguments'; /* */
-
-  var expected = [ 30, 20, 20, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = [ 30, 20, 20, 20, 10, 10 ];
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'clamp vectors, 3 arguments and null'; /* */
-
-  var expected = [ 30, 20, 20, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = [ 30, 20, 20, 20, 10, 10 ];
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'clamp vectors, 3 arguments'; /* */
-
-  var expected = [ 30, 20, 20, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = [ 30, 20, 20, 20, 10, 10 ];
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'clamp vector and scaler, 4 arguments'; /* */
-
-  var expected = [ 20, 20, 20, 20, 20, 15 ];
-  var dst = [ 10, 20, 10, 20, 20, 15 ];
-  var src1 = [ 20, 20, 20, 20, 10, 10 ];
-  var src2 = 20;
-  var got = _.avector.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
-  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
-  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
-  var src2 = 20;
-  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = [ 15, 20, 15, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = 15;
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = 15;
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'clamp vector and scaler, 3 arguments and null'; /* */
-
-  var expected = [ 20, 20, 20, 20, 20, 15 ];
-  var dst = [ 10, 20, 10, 20, 20, 15 ];
-  var src1 = [ 20, 20, 20, 20, 10, 10 ];
-  var src2 = 20;
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
-  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
-  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
-  var src2 = 20;
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = [ 15, 20, 15, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = 15;
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = 15;
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 17, 20, 17, 17, 10, 25 ]);
-  var dst = 17;
-  var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
-  var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'clamp vector and scaler, 3 arguments'; /* */
-
-  var expected = [ 20, 20, 20, 20, 20, 15 ];
-  var dst = [ 10, 20, 10, 20, 20, 15 ];
-  var src1 = [ 20, 20, 20, 20, 10, 10 ];
-  var src2 = 20;
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
-  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
-  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
-  var src2 = 20;
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = [ 15, 20, 15, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = 15;
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = 15;
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 17, 20, 17, 17, 10, 25 ]);
-  var dst = 17;
-  var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
-  var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  
-  test.case = '3 arguments, all scalar'; /* */
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  
-  test.case = 'null + 3 arguments, all scalar'; /* */
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  
-  test.case = '3 arguments, 2 scalar 1 vector'; /* */
-  var expected = [ 16 ];
-  var dst = [ 15 ];
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  
-  var expected = vec( [ 16 ] );
-  var dst = vec( [ 15 ] );
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  
-  test.case = 'null + 3 arguments, 2 scalar 1 vector'; /* */
-  var expected = [ 16 ];
-  var dst = [ 15 ];
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  
-  var expected = vec( [ 16 ] );
-  var dst = vec( [ 15 ] );
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  
-  test.case = 'null + 3 scalar arguments;' /* */
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'empty vectors, 3 arguments'; /* */
-
-  var op = _.vectorAdapter.clamp.operation;
-
-  var args = _.dup( [], op.takingArguments[ 0 ] );
-  var got = _.avector.clamp.apply( _, args );
-  test.is( got === args[ 0 ] );
-  test.identical( got , [] );
-
-  var args = _.dup( vec([]), op.takingArguments[ 0 ] );
-  var got = _.vectorAdapter.clamp.apply( _, args );
-  test.is( got === args[ 0 ] );
-  test.identical( got , vec([]) );
-
-  test.case = 'empty vectors, 4 arguments'; /* */
-
-  var op = _.vectorAdapter.clamp.operation;
-
-  var dst = [];
-  var args = _.dup( [], op.takingArguments[ 0 ] );
-  args.unshift( dst );
-  var got = _.avector.clamp.apply( _, args );
-  test.is( got === dst );
-  test.identical( got , [] );
-
-  var dst = vec([]);
-  var args = _.dup( vec([]), op.takingArguments[ 0 ] );
-  args.unshift( dst );
-  var got = _.vectorAdapter.clamp.apply( _, args );
-  test.is( got === dst );
-  test.identical( got , vec([]) );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'bad arguments';
-
-  test.shouldThrowErrorSync( () => _.avector.clamp() );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
-  // test.shouldThrowErrorSync( () => _.avector.clamp( 1, [ 3, 3 ], [ 5, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], undefined ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], '1' ) );
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp() );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
-
-}
-
-clamp.timeOut = 15000;
-
-//
-
-function randomInRange( test )
-{
-  // test.case = '2 scalar argument'; /* */
-  
-  // var src1 = 0;
-  // var src2 = 1;
-  // var got = _.avector.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
-  
-  test.case = 'null + 2 scalar argument'; /* */
-  
-  var src1 = 0;
-  var src2 = 1;
-  var got = _.avector.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
-  
-  // test.case = '2 vectors argument'; /* */
-
-  // var src1 = [ 0 ];
-  // var src2 = [ 1 ];
-  // var got = _.avector.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
-  // test.is( src1 === got )
-  
-  // var src1 = vec( [ 0 ] );
-  // var src2 = vec( [ 1 ] );
-  // var got = _.vectorAdapter.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
-  // test.is( src1 === got )
-  
-  test.case = 'null + 2 vectors argument'; /* */
-  
-  var src1 = [ 0 ];
-  var src2 = [ 1 ];
-  var got = _.avector.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
-  test.is( src1 !== got )
-  
-  var src1 = vec( [ 0 ] );
-  var src2 = vec( [ 1 ] );
-  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
-  test.is( src1 !== got )
-  
-  // test.case = 'vector and scalar'; /* */
-
-  // var src1 = [ 0 ];
-  // var src2 = 1;
-  // var got = _.avector.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
-  // test.is( src1 === got )
-  
-  // var src1 = vec( [ 0 ] );
-  // var src2 = 1;
-  // var got = _.vectorAdapter.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
-  // test.is( src1 === got )
-  
-  // test.case = 'scalar and vector'; /* */
-  
-  // var src1 = 0;
-  // var src2 = [ 1 ];
-  // var got = _.avector.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ]) );
-  // test.is( _.numberIs( src1 ) )
-  
-  // var src1 = 0;
-  // var src2 = vec( [ 1 ] );
-  // var got = _.vectorAdapter.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 ) ) );
-  // test.is( _.numberIs( src1 ) )
-  
-  test.case = 'null + vector and scalar'; /* */
-  
-  var src1 = [ 0 ];
-  var src2 = 1;
-  var got = _.avector.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
-  test.is( src1 !== got )
-  
-  var src1 = vec( [ 0 ] );
-  var src2 = 1;
-  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
-  test.is( src1 !== got )
-  
-  test.case = 'null + scalar and vector'; /* */
-  
-  var src1 = 0;
-  var src2 = [ 1 ];
-  var got = _.avector.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ] ) );
-  test.is( _.numberIs( src1 ) )
-  
-  var src1 = 0;
-  var src2 = vec( [ 1 ] );
-  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 )) );
-  test.is( _.numberIs( src1 ) )
-  
-  // test.case = 'scalar scalar scalar'; /* */
-  
-  // var src1 = 0;
-  // var src2 = 2;
-  // var src3 = 3;
-  // var got = _.avector.randomInRange( src1, src2, src3 );
-  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
-  // test.identical( src1, 0 );
-  
-  // var src1 = 0;
-  // var src2 = 2;
-  // var src3 = 3;
-  // var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
-  // test.identical( src1, 0 );
-  
-  test.case = 'vector scalar scalar'; /* */
-  
-  var src1 = [ 0 ];
-  var src2 = 2;
-  var src3 = 3;
-  var got = _.avector.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3 ], got[ 0 ] ) );
-  test.is( src1 === got );
-  
-  var src1 = vec([ 0 ]);
-  var src2 = 2;
-  var src3 = 3;
-  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3 ], got.eGet( 0 ) ) );
-  test.is( src1 === got );
-  
-  test.case = 'vector scalar vector'; /* */
-  
-  var src1 = [ 0 ];
-  var src2 = 2;
-  var src3 = [ 3 ];
-  var got = _.avector.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3[ 0 ] ], got[ 0 ] ) );
-  test.is( src1 === got );
-  
-  var src1 = vec( [ 0 ] );
-  var src2 = 2;
-  var src3 = vec( [ 3 ] );
-  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3.eGet( 0 ) ], got.eGet( 0 ) ) );
-  test.is( src1 === got );
-  
-  test.case = 'vector vector vector'; /* */
-  
-  var src1 = [ 0 ];
-  var src2 = [ 2 ];
-  var src3 = [ 3 ];
-  var got = _.avector.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2[ 0 ], src3[ 0 ] ], got[ 0 ] ) );
-  test.is( src1 === got );
-  
-  var src1 = vec( [ 0 ] );
-  var src2 = vec( [ 2 ] );
-  var src3 = vec( [ 3 ] );
-  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2.eGet( 0 ), src3.eGet( 0 ) ], got.eGet( 0 ) ) );
-  test.is( src1 === got );
-  
-  
-  if( !Config.debug )
-  return;
-
-  test.case = 'bad arguments';
-  
-  test.shouldThrowErrorSync( () => _.avector.randomInRange() );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( null, [ 1 ], [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], undefined ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], '1' ) );
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange() );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( null, vec([ 1 ]), vec([ 1 ]), vec([ 1 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
-  
-}
-
-randomInRange.timeOut = 15000;
-
-//
-
-function mix( test )
-{
-
-  /* 3 arguments */
-
-  test.case = 'all arrays, 3 arguments';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
-  var expected = [ 1.2 , 2.4 , 3.6 ];
-
-  test.equivalent( got, expected );
-  test.is( src === got );
-
-  test.case = 'mixed, 3 arguments';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( src, 5, 0.1 );
-  var expected = [ 1.4 , 2.3 , 3.2 ];
-
-  test.equivalent( got, expected );
-  test.is( src === got );
-
-  var src = [ 1, 2, 3 ]
-  var got = _.avector.mix( 5, src, 0.1 );
-  var expected = [ 4.6 , 4.7 , 4.8 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-
-  test.case = 'many elements in progress, 3 arguments';
-
-  var got = _.avector.mix( 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
-  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
-  test.equivalent( got, expected );
-
-  test.case = 'only scalars, 3 arguments';
-
-  var got = _.avector.mix( 1, 3, 0.5 );
-  var expected = 2;
-  test.equivalent( got, expected );
-
-  /* 4 arguments with null */
-
-  test.case = 'all arrays, 4 arguments, dst null';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( null, src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
-  var expected = [ 1.2 , 2.4 , 3.6 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-
-  test.case = 'mixed, 4 arguments, dst null';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( null, src, 5, 0.1 );
-  var expected = [ 1.4 , 2.3 , 3.2 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-
-  var src = [ 1, 2, 3 ]
-  var got = _.avector.mix( null, 5, src, 0.1 );
-  var expected = [ 4.6 , 4.7 , 4.8 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-
-  test.case = 'many elements in progress, 4 arguments, dst null';
-
-  var got = _.avector.mix( null, 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
-  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
-  test.equivalent( got, expected );
-
-  test.case = 'only scalars, 4 arguments, dst null';
-
-  var got = _.avector.mix( null, 1, 3, 0.5 );
-  var expected = 2;
-  test.equivalent( got, expected );
-
-  /* 4 arguments with provided container */
-
-  test.case = 'all arrays, 4 arguments, dst null';
-
-  var dst = [ -1, -1, -1 ];
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( dst, src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
-  var expected = [ 1.2 , 2.4 , 3.6 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-  test.is( dst === got );
-
-  test.case = 'mixed, 4 arguments, dst null';
-
-  var dst = [ -1, -1, -1 ];
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( dst, src, 5, 0.1 );
-  var expected = [ 1.4 , 2.3 , 3.2 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-  test.is( dst === got );
-
-  var dst = [ -1, -1, -1 ];
-  var src = [ 1, 2, 3 ]
-  var got = _.avector.mix( dst, 5, src, 0.1 );
-  var expected = [ 4.6 , 4.7 , 4.8 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-  test.is( dst === got );
-
-  test.case = 'many elements in progress, 4 arguments, dst null';
-
-  var dst = [ -1, -1, -1, -1, -1, -1 ];
-  var got = _.avector.mix( dst, 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
-  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
-  test.equivalent( got, expected );
-  test.is( dst === got );
-
-  test.case = 'only scalars, 4 arguments, dst null';
-
-  var dst = -1;
-  var got = _.avector.mix( dst, 1, 3, 0.5 );
-  var expected = 2;
-  test.equivalent( got, expected );
-
-  /* throwing error */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3 ], 0.5 ) );
-
-  test.shouldThrowErrorSync( () => _.avector.mix() );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( null, [ 1, 2 ], [ 3, 4 ] ) );
-  // test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( '0', [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( undefined, [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( undefined, [ 3, 4 ], [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( false, [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( true, [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], '0', [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], '0' ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 4, 4 ], [ 3, 4 ] ) );
-
-}
-
-mix.timeOut = 15000;
-
-//
-
 function swap( test )
 {
 
@@ -7634,6 +7634,12 @@ var Self =
     div,
 
     heterogeneousScaledRoutines,
+    
+    clamp,
+    randomInRange,
+    mix,
+
+    //
 
     mean,
     moment,
@@ -7727,10 +7733,6 @@ var Self =
 
     // homogeneousWithScalar,
     // homogeneousOnlyVectors,
-
-    clamp,
-    randomInRange,
-    mix,
 
     swap,
     polynomApply,
