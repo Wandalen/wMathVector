@@ -1453,6 +1453,227 @@ function moment( test )
 
 moment.timeOut = 15000;
 
+//
+
+function reduceToMean( test )
+{
+
+  test.case = 'simple even'; /* */
+
+  var expected = 2.5;
+  var got = _.avector.reduceToMean([ 1, 2, 3, 4 ]);
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd'; /* */
+
+  var expected = 2;
+  var got = _.avector.reduceToMean([ 1, 2, 3 ]);
+  test.equivalent( got, expected );
+
+  test.case = 'several vectors'; /* */
+
+  var expected = 3;
+  var got = _.avector.reduceToMean( [ 1, 2, 3 ], [ 4, 5 ] );
+  test.equivalent( got, expected );
+
+  test.case = 'empty'; /* */
+
+  var expected = NaN;
+  var got = _.avector.reduceToMean([]);
+  test.equivalent( got, expected );
+
+  test.case = 'simple even, filtering'; /* */
+
+  var expected = 2;
+  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd, filtering'; /* */
+
+  var expected = 2;
+  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'several vectors, filtering'; /* */
+
+  var expected = 3;
+  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3 ], [ 4, 5 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'empty, filtering'; /* */
+
+  var expected = NaN;
+  var got = _.avector.reduceToMeanConditional( [], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'bad arguments'; /* */
+
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean() );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean( 'x' ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean( 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean( [ 1 ], 'x' ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean( [ 1 ], 1 ) );
+
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional() );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( () => true ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( [ 1 ], 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( [ 1 ], 1, () => true ) );
+
+}
+
+reduceToMean.timeOut = 15000;
+
+//
+
+function distributionRangeSummary( test )
+{
+
+  var empty = [];
+  var a = [ 1, 2, 3, 4, 5 ];
+  var b = [ 55, 22, 33, 99, 2, 22, 3, 33, 4, 99, 5, 44 ];
+  var filter = ( e, o ) => !(e % 2);
+
+  test.case = 'distributionRangeSummary single element'; /* */
+
+  var ar = [ 1 ];
+  var expected =
+  {
+    min : { value : 1, index : 0, container : vec( ar ) },
+    max : { value : 1, index : 0, container : vec( ar ) },
+    median : 1,
+  };
+
+  var got = _.avector.distributionRangeSummary( ar );
+  test.identical( got, expected );
+
+  test.case = 'reduceToMax single element'; /* */
+
+  var ar = [ 1 ];
+  var expected = { value : 1, index : 0, container : vec( ar ) };
+  var got = _.avector.reduceToMax( ar );
+  test.identical( got, expected );
+
+  var ar = [ 1 ];
+  var expected = { value : 1, index : 0, container : vec( ar ) };
+  var got = vad.reduceToMax( vec( ar ) );
+  test.identical( got, expected );
+
+  test.case = 'trivial'; /* */
+
+  var expected =
+  {
+    min : { value : 1, index : 0, container : vec( a ) },
+    max : { value : 5, index : 4, container : vec( a ) },
+    median : 3,
+  };
+
+  var got = _.avector.distributionRangeSummary( a );
+  test.identical( got, expected );
+
+  test.case = 'simplest case with filtering'; /* */
+
+  var expected =
+  {
+    min : { value : 2, index : 1, container : vec( a ) },
+    max : { value : 4, index : 3, container : vec( a ) },
+    median : 3,
+  };
+
+  var got = _.avector.distributionRangeSummaryConditional( a, filter );
+  test.identical( got, expected );
+
+  test.case = 'several vectors'; /* */
+
+  var expected =
+  {
+    min : { value : 1, index : 0, container : vec( a ) },
+    max : { value : 99, index : 3, container : vec( b ) },
+    median : 50,
+  };
+
+  var got = _.avector.distributionRangeSummary( a, b );
+  test.identical( got, expected );
+
+  test.case = 'several vectors with filtering'; /* */
+
+  var expected =
+  {
+    min : { value : 2, index : 1, container : vec( a ) },
+    max : { value : 44, index : 11, container : vec( b ) },
+    median : 23,
+  };
+
+  var got = _.avector.distributionRangeSummaryConditional( a, b, filter );
+  test.identical( got, expected );
+
+  test.case = 'empty array'; /* */
+
+  var expected =
+  {
+    min : { value : NaN, index : -1, container : null },
+    max : { value : NaN, index : -1, container : null },
+    median : NaN,
+  };
+  var got = _.avector.distributionRangeSummary( empty );
+  test.identical( got, expected )
+
+  test.case = 'empty array with filtering'; /* */
+
+  var expected =
+  {
+    min : { value : NaN, index : -1, container : null },
+    max : { value : NaN, index : -1, container : null },
+    median : NaN,
+  };
+  var got = _.avector.distributionRangeSummaryConditional( empty, filter );
+  test.identical( got, expected )
+
+  // test.case = 'no array'; /* */
+  //
+  // var expected =
+  // {
+  //   min : { value : NaN, index : -1, container : null },
+  //   max : { value : NaN, index : -1, container : null },
+  // };
+  // var got = _.avector.distributionRangeSummary();
+  // test.identical( got, expected )
+  //
+  // test.case = 'no array with filtering'; /* */
+  //
+  // var expected =
+  // {
+  //   min : { value : NaN, index : -1, container : null },
+  //   max : { value : NaN, index : -1, container : null },
+  // };
+  // var got = _.avector.distributionRangeSummaryConditional( filter );
+  // test.identical( got, expected )
+
+  test.case = 'bad arguments'; /* */
+
+  if( Config.debug )
+  {
+
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary() );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( 1 ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( '1' ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( [ 1 ], 1 ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( [ 1 ], undefined ) );
+
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional() );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ] ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ], null ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ], () => true ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( 1, filter ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1 ], 1, filter ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1 ], undefined, filter ) );
+
+  }
+}
+
+distributionRangeSummary.timeOut = 15000;
+
 // --
 //
 // --
@@ -5480,228 +5701,6 @@ dot.timeOut = 15000;
 // }
 //
 // subarray.timeOut = 15000;
-
-//
-
-function distributionRangeSummary( test )
-{
-
-  var empty = [];
-  var a = [ 1, 2, 3, 4, 5 ];
-  var b = [ 55, 22, 33, 99, 2, 22, 3, 33, 4, 99, 5, 44 ];
-  var filter = ( e, o ) => !(e % 2);
-
-  test.case = 'distributionRangeSummary single element'; /* */
-
-  var ar = [ 1 ];
-  var expected =
-  {
-    min : { value : 1, index : 0, container : vec( ar ) },
-    max : { value : 1, index : 0, container : vec( ar ) },
-    median : 1,
-  };
-
-  var got = _.avector.distributionRangeSummary( ar );
-  test.identical( got, expected );
-
-  test.case = 'reduceToMax single element'; /* */
-
-  var ar = [ 1 ];
-  var expected = { value : 1, index : 0, container : vec( ar ) };
-  var got = _.avector.reduceToMax( ar );
-  test.identical( got, expected );
-
-  var ar = [ 1 ];
-  var expected = { value : 1, index : 0, container : vec( ar ) };
-  var got = vad.reduceToMax( vec( ar ) );
-  test.identical( got, expected );
-
-  test.case = 'trivial'; /* */
-
-  var expected =
-  {
-    min : { value : 1, index : 0, container : vec( a ) },
-    max : { value : 5, index : 4, container : vec( a ) },
-    median : 3,
-  };
-
-  var got = _.avector.distributionRangeSummary( a );
-  test.identical( got, expected );
-
-  test.case = 'simplest case with filtering'; /* */
-
-  var expected =
-  {
-    min : { value : 2, index : 1, container : vec( a ) },
-    max : { value : 4, index : 3, container : vec( a ) },
-    median : 3,
-  };
-
-  var got = _.avector.distributionRangeSummaryConditional( a, filter );
-  test.identical( got, expected );
-
-  test.case = 'several vectors'; /* */
-
-  var expected =
-  {
-    min : { value : 1, index : 0, container : vec( a ) },
-    max : { value : 99, index : 3, container : vec( b ) },
-    median : 50,
-  };
-
-  var got = _.avector.distributionRangeSummary( a, b );
-  test.identical( got, expected );
-
-  test.case = 'several vectors with filtering'; /* */
-
-  var expected =
-  {
-    min : { value : 2, index : 1, container : vec( a ) },
-    max : { value : 44, index : 11, container : vec( b ) },
-    median : 23,
-  };
-
-  var got = _.avector.distributionRangeSummaryConditional( a, b, filter );
-  test.identical( got, expected );
-
-  test.case = 'empty array'; /* */
-
-  var expected =
-  {
-    min : { value : NaN, index : -1, container : null },
-    max : { value : NaN, index : -1, container : null },
-    median : NaN,
-  };
-  var got = _.avector.distributionRangeSummary( empty );
-  test.identical( got, expected )
-
-  test.case = 'empty array with filtering'; /* */
-
-  var expected =
-  {
-    min : { value : NaN, index : -1, container : null },
-    max : { value : NaN, index : -1, container : null },
-    median : NaN,
-  };
-  var got = _.avector.distributionRangeSummaryConditional( empty, filter );
-  test.identical( got, expected )
-
-  // test.case = 'no array'; /* */
-  //
-  // var expected =
-  // {
-  //   min : { value : NaN, index : -1, container : null },
-  //   max : { value : NaN, index : -1, container : null },
-  // };
-  // var got = _.avector.distributionRangeSummary();
-  // test.identical( got, expected )
-  //
-  // test.case = 'no array with filtering'; /* */
-  //
-  // var expected =
-  // {
-  //   min : { value : NaN, index : -1, container : null },
-  //   max : { value : NaN, index : -1, container : null },
-  // };
-  // var got = _.avector.distributionRangeSummaryConditional( filter );
-  // test.identical( got, expected )
-
-  test.case = 'bad arguments'; /* */
-
-  if( Config.debug )
-  {
-
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary() );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( 1 ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( '1' ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( [ 1 ], 1 ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( [ 1 ], undefined ) );
-
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional() );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ] ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ], null ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ], () => true ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( 1, filter ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1 ], 1, filter ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1 ], undefined, filter ) );
-
-  }
-
-}
-
-distributionRangeSummary.timeOut = 15000;
-
-//
-
-function reduceToMean( test )
-{
-
-  test.case = 'simple even'; /* */
-
-  var expected = 2.5;
-  var got = _.avector.reduceToMean([ 1, 2, 3, 4 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd'; /* */
-
-  var expected = 2;
-  var got = _.avector.reduceToMean([ 1, 2, 3 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'several vectors'; /* */
-
-  var expected = 3;
-  var got = _.avector.reduceToMean( [ 1, 2, 3 ], [ 4, 5 ] );
-  test.equivalent( got, expected );
-
-  test.case = 'empty'; /* */
-
-  var expected = NaN;
-  var got = _.avector.reduceToMean([]);
-  test.equivalent( got, expected );
-
-  test.case = 'simple even, filtering'; /* */
-
-  var expected = 2;
-  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd, filtering'; /* */
-
-  var expected = 2;
-  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'several vectors, filtering'; /* */
-
-  var expected = 3;
-  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3 ], [ 4, 5 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'empty, filtering'; /* */
-
-  var expected = NaN;
-  var got = _.avector.reduceToMeanConditional( [], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean() );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean( 'x' ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean( 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean( [ 1 ], 'x' ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean( [ 1 ], 1 ) );
-
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional() );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( () => true ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( [ 1 ], 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( [ 1 ], 1, () => true ) );
-
-}
-
-reduceToMean.timeOut = 15000;
 
 //
 
