@@ -31,6 +31,106 @@ _.assert( _.routineIs( sqrt ) );
 // test
 // --
 
+function assign( test )
+{
+
+  test.case = 'assign scalar';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.assign( src, 0 );
+  var expected = [ 0, 0, 0 ];
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign scalar to null vector';
+
+  var src = [];
+  var got = _.avector.assign( src, 1 );
+  var expected = [];
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign avector';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.assign( src, [ 4, 5, 6 ] );
+  var expected = [ 4, 5, 6 ];
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign multiple scalars';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.assign( src, 4, 5, 6 );
+  var expected = [ 4, 5, 6 ];
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'null avector';
+
+  var src = [];
+  var got = _.avector.assign( src );
+  var expected = [];
+  test.identical( expected, got );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'assign scalar by method';
+
+  var src = vad.fromLong([ 1, 2, 3 ]);
+  var got = src.assign( 0 );
+  var expected = vad.fromLong([ 0, 0, 0 ]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign scalar to null vector';
+
+  var src = vad.fromLong([]);
+  var got = src.assign( 1 );
+  var expected = vad.fromLong([]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign avector';
+
+  var src = vad.fromLong([ 1, 2, 3 ]);
+  var got = src.assign([ 4, 5, 6 ] );
+  var expected = vad.fromLong([ 4, 5, 6 ]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign multiple scalars';
+
+  var src = vad.fromLong([ 1, 2, 3 ]);
+  var got = src.assign([ 4, 5, 6 ]);
+  var expected = vad.fromLong([ 4, 5, 6 ]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'null avector';
+
+  var src = vad.fromLong([]);
+  var got = src.assign();
+  var expected = vad.fromLong([]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => _.avector.assign() );
+  test.shouldThrowErrorSync( () => _.avector.assign( [], 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], '1' ) );
+  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], [ 1, 1 ] ) );
+
+}
+
+//
+
 function map( test )
 {
 
@@ -7335,108 +7435,6 @@ momentCentral.timeOut = 15000;
 // }
 //
 // homogeneousOnlyVectors.timeOut = 15000;
-
-//
-
-function assign( test )
-{
-
-  test.case = 'assign scalar';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.assign( src, 0 );
-  var expected = [ 0, 0, 0 ];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign scalar to null vector';
-
-  var src = [];
-  var got = _.avector.assign( src, 1 );
-  var expected = [];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign avector';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.assign( src, [ 4, 5, 6 ] );
-  var expected = [ 4, 5, 6 ];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign multiple scalars';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.assign( src, 4, 5, 6 );
-  var expected = [ 4, 5, 6 ];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'null avector';
-
-  var src = [];
-  var got = _.avector.assign( src );
-  var expected = [];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  /* */
-
-  test.case = 'assign scalar by method';
-
-  var src = vad.fromLong([ 1, 2, 3 ]);
-  var got = src.assign( 0 );
-  var expected = vad.fromLong([ 0, 0, 0 ]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign scalar to null vector';
-
-  var src = vad.fromLong([]);
-  var got = src.assign( 1 );
-  var expected = vad.fromLong([]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign avector';
-
-  var src = vad.fromLong([ 1, 2, 3 ]);
-  var got = src.assign([ 4, 5, 6 ] );
-  var expected = vad.fromLong([ 4, 5, 6 ]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign multiple scalars';
-
-  var src = vad.fromLong([ 1, 2, 3 ]);
-  var got = src.assign([ 4, 5, 6 ]);
-  var expected = vad.fromLong([ 4, 5, 6 ]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'null avector';
-
-  var src = vad.fromLong([]);
-  var got = src.assign();
-  var expected = vad.fromLong([]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.avector.assign() );
-  test.shouldThrowErrorSync( () => _.avector.assign( [], 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], '1' ) );
-  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], [ 1, 1 ] ) );
-
-}
-
-assign.timeOut = 15000;
 
 //
 
