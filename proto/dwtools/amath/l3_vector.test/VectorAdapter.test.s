@@ -60,6 +60,60 @@ at /2
 
 //
 
+function vectorAdapterIs( test )
+{
+  /* Dmytro : the first part of routine in module wTools */
+
+  test.case = 'src - vectorAdapter, routine from';
+  var src = vad.from( [ 1, 2, 3 ] );
+  test.is( _.vectorAdapterIs( src ) );
+
+  test.case = 'src - vectorAdapter, routine fromLong';
+  var src = vad.fromLong( [ 1, 2, 3 ] );
+  test.is( _.vectorAdapterIs( src ) );
+
+  test.case = 'src - vectorAdapter, routine fromLongWithStride';
+  var src = vad.fromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
+  test.is( _.vectorAdapterIs( src ) );
+
+  test.case = 'src - vectorAdapter, routine fromLongLrange';
+  var src = vad.fromLongLrange( [ -1, 1, 2, 3, -1 ], 1, 3 );
+  test.is( _.vectorAdapterIs( src ) );
+
+  test.case = 'src - vectorAdapter, routine fromLongLrangeAndStride';
+  var src = vad.fromLongLrangeAndStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
+  test.is( _.vectorAdapterIs( src ) );
+}
+
+//
+
+function constructorIsVector( test )
+{
+  /* Dmytro : the first part of routine in module wTools */
+
+  test.case = 'src - vectorAdapter constructor, routine from';
+  var src = vad.from( [ 1, 2, 3 ] );
+  test.is( _.constructorIsVector( src.constructor ) );
+
+  test.case = 'src - vectorAdapter constructor, routine fromLong';
+  var src = vad.fromLong( [ 1, 2, 3 ] );
+  test.is( _.constructorIsVector( src.constructor ) );
+
+  test.case = 'src - vectorAdapter constructor, routine fromLongWithStride';
+  var src = vad.fromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
+  test.is( _.constructorIsVector( src.constructor ) );
+
+  test.case = 'src - vectorAdapter constructor, routine fromLongLrange';
+  var src = vad.fromLongLrange( [ -1, 1, 2, 3, -1 ], 1, 3 );
+  test.is( _.constructorIsVector( src.constructor ) );
+
+  test.case = 'src - vectorAdapter constructor, routine fromLongLrangeAndStride';
+  var src = vad.fromLongLrangeAndStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
+  test.is( _.constructorIsVector( src.constructor ) );
+}
+
+//
+
 function fromLongReview( test )
 {
 
@@ -1016,6 +1070,8 @@ var Self =
   {
 
     comparator,
+    vectorAdapterIs, /* Dmytro : the first part of routine in module wTools */
+    constructorIsVector, /* Dmytro : the first part of routine in module wTools */
 
     // from
 

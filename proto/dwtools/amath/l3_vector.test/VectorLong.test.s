@@ -31,50 +31,6 @@ _.assert( _.routineIs( sqrt ) );
 // test
 // --
 
-function vectorAdapterIs( test )
-{
-
-  var a = [ 1, 2, 3 ];
-  var n1 = 1;
-  var n2 = '1';
-  var n3 = arguments;
-  var n4 = function( x ){};
-
-  var v1 = vad.fromLong([ 1, 2, 3 ]);
-  var v2 = vad.fromLongLrange( [ -1, 1, 2, 3, -1 ], 1, 3 );
-  var v3 = vad.fromLongLrangeAndStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
-  var v4 = vad.fromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
-  var v5 = vad.from([ 1, 2, 3 ]);
-
-  test.case = 'vectorAdapterIs'; /* */
-
-  test.is( !_.vectorAdapterIs( a ) );
-  test.is( !_.vectorAdapterIs( n1 ) );
-  test.is( !_.vectorAdapterIs( n2 ) );
-  test.is( !_.vectorAdapterIs( n3 ) );
-
-  test.is( _.vectorAdapterIs( v1 ) );
-  test.is( _.vectorAdapterIs( v2 ) );
-  test.is( _.vectorAdapterIs( v3 ) );
-  test.is( _.vectorAdapterIs( v4 ) );
-  test.is( _.vectorAdapterIs( v5 ) );
-
-  test.case = 'constructorIsVector'; /* */
-
-  test.is( !_.constructorIsVector( a.constructor ) );
-  test.is( !_.constructorIsVector( n3.constructor ) );
-  test.is( !_.constructorIsVector( n4.constructor ) );
-
-  test.is( _.constructorIsVector( v1.constructor ) );
-  test.is( _.constructorIsVector( v2.constructor ) );
-  test.is( _.constructorIsVector( v3.constructor ) );
-  test.is( _.constructorIsVector( v4.constructor ) );
-  test.is( _.constructorIsVector( v5.constructor ) );
-
-}
-
-//
-
 function basic( test )
 {
 
@@ -7799,7 +7755,6 @@ var Self =
   tests : /* qqq : move out routines which should be in VectorAdapter.test.s. ask how */
   {
 
-    vectorAdapterIs,
     basic,
 
     allFinite,
