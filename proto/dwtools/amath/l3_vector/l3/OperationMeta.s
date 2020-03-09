@@ -136,11 +136,12 @@ function operationNormalizeInput( operation, routineName )
 {
 
   let delimeter = [ 'w', 'r', 'v', 's', 'm', 't', 'a', 'n', '?', '*', '+', '!' ];
-  var tokenRoutine =
+  let tokenRoutine =
   {
     'w' : tokenWrite,
     'r' : tokenRead,
     'v' : tokenVector,
+    'l' : tokenLong,
     's' : tokenScalar,
     'm' : tokenMatrix,
     't' : tokenSomething,
@@ -182,24 +183,8 @@ function operationNormalizeInput( operation, routineName )
   inputDescriptor.takingVectorsOnly = true;
   operation.input = inputDescriptor;
 
-  for( let i = 0 ; i < inputDescriptor.args.length ; i++ )
-  {
-    let argDescriptor = inputDescriptor.args[ i ];
-    inputDescriptor.takingArguments[ 0 ] += argDescriptor.times[ 0 ];
-    inputDescriptor.takingArguments[ 1 ] += argDescriptor.times[ 1 ];
-    if( argDescriptor.isVector )
-    {
-      if( argDescriptor.isVector === true )
-      inputDescriptor.takingVectors[ 0 ] += argDescriptor.times[ 0 ];
-      inputDescriptor.takingVectors[ 1 ] += argDescriptor.times[ 1 ];
-      if( argDescriptor.isVector === _.maybe )
-      inputDescriptor.takingVectorsOnly = false;
-    }
-    else
-    {
-      inputDescriptor.takingVectorsOnly = false;
-    }
-  }
+  seriesByLengthForm();
+  takingForm();
 
   return inputDescriptor;
 
@@ -290,7 +275,16 @@ function operationNormalizeInput( operation, routineName )
       _.assert( c.typeDescriptor.isVector === null );
       c.typeDescriptor.isVector = true;
     }
+  }
 
+  /* */
+
+  function tokenLong( c )
+  {
+    _.assert( c.typeDescriptor.type === null );
+    c.typeDescriptor.type = 'l';
+    _.assert( c.typeDescriptor.isVector === null );
+    c.typeDescriptor.isVector = false;
   }
 
   /* */
@@ -384,7 +378,7 @@ function operationNormalizeInput( operation, routineName )
 
   function tokenBut( c )
   {
-    _.assert( c.splits.length > c.i+1 );
+    _.assert( c.i+1 < c.splits.length );
     let next = c.splits[ c.i+1 ];
     c.typeDescriptor.type = '!' + next;
     c.i += 1;
@@ -399,7 +393,6 @@ function operationNormalizeInput( operation, routineName )
 
   function tokenEtc( c )
   {
-    // debugger;
     let times = _.numberFromStr( c.split );
     _.assert( _.numberDefined( times ) );
     _.assert( c.splits[ c.i+1 ] === '*' );
@@ -436,11 +429,129 @@ function operationNormalizeInput( operation, routineName )
       i = c.i;
     }
 
-    // if( c.typeDescriptor.isVector )
-    // if( c.typeDescriptor.times[ 0 ] === 0 )
-    // c.typeDescriptor.isVector = _.maybe;
-
     return c.typeDescriptor;
+  }
+
+  /* */
+
+  function seriesByLengthForm()
+  {
+    let alternatives = [ [] ];
+
+    // if( routineName === 'add' )
+    // debugger;
+    // if( inputDescriptor.definition === '?vw|?n 3*vr|3*s' )
+    // debugger;
+
+    for( let i = 0 ; i < inputDescriptor.args.length ; i++ )
+    {
+      let argDescriptor = inputDescriptor.args[ i ];
+
+      _.assert( argDescriptor.times[ 1 ] >= 1 );
+
+      // if( routineName === 'add' )
+      // debugger;
+
+      let first = 0;
+      let last = alternatives.length-1;
+      let al = alternatives.length;
+      if( argDescriptor.times[ 0 ] === 0 )
+      {
+        for( let a = 0 ; a < al ; a++ )
+        {
+          alternatives[ a+al ] = alternatives[ a ].slice();
+        }
+        first += al;
+        last += al;
+      }
+
+      // let tl = Math.min( argDescriptor.times[ 1 ], 5 );
+      // for( let t = Math.max( argDescriptor.times[ 0 ], 1 ) ; t <= tl ; t++ )
+      {
+        let last2 = Math.max( argDescriptor.times[ 0 ], 1 );
+        for( let a = first ; a <= last ; a++ )
+        {
+          for( let d = 1 ; d <= last2 ; d++ )
+          {
+            alternatives[ a ].push( argDescriptor.types.slice() );
+          }
+        }
+      }
+
+      {
+        let first2 = Math.max( argDescriptor.times[ 0 ]+1, 2 );
+        let last2 = Math.min( argDescriptor.times[ 1 ], 5 );
+        for( let t = first2 ; t <= last2 ; t++ )
+        {
+          for( let a = first ; a <= last ; a++ )
+          {
+            let alt2 = alternatives[ a ].slice();
+            alternatives.push( alt2 );
+            for( let d = 2 ; d <= t ; d++ )
+            {
+              alt2.push( argDescriptor.types.slice() );
+            }
+          }
+        }
+      }
+
+    }
+
+    // if( routineName === 'add' )
+    // debugger;
+
+    inputDescriptor.seriesByLength = Object.create( null );
+
+    // if( inputDescriptor.definition === '?vw|?n 3*vr|3*s' )
+    // debugger;
+
+    for( let a = 0 ; a < alternatives.length ; a++ )
+    {
+      let alt = alternatives[ a ];
+      if( !inputDescriptor.seriesByLength[ alt.length ] )
+      {
+        let series = inputDescriptor.seriesByLength[ alt.length ] = [];
+        for( let s = 0 ; s < alt.length ; s++ )
+        series[ s ] = alt[ s ].slice();
+      }
+      else
+      {
+        let series = inputDescriptor.seriesByLength[ alt.length ];
+        for( let s = 0 ; s < alt.length ; s++ )
+        _.arrayAppendArrayOnce( series[ s ], alt[ s ] );
+      }
+    }
+
+    // if( inputDescriptor.definition === '?vw|?n 3*vr|3*s' )
+    // debugger;
+
+  }
+
+  /* */
+
+  function takingForm()
+  {
+
+    for( let i = 0 ; i < inputDescriptor.args.length ; i++ )
+    {
+      let argDescriptor = inputDescriptor.args[ i ];
+
+      inputDescriptor.takingArguments[ 0 ] += argDescriptor.times[ 0 ];
+      inputDescriptor.takingArguments[ 1 ] += argDescriptor.times[ 1 ];
+      if( argDescriptor.isVector )
+      {
+        if( argDescriptor.isVector === true )
+        inputDescriptor.takingVectors[ 0 ] += argDescriptor.times[ 0 ];
+        inputDescriptor.takingVectors[ 1 ] += argDescriptor.times[ 1 ];
+        if( argDescriptor.isVector === _.maybe )
+        inputDescriptor.takingVectorsOnly = false;
+      }
+      else
+      {
+        inputDescriptor.takingVectorsOnly = false;
+      }
+    }
+
   }
 
   /* */
