@@ -2284,78 +2284,6 @@ dop.modifying = false;
 // dop = le.operation = Routines.isLessEqual.operation;
 // _.assert( _.objectIs( dop ) );
 
-//
-
-function dot( dst, src )
-{
-  let result = 0;
-  let length = dst.length;
-
-  _.assert( _.vectorAdapterIs( dst ) );
-  _.assert( _.vectorAdapterIs( src ) );
-  _.assert( dst.length === src.length, 'src and dst should have same length' );
-  _.assert( arguments.length === 2 );
-
-  for( let s = 0 ; s < length ; s++ )
-  {
-    result += dst.eGet( s ) * src.eGet( s );
-  }
-
-  return result;
-}
-
-dop = dot.operation = Object.create( null );
-dop.input = 'vr vr';
-dop.takingArguments = 2;
-dop.takingVectors = 2;
-dop.takingVectorsOnly = true;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.modifying = false;
-
-//
-
-function distance( src1, src2 )
-{
-  let result = this.distanceSqr( src1, src2 );
-  result = sqrt( result );
-  return result;
-}
-
-dop = distance.operation = Object.create( null );
-dop.input = 'vr vr';
-dop.takingArguments = 2;
-dop.takingVectors = 2;
-dop.takingVectorsOnly = true;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.modifying = false;
-
-//
-
-function distanceSqr( src1, src2 )
-{
-  let result = 0;
-  let length = src1.length;
-
-  _.assert( src1.length === src2.length, 'vector.distanceSqr :', 'src1 and src2 should have same length' );
-
-  for( let s = 0 ; s < length ; s++ )
-  {
-    result += _sqr( src1.eGet( s ) - src2.eGet( s ) );
-  }
-
-  return result;
-}
-
-dop = distanceSqr.operation = Object.create( null );
-dop.input = 'vr vr';
-dop.takingArguments = 2;
-dop.takingVectors = 2;
-dop.takingVectorsOnly = true;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.modifying = false;
 
 // --
 // interruptible reductor with bool result
@@ -2624,6 +2552,81 @@ dop.takingVectors = [ 1, 1 ];
 // --
 // statistics
 // --
+
+//
+
+function dot( dst, src )
+{
+  let result = 0;
+  let length = dst.length;
+
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.vectorAdapterIs( src ) );
+  _.assert( dst.length === src.length, 'src and dst should have same length' );
+  _.assert( arguments.length === 2 );
+
+  for( let s = 0 ; s < length ; s++ )
+  {
+    result += dst.eGet( s ) * src.eGet( s );
+  }
+
+  return result;
+}
+
+dop = dot.operation = Object.create( null );
+dop.input = 'vr vr';
+dop.takingArguments = 2;
+dop.takingVectors = 2;
+dop.takingVectorsOnly = true;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.modifying = false;
+
+//
+
+function distance( src1, src2 )
+{
+  let result = this.distanceSqr( src1, src2 );
+  result = sqrt( result );
+  return result;
+}
+
+dop = distance.operation = Object.create( null );
+dop.input = 'vr vr';
+dop.takingArguments = 2;
+dop.takingVectors = 2;
+dop.takingVectorsOnly = true;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.modifying = false;
+
+//
+
+function distanceSqr( src1, src2 )
+{
+  let result = 0;
+  let length = src1.length;
+
+  _.assert( src1.length === src2.length, 'vector.distanceSqr :', 'src1 and src2 should have same length' );
+
+  for( let s = 0 ; s < length ; s++ )
+  {
+    result += _sqr( src1.eGet( s ) - src2.eGet( s ) );
+  }
+
+  return result;
+}
+
+dop = distanceSqr.operation = Object.create( null );
+dop.input = 'vr vr';
+dop.takingArguments = 2;
+dop.takingVectors = 2;
+dop.takingVectorsOnly = true;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.modifying = false;
+
+//
 
 function median( v )
 {
@@ -3095,6 +3098,8 @@ let _routinesMathematical =
   la : Routines.isLessAprox,
   lea : Routines.isLessEqualAprox,
 
+  //
+
   isIdentical : Routines.isIdentical,
   isNotIdentical : Routines.isNotIdentical,
   isEquivalent : Routines.isEquivalent,
@@ -3108,7 +3113,8 @@ let _routinesMathematical =
   isLessEqual : Routines.isLessEqual,
   isLessEqualAprox : Routines.isLessEqualAprox,
   isLessAprox : Routines.isLessAprox,
-    // logical2 reductor
+
+  // logical2 reductor
 
   allIdentical : Routines.allIdentical,
   allNotIdentical : Routines.allNotIdentical,
@@ -3151,10 +3157,6 @@ let _routinesMathematical =
   noneLessEqual : Routines.noneLessEqual,
   noneLessEqualAprox : Routines.noneLessEqualAprox,
   noneLessAprox : Routines.noneLessAprox,
-
-  dot,
-  distance,
-  distanceSqr,
 
   // logical1 singler
 
@@ -3214,6 +3216,10 @@ let _routinesMathematical =
   magSqr,
 
   // statistics
+
+  dot,
+  distance,
+  distanceSqr,
 
   median,
 
