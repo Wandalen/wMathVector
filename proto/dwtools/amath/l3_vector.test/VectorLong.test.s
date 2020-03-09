@@ -1635,7 +1635,7 @@ function heterogeneousScaledRoutines( test )
   shouldThrowErrorOfAnyKind( 'subScaled' );
 }
 
-heterogeneous.timeOut = 15000;
+heterogeneousScaledRoutines.timeOut = 15000;
 
 //
 
@@ -7307,101 +7307,6 @@ momentCentral.timeOut = 15000;
 
 //
 
-function swap( test )
-{
-
-  test.case = 'swapVectors vectors'; /* */
-
-  var v1 = vad.from([ 1, 2, 3 ]);
-  var v2 = vad.from([ 10, 20, 30 ]);
-  var v1Expected = vad.from([ 10, 20, 30 ]);
-  var v2Expected = vad.from([ 1, 2, 3 ]);
-
-  var r = vad.swapVectors( v1, v2 );
-
-  test.is( r === undefined );
-  test.identical( v1, v1Expected );
-  test.identical( v2, v2Expected );
-
-  test.case = 'swapVectors arrays'; /* */
-
-  var v1 = [ 1, 2, 3 ];
-  var v2 = [ 10, 20, 30 ];
-  var v1Expected = [ 10, 20, 30 ];
-  var v2Expected = [ 1, 2, 3 ];
-
-  var r = avector.swapVectors( v1, v2 );
-
-  test.is( r === undefined );
-  test.identical( v1, v1Expected );
-  test.identical( v2, v2Expected );
-
-  test.case = 'swapVectors empty arrays'; /* */
-
-  var v1 = [];
-  var v2 = [];
-  var v1Expected = [];
-  var v2Expected = [];
-
-  var r = avector.swapVectors( v1, v2 );
-
-  test.is( r === undefined );
-  test.identical( v1, v1Expected );
-  test.identical( v2, v2Expected );
-
-  test.case = 'swapAtoms vectors'; /* */
-
-  var v1 = vad.from([ 1, 2, 3 ]);
-  var v1Expected = vad.from([ 3, 2, 1 ]);
-  var r = vad.swapAtoms( v1, 0, 2 );
-
-  test.is( r === v1 );
-  test.identical( v1, v1Expected );
-
-  test.case = 'swapAtoms arrays'; /* */
-
-  var v1 = [ 1, 2, 3 ];
-  var v1Expected = [ 3, 2, 1 ];
-  var r = avector.swapAtoms( v1, 0, 2 );
-
-  test.is( r === v1 );
-  test.identical( v1, v1Expected );
-
-  test.case = 'swapAtoms array with single atom'; /* */
-
-  var v1 = [ 1 ];
-  var v1Expected = [ 1 ];
-  var r = avector.swapAtoms( v1, 0, 0 );
-
-  test.is( r === v1 );
-  test.identical( v1, v1Expected );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => vad.swapVectors() );
-  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), vad.from([ 1, 2, 3 ]), vad.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), vad.from([ 1, 2 ]) ) );
-  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => vad.swapVectors( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
-
-  test.shouldThrowErrorSync( () => vad.swapAtoms() );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0 ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0, +3 ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0, -1 ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), '0', '1' ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
-
-}
-
-swap.timeOut = 15000;
-
-//
-
 function polynomApply( test )
 {
 
@@ -7734,7 +7639,6 @@ var Self =
     // homogeneousWithScalar,
     // homogeneousOnlyVectors,
 
-    swap,
     polynomApply,
 
     assign,
