@@ -31,35 +31,6 @@ _.assert( _.routineIs( sqrt ) );
 // test
 // --
 
-function comparator( test )
-{
-
-  test.case = 'trivial';
-
-  let v1 = vad.from([ 1, 2, 3 ]);
-  let v2 = vad.from([ 1, 2, 4 ]);
-
-  let diff = _.entityDiff( v1, v2 );
-  let expected =
-`
-at /2
-- src1 :
-  1.000 2.000 3.000
-- src2 :
-  1.000 2.000 4.000
-- difference :
-  1.000 2.000 *
-`
-
-  console.log( diff );
-
-  test.identical.apply( test, _.strLinesStrip( diff, expected ) );
-  test.notIdentical( v1, v2 );
-
-}
-
-//
-
 function vectorAdapterIs( test )
 {
 
@@ -7828,7 +7799,6 @@ var Self =
   tests : /* qqq : move out routines which should be in VectorAdapter.test.s. ask how */
   {
 
-    comparator,
     vectorAdapterIs,
     basic,
 
