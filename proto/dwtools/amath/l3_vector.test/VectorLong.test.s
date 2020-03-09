@@ -31,25 +31,6 @@ _.assert( _.routineIs( sqrt ) );
 // test
 // --
 
-function allFinite( test )
-{
-
-  test.identical( _.avector.allFinite([ 1, 2, 3 ]), true );
-  test.identical( _.avector.allFinite([ 0, 0, 0 ]), true );
-  test.identical( _.avector.allFinite([ 0, 0, 1 ]), true );
-
-  test.identical( _.avector.allFinite([ 1, 3, NaN ]), false );
-  test.identical( _.avector.allFinite([ 1, NaN, 3 ]), false );
-  test.identical( _.avector.allFinite([ 1, 3, -Infinity ]), false );
-  test.identical( _.avector.allFinite([ 1, +Infinity, 3 ]), false );
-
-  test.identical( _.avector.allFinite([ 1.1, 0, 1 ]), true );
-  test.identical( _.avector.allFinite([ 1, 0, 1.1 ]), true );
-
-}
-
-//
-
 function anyNan( test )
 {
 
@@ -64,25 +45,6 @@ function anyNan( test )
 
   test.identical( _.avector.anyNan([ 1.1, 0, 1 ]), false );
   test.identical( _.avector.anyNan([ 1, 0, 1.1 ]), false );
-
-}
-
-//
-
-function allInt( test )
-{
-
-  test.identical( _.avector.allInt([ 1, 2, 3 ]), true );
-  test.identical( _.avector.allInt([ 0, 0, 0 ]), true );
-  test.identical( _.avector.allInt([ 0, 0, 1 ]), true );
-
-  test.identical( _.avector.allInt([ 1, 3, NaN ]), false );
-  test.identical( _.avector.allInt([ 1, NaN, 3 ]), false );
-  test.identical( _.avector.allInt([ 1, 3, -Infinity ]), true );
-  test.identical( _.avector.allInt([ 1, +Infinity, 3 ]), true );
-
-  test.identical( _.avector.allInt([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector.allInt([ 1, 0, 1.1 ]), false );
 
 }
 
@@ -2596,6 +2558,43 @@ function allLessAprox( test )
 
 allLessAprox.timeOut = 150000;
 
+//
+
+function allFinite( test )
+{
+
+  test.identical( _.avector.allFinite([ 1, 2, 3 ]), true );
+  test.identical( _.avector.allFinite([ 0, 0, 0 ]), true );
+  test.identical( _.avector.allFinite([ 0, 0, 1 ]), true );
+
+  test.identical( _.avector.allFinite([ 1, 3, NaN ]), false );
+  test.identical( _.avector.allFinite([ 1, NaN, 3 ]), false );
+  test.identical( _.avector.allFinite([ 1, 3, -Infinity ]), false );
+  test.identical( _.avector.allFinite([ 1, +Infinity, 3 ]), false );
+
+  test.identical( _.avector.allFinite([ 1.1, 0, 1 ]), true );
+  test.identical( _.avector.allFinite([ 1, 0, 1.1 ]), true );
+
+}
+
+//
+
+function allInt( test )
+{
+
+  test.identical( _.avector.allInt([ 1, 2, 3 ]), true );
+  test.identical( _.avector.allInt([ 0, 0, 0 ]), true );
+  test.identical( _.avector.allInt([ 0, 0, 1 ]), true );
+
+  test.identical( _.avector.allInt([ 1, 3, NaN ]), false );
+  test.identical( _.avector.allInt([ 1, NaN, 3 ]), false );
+  test.identical( _.avector.allInt([ 1, 3, -Infinity ]), true );
+  test.identical( _.avector.allInt([ 1, +Infinity, 3 ]), true );
+
+  test.identical( _.avector.allInt([ 1.1, 0, 1 ]), false );
+  test.identical( _.avector.allInt([ 1, 0, 1.1 ]), false );
+
+}
 
 //
 
@@ -7624,9 +7623,7 @@ var Self =
   tests : /* qqq : move out routines which should be in VectorAdapter.test.s. ask how */
   {
 
-    allFinite,
     anyNan,
-    allInt,
 
     map,
 
@@ -7665,6 +7662,11 @@ var Self =
     allLessEqualAprox,
     allLessAprox,
 
+    allFinite,
+    allInt,
+
+    //
+
     anyIdentical,
     anyNotIdentical,
     anyEquivalent,
@@ -7675,6 +7677,8 @@ var Self =
     anyGreaterAprox,
     anyLessEqualAprox,
     anyLessAprox,
+
+    //
 
     noneIdentical,
     noneNotIdentical,
