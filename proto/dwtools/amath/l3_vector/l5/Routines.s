@@ -3043,11 +3043,6 @@ let _routinesMathematical =
   reduceToMagConditional : Routines.reduceToMagConditional,
   reduceToMagSqrConditional : Routines.reduceToMagSqrConditional,
 
-  // allFinite : Routines.allFinite,
-  // anyNan : Routines.anyNan,
-  // allInt : Routines.allInt,
-  // allZero : Routines.allZero,
-
   // allFiniteConditional : Routines.allFiniteConditional,
   // anyNanConditional : Routines.anyNanConditional,
   // allIntConditional : Routines.allIntConditional,
@@ -3114,6 +3109,14 @@ let _routinesMathematical =
   isLessEqualAprox : Routines.isLessEqualAprox,
   isLessAprox : Routines.isLessAprox,
 
+  isNumber : Routines.isNumber,
+  isZero : Routines.isZero,
+  isFinite : Routines.isFinite,
+  isInfinite : Routines.isInfinite,
+  isNan : Routines.isNan,
+  isInt : Routines.isInt,
+  isString : Routines.isString,
+
   // logical2 reductor
 
   allIdentical : Routines.allIdentical,
@@ -3130,6 +3133,16 @@ let _routinesMathematical =
   allLessEqualAprox : Routines.allLessEqualAprox,
   allLessAprox : Routines.allLessAprox,
 
+  allNumber : Routines.allNumber,
+  allZero : Routines.allZero,
+  allFinite : Routines.allFinite,
+  allInfinite : Routines.allInfinite,
+  allNan : Routines.allNan,
+  allInt : Routines.allInt,
+  allString : Routines.allString,
+
+  //
+
   anyIdentical : Routines.anyIdentical,
   anyNotIdentical : Routines.anyNotIdentical,
   anyEquivalent : Routines.anyEquivalent,
@@ -3143,6 +3156,16 @@ let _routinesMathematical =
   anyLessEqual : Routines.anyLessEqual,
   anyLessEqualAprox : Routines.anyLessEqualAprox,
   anyLessAprox : Routines.anyLessAprox,
+
+  anyNumber : Routines.anyNumber,
+  anyZero : Routines.anyZero,
+  anyFinite : Routines.anyFinite,
+  anyInfinite : Routines.anyInfinite,
+  anyNan : Routines.anyNan,
+  anyInt : Routines.anyInt,
+  anyString : Routines.anyString,
+
+  //
 
   noneIdentical : Routines.noneIdentical,
   noneNotIdentical : Routines.noneNotIdentical,
@@ -3158,6 +3181,14 @@ let _routinesMathematical =
   noneLessEqualAprox : Routines.noneLessEqualAprox,
   noneLessAprox : Routines.noneLessAprox,
 
+  noneNumber : Routines.noneNumber,
+  noneZero : Routines.noneZero,
+  noneFinite : Routines.noneFinite,
+  noneInfinite : Routines.noneInfinite,
+  noneNan : Routines.noneNan,
+  noneInt : Routines.noneInt,
+  noneString : Routines.noneString,
+
   // logical1 singler
 
 /*
@@ -3168,38 +3199,6 @@ let _routinesMathematical =
   _declareLogic1ReducingSinglerNoneRoutine,
   declareLogic1Routines,
 */
-
-  isNumber : Routines.isNumber,
-  isZero : Routines.isZero,
-  isFinite : Routines.isFinite,
-  isInfinite : Routines.isInfinite,
-  isNan : Routines.isNan,
-  isInt : Routines.isInt,
-  isString : Routines.isString,
-
-  allNumber : Routines.allNumber,
-  allZero : Routines.allZero,
-  allFinite : Routines.allFinite,
-  allInfinite : Routines.allInfinite,
-  allNan : Routines.allNan,
-  allInt : Routines.allInt,
-  allString : Routines.allString,
-
-  anyNumber : Routines.anyNumber,
-  anyZero : Routines.anyZero,
-  anyFinite : Routines.anyFinite,
-  anyInfinite : Routines.anyInfinite,
-  anyNan : Routines.anyNan,
-  anyInt : Routines.anyInt,
-  anyString : Routines.anyString,
-
-  noneNumber : Routines.noneNumber,
-  noneZero : Routines.noneZero,
-  noneFinite : Routines.noneFinite,
-  noneInfinite : Routines.noneInfinite,
-  noneNan : Routines.noneNan,
-  noneInt : Routines.noneInt,
-  noneString : Routines.noneString,
 
   // interruptible reductor with bool result
 
