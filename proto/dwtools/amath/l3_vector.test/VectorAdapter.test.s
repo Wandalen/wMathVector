@@ -114,6 +114,96 @@ function constructorIsVector( test )
 
 //
 
+function to( test )
+{
+
+  test.case = 'vector to array'; /* */
+
+  var v = vad.from([ 1, 2, 3 ]);
+  var got = v.to( [].constructor );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+
+  test.case = 'vector to vector'; /* */
+
+  var v = vad.from([ 1, 2, 3 ]);
+  var got = v.to( vad.fromLong( [] ).constructor );
+  test.is( got === v );
+
+  test.case = 'bad arguments'; /* */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to() );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( [], 1 ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( 1 ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( null ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( '1' ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( [], 1 ) );
+
+}
+
+//
+
+function toLong( test )
+{
+
+  test.case = 'trivial'; /* */
+
+  var v = vad.from([ 1, 2, 3 ]);
+  var got = v.toLong();
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer === got );
+
+  test.case = 'trivial with fromLongLrangeAndStride'; /* */
+
+  var v = vad.fromLongLrangeAndStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
+  var got = v.toLong();
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer === got );
+
+  test.case = 'with custom offset'; /* */
+
+  var v = vad.fromLongLrange( [ 1, 2, 3, 4, 5 ], 1 );
+  var got = v.toLong();
+  var expected = [ 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer !== got );
+
+  test.case = 'with custom length'; /* */
+
+  var v = vad.fromLongLrange( [ 1, 2, 3, 4, 5 ], 0, 4 );
+  var got = v.toLong();
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer !== got );
+
+  test.case = 'with fromLongLrangeAndStride'; /* */
+
+  var v = vad.fromLongLrangeAndStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
+  var got = v.toLong();
+  var expected = [ 2, 4 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer !== got );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( 0 ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( undefined ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( null ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( _.vectorAdapter.from([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( '123' ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( function( a, b, c ){} ) );
+
+}
+
+//
+
 function fromLongReview( test )
 {
 
@@ -1072,6 +1162,9 @@ var Self =
     comparator,
     vectorAdapterIs, /* Dmytro : the first part of routine in module wTools */
     constructorIsVector, /* Dmytro : the first part of routine in module wTools */
+
+    to,
+    toLong,
 
     // from
 
