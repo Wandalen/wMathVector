@@ -1303,6 +1303,155 @@ function div( test )
 
 div.timeOut = 15000;
 
+//
+
+function mean( test )
+{
+
+  test.case = 'simple even'; /* */
+
+  var expected = 2.5;
+  var got = _.avector.mean([ 1, 2, 3, 4 ]);
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd'; /* */
+
+  var expected = 2;
+  var got = _.avector.mean([ 1, 2, 3 ]);
+  test.equivalent( got, expected );
+
+  test.case = 'empty'; /* */
+
+  var expected = 0;
+  var got = _.avector.mean([]);
+  test.equivalent( got, expected );
+
+  test.case = 'simple even, filtering'; /* */
+
+  var expected = 2;
+  var got = _.avector.meanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd, filtering'; /* */
+
+  var expected = 2;
+  var got = _.avector.meanConditional( [ 1, 2, 3 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'empty, filtering'; /* */
+
+  var expected = 0;
+  var got = _.avector.meanConditional( [], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'bad arguments'; /* */
+
+  test.shouldThrowErrorSync( () => _.mean() );
+  test.shouldThrowErrorSync( () => _.mean( 'x' ) );
+  test.shouldThrowErrorSync( () => _.mean( 1 ) );
+  test.shouldThrowErrorSync( () => _.mean( [ 1 ], 'x' ) );
+  test.shouldThrowErrorSync( () => _.mean( [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.mean( [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.mean( [ 1 ], [ 1 ] ) );
+
+  test.shouldThrowErrorSync( () => _.meanConditional() );
+  test.shouldThrowErrorSync( () => _.meanConditional( () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], [ 1 ], () => true ) );
+
+}
+
+mean.timeOut = 15000;
+
+//
+
+function moment( test )
+{
+
+  test.case = 'first even'; /* */
+
+  var expected = 2.5;
+  var got = _.avector.moment( [ 1, 2, 3, 4 ], 1 );
+  test.equivalent( got, expected );
+
+  test.case = 'first odd'; /* */
+
+  var expected = 2;
+  var got = _.avector.moment( [ 1, 2, 3 ], 1 );
+  test.equivalent( got, expected );
+
+  test.case = 'first empty'; /* */
+
+  var expected = 0;
+  var got = _.avector.moment( [], 1 );
+  test.equivalent( got, expected );
+
+  test.case = 'second even'; /* */
+
+  var expected = 30 / 4;
+  var got = _.avector.moment( [ 1, 2, 3, 4 ], 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'second odd'; /* */
+
+  var expected = 14 / 3;
+  var got = _.avector.moment( [ 1, 2, 3 ], 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'second empty'; /* */
+
+  var expected = 0;
+  var got = _.avector.moment( [], 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'simple even, filtering'; /* */
+
+  var expected = 5;
+  var got = _.avector.momentConditional( [ 1, 2, 3, 4 ], 2, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd, filtering'; /* */
+
+  var expected = 5;
+  var got = _.avector.momentConditional( [ 1, 2, 3 ], 2, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'empty, filtering'; /* */
+
+  var expected = 0;
+  var got = _.avector.momentConditional( [], 2, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'bad arguments'; /* */
+
+  test.shouldThrowErrorSync( () => _.moment() );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.moment( 1 ) );
+  test.shouldThrowErrorSync( () => _.moment( 'x', 1 ) );
+  test.shouldThrowErrorSync( () => _.moment( 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ], 'x' ) );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ], [ 1 ] ) );
+
+  test.shouldThrowErrorSync( () => _.momentConditional() );
+  test.shouldThrowErrorSync( () => _.momentConditional( () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( 'x', 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( 1, 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( 1, [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], [ 1 ], () => true ) );
+
+}
+
+moment.timeOut = 15000;
 
 // --
 //
@@ -5580,156 +5729,6 @@ function median( test )
 }
 
 median.timeOut = 15000;
-
-//
-
-function mean( test )
-{
-
-  test.case = 'simple even'; /* */
-
-  var expected = 2.5;
-  var got = _.avector.mean([ 1, 2, 3, 4 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd'; /* */
-
-  var expected = 2;
-  var got = _.avector.mean([ 1, 2, 3 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.mean([]);
-  test.equivalent( got, expected );
-
-  test.case = 'simple even, filtering'; /* */
-
-  var expected = 2;
-  var got = _.avector.meanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd, filtering'; /* */
-
-  var expected = 2;
-  var got = _.avector.meanConditional( [ 1, 2, 3 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'empty, filtering'; /* */
-
-  var expected = 0;
-  var got = _.avector.meanConditional( [], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.mean() );
-  test.shouldThrowErrorSync( () => _.mean( 'x' ) );
-  test.shouldThrowErrorSync( () => _.mean( 1 ) );
-  test.shouldThrowErrorSync( () => _.mean( [ 1 ], 'x' ) );
-  test.shouldThrowErrorSync( () => _.mean( [ 1 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.mean( [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.mean( [ 1 ], [ 1 ] ) );
-
-  test.shouldThrowErrorSync( () => _.meanConditional() );
-  test.shouldThrowErrorSync( () => _.meanConditional( () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], [ 1 ], () => true ) );
-
-}
-
-mean.timeOut = 15000;
-
-//
-
-function moment( test )
-{
-
-  test.case = 'first even'; /* */
-
-  var expected = 2.5;
-  var got = _.avector.moment( [ 1, 2, 3, 4 ], 1 );
-  test.equivalent( got, expected );
-
-  test.case = 'first odd'; /* */
-
-  var expected = 2;
-  var got = _.avector.moment( [ 1, 2, 3 ], 1 );
-  test.equivalent( got, expected );
-
-  test.case = 'first empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.moment( [], 1 );
-  test.equivalent( got, expected );
-
-  test.case = 'second even'; /* */
-
-  var expected = 30 / 4;
-  var got = _.avector.moment( [ 1, 2, 3, 4 ], 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second odd'; /* */
-
-  var expected = 14 / 3;
-  var got = _.avector.moment( [ 1, 2, 3 ], 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.moment( [], 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'simple even, filtering'; /* */
-
-  var expected = 5;
-  var got = _.avector.momentConditional( [ 1, 2, 3, 4 ], 2, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd, filtering'; /* */
-
-  var expected = 5;
-  var got = _.avector.momentConditional( [ 1, 2, 3 ], 2, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'empty, filtering'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentConditional( [], 2, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.moment() );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.moment( 1 ) );
-  test.shouldThrowErrorSync( () => _.moment( 'x', 1 ) );
-  test.shouldThrowErrorSync( () => _.moment( 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ], 'x' ) );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ], [ 1 ] ) );
-
-  test.shouldThrowErrorSync( () => _.momentConditional() );
-  test.shouldThrowErrorSync( () => _.momentConditional( () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( 'x', 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( 1, 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( 1, [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], [ 1 ], () => true ) );
-
-}
-
-moment.timeOut = 15000;
 
 //
 
