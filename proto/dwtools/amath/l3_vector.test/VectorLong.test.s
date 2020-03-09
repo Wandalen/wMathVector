@@ -2315,6 +2315,37 @@ mix.timeOut = 15000;
 
 //
 
+function polynomApply( test )
+{
+
+  test.case = 'trivial'; /* */
+
+  var expected = 7;
+  var got = _.avector.polynomApply( [ 1, 1, 1 ], 2 );
+  test.identical( got, expected );
+
+  test.case = 'trivial'; /* */
+
+  var expected = 36;
+  var got = _.avector.polynomApply( [ 0, 1, 2 ], 4 );
+  test.identical( got, expected );
+
+  test.case = 'trivial'; /* */
+
+  var expected = 6;
+  var got = _.avector.polynomApply( [ 2, 1, 0 ], 4 );
+  test.identical( got, expected );
+
+  test.case = 'trivial'; /* */
+
+  var expected = 262;
+  var got = _.avector.polynomApply( [ 2, 1, 0, 4 ], 4 );
+  test.identical( got, expected );
+
+}
+
+//
+
 function mean( test )
 {
 
@@ -7307,39 +7338,6 @@ momentCentral.timeOut = 15000;
 
 //
 
-function polynomApply( test )
-{
-
-  test.case = 'trivial'; /* */
-
-  var expected = 7;
-  var got = _.avector.polynomApply( [ 1, 1, 1 ], 2 );
-  test.identical( got, expected );
-
-  test.case = 'trivial'; /* */
-
-  var expected = 36;
-  var got = _.avector.polynomApply( [ 0, 1, 2 ], 4 );
-  test.identical( got, expected );
-
-  test.case = 'trivial'; /* */
-
-  var expected = 6;
-  var got = _.avector.polynomApply( [ 2, 1, 0 ], 4 );
-  test.identical( got, expected );
-
-  test.case = 'trivial'; /* */
-
-  var expected = 262;
-  var got = _.avector.polynomApply( [ 2, 1, 0, 4 ], 4 );
-  test.identical( got, expected );
-
-}
-
-polynomApply.timeOut = 15000;
-
-//
-
 function assign( test )
 {
 
@@ -7544,6 +7542,8 @@ var Self =
     randomInRange,
     mix,
 
+    polynomApply,
+
     //
 
     mean,
@@ -7639,7 +7639,6 @@ var Self =
     // homogeneousWithScalar,
     // homogeneousOnlyVectors,
 
-    polynomApply,
 
     assign,
     mag,
