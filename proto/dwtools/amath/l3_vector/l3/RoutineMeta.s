@@ -337,6 +337,55 @@ function _adapterClassDeclare()
 
 //
 
+function _inputVerifyArgs( input, args, name )
+{
+  let meta = this;
+
+  _.assert( _.longIs( args ) );
+  _.assert( arguments.length === 3 );
+
+  let seria = input.seriesByLength[ args.length ];
+  _.assert( !!seria, `Routine::${name} does not expect ${args.length} arguments` );
+
+  for( let i = 0 ; i < args.length ; i++ )
+  {
+    let arg = args[ i ];
+
+    if( arg === null )
+    {
+      _.assert( _.longHas( seria[ i ], 'n' ), reason( i, 'null' ) );
+    }
+    else if( _.vectorAdapterIs( arg ) )
+    {
+      _.assert( _.longHas( seria[ i ], 'v' ), reason( i, 'vector adapter' ) );
+    }
+    else if( _.longIs( arg ) )
+    {
+      _.assert( _.longHas( seria[ i ], 'l' ), reason( i, 'long' ) );
+    }
+    else if( _.numberIs( arg ) )
+    {
+      _.assert( _.longHas( seria[ i ], 's' ), reason( i, 'number' ) );
+    }
+    else
+    {
+      _.assert( _.longHas( seria[ i ], 't' ), reason( i, 'arbitrary entity' ) );
+    }
+
+  }
+
+  return true;
+
+  function reason( index, expectedName )
+  {
+    return `${index} argument of routine::${name} cant be ${expectedName} if number of arguments is ${args.length}.
+Expects [ ${seria[ index ].join( ', ' )} ]`;
+  }
+
+}
+
+//
+
 function _onAtomGenBegin( dop )
 {
 
@@ -576,6 +625,9 @@ function _vectorsCallBegin( o, dop )
     _.assert( dop.takingArguments[ 0 ] < dop.takingArguments[ 1 ] );
     else
     _.assert( dop.takingArguments[ 1 ] - dop.takingArguments[ 0 ] <= 1 );
+
+    meta._inputVerifyArgs( dop.input, o.args, dop.name );
+
   }
 
   if( !dop.reducing && !dop.usingDstAsSrc )
@@ -1294,82 +1346,82 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults =
 // atom-wise, homogeneous, taking vectors
 // --
 
-function declareHomogeneousTakingVectorsRoutines()
-{
-  let meta = this;
-  let operations = _.vectorAdapter.operations;
-  let routines = _.vectorAdapter._meta.routines;
-
-  for( let _routineName in operations.atomWiseHomogeneous )
-  {
-
-    let atomOperation = operations.atomWiseHomogeneous[ _routineName ];
-    let routineName = _routineName + ( atomOperation.postfix !== undefined && atomOperation.postfix !== null ? atomOperation.postfix : 'Vectors' );
-    let operation = meta.operationSupplement( null, atomOperation );
-
-    _.assert( operation.atomOperation === undefined );
-    _.assert( _.strDefined( operation.name ) );
-    _.assert( _.routineIs( atomOperation.onAtom ) );
-    _.assert( !routines[ routineName ] );
-
-    operation.atomOperation = atomOperation;
-
-    if( !operation.takingArguments )
-    operation.takingArguments = [ 2, Infinity ];
-    else
-    operation.takingArguments[ 1 ] = Infinity;
-
-    if( operation.takingArguments[ 0 ] === 1 )
-    operation.input = [ 'vw', '*vr' ];
-    else if( operation.takingArguments[ 0 ] > 1 )
-    operation.input = [ 'vw', '+vr' ];
-    else _.assert( 0, 'unexpected' );
-
-    operation.name = routineName;
-
-    routines[ routineName ] = meta._routineForOperation_functor( operation );
-
-  }
-
-  _.assert( _.routineIs( routines.addVectors ) );
-
-}
+// function declareHomogeneousTakingVectorsRoutines()
+// {
+//   let meta = this;
+//   let operations = _.vectorAdapter.operations;
+//   let routines = _.vectorAdapter._meta.routines;
+//
+//   for( let _routineName in operations.atomWiseHomogeneous )
+//   {
+//
+//     let atomOperation = operations.atomWiseHomogeneous[ _routineName ];
+//     let routineName = _routineName + ( atomOperation.postfix !== undefined && atomOperation.postfix !== null ? atomOperation.postfix : 'Vectors' );
+//     let operation = meta.operationSupplement( null, atomOperation );
+//
+//     _.assert( operation.atomOperation === undefined );
+//     _.assert( _.strDefined( operation.name ) );
+//     _.assert( _.routineIs( atomOperation.onAtom ) );
+//     _.assert( !routines[ routineName ] );
+//
+//     operation.atomOperation = atomOperation;
+//
+//     if( !operation.takingArguments )
+//     operation.takingArguments = [ 2, Infinity ];
+//     else
+//     operation.takingArguments[ 1 ] = Infinity;
+//
+//     if( operation.takingArguments[ 0 ] === 1 )
+//     operation.input = [ 'vw', '*vr' ];
+//     else if( operation.takingArguments[ 0 ] > 1 )
+//     operation.input = [ 'vw', '+vr' ];
+//     else _.assert( 0, 'unexpected' );
+//
+//     operation.name = routineName;
+//
+//     routines[ routineName ] = meta._routineForOperation_functor( operation );
+//
+//   }
+//
+//   _.assert( _.routineIs( routines.addVectors ) );
+//
+// }
 
 // --
 // atom-wise, commutatuve, taking scalar
 // --
 
-function declareHomogeneousTakingScalarRoutines()
-{
-  let meta = this;
-  let operations = _.vectorAdapter.operations;
-  let routines = _.vectorAdapter._meta.routines;
-
-  for( let _routineName in operations.atomWiseHomogeneous )
-  {
-    let routineName = _routineName + 'Scalar';
-    let atomOperation = operations.atomWiseHomogeneous[ _routineName ];
-    let operation = meta.operationSupplement( null, atomOperation );
-
-    _.assert( operation.atomOperation === undefined );
-    _.assert( _.strDefined( operation.name ) );
-    _.assert( _.routineIs( atomOperation.onAtom ) );
-    _.assert( !routines[ routineName ] );
-
-    operation.atomOperation = atomOperation;
-    operation.input = [ 'vw|s', 's' ];
-    operation.takingArguments = [ 2, 2 ];
-    operation.name = routineName;
-
-    routines[ routineName ] = meta._routineForOperation_functor( operation );
-
-  }
-
-  debugger;
-  // _.assert( _.routineIs( routines.addScalar ) ); /* xxx */
-  // _.assert( routines.addScalar.operation.onAtom.length >= 2 );
-
-}
+// function declareHomogeneousTakingScalarRoutines()
+// {
+//   let meta = this;
+//   let operations = _.vectorAdapter.operations;
+//   let routines = _.vectorAdapter._meta.routines;
+//
+//   for( let _routineName in operations.atomWiseHomogeneous )
+//   {
+//     let routineName = _routineName + 'Scalar';
+//     let atomOperation = operations.atomWiseHomogeneous[ _routineName ];
+//     let operation = meta.operationSupplement( null, atomOperation );
+//
+//     _.assert( operation.atomOperation === undefined );
+//     _.assert( _.strDefined( operation.name ) );
+//     _.assert( _.routineIs( atomOperation.onAtom ) );
+//     _.assert( !routines[ routineName ] );
+//
+//     operation.atomOperation = atomOperation;
+//     operation.input = [ 'vw|s', 's' ];
+//     operation.takingArguments = [ 2, 2 ];
+//     operation.name = routineName;
+//
+//     routines[ routineName ] = meta._routineForOperation_functor( operation );
+//
+//   }
+//
+//   debugger;
+//   // _.assert( _.routineIs( routines.addScalar ) ); /* xxx */
+//   // _.assert( routines.addScalar.operation.onAtom.length >= 2 );
+//
+// }
 
 // --
 // atom-wise
@@ -1767,7 +1819,7 @@ function _routineHomogeneousDeclare( operation, atomOperation, routineName )
   }
 
   if( !operation.input )
-  operation.input = 'vw|s|n vr|s *vr|*s';
+  operation.input = 'vrw|s|n vr|s *vr|*s';
   operation.name = routineName;
 
   operation.onAtom_functor = _onAtomAtomwise_functor;
@@ -2380,7 +2432,8 @@ function _declareHomogeneousLogical2NotReducingRoutine( operation, atomOperation
   operation.reducing = 0;
 
   if( !operation.input )
-  operation.input = [ 'vw?|n?', 'vr|s', 'vr|s' ];
+  operation.input = '?vw|?n vr|s vr|s';
+  // operation.input = [ 'vw?|n?', 'vr|s', 'vr|s' ];
 
   _.assert( !atomOperation.usingDstAsSrc && atomOperation.usingDstAsSrc !== undefined );
 
@@ -2617,9 +2670,11 @@ function _declareLogic1SinglerRoutine( operation, atomOperation, routineName )
     returningLong : 0,
     takingArguments : [ 1, 2 ],
     takingVectors : [ 0, 2 ],
-    input : [ 'vw?', 'vr|s' ],
+    input : '?vw|?n vr|s',
   }
 
+  if( routineName === 'isZero' )
+  debugger;
   _.mapExtend( operation, def );
 
   return meta._routineHomogeneousDeclare( operation, atomOperation, routineName );
@@ -2794,6 +2849,7 @@ let MetaExtension =
   _containerTypeDeclare,
   _adapterClassDeclare,
 
+  _inputVerifyArgs,
   _onAtomGenBegin,
   _onAtomGenEnd,
   _onAtomForRoutine_functor,
@@ -2820,13 +2876,13 @@ let MetaExtension =
 
   /* vectors only -> self */
 
-  declareHomogeneousTakingVectorsRoutines,
+  // declareHomogeneousTakingVectorsRoutines,
 
   // atom-wise, homogeneous, taking scalar
 
   /* 1 vector , 1 scalar -> self */
 
-  declareHomogeneousTakingScalarRoutines,
+  // declareHomogeneousTakingScalarRoutines,
 
   // atom-wise
 

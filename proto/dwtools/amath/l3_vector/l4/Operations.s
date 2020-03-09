@@ -420,7 +420,9 @@ dop.onAtom = function addScaled( o )
 
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
-dop.input = [ '?vw|?n', '3*vr|3*s' ];
+dop.input = '?vw|?n 3*vr|3*l|3*s';
+// dop.input = '?vw|?n 3*vr|3*s';
+// dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -434,7 +436,8 @@ dop.onAtom = function subScaled( o )
 
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
-dop.input = [ '?vw|?n', '3*vr|3*s' ];
+dop.input = '?vw|?n 3*vr|3*l|3*s';
+// dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -448,7 +451,8 @@ dop.onAtom = function mulScaled( o )
 
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
-dop.input = [ '?vw|?n', '3*vr|3*s' ];
+dop.input = '?vw|?n 3*vr|3*l|3*s';
+// dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -462,7 +466,8 @@ dop.onAtom = function divScaled( o )
 
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
-dop.input = [ '?vw|?n', '3*vr|3*s' ];
+dop.input = '?vw|?n 3*vr|3*l|3*s';
+// dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.usingDstAsSrc = true;
 
 //
@@ -474,7 +479,8 @@ dop.onAtom = function clamp( o )
   o.dstElement = _min( _max( o.srcElements[ 0 ] , o.srcElements[ 1 ] ), o.srcElements[ 2 ] );
 }
 
-dop.input = [ '?vw|?n', '3*vr|3*s' ];
+dop.input = '?vw|?n 3*vr|3*l|3*s';
+// dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
 dop.returningNumber = true;
@@ -487,7 +493,7 @@ dop.usingDstAsSrc = true;
 let randomInRange = dop = Object.create( null );
 
 dop.onAtom = function randomInRange( o )
-{ 
+{
   o.dstElement = o.srcElements[ 1 ] + Math.random()*( o.srcElements[ 2 ]-o.srcElements[ 1 ] );
 }
 
@@ -509,7 +515,7 @@ dop.onAtom = function mix( o )
   o.dstElement = ( o.srcElements[ 0 ] )*( 1-o.srcElements[ 2 ] ) + ( o.srcElements[ 1 ] )*( o.srcElements[ 2 ] );
 }
 
-dop.input = [ '?vw|?n', '3*vr|3*s' ];
+dop.input = '?vw|?n 3*vr|3*vw|3*s';
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
 dop.returningNumber = true;
