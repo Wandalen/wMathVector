@@ -8,22 +8,52 @@ let _ = _global_.wTools;
 // structure
 // --
 
-let OperationDescriptor1 = _.blueprint
-// .construct
+let OperationDescriptor0 = _.blueprint
 .define
 ({
+
+  name : null,
+  input : null,
+  output : null,
+
+  onAtom : null,
+  onAtomsBegin : null,
+  onAtomsEnd : null,
 
   takingArguments : null,
   takingVectors : null,
   takingVectorsOnly : null,
 
+  usingDstAsSrc : null,
+
+  returningNumber : null,
+  returningNew : null,
+  returningPrimitive : null,
+
+})
+
+/*
+
+"onAtom", "kind", "takingArguments", "homogeneous", "atomWise", "usingExtraSrcs", "usingDstAsSrc"
+
+*/
+
+let OperationDescriptor1 = _.blueprint
+.define
+({
+  extension : _.define.extension( OperationDescriptor0 ),
+
+  // takingArguments : null,
+  // takingVectors : null,
+  takingVectorsOnly : null,
+
   returningOnly : null,
   returningSelf : null,
-  returningNew : null,
+  // returningNew : null,
   returningLong : null,
-  returningNumber : null,
+  // returningNumber : null,
   returningBoolean : null,
-  returningPrimitive : null,
+  // returningPrimitive : null,
 
   modifying : null,
   reducing : null,
@@ -32,39 +62,35 @@ let OperationDescriptor1 = _.blueprint
   interruptible : null,
   homogeneous : null,
   atomWise : null,
-  usingDstAsSrc : null,
+  // usingDstAsSrc : null,
   usingExtraSrcs : null,
 
+  // onAtom : null,
   onContinue : null,
-  onAtom : null,
-  onAtomsBegin : null,
-  onAtomsEnd : null,
+  // onAtomsBegin : null,
+  // onAtomsEnd : null,
   onVectorsBegin : null,
   onVectorsEnd : null,
   onVectors : null,
 
-  name : null,
   kind : null,
   generator : null,
   postfix : null,
   atomOperation : null,
-  input : null,
+
+  inputWithoutLast : null,
+  inputLast : null,
 
 })
 
 //
 
 let OperationDescriptor2 = _.blueprint
-// .construct
 .define
 ({
-
   extension : _.define.extension( OperationDescriptor1 ),
 
   special : null,
-
-  inputWithoutLast : null,
-  inputLast : null,
 
 })
 
@@ -76,6 +102,7 @@ let OperationDescriptor2 = _.blueprint
 let VectorExtension =
 {
 
+  OperationDescriptor0,
   OperationDescriptor1,
   OperationDescriptor2,
 

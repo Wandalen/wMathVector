@@ -201,6 +201,25 @@ dop.onAtom = function isEquivalent( o )
 
 //
 
+// let isEquivalent = dop = Object.create( null );
+//
+// dop.onAtom = function isEquivalent( o )
+// {
+//   _.assert( o.args.length <= 4 );
+//
+//   if( o.args.length === 4 )
+//   o.dstElement = _.numbersAreEquivalent( o.srcContainers[ 0 ].eGet( o.key ), o.srcContainers[ 1 ].eGet( o.key ), o.srcContainers[ 2 ].eGet( o.key ) );
+//   else
+//   o.dstElement = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+// }
+//
+// dop.takingArguments = [ 2, 4 ];
+// dop.takingVectors = [ 0, 3 ];
+// dop.input = '?vw|?n vr|s vr|s ?s';
+// dop.usingExtraSrcs = true;
+
+//
+
 let isNotEquivalent = dop = Object.create( null );
 
 dop.onAtom = function isNotEquivalent( o )
@@ -228,6 +247,30 @@ dop.onAtom = function isGreaterEqual( o )
 
 //
 
+let isGreaterEqualAprox = dop = Object.create( null );
+
+dop.onAtom = function isGreaterEqualAprox( o )
+{
+  let result = o.dstElement >= o.srcElement;
+  if( !result )
+  result = _.numbersAreEquivalent( o.dstElement, o.srcElement )
+  o.dstElement = result;
+}
+
+//
+
+let isGreaterAprox = dop = Object.create( null );
+
+dop.onAtom = function isGreaterAprox( o )
+{
+  let result = o.dstElement > o.srcElement;
+  if( !result )
+  result = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+  o.dstElement = result;
+}
+
+//
+
 let isLess = dop = Object.create( null );
 
 dop.onAtom = function isLess( o )
@@ -242,6 +285,30 @@ let isLessEqual = dop = Object.create( null );
 dop.onAtom = function isLessEqual( o )
 {
   o.dstElement = o.dstElement <= o.srcElement;
+}
+
+//
+
+let isLessEqualAprox = dop = Object.create( null );
+
+dop.onAtom = function isLessEqualAprox( o )
+{
+  let result = o.dstElement <= o.srcElement;
+  if( !result )
+  result = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+  o.dstElement = result;
+}
+
+//
+
+let isLessAprox = dop = Object.create( null );
+
+dop.onAtom = function isLessAprox( o )
+{
+  let result = o.dstElement < o.srcElement;
+  if( !result )
+  result = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+  o.dstElement = result;
 }
 
 // --
@@ -410,12 +477,27 @@ dop.onAtom = function clamp( o )
 dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
-// dop.takingArguments = [ 3, 4 ];
 dop.returningNumber = true;
 dop.returningPrimitive = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
-// dop.input = [ 'vw|s', 'vr|s', 'vr|s' ];
+
+//
+
+let randomInRange = dop = Object.create( null );
+
+dop.onAtom = function randomInRange( o )
+{ 
+  o.dstElement = o.srcElements[ 1 ] + Math.random()*( o.srcElements[ 2 ]-o.srcElements[ 1 ] );
+}
+
+dop.input = 'vw|n vr|s vr|s';
+dop.takingArguments = [ 3, 3 ];
+dop.takingVectors = [ 1, 3 ];
+dop.returningNumber = true;
+dop.returningPrimitive = true;
+dop.returningNew = true;
+dop.usingDstAsSrc = true;
 
 //
 
@@ -423,28 +505,17 @@ let mix = dop = Object.create( null );
 
 dop.onAtom = function mix( o )
 {
-
-  // if( o.srcElements.length === 2 )
-  // o.dstElement = ( o.dstElement )*( 1-o.srcElements[ 1 ] ) + o.srcElements[ 0 ]*( o.srcElements[ 1 ] );
-  // else
-  // o.dstElement = ( o.srcElements[ 0 ] )*( 1-o.srcElements[ 2 ] ) + ( o.srcElements[ 1 ] )*( o.srcElements[ 2 ] );
-
   _.assert( o.srcElements.length === 3 );
-
   o.dstElement = ( o.srcElements[ 0 ] )*( 1-o.srcElements[ 2 ] ) + ( o.srcElements[ 1 ] )*( o.srcElements[ 2 ] );
-
 }
 
 dop.input = [ '?vw|?n', '3*vr|3*s' ];
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 0, 4 ];
-// dop.takingArguments = [ 3, 4 ];
-// dop.takingVectors = [ 0, 4 ];
 dop.returningNumber = true;
 dop.returningPrimitive = true;
 dop.returningNew = true;
 dop.usingDstAsSrc = true;
-// dop.input = [ 'vw|s', 'vr|s', 'vr|s' ];
 
 // --
 // atomWiseReducing
@@ -468,8 +539,6 @@ dop.onAtomsEnd = function( o )
 }
 
 dop.input = 'vr s';
-// dop.takingArguments = [ 2, 2 ];
-// dop.takingVectors = [ 1, 1 ];
 dop.takingVectorsOnly = false;
 
 //
@@ -498,8 +567,7 @@ dop.onAtomsEnd = function( o )
 }
 
 dop.input = 'vr';
-// dop.takingArguments = 1;
-// dop.takingVectors = 1;
+dop.output = 's';
 
 //
 
@@ -513,7 +581,6 @@ dop.onAtom = function moment( o )
 
 dop.onAtomsBegin = function( o )
 {
-  // o.result = dop = Object.create( null );
   o.result = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
@@ -528,8 +595,6 @@ dop.onAtomsEnd = function( o )
 }
 
 dop.input = 'vr s';
-// dop.takingArguments = 2;
-// dop.takingVectors = 1;
 
 //
 
@@ -549,7 +614,6 @@ dop.onAtomsBegin = function( o )
   let mean = o.args[ 2 ];
   _.assert( _.numberIs( degree ) )
   _.assert( _.numberIs( mean ) )
-  // o.result = dop = Object.create( null );
   o.result = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
@@ -564,9 +628,6 @@ dop.onAtomsEnd = function( o )
 }
 
 dop.input = 'vr s s';
-// dop.input = [ 'vr', 's', 's' ];
-// dop.takingArguments = [ 3, 3 ];
-// dop.takingVectors = 1;
 
 //
 
@@ -580,7 +641,6 @@ dop.onAtom = function reduceToMean( o )
 
 dop.onAtomsBegin = function( o )
 {
-  // o.result = dop = Object.create( null );
   o.result = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
@@ -588,10 +648,7 @@ dop.onAtomsBegin = function( o )
 
 dop.onAtomsEnd = function( o )
 {
-  // if( o.result.nelement )
   o.result = o.result.total / o.result.nelement;
-  // else
-  // o.result = 0;
 }
 
 //
@@ -705,11 +762,16 @@ let logical2 = //
   isIdentical,
   isNotIdentical,
   isEquivalent,
+  // isEquivalent2,
   isNotEquivalent,
   isGreater,
   isGreaterEqual,
+  isGreaterEqualAprox,
+  isGreaterAprox,
   isLess,
   isLessEqual,
+  isLessEqualAprox,
+  isLessAprox,
 
 }
 
@@ -734,12 +796,15 @@ let atomWiseHomogeneous = //
 let atomWiseHeterogeneous = //
 {
 
+  /* isEquivalent2, */
+
   addScaled,
   subScaled,
   mulScaled,
   divScaled,
 
   clamp,
+  randomInRange,
   mix,
 
 }

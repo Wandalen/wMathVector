@@ -28,6 +28,143 @@ var Parent = wTester;
 _.assert( _.routineIs( sqrt ) );
 
 // --
+// from
+// --
+
+function fromLongReview( test )
+{
+
+  test.case = 'basic';
+  var exp = [ 1, 3, 5, 7 ];
+  var v = _.vectorAdapter.fromLong([ 1, 3, 5, 7 ]);
+  test.equivalent( v, exp );
+  var exp = [ 3, 5 ];
+  var v2 = v.review([ 1, 2 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+  var exp = [ 1, 3 ];
+  var v2 = v.review([ 0, 1 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+  var exp = [ 5, 7 ];
+  var v2 = v.review([ 2, 3 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+
+}
+
+//
+
+function fromLongWithStrideReview( test )
+{
+
+  test.case = 'basic';
+  var exp = [ 1, 3, 5, 7 ];
+  var v = _.vectorAdapter.fromLongWithStride( [ 1, 2, 3, 4, 5, 6, 7, 8 ], 2 );
+  test.equivalent( v, exp );
+  var exp = [ 3, 5 ];
+  var v2 = v.review([ 1, 2 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+  var exp = [ 1, 3 ];
+  var v2 = v.review([ 0, 1 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+  var exp = [ 5, 7 ];
+  var v2 = v.review([ 2, 3 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+
+}
+
+//
+
+function fromLongLrangeReview( test )
+{
+
+  test.case = 'basic';
+  var exp = [ 1, 3, 5, 7 ];
+  var v = _.vectorAdapter.fromLongLrange( [ 0, 1, 3, 5, 7, 0 ], [ 1, 4 ] );
+  test.equivalent( v, exp );
+  var exp = [ 3, 5 ];
+  var v2 = v.review([ 1, 2 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+  var exp = [ 1, 3 ];
+  var v2 = v.review([ 0, 1 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+  var exp = [ 5, 7 ];
+  var v2 = v.review([ 2, 3 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+
+}
+
+//
+
+function fromLongLrangeAndStrideReview( test )
+{
+
+  test.case = 'basic';
+  var exp = [ 1, 3, 5, 7 ];
+  var v = _.vectorAdapter.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 4 ], 2 );
+  test.equivalent( v, exp );
+  var exp = [ 3, 5 ];
+  var v2 = v.review([ 1, 2 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+  var exp = [ 1, 3 ];
+  var v2 = v.review([ 0, 1 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+  var exp = [ 5, 7 ];
+  var v2 = v.review([ 2, 3 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer === v._vectorBuffer );
+
+}
+
+//
+
+function fromNumberReview( test )
+{
+
+  test.case = 'basic';
+  var exp = [ 3, 3, 3, 3 ];
+  var v = _.vectorAdapter.fromNumber( 3, 4 );
+  test.equivalent( v, exp );
+  var exp = [ 3, 3 ];
+  var v2 = v.review([ 1, 2 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer !== v._vectorBuffer );
+  var exp = [ 3, 3 ];
+  var v2 = v.review([ 0, 1 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer !== v._vectorBuffer );
+  var exp = [ 3, 3 ];
+  var v2 = v.review([ 2, 3 ]);
+  test.equivalent( v2, exp );
+  test.is( !!v2._vectorBuffer );
+  test.is( v2._vectorBuffer !== v._vectorBuffer );
+
+}
+
+// --
 // iterator
 // --
 
@@ -61,7 +198,7 @@ function map( test )
   var got = _.vectorAdapter.map( null, src, onElement1 );
 
   var exp = _.vectorAdapter.make( [ 1, 1, 1 ] );
-  test.identical( got, exp ); debugger;
+  test.identical( got, exp );
 
   var exp = _.vectorAdapter.from( [ -1, -1.5, -2 ] )
   test.equivalent( src, exp );
@@ -534,6 +671,135 @@ function distributionRangeSummaryValue( test )
 
 //
 
+function entityEqual( test )
+{
+
+  /* - */
+
+  test.case = 'src1:vad-a-arr src2:vad-a-arr - identical';
+  var vad1 = _.vectorAdapter.from([ 1, 3, 5 ]);
+  var vad2 = _.vectorAdapter.from([ 1, 3, 5 ]);
+  var got = _.equivalent( vad1, vad2 );
+  test.identical( got, true );
+  test.et( vad1, vad2 );
+  var got = _.identical( vad1, vad2 );
+  test.identical( got, true );
+  test.il( vad1, vad2 );
+
+  /* */
+
+  test.case = 'src1:vad-a-arr src2:vad-a-arr - identical';
+  var vad1 = _.avector.make( [ true, true, true ] );
+  var vad2 = _.avector.make( [ true, true, true ] );
+  var got = _.equivalent( vad1, vad2 );
+  test.identical( got, true );
+  test.et( vad1, vad2 );
+  var got = _.identical( vad1, vad2 );
+  test.identical( got, true );
+  test.il( vad1, vad2 );
+
+  /* - */
+
+  test.case = 'src1:vad-a-arr src2:vad-a-arr - not equivalent';
+  var vad1 = _.vectorAdapter.from([ 1, 3, 5 ]);
+  var vad2 = _.vectorAdapter.from([ 1, 3, 6 ]);
+  var got = _.equivalent( vad1, vad2 );
+  test.identical( got, false );
+  test.ne( vad1, vad2 );
+  var got = _.identical( vad1, vad2 );
+  test.identical( got, false );
+  test.ni( vad1, vad2 );
+
+  /* - */
+
+  test.case = 'src1:vad-a-arr src2:vad-ls-arr';
+  var vad1 = _.vectorAdapter.from([ 1, 3, 5 ]);
+  var vad2 = _.vectorAdapter.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 3 ], 2 );
+  var got = _.equivalent( vad1, vad2 );
+  test.identical( got, true );
+  test.et( vad1, vad2 );
+  var got = _.identical( vad1, vad2 );
+  test.identical( got, true );
+  test.il( vad1, vad2 );
+
+  /* - */
+
+  test.case = 'src1:vad-arr src2:long-arr';
+  var long = [ 1, 3, 5 ];
+  var vad = _.vectorAdapter.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 3 ], 2 );
+  var got = _.equivalent( vad, long );
+  test.identical( got, true );
+  test.et( vad, long );
+  var got = _.identical( vad, long );
+  test.identical( got, false );
+  test.ni( vad, long );
+
+  /* */
+
+  test.case = 'src1:long-arr src2:vad-arr';
+  var long = [ 1, 3, 5 ];
+  var vad = _.vectorAdapter.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 3 ], 2 );
+  var got = _.equivalent( long, vad );
+  test.identical( got, true );
+  test.et( long, vad );
+  var got = _.identical( long, vad );
+  test.identical( got, false );
+  test.ni( long, vad );
+
+  /* - */
+
+  test.case = 'src1:vad-f32 src2:long-i16';
+  var long = new I16x([ 1, 3, 5 ]);
+  var vad = _.vectorAdapter.fromLongLrangeAndStride( new F32x([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]), [ 1, 3 ], 2 );
+  var got = _.equivalent( vad, long );
+  test.identical( got, true );
+  test.et( vad, long );
+  var got = _.identical( vad, long );
+  test.identical( got, false );
+  test.ni( vad, long );
+
+  /* */
+
+  test.case = 'src1:long-i16 src2:vad-f32';
+  var long = new I16x([ 1, 3, 5 ]);
+  var vad = _.vectorAdapter.fromLongLrangeAndStride( new F32x([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]), [ 1, 3 ], 2 );
+  var got = _.equivalent( long, vad );
+  test.identical( got, true );
+  test.et( long, vad );
+  var got = _.identical( long, vad );
+  test.identical( got, false );
+  test.ni( long, vad );
+
+  /* - */
+
+  test.case = 'src1:vad-i16 src2:long-f32';
+  var long = new F32x([ 1, 3, 5 ]);
+  var vad = _.vectorAdapter.fromLongLrangeAndStride( new I16x([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]), [ 1, 3 ], 2 );
+  var got = _.equivalent( vad, long );
+  test.identical( got, true );
+  test.et( vad, long );
+  var got = _.identical( vad, long );
+  test.identical( got, false );
+  test.ni( vad, long );
+
+  /* */
+
+  test.case = 'src1:long-f32 src2:vad-i16';
+  var long = new F32x([ 1, 3, 5 ]);
+  var vad = _.vectorAdapter.fromLongLrangeAndStride( new I16x([ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]), [ 1, 3 ], 2 );
+  var got = _.equivalent( long, vad );
+  test.identical( got, true );
+  test.et( long, vad );
+  var got = _.identical( long, vad );
+  test.identical( got, false );
+  test.ni( long, vad );
+
+  /* - */
+
+}
+
+//
+
 function review( test )
 {
 
@@ -671,6 +937,38 @@ function review( test )
 
 }
 
+//
+
+function isEquivalent( test )
+{
+
+  test.case = 'basic';
+  var accuracy = 0.1;
+  var a = _.vectorAdapter.from([ 1 ]);
+  var b = _.vectorAdapter.from([ 1+accuracy ]);
+  var got = _.vectorAdapter.isEquivalent( null, a, b, accuracy );
+  var exp = _.vectorAdapter.from([ true ]);
+  test.identical( got, exp );
+
+}
+
+//
+
+function allEquivalent( test )
+{
+
+  test.case = 'basic';
+  var accuracy = 0.1;
+  var a = _.vectorAdapter.from([ 1 ]);
+  var b = _.vectorAdapter.from([ 1+accuracy ]);
+  debugger;
+  var got = _.vectorAdapter.allEquivalent( a, b, accuracy );
+  debugger;
+  var exp = true;
+  test.identical( got, exp );
+
+}
+
 // --
 // proto
 // --
@@ -688,6 +986,14 @@ var Self =
   tests :
   {
 
+    // from
+
+    fromLongReview,
+    fromLongWithStrideReview,
+    fromLongLrangeReview,
+    fromLongLrangeAndStrideReview,
+    fromNumberReview,
+
     // iterator
 
     map,
@@ -700,8 +1006,11 @@ var Self =
     // etc
 
     distributionRangeSummaryValue,
-
+    entityEqual,
     review,
+
+    // isEquivalent,
+    // allEquivalent,
 
   },
 
