@@ -1305,6 +1305,340 @@ div.timeOut = 15000;
 
 //
 
+function heterogeneousScaledRoutines( test )
+{
+
+  test.case = 'addScaled null, vector, vector, vector'; /* */
+
+  var expected = [ 31, 42, 33 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.addScaled( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 31, 42, 33 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.addScaled( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'addScaled scalar, vector, vector, vector'; /* */
+
+  var expected = [ 31, 42, 33 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.addScaled( 1, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 31, 42, 33 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.addScaled( 1, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'addScaled vector, vector, vector, vector'; /* */
+
+  var expected = [ 31, 42, 33 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.addScaled( dst, dst.slice(), src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 31, 42, 33 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.addScaled( dst, dst.slice(), src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'addScaled vector, vector, vector'; /* */
+
+  var expected = [ 31, 42, 33 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 31, 42, 33 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'addScaled scalar, vector, vector'; /* */
+
+  var expected = [ 130, 140, 130 ];
+  var dst = [ 1, 2, 3 ];
+  var dst = 100;
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 130, 140, 130 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var dst = 100;
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'subScaled vector, vector, vector'; /* */
+
+  var expected = [ -29, -38, -27 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.subScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ -29, -38, -27 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'mulScaled vector, vector, vector'; /* */
+
+  var expected = [ 30, 80, 90 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.mulScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30, 80, 90 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'divScaled vector, vector, vector'; /* */
+
+  var expected = [ 1/30, 2/40, 3/30 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.divScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 1/30, 2/40, 3/30 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'addScaled vector, vector, scaler'; /* */
+
+  var expected = [ 31, 22, 13 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = 10;
+  var got = _.avector.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = [ 1, 2, 3 ];
+  var got = _.avector.addScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 31, 22, 13 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = 10;
+  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = vec([ 1, 2, 3 ]);
+  var got = _.vectorAdapter.addScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'subScaled vector, vector, scaler'; /* */
+
+  var expected = [ -29, -18, -7 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = 10;
+  var got = _.avector.subScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = [ 1, 2, 3 ];
+  var got = _.avector.subScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ -29, -18, -7 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = 10;
+  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = vec([ 1, 2, 3 ]);
+  var got = _.vectorAdapter.subScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'mulScaled vector, vector, scaler'; /* */
+
+  var expected = [ 30, 40, 30 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = 10;
+  var got = _.avector.mulScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = [ 1, 2, 3 ];
+  var got = _.avector.mulScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30, 40, 30 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = 10;
+  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = vec([ 1, 2, 3 ]);
+  var got = _.vectorAdapter.mulScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'divScaled vector, vector, scaler'; /* */
+
+  var expected = [ 1/30, 2/20, 3/10 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = 10;
+  var got = _.avector.divScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = [ 1, 2, 3 ];
+  var got = _.avector.divScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 1/30, 2/20, 3/10 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = 10;
+  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = vec([ 1, 2, 3 ]);
+  var got = _.vectorAdapter.divScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'empty vector'; /* */
+
+  function checkEmpty( rname )
+  {
+    var op = _.vectorAdapter[ rname ].operation;
+
+    var dst = [];
+    var args = _.dup( [], op.takingArguments[ 0 ]-1 );
+    args.unshift( dst );
+    var got = _.avector[ rname ].apply( _, args );
+    test.is( got === dst );
+    test.identical( got , [] );
+
+    var dst = vec([]);
+    var args = _.dup( vec([]), op.takingArguments[ 0 ]-1 );
+    args.unshift( dst );
+    var got = _.vectorAdapter[ rname ].apply( _, args );
+    test.is( got === dst );
+    test.identical( got , vec([]) );
+
+  }
+
+  checkEmpty( 'addScaled' );
+  checkEmpty( 'subScaled' );
+  checkEmpty( 'mulScaled' );
+  checkEmpty( 'subScaled' );
+
+  test.case = 'bad arguments'; /* */
+
+  if( !Config.debug )
+  return;
+
+  function shouldThrowErrorOfAnyKind( rname )
+  {
+
+    test.case = 'bad arguments for ' + rname;
+
+    test.shouldThrowErrorSync( () => _.avector[ rname ]() );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
+    // test.shouldThrowErrorSync( () => _.avector[ rname ]( 1, [ 3, 3 ], [ 5, 5 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], undefined ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], '1' ) );
+
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ) );
+
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]() );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
+
+    // test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
+
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]) ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]), vec([ 3, 4 ]) ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5, 6 ]) ) );
+
+  }
+
+  shouldThrowErrorOfAnyKind( 'addScaled' );
+  shouldThrowErrorOfAnyKind( 'subScaled' );
+  shouldThrowErrorOfAnyKind( 'mulScaled' );
+  shouldThrowErrorOfAnyKind( 'subScaled' );
+}
+
+heterogeneous.timeOut = 15000;
+
+//
+
 function mean( test )
 {
 
@@ -6297,342 +6631,6 @@ momentCentral.timeOut = 15000;
 
 //
 
-function heterogeneous( test )
-{
-
-  test.case = 'addScaled null, vector, vector, vector'; /* */
-
-  var expected = [ 31, 42, 33 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.addScaled( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 31, 42, 33 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.addScaled( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'addScaled scalar, vector, vector, vector'; /* */
-
-  var expected = [ 31, 42, 33 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.addScaled( 1, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 31, 42, 33 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.addScaled( 1, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'addScaled vector, vector, vector, vector'; /* */
-
-  var expected = [ 31, 42, 33 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.addScaled( dst, dst.slice(), src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 31, 42, 33 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.addScaled( dst, dst.slice(), src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'addScaled vector, vector, vector'; /* */
-
-  var expected = [ 31, 42, 33 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 31, 42, 33 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'addScaled scalar, vector, vector'; /* */
-
-  var expected = [ 130, 140, 130 ];
-  var dst = [ 1, 2, 3 ];
-  var dst = 100;
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 130, 140, 130 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var dst = 100;
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'subScaled vector, vector, vector'; /* */
-
-  var expected = [ -29, -38, -27 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.subScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ -29, -38, -27 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'mulScaled vector, vector, vector'; /* */
-
-  var expected = [ 30, 80, 90 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.mulScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 30, 80, 90 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'divScaled vector, vector, vector'; /* */
-
-  var expected = [ 1/30, 2/40, 3/30 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.divScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 1/30, 2/40, 3/30 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'addScaled vector, vector, scaler'; /* */
-
-  var expected = [ 31, 22, 13 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = 10;
-  var got = _.avector.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = [ 1, 2, 3 ];
-  var got = _.avector.addScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 31, 22, 13 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = 10;
-  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = vec([ 1, 2, 3 ]);
-  var got = _.vectorAdapter.addScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'subScaled vector, vector, scaler'; /* */
-
-  var expected = [ -29, -18, -7 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = 10;
-  var got = _.avector.subScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = [ 1, 2, 3 ];
-  var got = _.avector.subScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ -29, -18, -7 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = 10;
-  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = vec([ 1, 2, 3 ]);
-  var got = _.vectorAdapter.subScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'mulScaled vector, vector, scaler'; /* */
-
-  var expected = [ 30, 40, 30 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = 10;
-  var got = _.avector.mulScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = [ 1, 2, 3 ];
-  var got = _.avector.mulScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 30, 40, 30 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = 10;
-  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = vec([ 1, 2, 3 ]);
-  var got = _.vectorAdapter.mulScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'divScaled vector, vector, scaler'; /* */
-
-  var expected = [ 1/30, 2/20, 3/10 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = 10;
-  var got = _.avector.divScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = [ 1, 2, 3 ];
-  var got = _.avector.divScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 1/30, 2/20, 3/10 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = 10;
-  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = vec([ 1, 2, 3 ]);
-  var got = _.vectorAdapter.divScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'empty vector'; /* */
-
-  function checkEmpty( rname )
-  {
-    var op = _.vectorAdapter[ rname ].operation;
-
-    var dst = [];
-    var args = _.dup( [], op.takingArguments[ 0 ]-1 );
-    args.unshift( dst );
-    var got = _.avector[ rname ].apply( _, args );
-    test.is( got === dst );
-    test.identical( got , [] );
-
-    var dst = vec([]);
-    var args = _.dup( vec([]), op.takingArguments[ 0 ]-1 );
-    args.unshift( dst );
-    var got = _.vectorAdapter[ rname ].apply( _, args );
-    test.is( got === dst );
-    test.identical( got , vec([]) );
-
-  }
-
-  checkEmpty( 'addScaled' );
-  checkEmpty( 'subScaled' );
-  checkEmpty( 'mulScaled' );
-  checkEmpty( 'subScaled' );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  function shouldThrowErrorOfAnyKind( rname )
-  {
-
-    test.case = 'bad arguments for ' + rname;
-
-    test.shouldThrowErrorSync( () => _.avector[ rname ]() );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
-    // test.shouldThrowErrorSync( () => _.avector[ rname ]( 1, [ 3, 3 ], [ 5, 5 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], undefined ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], '1' ) );
-
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ) );
-
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]() );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]) ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
-
-    // test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
-
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
-
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]) ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]), vec([ 3, 4 ]) ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5, 6 ]) ) );
-
-  }
-
-  shouldThrowErrorOfAnyKind( 'addScaled' );
-  shouldThrowErrorOfAnyKind( 'subScaled' );
-  shouldThrowErrorOfAnyKind( 'mulScaled' );
-  shouldThrowErrorOfAnyKind( 'subScaled' );
-  // shouldThrowErrorOfAnyKind( 'clamp' );
-
-}
-
-heterogeneous.timeOut = 15000;
-
-//
-
 function clamp( test )
 {
 
@@ -7635,11 +7633,12 @@ var Self =
     mul,
     div,
 
+    heterogeneousScaledRoutines,
+
     mean,
     moment,
     reduceToMean,
     distributionRangeSummary,
-
 
     // 
 
@@ -7728,7 +7727,6 @@ var Self =
 
     // homogeneousWithScalar,
     // homogeneousOnlyVectors,
-    heterogeneous,
 
     clamp,
     randomInRange,
