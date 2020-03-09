@@ -1321,6 +1321,7 @@ var Self =
     map,
     filter,
     while : _while,
+
     all,
     any,
     none,
