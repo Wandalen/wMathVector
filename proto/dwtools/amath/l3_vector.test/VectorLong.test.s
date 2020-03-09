@@ -260,8 +260,226 @@ function map( test )
   test.shouldThrowErrorSync( () => _.avector.map( null, onEvaluate ));
   test.shouldThrowErrorSync( () => _.avector.map( undefined, onEvaluate ));
   test.shouldThrowErrorSync( () => _.avector.map( 'string', onEvaluate ));
-
 }
+
+//
+
+function cross( test )
+{
+
+  test.case = 'trivial, make new'; /* */
+
+  var a = [ 1, 2, 3 ];
+  var b = [ 4, 5, 6 ];
+  var expected = [ -3, +6, -3 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'zero, make new'; /* */
+
+  var a = [ 0, 0, 0 ];
+  var b = [ 0, 0, 0 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'same, make new'; /* */
+
+  var a = [ 1, 1, 1 ];
+  var b = [ 1, 1, 1 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'perpendicular1, make new'; /* */
+
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 0, 1 ];
+  var expected = [ 0, -1, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'perpendicular2, make new'; /* */
+
+  var a = [ 0, 0, 1 ];
+  var b = [ 1, 0, 0 ];
+  var expected = [ 0, +1, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'perpendicular3, make new'; /* */
+
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 1, 0 ];
+  var expected = [ 0, 0, +1 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'perpendicular4, make new'; /* */
+
+  var a = [ 0, 1, 0 ];
+  var b = [ 1, 0, 0 ];
+  var expected = [ 0, 0, -1 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'trivial'; ///
+
+  var a = [ 1, 2, 3 ];
+  var b = [ 4, 5, 6 ];
+  var expected = [ -3, +6, -3 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'zero'; /* */
+
+  var a = [ 0, 0, 0 ];
+  var b = [ 0, 0, 0 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'same'; /* */
+
+  var a = [ 1, 1, 1 ];
+  var b = [ 1, 1, 1 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular1'; /* */
+
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 0, 1 ];
+  var expected = [ 0, -1, 0 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular2'; /* */
+
+  var a = [ 0, 0, 1 ];
+  var b = [ 1, 0, 0 ];
+  var expected = [ 0, +1, 0 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular3'; /* */
+
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 1, 0 ];
+  var expected = [ 0, 0, +1 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular4'; /* */
+
+  var a = [ 0, 1, 0 ];
+  var b = [ 1, 0, 0 ];
+  var expected = [ 0, 0, -1 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'trivial'; ///
+
+  var a = [ 1, 2, 3 ];
+  var b = [ 4, 5, 6 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 78, 6, -66 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'zero'; /* */
+
+  var a = [ 0, 0, 0 ];
+  var b = [ 0, 0, 0 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'same'; /* */
+
+  var a = [ 1, 1, 1 ];
+  var b = [ 1, 1, 1 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular1'; /* */
+
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 0, 1 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ -9, 0, 7 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular2'; /* */
+
+  var a = [ 0, 0, 1 ];
+  var b = [ 1, 0, 0 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 9, 0, -7 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular3'; /* */
+
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 1, 0 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ -8, 7, 0 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular4'; /* */
+
+  var a = [ 0, 1, 0 ];
+  var b = [ 1, 0, 0 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 8, -7, 0 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'bad arguments'; ///
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => _.avector.cross( 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( undefined, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( null, [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [], function(){} ) );
+}
+
+cross.timeOut = 15000;
 
 // --
 //
@@ -4179,226 +4397,6 @@ function dot( test )
 
 dot.timeOut = 15000;
 
-//
-
-function cross( test )
-{
-
-  test.case = 'trivial, make new'; /* */
-
-  var a = [ 1, 2, 3 ];
-  var b = [ 4, 5, 6 ];
-  var expected = [ -3, +6, -3 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
-
-  test.case = 'zero, make new'; /* */
-
-  var a = [ 0, 0, 0 ];
-  var b = [ 0, 0, 0 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
-
-  test.case = 'same, make new'; /* */
-
-  var a = [ 1, 1, 1 ];
-  var b = [ 1, 1, 1 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
-
-  test.case = 'perpendicular1, make new'; /* */
-
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 0, 1 ];
-  var expected = [ 0, -1, 0 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
-
-  test.case = 'perpendicular2, make new'; /* */
-
-  var a = [ 0, 0, 1 ];
-  var b = [ 1, 0, 0 ];
-  var expected = [ 0, +1, 0 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
-
-  test.case = 'perpendicular3, make new'; /* */
-
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 1, 0 ];
-  var expected = [ 0, 0, +1 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
-
-  test.case = 'perpendicular4, make new'; /* */
-
-  var a = [ 0, 1, 0 ];
-  var b = [ 1, 0, 0 ];
-  var expected = [ 0, 0, -1 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
-
-  test.case = 'trivial'; ///
-
-  var a = [ 1, 2, 3 ];
-  var b = [ 4, 5, 6 ];
-  var expected = [ -3, +6, -3 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'zero'; /* */
-
-  var a = [ 0, 0, 0 ];
-  var b = [ 0, 0, 0 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'same'; /* */
-
-  var a = [ 1, 1, 1 ];
-  var b = [ 1, 1, 1 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'perpendicular1'; /* */
-
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 0, 1 ];
-  var expected = [ 0, -1, 0 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'perpendicular2'; /* */
-
-  var a = [ 0, 0, 1 ];
-  var b = [ 1, 0, 0 ];
-  var expected = [ 0, +1, 0 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'perpendicular3'; /* */
-
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 1, 0 ];
-  var expected = [ 0, 0, +1 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'perpendicular4'; /* */
-
-  var a = [ 0, 1, 0 ];
-  var b = [ 1, 0, 0 ];
-  var expected = [ 0, 0, -1 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'trivial'; ///
-
-  var a = [ 1, 2, 3 ];
-  var b = [ 4, 5, 6 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 78, 6, -66 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'zero'; /* */
-
-  var a = [ 0, 0, 0 ];
-  var b = [ 0, 0, 0 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'same'; /* */
-
-  var a = [ 1, 1, 1 ];
-  var b = [ 1, 1, 1 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'perpendicular1'; /* */
-
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 0, 1 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ -9, 0, 7 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'perpendicular2'; /* */
-
-  var a = [ 0, 0, 1 ];
-  var b = [ 1, 0, 0 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 9, 0, -7 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'perpendicular3'; /* */
-
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 1, 0 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ -8, 7, 0 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'perpendicular4'; /* */
-
-  var a = [ 0, 1, 0 ];
-  var b = [ 1, 0, 0 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 8, -7, 0 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'bad arguments'; ///
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.avector.cross( 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( undefined, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( null, [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], undefined ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [], function(){} ) );
-
-}
-
-cross.timeOut = 15000;
-
 // //
 //
 // function subarray( test )
@@ -7633,6 +7631,7 @@ var Self =
     allInt,
 
     map,
+    cross,
 
     /* */
 
@@ -7707,7 +7706,7 @@ var Self =
     /* */
 
     dot,
-    cross,
+
     // subarray,
 
     add,
