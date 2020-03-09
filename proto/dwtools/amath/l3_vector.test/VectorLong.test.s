@@ -31,25 +31,6 @@ _.assert( _.routineIs( sqrt ) );
 // test
 // --
 
-function anyNan( test )
-{
-
-  test.identical( _.avector.anyNan([ 1, 2, 3 ]), false );
-  test.identical( _.avector.anyNan([ 0, 0, 0 ]), false );
-  test.identical( _.avector.anyNan([ 0, 0, 1 ]), false );
-
-  test.identical( _.avector.anyNan([ 1, 3, NaN ]), true );
-  test.identical( _.avector.anyNan([ 1, NaN, 3 ]), true );
-  test.identical( _.avector.anyNan([ 1, 3, -Infinity ]), false );
-  test.identical( _.avector.anyNan([ 1, +Infinity, 3 ]), false );
-
-  test.identical( _.avector.anyNan([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector.anyNan([ 1, 0, 1.1 ]), false );
-
-}
-
-//
-
 function map( test )
 {
 
@@ -3210,6 +3191,25 @@ function anyLessAprox( test )
 }
 
 anyGreaterAprox.timeOut = 15000;
+
+//
+
+function anyNan( test )
+{
+
+  test.identical( _.avector.anyNan([ 1, 2, 3 ]), false );
+  test.identical( _.avector.anyNan([ 0, 0, 0 ]), false );
+  test.identical( _.avector.anyNan([ 0, 0, 1 ]), false );
+
+  test.identical( _.avector.anyNan([ 1, 3, NaN ]), true );
+  test.identical( _.avector.anyNan([ 1, NaN, 3 ]), true );
+  test.identical( _.avector.anyNan([ 1, 3, -Infinity ]), false );
+  test.identical( _.avector.anyNan([ 1, +Infinity, 3 ]), false );
+
+  test.identical( _.avector.anyNan([ 1.1, 0, 1 ]), false );
+  test.identical( _.avector.anyNan([ 1, 0, 1.1 ]), false );
+
+}
 
 //
 
@@ -7623,7 +7623,6 @@ var Self =
   tests : /* qqq : move out routines which should be in VectorAdapter.test.s. ask how */
   {
 
-    anyNan,
 
     map,
 
@@ -7677,6 +7676,8 @@ var Self =
     anyGreaterAprox,
     anyLessEqualAprox,
     anyLessAprox,
+
+    anyNan,
 
     //
 
