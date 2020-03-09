@@ -1666,6 +1666,201 @@ function isGreaterAprox( test )
 
 //
 
+/* aaa : ask how to improve */
+/* Dmytro : improved, moved routines in right position */
+
+function isZero( test )
+{
+  test.open( 'Array constructor' );
+
+  _isZero( test, 'isZero', true, function()
+  {
+    return _.longMake( Array, arguments );
+  });
+  
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _isZero( test, 'isZero', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _isZero( test, 'isZero', true, function()
+  {
+    return _.longMake( F32x, arguments );
+  });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _isZero( test, r, t, array )
+  {
+    var f = !t;
+
+    /* */
+
+    test.case = 'vector'; /* */
+    var expected = array( t, t, t );
+    var src = array( 0, 0, 0 );
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( f, f, t );
+    var src = array( 1, 2, 0 );
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( t, f, f );
+    var src = array( 0, 2, 3 );
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'scalar'; /* */
+    var expected = f;
+    var src = 3;
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+
+    var expected = t;
+    var src = 0;
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector'; /* */
+    var expected = array();
+    var src = array();
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'vector with null'; /* */
+    var expected = array( t, t, t );
+    var src = array( 0, 0, 0 );
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( f, f, t );
+    var src = array( 1, 2, 0 );
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( t, f, f );
+    var src = array( 0, 2, 3 );
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'scalar with null'; /* */
+    var expected = f;
+    var src = 3;
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+
+    var expected = t;
+    var src = 0;
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector with null'; /* */
+    var expected = array();
+    var src = array();
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'vector with dst'; /* */
+    var expected = array( t, t, t );
+    var src = array( 0, 0, 0 );
+    var dst = array( -1, -1, -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( f, f, t );
+    var src = array( 1, 2, 0 );
+    var dst = array( -1, -1, -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( t, f, f );
+    var src = array( 0, 2, 3 );
+    var dst = array( -1, -1, -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'scalar with dst'; /* */
+    var expected = array( f );
+    var src = 3;
+    var dst = array( -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+
+    var expected = array( t );
+    var src = 0;
+    var dst = array( -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+
+    var expected = f;
+    var src = 3;
+    var dst = -1;
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+
+    var expected = t;
+    var src = 0;
+    var dst = -1;
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector with dst'; /* */
+    var expected = array();
+    var src = array();
+    var dst = array();
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+  }
+}
+
+isZero.timeOut = 15000;
+
+//
+
 function logical2ArgsZipperWithBadArguments( test, r, t, array )
 {
   var f = !t;
@@ -3785,200 +3980,6 @@ function logical2ArgsReducerWithBadArguments( test, r, t, array )
 }
 
 logical2ArgsReducerWithBadArguments.timeOut = 30000;
-
-//
-
-/* qqq : ask how to improve */
-
-function isZero( test )
-{
-  test.open( 'Array constructor' );
-
-  _isZero( test, 'isZero', true, function()
-  {
-    return _.longMake( Array, arguments );
-  });
-  
-  test.close( 'Array constructor' );
-
-  /* - */
-
-  test.open( 'U32x constructor' );
-
-  _isZero( test, 'isZero', true, function()
-  {
-    return _.longMake( U32x, arguments );
-  });
-
-  test.close( 'U32x constructor' );
-
-  /* - */
-
-  test.open( 'F32x constructor' );
-
-  _isZero( test, 'isZero', true, function()
-  {
-    return _.longMake( F32x, arguments );
-  });
-
-  test.close( 'F32x constructor' );
-
-  /* - */
-
-  function _isZero( test, r, t, array )
-  {
-    var f = !t;
-
-    /* */
-
-    test.case = 'vector'; /* */
-    var expected = array( t, t, t );
-    var src = array( 0, 0, 0 );
-    var got = _.avector[ r ]( src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    var expected = array( f, f, t );
-    var src = array( 1, 2, 0 );
-    var got = _.avector[ r ]( src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    var expected = array( t, f, f );
-    var src = array( 0, 2, 3 );
-    var got = _.avector[ r ]( src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    /* */
-
-    test.case = 'scalar'; /* */
-    var expected = f;
-    var src = 3;
-    var got = _.avector[ r ]( src );
-    test.identical( got, expected );
-
-    var expected = t;
-    var src = 0;
-    var got = _.avector[ r ]( src );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'empty vector'; /* */
-    var expected = array();
-    var src = array();
-    var got = _.avector[ r ]( src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    /* */
-
-    test.case = 'vector with null'; /* */
-    var expected = array( t, t, t );
-    var src = array( 0, 0, 0 );
-    var got = _.avector[ r ]( null, src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    var expected = array( f, f, t );
-    var src = array( 1, 2, 0 );
-    var got = _.avector[ r ]( null, src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    var expected = array( t, f, f );
-    var src = array( 0, 2, 3 );
-    var got = _.avector[ r ]( null, src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    /* */
-
-    test.case = 'scalar with null'; /* */
-    var expected = f;
-    var src = 3;
-    var got = _.avector[ r ]( null, src );
-    test.identical( got, expected );
-
-    var expected = t;
-    var src = 0;
-    var got = _.avector[ r ]( null, src );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'empty vector with null'; /* */
-    var expected = array();
-    var src = array();
-    var got = _.avector[ r ]( null, src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    /* */
-
-    test.case = 'vector with dst'; /* */
-    var expected = array( t, t, t );
-    var src = array( 0, 0, 0 );
-    var dst = array( -1, -1, -1 );
-    var got = _.avector[ r ]( dst, src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    var expected = array( f, f, t );
-    var src = array( 1, 2, 0 );
-    var dst = array( -1, -1, -1 );
-    var got = _.avector[ r ]( dst, src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    var expected = array( t, f, f );
-    var src = array( 0, 2, 3 );
-    var dst = array( -1, -1, -1 );
-    var got = _.avector[ r ]( dst, src );
-    test.identical( got, expected );
-    test.is( got !== src );
-
-    /* */
-
-    test.case = 'scalar with dst'; /* */
-    var expected = array( f );
-    var src = 3;
-    var dst = array( -1 );
-    var got = _.avector[ r ]( dst, src );
-    test.identical( got, expected );
-
-    var expected = array( t );
-    var src = 0;
-    var dst = array( -1 );
-    var got = _.avector[ r ]( dst, src );
-    test.identical( got, expected );
-
-    var expected = f;
-    var src = 3;
-    var dst = -1;
-    var got = _.avector[ r ]( dst, src );
-    test.identical( got, expected );
-
-    var expected = t;
-    var src = 0;
-    var dst = -1;
-    var got = _.avector[ r ]( dst, src );
-    test.identical( got, expected );
-
-    /* */
-
-    test.case = 'empty vector with dst'; /* */
-    var expected = array();
-    var src = array();
-    var dst = array();
-    var got = _.avector[ r ]( dst, src );
-    test.identical( got, expected );
-    test.is( got !== src );
-  }
-}
-
-isZero.timeOut = 15000;
 
 //
 
@@ -7646,6 +7647,8 @@ var Self =
     isGreaterEqualAprox,
     isGreaterAprox,
 
+    isZero,
+
     logical2ArgsZipperWithBadArguments,
 
     /* */
@@ -7696,7 +7699,6 @@ var Self =
 
     /* */
 
-    isZero,
 
     logical1ArgsSinglerWithBadArguments,
 
