@@ -31,21 +31,6 @@ _.assert( _.routineIs( sqrt ) );
 // test
 // --
 
-function basic( test )
-{
-
-  test.case = 'basic';
-  var exp = [ 5, 8 ];
-  var dst = [ 1, 3 ];
-  var src = [ 4, 5 ];
-  var got = _.avector.add( dst, src );
-  test.identical( got, exp );
-  test.is( got === dst );
-
-}
-
-//
-
 function allFinite( test )
 {
 
@@ -7617,8 +7602,6 @@ var Self =
 
   tests : /* qqq : move out routines which should be in VectorAdapter.test.s. ask how */
   {
-
-    basic,
 
     allFinite,
     anyNan,
