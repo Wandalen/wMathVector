@@ -2736,6 +2736,80 @@ allLessAprox.timeOut = 150000;
 
 //
 
+function _allZero( test, r, t, array )
+{
+  var f = !t;
+
+  /* */
+
+  test.case = 'vector';
+  var expected = t;
+  var got = _.avector[ r ]( array( 0, 0, 0 ) );
+  test.identical( got, expected );
+  var expected = f;
+  var got = _.avector[ r ]( array( 1, 2, 0 ) );
+  test.identical( got, expected );
+  var expected = f;
+  var got = _.avector[ r ]( array( 0, 2, 3 ) );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'scalar';
+  var expected = f;
+  var got = _.avector[ r ]( 3 );
+  test.identical( got, expected );
+  var expected = t;
+  var got = _.avector[ r ]( 0 );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'empty vector';
+  var expected = t;
+  var got = _.avector[ r ]( array() );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'not';
+
+  test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
+  test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
+
+  test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
+  test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
+  test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
+  test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
+
+  test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
+  test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
+}
+
+//
+
+function allZero( test )
+{
+
+  this._allZero( test, 'allZero', true, function()
+  {
+    return _.longMake( Array, arguments );
+  });
+
+  this._allZero( test, 'allZero', true, function()
+  {
+    return _.longMake( F32x, arguments );
+  });
+
+  this._allZero( test, 'allZero', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+}
+
+allZero.timeOut = 15000;
+//
+
 function allFinite( test )
 {
 
@@ -3389,6 +3463,86 @@ anyGreaterAprox.timeOut = 15000;
 
 //
 
+function _anyZero( test, r, t, array )
+{
+  var f = !t;
+
+  /* */
+
+  test.case = 'vector';
+  var expected = t;
+  var got = _.avector[ r ]( array( 0, 0, 0 ) );
+  test.identical( got, expected );
+  var expected = t;
+  var got = _.avector[ r ]( array( 1, 2, 0 ) );
+  test.identical( got, expected );
+  var expected = t;
+  var got = _.avector[ r ]( array( 0, 2, 3 ) );
+  test.identical( got, expected );
+  var expected = f;
+  var got = _.avector[ r ]( array( 1, 2, 3 ) );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'scalar';
+  var expected = f;
+  var got = _.avector[ r ]( 3 );
+  test.identical( got, expected );
+  var expected = t;
+  var got = _.avector[ r ]( 0 );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'empty vector';
+  var expected = t;
+  var got = _.avector[ r ]( array() );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'not';
+
+  test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
+  test.identical( _.avector[ r ]([ 3, 4, 1 ]), false );
+
+  test.identical( _.avector[ r ]([ 1, 3, NaN ]), false );
+  test.identical( _.avector[ r ]([ 1, NaN, 3 ]), false );
+  test.identical( _.avector[ r ]([ 1, 3, -Infinity ]), false );
+  test.identical( _.avector[ r ]([ 1, +Infinity, 3 ]), false );
+
+  test.identical( _.avector[ r ]([ 1.1, 0.001, 1 ]), false );
+  test.identical( _.avector[ r ]([ 1, 0.001, 1.1 ]), false );
+
+}
+
+//
+
+function anyZero( test )
+{
+
+  this._anyZero( test, 'anyZero', true, function()
+  {
+    return _.longMake( Array, arguments );
+  });
+
+  this._anyZero( test, 'anyZero', true, function()
+  {
+    return _.longMake( F32x, arguments );
+  });
+
+  this._anyZero( test, 'anyZero', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+}
+
+anyZero.timeOut = 15000;
+
+//
+
 function anyNan( test )
 {
 
@@ -3892,6 +4046,86 @@ noneLessEqualAprox.timeOut = 150000;
 
 //
 
+function _noneZero( test, r, t, array )
+{
+  var f = !t;
+
+  /* */
+
+  test.case = 'vector';
+  var expected = f;
+  var got = _.avector[ r ]( array( 0, 0, 0 ) );
+  test.identical( got, expected );
+  var expected = f;
+  var got = _.avector[ r ]( array( 1, 2, 0 ) );
+  test.identical( got, expected );
+  var expected = f;
+  var got = _.avector[ r ]( array( 0, 2, 3 ) );
+  test.identical( got, expected );
+  var expected = t;
+  var got = _.avector[ r ]( array( 1, 2, 3 ) );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'scalar';
+  var expected = t;
+  var got = _.avector[ r ]( 3 );
+  test.identical( got, expected );
+  var expected = f;
+  var got = _.avector[ r ]( 0 );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'empty vector';
+  var expected = t;
+  var got = _.avector[ r ]( array() );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'not';
+
+  test.identical( _.avector[ r ]([ 1, 0, 3 ]), false );
+  test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
+
+  test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
+  test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
+  test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
+  test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
+
+  test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
+  test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
+
+}
+
+//
+
+function noneZero( test )
+{
+
+  this._noneZero( test, 'noneZero', true, function()
+  {
+    return _.longMake( Array, arguments );
+  });
+
+  this._noneZero( test, 'noneZero', true, function()
+  {
+    return _.longMake( F32x, arguments );
+  });
+
+  this._noneZero( test, 'noneZero', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+}
+
+noneZero.timeOut = 15000;
+
+//
+
 function logical2ArgsReducerWithBadArguments( test, r, t, array )
 {
   var f = !t;
@@ -4048,243 +4282,6 @@ function logical1ArgsSinglerWithBadArguments( test, r, t, array )
 }
 
 logical1ArgsSinglerWithBadArguments.timeOut = 25000;
-
-//
-
-function _allZero( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = 'vector';
-  var expected = t;
-  var got = _.avector[ r ]( array( 0, 0, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 0, 2, 3 ) );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'scalar';
-  var expected = f;
-  var got = _.avector[ r ]( 3 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 0 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector';
-  var expected = t;
-  var got = _.avector[ r ]( array() );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'not';
-
-  test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
-
-  test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
-  test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
-  test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
-
-  test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
-
-}
-
-//
-
-function allZero( test )
-{
-
-  this._allZero( test, 'allZero', true, function()
-  {
-    return _.longMake( Array, arguments );
-  });
-
-  this._allZero( test, 'allZero', true, function()
-  {
-    return _.longMake( F32x, arguments );
-  });
-
-  this._allZero( test, 'allZero', true, function()
-  {
-    return _.longMake( U32x, arguments );
-  });
-
-}
-
-allZero.timeOut = 15000;
-
-//
-
-function _anyZero( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = 'vector';
-  var expected = t;
-  var got = _.avector[ r ]( array( 0, 0, 0 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 0 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 0, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ) );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'scalar';
-  var expected = f;
-  var got = _.avector[ r ]( 3 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 0 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector';
-  var expected = t;
-  var got = _.avector[ r ]( array() );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'not';
-
-  test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
-  test.identical( _.avector[ r ]([ 3, 4, 1 ]), false );
-
-  test.identical( _.avector[ r ]([ 1, 3, NaN ]), false );
-  test.identical( _.avector[ r ]([ 1, NaN, 3 ]), false );
-  test.identical( _.avector[ r ]([ 1, 3, -Infinity ]), false );
-  test.identical( _.avector[ r ]([ 1, +Infinity, 3 ]), false );
-
-  test.identical( _.avector[ r ]([ 1.1, 0.001, 1 ]), false );
-  test.identical( _.avector[ r ]([ 1, 0.001, 1.1 ]), false );
-
-}
-
-//
-
-function anyZero( test )
-{
-
-  this._anyZero( test, 'anyZero', true, function()
-  {
-    return _.longMake( Array, arguments );
-  });
-
-  this._anyZero( test, 'anyZero', true, function()
-  {
-    return _.longMake( F32x, arguments );
-  });
-
-  this._anyZero( test, 'anyZero', true, function()
-  {
-    return _.longMake( U32x, arguments );
-  });
-
-}
-
-anyZero.timeOut = 15000;
-
-//
-
-function _noneZero( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = 'vector';
-  var expected = f;
-  var got = _.avector[ r ]( array( 0, 0, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 0, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ) );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'scalar';
-  var expected = t;
-  var got = _.avector[ r ]( 3 );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( 0 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector';
-  var expected = t;
-  var got = _.avector[ r ]( array() );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'not';
-
-  test.identical( _.avector[ r ]([ 1, 0, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
-
-  test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
-  test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
-  test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
-
-  test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
-
-}
-
-//
-
-function noneZero( test )
-{
-
-  this._noneZero( test, 'noneZero', true, function()
-  {
-    return _.longMake( Array, arguments );
-  });
-
-  this._noneZero( test, 'noneZero', true, function()
-  {
-    return _.longMake( F32x, arguments );
-  });
-
-  this._noneZero( test, 'noneZero', true, function()
-  {
-    return _.longMake( U32x, arguments );
-  });
-
-}
-
-noneZero.timeOut = 15000;
 
 //
 
@@ -7624,6 +7621,7 @@ var Self =
   tests : /* qqq : move out routines which should be in VectorAdapter.test.s. ask how */
   {
 
+    /* qqq : sort routines order*/
 
     map,
 
@@ -7631,7 +7629,7 @@ var Self =
 
     abs,
 
-    /* */
+    // 
 
     isIdentical,
     isNotIdentical,
@@ -7664,6 +7662,7 @@ var Self =
     allLessEqualAprox,
     allLessAprox,
 
+    allZero, /* qqq : group all* routines */
     allFinite,
     allInt,
 
@@ -7680,6 +7679,7 @@ var Self =
     anyLessEqualAprox,
     anyLessAprox,
 
+    anyZero, /* qqq : group any* routines */
     anyNan,
 
     //
@@ -7695,23 +7695,17 @@ var Self =
     noneLessAprox,
     noneLessEqualAprox,
 
+    noneZero, /* qqq : group none* routines */
+
+    //
+
     logical2ArgsReducerWithBadArguments,
-
-    /* */
-
 
     logical1ArgsSinglerWithBadArguments,
 
-    /* */
-
-    /* qqq : sort routines order*/
-    allZero, /* qqq : group all* routines */
-    anyZero, /* qqq : group any* routines */
-    noneZero, /* qqq : group none* routines */
-
     logical1ArgsReducerWithBadArguments,
 
-    /* */
+    //
 
     dot,
 
