@@ -254,7 +254,7 @@ function map( test )
   if( !Config.debug )
   return;
 
-  test.case = 'withot arguments';
+  test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.avector.map() );
 
   test.case = 'Only one argument';
@@ -285,6 +285,188 @@ function map( test )
   test.shouldThrowErrorSync( () => _.avector.map( null, onEvaluate ));
   test.shouldThrowErrorSync( () => _.avector.map( undefined, onEvaluate ));
   test.shouldThrowErrorSync( () => _.avector.map( 'string', onEvaluate ));
+}
+
+//
+
+function cross3( test ) 
+{
+  test.case = 'dst - only zeros, src1 and src2 - only zeros';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - only zeros';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - different elements, src1 - only zeros, src2 - different elements';
+  var dst = [ 1, -1, 3 ];
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 5, 4, 3 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 - different elements, src2 - only zeros';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ 10, -5, 4 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same positive number';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same positive number';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same negative number';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same negative number';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different positive values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different positive values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different negative values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ -1, -2, -3 ];
+  var src2 = [ -4, -5, -6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different negative values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ -1, -2, -3 ];
+  var src2 = [ -4, -5, -6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ -1, 2, 3 ];
+  var src2 = [ 4, -5, -6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ -1, 2, 3 ];
+  var src2 = [ 4, -5, -6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.avector.cross3() );
+
+  test.case = 'not enouth arguments';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ], [ 3, 2, 1 ] ) );
+
+  test.case = 'wrong length of dst';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3, 4 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.cross3( null, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( { a : 1, b : 2, c : 3 }, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong length of src1';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3, 4 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong type of src1';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], undefined, [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], 3, [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong length of src2';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3, 4 ] ) );
+
+  test.case = 'wrong type of src2';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], true ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], 'str' ) );
 }
 
 //
@@ -7547,6 +7729,7 @@ var Self =
 
     map,
 
+    cross3,
     cross,
 
     abs,
