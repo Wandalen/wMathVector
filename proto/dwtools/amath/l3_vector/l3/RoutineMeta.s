@@ -597,7 +597,6 @@ function _vectorizeSrcs( o, first )
   {
     let src = o.args[ a ];
 
-    // xxx : ?
     if( !_.routineIs( src ) )
     {
       src = o.args[ a ] = this.vectorAdapter.fromMaybeNumber( src, o.dstContainer.length );
@@ -2673,8 +2672,6 @@ function _declareLogic1SinglerRoutine( operation, atomOperation, routineName )
     input : '?vw|?n vr|s',
   }
 
-  if( routineName === 'isZero' )
-  debugger;
   _.mapExtend( operation, def );
 
   return meta._routineHomogeneousDeclare( operation, atomOperation, routineName );
