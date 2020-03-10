@@ -291,6 +291,8 @@ function map( test )
 
 function cross3( test ) 
 {
+  test.open( 'src1 and src2 - simple vectors' );
+
   test.case = 'dst - only zeros, src1 and src2 - only zeros';
   var dst = [ 0, 0, 0 ];
   var src1 = [ 0, 0, 0 ];
@@ -428,6 +430,152 @@ function cross3( test )
   var exp = [ 3, 6, -3 ];
   test.identical( got, exp );
   test.is( got === dst );
+
+  test.close( 'src1 and src2 - simple vectors' );
+
+  /* - */ 
+
+  test.open( 'src1 and src2 - vectorAdapter instances' );
+
+  test.case = 'dst - only zeros, src1 and src2 - only zeros';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - only zeros';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - different elements, src1 - only zeros, src2 - different elements';
+  var dst = [ 1, -1, 3 ];
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 5, 4, 3 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 - different elements, src2 - only zeros';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ 10, -5, 4 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same positive number';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same positive number';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same negative number';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same negative number';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different positive values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ 1, 2, 3 ] );
+  var src2 = vad.from( [ 4, 5, 6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different positive values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ 1, 2, 3 ] );
+  var src2 = vad.from( [ 4, 5, 6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different negative values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ -1, -2, -3 ] );
+  var src2 = vad.from( [ -4, -5, -6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different negative values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ -1, -2, -3 ] );
+  var src2 = vad.from( [ -4, -5, -6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ -1, 2, 3 ] );
+  var src2 = vad.from( [ 4, -5, -6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ -1, 2, 3 ] );
+  var src2 = vad.from( [ 4, -5, -6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.close( 'src1 and src2 - vectorAdapter instances' );
 
   /* - */
 
