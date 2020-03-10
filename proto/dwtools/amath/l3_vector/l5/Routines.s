@@ -2451,7 +2451,10 @@ dop.homogeneous = true;
 
 //
 
-function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
+/* aaa : good coverage required */
+/* Dmytro : covered */
+
+function areParallel( src1, src2, accuracy )
 {
   let length = src1.length;
   accuracy = ( accuracy !== undefined ) ? accuracy : this.accuracy;
@@ -2480,7 +2483,7 @@ function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
     }
 
     ratio = src1.eGet( s ) / src2.eGet( s );
-    break; /* Dmytro : enough single ratio to check any other */
+    break; /* Dmytro : enough single ratio to check any other. Also, if it comment out, then needs set s to 0 */
     //break;
 
     s += 1;

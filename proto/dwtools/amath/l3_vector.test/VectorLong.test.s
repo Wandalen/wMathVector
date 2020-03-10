@@ -7130,7 +7130,7 @@ function areParallelDefaultAccuracy( test )
 
   /* - */
 
-  test.open( 'default accuracy, without deviation' );
+  test.open( 'without deviation' );
 
   test.case = 'empty vectors, equivalent, zeros';
   var src1 = [];
@@ -7271,11 +7271,11 @@ function areParallelDefaultAccuracy( test )
   var exp = true;
   test.identical( got, exp );
 
-  test.close( 'default accuracy, without deviation' );
+  test.close( 'without deviation' );
 
   /* - */
 
-  test.open( 'default accuracy, with deviation' );
+  test.open( 'with deviation' );
 
   test.case = 'single element vectors, equivalent, zeros';
   var src1 = [ 0 ];
@@ -7407,7 +7407,7 @@ function areParallelDefaultAccuracy( test )
   var exp = false;
   test.identical( got, exp );
 
-  test.close( 'default accuracy, with deviation' );
+  test.close( 'with deviation' );
 
   /* - */ 
 
@@ -7443,7 +7443,7 @@ function areParallelNotDefaultAccuracy( test )
 
   /* - */
 
-  test.open( 'default accuracy, without deviation' );
+  test.open( 'without deviation' );
 
   test.case = 'empty vectors, equivalent, zeros';
   var src1 = [];
@@ -7584,11 +7584,11 @@ function areParallelNotDefaultAccuracy( test )
   var exp = true;
   test.identical( got, exp );
 
-  test.close( 'default accuracy, without deviation' );
+  test.close( 'without deviation' );
 
   /* - */
 
-  test.open( 'default accuracy, with deviation' );
+  test.open( 'with deviation' );
 
   test.case = 'single element vectors, equivalent, zeros';
   var src1 = [ 0 ];
@@ -7720,7 +7720,7 @@ function areParallelNotDefaultAccuracy( test )
   var exp = true;
   test.identical( got, exp );
 
-  test.close( 'default accuracy, with deviation' );
+  test.close( 'with deviation' );
 }
 
 //
