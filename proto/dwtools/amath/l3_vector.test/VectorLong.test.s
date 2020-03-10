@@ -132,15 +132,31 @@ function assign( test )
 
 function map( test )
 {
-  test.case = 'dst = src';
 
+  test.case = 'single argument';
+  var dst = _.avector.make( [ 2, 3, 4 ] );
+  var got = _.avector.map( dst );
+  test.is( got === dst );
+
+  test.case = 'dst and undefined';
+  var dst = _.avector.make( [ 2, 3, 4 ] );
+  var got = _.avector.map( dst, undefined );
+  test.is( got === dst );
+
+  test.case = 'dst and null';
+  var dst = _.avector.make( [ 2, 3, 4 ] );
+  var got = _.avector.map( dst, null );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst = src';
   function inRange( src )
   {
-    return - 5 < src && src < 0 ; /* numbers in range */
+    return -5 < src && src < 0 ; /* numbers in range */
   }
   var vector = _.avector.make( [ -1, -1.5, -2 ] );
   var gotBool = _.avector.map( vector, inRange );
-
   var expected = _.avector.make( [ true, true, true ] );
   test.identical( gotBool, expected );
   test.is( gotBool === vector );
@@ -148,96 +164,68 @@ function map( test )
   /* */
 
   test.case = 'dst = null';
-
   function inRange( src )
   {
     return - 5 < src && src < 0 ; /* numbers in range */
   }
   var vector = _.avector.make( [ -1, -1.5, -2 ] );
   var gotBool = _.avector.map( null, vector, inRange );
-
   var expected = _.avector.make( [ 1, 1, 1 ] );
   test.identical( gotBool, expected );
-
   var expected = _.avector.make( [ -1, -1.5, -2 ] )
   test.equivalent( expected, vector );
 
   /* */
 
   test.case = 'Check if a number is > 0 - empty';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var vector = _.avector.make( [ ] );
+  var vector = _.avector.make( [] );
   var gotBool = _.avector.map( vector, positiveNumber );
-
-  var expected = _.avector.make( [ ] );
+  var expected = _.avector.make( [] );
   test.identical( gotBool, expected );
 
   /* */
 
   test.case = 'Check if a number is > 0 - true';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var vector = _.avector.make( [ 0, 1, 0, 2, 1000, 307 ] );
   var gotBool = _.avector.map( vector, positiveNumber );
-
   var expected = _.avector.make( [ true, true, true, true, true, true ] );
   test.identical( gotBool, expected );
 
   /* */
 
   test.case = 'Check if a number is > 0 - false some';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var vector = _.avector.make( [ 0, - 1, 0, 2, 1000 ] );
   var gotBool = _.avector.map( vector, positiveNumber );
-
   var expected = _.avector.make( [ true, false, true, true, true ] );
   test.identical( gotBool, expected );
 
   /* */
 
   test.case = 'Check if a number is > 0 - false none';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var vector = _.avector.make( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
   var gotBool = _.avector.map( vector, positiveNumber );
-
   var expected = _.avector.make( [ false, false, false, true, true ] );
   test.identical( gotBool, expected );
 
   /* */
 
-  test.case = 'single argument';
-
-  var dst = _.avector.make( [ 2, 3, 4 ] );
-  var got = _.avector.map( dst );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'dst and undefined';
-
-  var dst = _.avector.make( [ 2, 3, 4 ] );
-  var got = _.avector.map( dst, undefined );
-  test.is( got === dst );
-
-  /* */
-
   test.case = 'dst is array';
-
   function onEvaluate( src )
   {
     return src > 2 ;
@@ -251,7 +239,6 @@ function map( test )
   /* */
 
   test.case = 'dst is typed array';
-
   function onEvaluate( src )
   {
     return src > 2 ;
@@ -262,27 +249,26 @@ function map( test )
   var exp = I8x.from([ false, false, false, true ]);
   test.identical( got, exp );
 
-  /* */
+  /* - */
 
   if( !Config.debug )
   return;
 
-  /* */
+  test.case = 'withot arguments';
+  test.shouldThrowErrorSync( () => _.avector.map() );
 
   test.case = 'Only one argument';
-
-  test.shouldThrowErrorSync( () => _.avector.map( ));
-  test.shouldThrowErrorSync( () => _.avector.map( null ));
-  test.shouldThrowErrorSync( () => _.avector.map( NaN ));
-  test.shouldThrowErrorSync( () => _.avector.map( undefined ));
-  test.shouldThrowErrorSync( () => _.avector.map( 'string' ));
-  test.shouldThrowErrorSync( () => _.avector.map( 2 ));
+  test.shouldThrowErrorSync( () => _.avector.map( null ) );
+  test.shouldThrowErrorSync( () => _.avector.map( NaN ) );
+  test.shouldThrowErrorSync( () => _.avector.map( undefined ) );
+  test.shouldThrowErrorSync( () => _.avector.map( 'string' ) );
+  test.shouldThrowErrorSync( () => _.avector.map( 2 ) );
 
   /* */
 
   test.case = 'Wrong second argument';
 
-  // test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
+  // test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), null )); /* aaa : add such test case */ /* Dmytro : added */
   test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), NaN ));
   test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), 'string' ));
   test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), 2 ));
