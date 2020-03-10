@@ -1239,7 +1239,10 @@ dop.modifying = true;
 
 //
 
-function cross3( dst, src1, src2 ) /* qqq : cover */
+/* aaa : cover */
+/* Dmytro : covered */
+
+function cross3( dst, src1, src2 )
 {
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
@@ -2451,14 +2454,13 @@ dop.homogeneous = true;
 function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
 {
   let length = src1.length;
-  debugger;
-  _.assert( 0, 'not tested' );
   accuracy = ( accuracy !== undefined ) ? accuracy : this.accuracy;
 
   _.assert( _.numberIs( accuracy ) );
-  _.assert( src1.length === src2.length, 'vector.distanceSqr :', 'src1 and src2 should have same length' );
+  _.assert( src1.length === src2.length, 'vector.areParallel :', 'src1 and src2 should have same length' );
 
-  if( !length ) return true;
+  if( !length )
+  return true;
 
   let ratio = 0;
   let s = 0;
@@ -2478,6 +2480,7 @@ function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
     }
 
     ratio = src1.eGet( s ) / src2.eGet( s );
+    break; /* Dmytro : enough single ratio to check any other */
     //break;
 
     s += 1;
@@ -2486,14 +2489,29 @@ function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
 
   while( s < length )
   {
-
-    let r = src1.eGet( s ) / src2.eGet( s );
-
-    if( abs( r - ratio ) > accuracy )
+    let r = src1.eGet( s ) / ratio - src2.eGet( s ); /* Dmytro : it's absolute deviation, if relative deviation needed, then it should be divided on src1 or src2 */
+    
+    if( abs( r ) > accuracy )
     return false;
 
-    s += 1;
+    s +=1;
+    
+    /* 
+      Dmytro : it's wrong realization. The first rule for collinear vector is: vector a is collinear to vector b if a = n * b, where n is scalar.
+      If elements is zero, previous implementation did not work correctly :
+      var src1 = [ 0, 2 ];
+      var src2 = [ 0, 6 ];
+      var got = _.avector.areParallel( src1, src2 );
 
+      Should be true, but got false 
+    */
+
+    // let r = src1.eGet( s ) / src2.eGet( s );   
+    //
+    // if( abs( r - ratio ) > accuracy )
+    // return false;
+    //
+    // s += 1;
   }
 
   return true;
