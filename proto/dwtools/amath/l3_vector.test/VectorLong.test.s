@@ -6494,80 +6494,96 @@ noneLessEqualAprox.timeOut = 150000;
 
 //
 
-function _noneZero( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = 'vector';
-  var expected = f;
-  var got = _.avector[ r ]( array( 0, 0, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 0, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ) );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'scalar';
-  var expected = t;
-  var got = _.avector[ r ]( 3 );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( 0 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector';
-  var expected = t;
-  var got = _.avector[ r ]( array() );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'not';
-
-  test.identical( _.avector[ r ]([ 1, 0, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
-
-  test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
-  test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
-  test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
-
-  test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
-
-}
-
-//
-
 function noneZero( test )
 {
+  /* - */
 
-  this._noneZero( test, 'noneZero', true, function()
+  test.open( 'Array constructor' );
+
+  _noneZero( test, 'noneZero', true, function()
   {
     return _.longMake( Array, arguments );
   });
 
-  this._noneZero( test, 'noneZero', true, function()
-  {
-    return _.longMake( F32x, arguments );
-  });
+  test.close( 'Array constructor' );
 
-  this._noneZero( test, 'noneZero', true, function()
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _noneZero( test, 'noneZero', true, function()
   {
     return _.longMake( U32x, arguments );
   });
 
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _noneZero( test, 'noneZero', true, function()
+  {
+    return _.longMake( F32x, arguments );
+  });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _noneZero( test, r, t, array )
+  {
+    var f = !t;
+
+    /* */
+
+    test.case = 'vector';
+    var expected = f;
+    var got = _.avector[ r ]( array( 0, 0, 0 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 0 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 0, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'scalar';
+    var expected = t;
+    var got = _.avector[ r ]( 3 );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( 0 );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector';
+    var expected = t;
+    var got = _.avector[ r ]( array() );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'not';
+    test.identical( _.avector[ r ]([ 1, 0, 3 ]), false );
+    test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
+    test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
+    test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
+    test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
+    test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
+    test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
+    test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
+  }
 }
 
 noneZero.timeOut = 15000;
@@ -7530,8 +7546,6 @@ var Self =
     _noneGreaterAprox,
     _noneLessAprox,
 
-    _noneZero,
-
   },
 
   tests :
@@ -7606,7 +7620,7 @@ var Self =
     allLessEqualAprox,
     allLessAprox,
 
-    allZero, /* qqq : group all* routines */
+    allZero, /* aaa : group all* routines */ /* Dmytro : grouped */
     allFinite,
     allInt,
 
@@ -7623,7 +7637,7 @@ var Self =
     anyLessEqualAprox,
     anyLessAprox,
 
-    anyZero, /* qqq : group any* routines */
+    anyZero, /* aaa : group any* routines */ /* Dmytro : grouped */
     anyNan,
 
     //
@@ -7639,7 +7653,7 @@ var Self =
     noneLessAprox,
     noneLessEqualAprox,
 
-    noneZero, /* qqq : group none* routines */
+    noneZero, /* aaa : group none* routines */ /* Dmytro : grouped */
 
     //
 
