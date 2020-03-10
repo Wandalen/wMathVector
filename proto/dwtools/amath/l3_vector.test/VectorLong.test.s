@@ -585,7 +585,7 @@ function cross3( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.avector.cross3() );
 
-  test.case = 'not enouth arguments';
+  test.case = 'not enough arguments';
   test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ] ) );
   test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
 
@@ -7408,6 +7408,31 @@ function areParallelDefaultAccuracy( test )
   test.identical( got, exp );
 
   test.close( 'default accuracy, with deviation' );
+
+  /* - */ 
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.avector.areParallel() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1 ] ) );
+
+  test.case = 'wrong type of src1';
+  test.shouldThrowErrorSync( () => _.avector.areParallel( 'wrong', [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( null, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( undefined, [ 1 ], 0.1 ) );
+
+  test.case = 'wrong type of src2';
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1 ], {} ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1 ], new Set( [] ), 0.1 ) );
+
+  test.case = 'wrong type of accuracy';
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1, 2 ], [ 1, 2 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1, 2 ], [ 1, 2 ], null ) );
 }
 
 //
