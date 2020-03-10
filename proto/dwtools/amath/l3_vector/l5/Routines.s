@@ -2489,29 +2489,12 @@ function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
 
   while( s < length )
   {
-    let r = src1.eGet( s ) / ratio - src2.eGet( s ); /* Dmytro : it's absolute deviation, if relative deviation needed, then it should be divided on src1 or src2 */
+    let r = src1.eGet( s ) / src2.eGet( s );   
     
-    if( abs( r ) > accuracy )
+    if( abs( r - ratio ) > accuracy )
     return false;
-
-    s +=1;
     
-    /* 
-      Dmytro : it's wrong realization. The first rule for collinear vector is: vector a is collinear to vector b if a = n * b, where n is scalar.
-      If elements is zero, previous implementation did not work correctly :
-      var src1 = [ 0, 2 ];
-      var src2 = [ 0, 6 ];
-      var got = _.avector.areParallel( src1, src2 );
-
-      Should be true, but got false 
-    */
-
-    // let r = src1.eGet( s ) / src2.eGet( s );   
-    //
-    // if( abs( r - ratio ) > accuracy )
-    // return false;
-    //
-    // s += 1;
+    s += 1;
   }
 
   return true;
