@@ -1239,7 +1239,10 @@ dop.modifying = true;
 
 //
 
-function cross3( dst, src1, src2 ) /* qqq : cover */
+/* aaa : cover */
+/* Dmytro : covered */
+
+function cross3( dst, src1, src2 )
 {
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
@@ -2284,78 +2287,6 @@ dop.modifying = false;
 // dop = le.operation = Routines.isLessEqual.operation;
 // _.assert( _.objectIs( dop ) );
 
-//
-
-function dot( dst, src )
-{
-  let result = 0;
-  let length = dst.length;
-
-  _.assert( _.vectorAdapterIs( dst ) );
-  _.assert( _.vectorAdapterIs( src ) );
-  _.assert( dst.length === src.length, 'src and dst should have same length' );
-  _.assert( arguments.length === 2 );
-
-  for( let s = 0 ; s < length ; s++ )
-  {
-    result += dst.eGet( s ) * src.eGet( s );
-  }
-
-  return result;
-}
-
-dop = dot.operation = Object.create( null );
-dop.input = 'vr vr';
-dop.takingArguments = 2;
-dop.takingVectors = 2;
-dop.takingVectorsOnly = true;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.modifying = false;
-
-//
-
-function distance( src1, src2 )
-{
-  let result = this.distanceSqr( src1, src2 );
-  result = sqrt( result );
-  return result;
-}
-
-dop = distance.operation = Object.create( null );
-dop.input = 'vr vr';
-dop.takingArguments = 2;
-dop.takingVectors = 2;
-dop.takingVectorsOnly = true;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.modifying = false;
-
-//
-
-function distanceSqr( src1, src2 )
-{
-  let result = 0;
-  let length = src1.length;
-
-  _.assert( src1.length === src2.length, 'vector.distanceSqr :', 'src1 and src2 should have same length' );
-
-  for( let s = 0 ; s < length ; s++ )
-  {
-    result += _sqr( src1.eGet( s ) - src2.eGet( s ) );
-  }
-
-  return result;
-}
-
-dop = distanceSqr.operation = Object.create( null );
-dop.input = 'vr vr';
-dop.takingArguments = 2;
-dop.takingVectors = 2;
-dop.takingVectorsOnly = true;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.modifying = false;
 
 // --
 // interruptible reductor with bool result
@@ -2520,17 +2451,19 @@ dop.homogeneous = true;
 
 //
 
-function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
+/* aaa : good coverage required */
+/* Dmytro : covered */
+
+function areParallel( src1, src2, accuracy )
 {
   let length = src1.length;
-  debugger;
-  _.assert( 0, 'not tested' );
   accuracy = ( accuracy !== undefined ) ? accuracy : this.accuracy;
 
   _.assert( _.numberIs( accuracy ) );
-  _.assert( src1.length === src2.length, 'vector.distanceSqr :', 'src1 and src2 should have same length' );
+  _.assert( src1.length === src2.length, 'vector.areParallel :', 'src1 and src2 should have same length' );
 
-  if( !length ) return true;
+  if( !length )
+  return true;
 
   let ratio = 0;
   let s = 0;
@@ -2550,6 +2483,7 @@ function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
     }
 
     ratio = src1.eGet( s ) / src2.eGet( s );
+    break; /* Dmytro : enough single ratio to check any other. Also, if it comment out, then needs set s to 0 */
     //break;
 
     s += 1;
@@ -2558,14 +2492,12 @@ function areParallel( src1, src2, accuracy ) /* qqq : good coverage required */
 
   while( s < length )
   {
-
-    let r = src1.eGet( s ) / src2.eGet( s );
-
+    let r = src1.eGet( s ) / src2.eGet( s );   
+    
     if( abs( r - ratio ) > accuracy )
     return false;
-
+    
     s += 1;
-
   }
 
   return true;
@@ -2624,6 +2556,81 @@ dop.takingVectors = [ 1, 1 ];
 // --
 // statistics
 // --
+
+//
+
+function dot( dst, src )
+{
+  let result = 0;
+  let length = dst.length;
+
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.vectorAdapterIs( src ) );
+  _.assert( dst.length === src.length, 'src and dst should have same length' );
+  _.assert( arguments.length === 2 );
+
+  for( let s = 0 ; s < length ; s++ )
+  {
+    result += dst.eGet( s ) * src.eGet( s );
+  }
+
+  return result;
+}
+
+dop = dot.operation = Object.create( null );
+dop.input = 'vr vr';
+dop.takingArguments = 2;
+dop.takingVectors = 2;
+dop.takingVectorsOnly = true;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.modifying = false;
+
+//
+
+function distance( src1, src2 )
+{
+  let result = this.distanceSqr( src1, src2 );
+  result = sqrt( result );
+  return result;
+}
+
+dop = distance.operation = Object.create( null );
+dop.input = 'vr vr';
+dop.takingArguments = 2;
+dop.takingVectors = 2;
+dop.takingVectorsOnly = true;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.modifying = false;
+
+//
+
+function distanceSqr( src1, src2 )
+{
+  let result = 0;
+  let length = src1.length;
+
+  _.assert( src1.length === src2.length, 'vector.distanceSqr :', 'src1 and src2 should have same length' );
+
+  for( let s = 0 ; s < length ; s++ )
+  {
+    result += _sqr( src1.eGet( s ) - src2.eGet( s ) );
+  }
+
+  return result;
+}
+
+dop = distanceSqr.operation = Object.create( null );
+dop.input = 'vr vr';
+dop.takingArguments = 2;
+dop.takingVectors = 2;
+dop.takingVectorsOnly = true;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.modifying = false;
+
+//
 
 function median( v )
 {
@@ -3040,11 +3047,6 @@ let _routinesMathematical =
   reduceToMagConditional : Routines.reduceToMagConditional,
   reduceToMagSqrConditional : Routines.reduceToMagSqrConditional,
 
-  // allFinite : Routines.allFinite,
-  // anyNan : Routines.anyNan,
-  // allInt : Routines.allInt,
-  // allZero : Routines.allZero,
-
   // allFiniteConditional : Routines.allFiniteConditional,
   // anyNanConditional : Routines.anyNanConditional,
   // allIntConditional : Routines.allIntConditional,
@@ -3095,6 +3097,8 @@ let _routinesMathematical =
   la : Routines.isLessAprox,
   lea : Routines.isLessEqualAprox,
 
+  //
+
   isIdentical : Routines.isIdentical,
   isNotIdentical : Routines.isNotIdentical,
   isEquivalent : Routines.isEquivalent,
@@ -3108,7 +3112,16 @@ let _routinesMathematical =
   isLessEqual : Routines.isLessEqual,
   isLessEqualAprox : Routines.isLessEqualAprox,
   isLessAprox : Routines.isLessAprox,
-    // logical2 reductor
+
+  isNumber : Routines.isNumber,
+  isZero : Routines.isZero,
+  isFinite : Routines.isFinite,
+  isInfinite : Routines.isInfinite,
+  isNan : Routines.isNan,
+  isInt : Routines.isInt,
+  isString : Routines.isString,
+
+  // logical2 reductor
 
   allIdentical : Routines.allIdentical,
   allNotIdentical : Routines.allNotIdentical,
@@ -3124,6 +3137,16 @@ let _routinesMathematical =
   allLessEqualAprox : Routines.allLessEqualAprox,
   allLessAprox : Routines.allLessAprox,
 
+  allNumber : Routines.allNumber,
+  allZero : Routines.allZero,
+  allFinite : Routines.allFinite,
+  allInfinite : Routines.allInfinite,
+  allNan : Routines.allNan,
+  allInt : Routines.allInt,
+  allString : Routines.allString,
+
+  //
+
   anyIdentical : Routines.anyIdentical,
   anyNotIdentical : Routines.anyNotIdentical,
   anyEquivalent : Routines.anyEquivalent,
@@ -3137,6 +3160,16 @@ let _routinesMathematical =
   anyLessEqual : Routines.anyLessEqual,
   anyLessEqualAprox : Routines.anyLessEqualAprox,
   anyLessAprox : Routines.anyLessAprox,
+
+  anyNumber : Routines.anyNumber,
+  anyZero : Routines.anyZero,
+  anyFinite : Routines.anyFinite,
+  anyInfinite : Routines.anyInfinite,
+  anyNan : Routines.anyNan,
+  anyInt : Routines.anyInt,
+  anyString : Routines.anyString,
+
+  //
 
   noneIdentical : Routines.noneIdentical,
   noneNotIdentical : Routines.noneNotIdentical,
@@ -3152,9 +3185,13 @@ let _routinesMathematical =
   noneLessEqualAprox : Routines.noneLessEqualAprox,
   noneLessAprox : Routines.noneLessAprox,
 
-  dot,
-  distance,
-  distanceSqr,
+  noneNumber : Routines.noneNumber,
+  noneZero : Routines.noneZero,
+  noneFinite : Routines.noneFinite,
+  noneInfinite : Routines.noneInfinite,
+  noneNan : Routines.noneNan,
+  noneInt : Routines.noneInt,
+  noneString : Routines.noneString,
 
   // logical1 singler
 
@@ -3166,38 +3203,6 @@ let _routinesMathematical =
   _declareLogic1ReducingSinglerNoneRoutine,
   declareLogic1Routines,
 */
-
-  isNumber : Routines.isNumber,
-  isZero : Routines.isZero,
-  isFinite : Routines.isFinite,
-  isInfinite : Routines.isInfinite,
-  isNan : Routines.isNan,
-  isInt : Routines.isInt,
-  isString : Routines.isString,
-
-  allNumber : Routines.allNumber,
-  allZero : Routines.allZero,
-  allFinite : Routines.allFinite,
-  allInfinite : Routines.allInfinite,
-  allNan : Routines.allNan,
-  allInt : Routines.allInt,
-  allString : Routines.allString,
-
-  anyNumber : Routines.anyNumber,
-  anyZero : Routines.anyZero,
-  anyFinite : Routines.anyFinite,
-  anyInfinite : Routines.anyInfinite,
-  anyNan : Routines.anyNan,
-  anyInt : Routines.anyInt,
-  anyString : Routines.anyString,
-
-  noneNumber : Routines.noneNumber,
-  noneZero : Routines.noneZero,
-  noneFinite : Routines.noneFinite,
-  noneInfinite : Routines.noneInfinite,
-  noneNan : Routines.noneNan,
-  noneInt : Routines.noneInt,
-  noneString : Routines.noneString,
 
   // interruptible reductor with bool result
 
@@ -3214,6 +3219,10 @@ let _routinesMathematical =
   magSqr,
 
   // statistics
+
+  dot,
+  distance,
+  distanceSqr,
 
   median,
 

@@ -30,6 +30,6 @@
     "wmathscalar" : "", 
     "wequaler" : ""
   }, 
-  "devDependencies" : { "wstringer" : "", "wTesting" : "" }, 
+  "devDependencies" : { "wstringer" : "", "wTesting" : "", "wmathvector": "file:." }, 
   "keywords" : [ "wTools", "math", "vector", "dot product", "convolution" ]
 }

@@ -31,237 +31,370 @@ _.assert( _.routineIs( sqrt ) );
 // test
 // --
 
-function comparator( test )
+function assign( test )
 {
 
-  test.case = 'trivial';
+  test.case = 'assign scalar';
 
-  let v1 = vad.from([ 1, 2, 3 ]);
-  let v2 = vad.from([ 1, 2, 4 ]);
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.assign( src, 0 );
+  var expected = [ 0, 0, 0 ];
+  test.identical( expected, got );
+  test.is( got === src );
 
-  let diff = _.entityDiff( v1, v2 );
-  let expected =
-`
-at /2
-- src1 :
-  1.000 2.000 3.000
-- src2 :
-  1.000 2.000 4.000
-- difference :
-  1.000 2.000 *
-`
+  test.case = 'assign scalar to null vector';
 
-  console.log( diff );
+  var src = [];
+  var got = _.avector.assign( src, 1 );
+  var expected = [];
+  test.identical( expected, got );
+  test.is( got === src );
 
-  test.identical.apply( test, _.strLinesStrip( diff, expected ) );
-  test.notIdentical( v1, v2 );
+  test.case = 'assign avector';
 
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.assign( src, [ 4, 5, 6 ] );
+  var expected = [ 4, 5, 6 ];
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign multiple scalars';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.assign( src, 4, 5, 6 );
+  var expected = [ 4, 5, 6 ];
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'null avector';
+
+  var src = [];
+  var got = _.avector.assign( src );
+  var expected = [];
+  test.identical( expected, got );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'assign scalar by method';
+
+  var src = vad.fromLong([ 1, 2, 3 ]);
+  var got = src.assign( 0 );
+  var expected = vad.fromLong([ 0, 0, 0 ]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign scalar to null vector';
+
+  var src = vad.fromLong([]);
+  var got = src.assign( 1 );
+  var expected = vad.fromLong([]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign avector';
+
+  var src = vad.fromLong([ 1, 2, 3 ]);
+  var got = src.assign([ 4, 5, 6 ] );
+  var expected = vad.fromLong([ 4, 5, 6 ]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'assign multiple scalars';
+
+  var src = vad.fromLong([ 1, 2, 3 ]);
+  var got = src.assign([ 4, 5, 6 ]);
+  var expected = vad.fromLong([ 4, 5, 6 ]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  test.case = 'null avector';
+
+  var src = vad.fromLong([]);
+  var got = src.assign();
+  var expected = vad.fromLong([]);
+  test.identical( expected, got );
+  test.is( got === src );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => _.avector.assign() );
+  test.shouldThrowErrorSync( () => _.avector.assign( [], 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], '1' ) );
+  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], [ 1, 1 ] ) );
 }
 
 //
 
-function vectorAdapterIs( test )
+function review( test ) 
 {
+  test.open( 'src - simple vector' );
 
-  var a = [ 1, 2, 3 ];
-  var n1 = 1;
-  var n2 = '1';
-  var n3 = arguments;
-  var n4 = function( x ){};
-
-  var v1 = vad.fromLong([ 1, 2, 3 ]);
-  var v2 = vad.fromLongLrange( [ -1, 1, 2, 3, -1 ], 1, 3 );
-  var v3 = vad.fromLongLrangeAndStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
-  var v4 = vad.fromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
-  var v5 = vad.from([ 1, 2, 3 ]);
-
-  test.case = 'vectorAdapterIs'; /* */
-
-  test.is( !_.vectorAdapterIs( a ) );
-  test.is( !_.vectorAdapterIs( n1 ) );
-  test.is( !_.vectorAdapterIs( n2 ) );
-  test.is( !_.vectorAdapterIs( n3 ) );
-
-  test.is( _.vectorAdapterIs( v1 ) );
-  test.is( _.vectorAdapterIs( v2 ) );
-  test.is( _.vectorAdapterIs( v3 ) );
-  test.is( _.vectorAdapterIs( v4 ) );
-  test.is( _.vectorAdapterIs( v5 ) );
-
-  test.case = 'constructorIsVector'; /* */
-
-  test.is( !_.constructorIsVector( a.constructor ) );
-  test.is( !_.constructorIsVector( n3.constructor ) );
-  test.is( !_.constructorIsVector( n4.constructor ) );
-
-  test.is( _.constructorIsVector( v1.constructor ) );
-  test.is( _.constructorIsVector( v2.constructor ) );
-  test.is( _.constructorIsVector( v3.constructor ) );
-  test.is( _.constructorIsVector( v4.constructor ) );
-  test.is( _.constructorIsVector( v5.constructor ) );
-
-}
-
-//
-
-function basic( test )
-{
-
-  test.case = 'basic';
-  var exp = [ 5, 8 ];
-  var dst = [ 1, 3 ];
-  var src = [ 4, 5 ];
-  var got = _.avector.add( dst, src );
+  test.case = 'src - empty vector, crange - 0';
+  var src = [];
+  var got = _.avector.review( src, 0 );
+  var exp = [];
   test.identical( got, exp );
-  test.is( got === dst );
+  test.is( got === src );
 
-}
+  test.case = 'crange - 0';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = _.avector.review( src, 0 );
+  var exp = [ 0, 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got === src );
 
-//
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = _.avector.review( src, 2 );
+  var exp = [ 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-function allFinite( test )
-{
+  test.case = 'crange - src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = _.avector.review( src, 6 );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  test.identical( _.avector.allFinite([ 1, 2, 3 ]), true );
-  test.identical( _.avector.allFinite([ 0, 0, 0 ]), true );
-  test.identical( _.avector.allFinite([ 0, 0, 1 ]), true );
+  /* */
 
-  test.identical( _.avector.allFinite([ 1, 3, NaN ]), false );
-  test.identical( _.avector.allFinite([ 1, NaN, 3 ]), false );
-  test.identical( _.avector.allFinite([ 1, 3, -Infinity ]), false );
-  test.identical( _.avector.allFinite([ 1, +Infinity, 3 ]), false );
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = [];
+  var got = _.avector.review( src, [ 0, -1 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === src );
 
-  test.identical( _.avector.allFinite([ 1.1, 0, 1 ]), true );
-  test.identical( _.avector.allFinite([ 1, 0, 1.1 ]), true );
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = _.avector.review( src, [ 0, 5 ] );
+  var exp = [ 0, 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got === src );
 
-}
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = _.avector.review( src, [ 0, 3 ] );
+  var exp = [ 0, 1, 2, 3 ];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-//
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = _.avector.review( src, [ 1, 3 ] );
+  var exp = [ 1, 2, 3 ];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-function anyNan( test )
-{
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = _.avector.review( src, [ 6, 5 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  test.identical( _.avector.anyNan([ 1, 2, 3 ]), false );
-  test.identical( _.avector.anyNan([ 0, 0, 0 ]), false );
-  test.identical( _.avector.anyNan([ 0, 0, 1 ]), false );
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = _.avector.review( src, [ 3, 2 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  test.identical( _.avector.anyNan([ 1, 3, NaN ]), true );
-  test.identical( _.avector.anyNan([ 1, NaN, 3 ]), true );
-  test.identical( _.avector.anyNan([ 1, 3, -Infinity ]), false );
-  test.identical( _.avector.anyNan([ 1, +Infinity, 3 ]), false );
+  test.close( 'src - simple vector' );
 
-  test.identical( _.avector.anyNan([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector.anyNan([ 1, 0, 1.1 ]), false );
+  /* - */
 
-}
+  test.open( 'src - vectorAdapter, routine from' );
 
-//
+  test.case = 'src - empty vector, crange - 0';
+  var src = vad.from( [] );
+  var got = _.avector.review( src, 0 );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-function allInt( test )
-{
+  test.case = 'crange - 0';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, 0 );
+  var exp = [ 0, 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  test.identical( _.avector.allInt([ 1, 2, 3 ]), true );
-  test.identical( _.avector.allInt([ 0, 0, 0 ]), true );
-  test.identical( _.avector.allInt([ 0, 0, 1 ]), true );
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, 2 );
+  var exp = [ 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  test.identical( _.avector.allInt([ 1, 3, NaN ]), false );
-  test.identical( _.avector.allInt([ 1, NaN, 3 ]), false );
-  test.identical( _.avector.allInt([ 1, 3, -Infinity ]), true );
-  test.identical( _.avector.allInt([ 1, +Infinity, 3 ]), true );
+  test.case = 'crange - src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, 6 );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  test.identical( _.avector.allInt([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector.allInt([ 1, 0, 1.1 ]), false );
+  /* */
 
-}
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = vad.from( [] );
+  var got = _.avector.review( src, [ 0, -1 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-//
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 0, 5 ] );
+  var exp = [ 0, 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-function to( test )
-{
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 0, 3 ] );
+  var exp = [ 0, 1, 2, 3 ];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  test.case = 'vector to array'; /* */
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 1, 3 ] );
+  var exp = [ 1, 2, 3 ];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  var v = vad.from([ 1, 2, 3 ]);
-  var got = v.to( [].constructor );
-  var expected = [ 1, 2, 3 ];
-  test.identical( got, expected );
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 6, 5 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  test.case = 'vector to vector'; /* */
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 3, 2 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  var v = vad.from([ 1, 2, 3 ]);
-  var got = v.to( vad.fromLong( [] ).constructor );
-  test.is( got === v );
+  test.close( 'src - vectorAdapter, routine from' );
 
-  test.case = 'bad arguments'; /* */
+  /* - */
+
+  test.open( 'src - vectorAdapter, routine fromLongLrange' );
+
+  test.case = 'src - empty vector, crange - 0';
+  var src = vad.fromLongLrange( [], 0, 0 );
+  var got = _.avector.review( src, 0 );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - 0';
+  var src = vad.fromLongLrange( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 0, 6 );
+  var got = _.avector.review( src, 0 );
+  var exp = [ 0, 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = vad.fromLongLrange( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 0, 6 );
+  var got = _.avector.review( src, 2 );
+  var exp = [ 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - src.length';
+  var src = vad.fromLongLrange( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 6 );
+  var got = _.avector.review( src, 6 );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = vad.fromLongLrange( [], 0, 0 );
+  var got = _.avector.review( src, [ 0, -1 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = vad.fromLongLrange( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 0, 6 );
+  var got = _.avector.review( src, [ 0, 5 ] );
+  var exp = [ 0, 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = vad.fromLongLrange( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 0, 8 );
+  var got = _.avector.review( src, [ 0, 3 ] );
+  var exp = [ 0, 1, 2, 3 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = vad.fromLongLrange( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 1, 8 );
+  var got = _.avector.review( src, [ 1, 3 ] );
+  var exp = [ 2, 3, 4 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = vad.fromLongLrange( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 6  );
+  var got = _.avector.review( src, [ 6, 5 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = vad.fromLongLrange( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 8 );
+  var got = _.avector.review( src, [ 3, 2 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.close( 'src - vectorAdapter, routine fromLongLrange' );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to() );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( [], 1 ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( 1 ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( null ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( '1' ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( [], 1 ) );
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.avector.review() );
 
-}
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.avector.review( [] ) );
 
-//
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.avector.review( [], 0, 0 ) );
 
-function toLong( test )
-{
+  test.case = 'crange - number, crange < 0';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], -1 ) );
 
-  test.case = 'trivial'; /* */
+  test.case = 'crange - number, crange > src.length - 1';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], 5 ) );
 
-  var v = vad.from([ 1, 2, 3 ]);
-  var got = v.toLong();
-  var expected = [ 1, 2, 3 ];
-  test.identical( got, expected );
-  test.is( v._vectorBuffer === got );
+  test.case = 'crange[ 0 ] < 0';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ -1, 1 ] ) );
 
-  test.case = 'trivial with fromLongLrangeAndStride'; /* */
+  test.case = 'crange[ 1 ] > src.length - 1';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 0, 4 ] ) );
 
-  var v = vad.fromLongLrangeAndStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
-  var got = v.toLong();
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( got, expected );
-  test.is( v._vectorBuffer === got );
+  test.case = 'crange[ 1 ] - crange[ 0 ] < -1';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 0, 4 ] ) );
 
-  test.case = 'with custom offset'; /* */
-
-  var v = vad.fromLongLrange( [ 1, 2, 3, 4, 5 ], 1 );
-  var got = v.toLong();
-  var expected = [ 2, 3, 4, 5 ];
-  test.identical( got, expected );
-  test.is( v._vectorBuffer !== got );
-
-  test.case = 'with custom length'; /* */
-
-  var v = vad.fromLongLrange( [ 1, 2, 3, 4, 5 ], 0, 4 );
-  var got = v.toLong();
-  var expected = [ 1, 2, 3, 4 ];
-  test.identical( got, expected );
-  test.is( v._vectorBuffer !== got );
-
-  test.case = 'with fromLongLrangeAndStride'; /* */
-
-  var v = vad.fromLongLrangeAndStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
-  var got = v.toLong();
-  var expected = [ 2, 4 ];
-  test.identical( got, expected );
-  test.is( v._vectorBuffer !== got );
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( 0 ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( undefined ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( null ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( _.vectorAdapter.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( '123' ) );
-  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( function( a, b, c ){} ) );
-
+  test.case = 'crange[ 1 ] - src.length';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 1, 2 ] ) );
 }
 
 //
@@ -269,17 +402,30 @@ function toLong( test )
 function map( test )
 {
 
+  test.case = 'single argument';
+  var dst = _.avector.make( [ 2, 3, 4 ] );
+  var got = _.avector.map( dst );
+  test.is( got === dst );
+
+  test.case = 'dst and undefined';
+  var dst = _.avector.make( [ 2, 3, 4 ] );
+  var got = _.avector.map( dst, undefined );
+  test.is( got === dst );
+
+  test.case = 'dst and null';
+  var dst = _.avector.make( [ 2, 3, 4 ] );
+  var got = _.avector.map( dst, null );
+  test.is( got === dst );
+
   /* */
 
   test.case = 'dst = src';
-
   function inRange( src )
   {
-    return - 5 < src && src < 0 ; /* numbers in range */
+    return -5 < src && src < 0 ; /* numbers in range */
   }
   var vector = _.avector.make( [ -1, -1.5, -2 ] );
   var gotBool = _.avector.map( vector, inRange );
-
   var expected = _.avector.make( [ true, true, true ] );
   test.identical( gotBool, expected );
   test.is( gotBool === vector );
@@ -287,96 +433,68 @@ function map( test )
   /* */
 
   test.case = 'dst = null';
-
   function inRange( src )
   {
     return - 5 < src && src < 0 ; /* numbers in range */
   }
   var vector = _.avector.make( [ -1, -1.5, -2 ] );
   var gotBool = _.avector.map( null, vector, inRange );
-
   var expected = _.avector.make( [ 1, 1, 1 ] );
   test.identical( gotBool, expected );
-
   var expected = _.avector.make( [ -1, -1.5, -2 ] )
   test.equivalent( expected, vector );
 
   /* */
 
   test.case = 'Check if a number is > 0 - empty';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
-  var vector = _.avector.make( [ ] );
+  var vector = _.avector.make( [] );
   var gotBool = _.avector.map( vector, positiveNumber );
-
-  var expected = _.avector.make( [ ] );
+  var expected = _.avector.make( [] );
   test.identical( gotBool, expected );
 
   /* */
 
   test.case = 'Check if a number is > 0 - true';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var vector = _.avector.make( [ 0, 1, 0, 2, 1000, 307 ] );
   var gotBool = _.avector.map( vector, positiveNumber );
-
   var expected = _.avector.make( [ true, true, true, true, true, true ] );
   test.identical( gotBool, expected );
 
   /* */
 
   test.case = 'Check if a number is > 0 - false some';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var vector = _.avector.make( [ 0, - 1, 0, 2, 1000 ] );
   var gotBool = _.avector.map( vector, positiveNumber );
-
   var expected = _.avector.make( [ true, false, true, true, true ] );
   test.identical( gotBool, expected );
 
   /* */
 
   test.case = 'Check if a number is > 0 - false none';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var vector = _.avector.make( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
   var gotBool = _.avector.map( vector, positiveNumber );
-
   var expected = _.avector.make( [ false, false, false, true, true ] );
   test.identical( gotBool, expected );
 
   /* */
 
-  test.case = 'single argument';
-
-  var dst = _.avector.make( [ 2, 3, 4 ] );
-  var got = _.avector.map( dst );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'dst and undefined';
-
-  var dst = _.avector.make( [ 2, 3, 4 ] );
-  var got = _.avector.map( dst, undefined );
-  test.is( got === dst );
-
-  /* */
-
   test.case = 'dst is array';
-
   function onEvaluate( src )
   {
     return src > 2 ;
@@ -390,7 +508,6 @@ function map( test )
   /* */
 
   test.case = 'dst is typed array';
-
   function onEvaluate( src )
   {
     return src > 2 ;
@@ -401,27 +518,26 @@ function map( test )
   var exp = I8x.from([ false, false, false, true ]);
   test.identical( got, exp );
 
-  /* */
+  /* - */
 
   if( !Config.debug )
   return;
 
-  /* */
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.avector.map() );
 
   test.case = 'Only one argument';
-
-  test.shouldThrowErrorSync( () => _.avector.map( ));
-  test.shouldThrowErrorSync( () => _.avector.map( null ));
-  test.shouldThrowErrorSync( () => _.avector.map( NaN ));
-  test.shouldThrowErrorSync( () => _.avector.map( undefined ));
-  test.shouldThrowErrorSync( () => _.avector.map( 'string' ));
-  test.shouldThrowErrorSync( () => _.avector.map( 2 ));
+  test.shouldThrowErrorSync( () => _.avector.map( null ) );
+  test.shouldThrowErrorSync( () => _.avector.map( NaN ) );
+  test.shouldThrowErrorSync( () => _.avector.map( undefined ) );
+  test.shouldThrowErrorSync( () => _.avector.map( 'string' ) );
+  test.shouldThrowErrorSync( () => _.avector.map( 2 ) );
 
   /* */
 
   test.case = 'Wrong second argument';
 
-  // test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
+  // test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), null )); /* aaa : add such test case */ /* Dmytro : added */
   test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), NaN ));
   test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), 'string' ));
   test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), 2 ));
@@ -438,8 +554,2697 @@ function map( test )
   test.shouldThrowErrorSync( () => _.avector.map( null, onEvaluate ));
   test.shouldThrowErrorSync( () => _.avector.map( undefined, onEvaluate ));
   test.shouldThrowErrorSync( () => _.avector.map( 'string', onEvaluate ));
+}
+
+//
+
+function cross3( test ) 
+{
+  test.open( 'src1 and src2 - simple vectors' );
+
+  test.case = 'dst - only zeros, src1 and src2 - only zeros';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - only zeros';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - different elements, src1 - only zeros, src2 - different elements';
+  var dst = [ 1, -1, 3 ];
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 5, 4, 3 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 - different elements, src2 - only zeros';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ 10, -5, 4 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same positive number';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same positive number';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same negative number';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same negative number';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different positive values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different positive values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different negative values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ -1, -2, -3 ];
+  var src2 = [ -4, -5, -6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different negative values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ -1, -2, -3 ];
+  var src2 = [ -4, -5, -6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = [ -1, 2, 3 ];
+  var src2 = [ 4, -5, -6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = [ -1, 2, 3 ];
+  var src2 = [ 4, -5, -6 ];
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.close( 'src1 and src2 - simple vectors' );
+
+  /* - */ 
+
+  test.open( 'src1 and src2 - vectorAdapter instances' );
+
+  test.case = 'dst - only zeros, src1 and src2 - only zeros';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - only zeros';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - different elements, src1 - only zeros, src2 - different elements';
+  var dst = [ 1, -1, 3 ];
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 5, 4, 3 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 - different elements, src2 - only zeros';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ 10, -5, 4 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same positive number';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same positive number';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same negative number';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same negative number';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 0, 0, 0 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different positive values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ 1, 2, 3 ] );
+  var src2 = vad.from( [ 4, 5, 6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different positive values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ 1, 2, 3 ] );
+  var src2 = vad.from( [ 4, 5, 6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different negative values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ -1, -2, -3 ] );
+  var src2 = vad.from( [ -4, -5, -6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different negative values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ -1, -2, -3 ] );
+  var src2 = vad.from( [ -4, -5, -6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ -3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different values';
+  var dst = [ 0, 0, 0 ];
+  var src1 = vad.from( [ -1, 2, 3 ] );
+  var src2 = vad.from( [ 4, -5, -6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different values';
+  var dst = [ 1, -5, 's' ];
+  var src1 = vad.from( [ -1, 2, 3 ] );
+  var src2 = vad.from( [ 4, -5, -6 ] );
+  var got = _.avector.cross3( dst, src1, src2 );
+  var exp = [ 3, 6, -3 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.close( 'src1 and src2 - vectorAdapter instances' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.avector.cross3() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ], [ 3, 2, 1 ] ) );
+
+  test.case = 'wrong length of dst';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3, 4 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.cross3( null, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( { a : 1, b : 2, c : 3 }, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong length of src1';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3, 4 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong type of src1';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], undefined, [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], 3, [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong length of src2';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3, 4 ] ) );
+
+  test.case = 'wrong type of src2';
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], true ) );
+  test.shouldThrowErrorSync( () => _.avector.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], 'str' ) );
+}
+
+//
+
+function cross( test )
+{
+  test.case = 'trivial, make new'; /* */
+  var a = [ 1, 2, 3 ];
+  var b = [ 4, 5, 6 ];
+  var expected = [ -3, +6, -3 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'zero, make new'; /* */
+  var a = [ 0, 0, 0 ];
+  var b = [ 0, 0, 0 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'same, make new'; /* */
+  var a = [ 1, 1, 1 ];
+  var b = [ 1, 1, 1 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'perpendicular1, make new'; /* */
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 0, 1 ];
+  var expected = [ 0, -1, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'perpendicular2, make new'; /* */
+  var a = [ 0, 0, 1 ];
+  var b = [ 1, 0, 0 ];
+  var expected = [ 0, +1, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'perpendicular3, make new'; /* */
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 1, 0 ];
+  var expected = [ 0, 0, +1 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'perpendicular4, make new'; /* */
+  var a = [ 0, 1, 0 ];
+  var b = [ 1, 0, 0 ];
+  var expected = [ 0, 0, -1 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'trivial'; ///
+  var a = [ 1, 2, 3 ];
+  var b = [ 4, 5, 6 ];
+  var expected = [ -3, +6, -3 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'zero'; /* */
+  var a = [ 0, 0, 0 ];
+  var b = [ 0, 0, 0 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'same'; /* */
+  var a = [ 1, 1, 1 ];
+  var b = [ 1, 1, 1 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular1'; /* */
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 0, 1 ];
+  var expected = [ 0, -1, 0 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular2'; /* */
+  var a = [ 0, 0, 1 ];
+  var b = [ 1, 0, 0 ];
+  var expected = [ 0, +1, 0 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular3'; /* */
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 1, 0 ];
+  var expected = [ 0, 0, +1 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular4'; /* */
+  var a = [ 0, 1, 0 ];
+  var b = [ 1, 0, 0 ];
+  var expected = [ 0, 0, -1 ];
+  var got = _.avector.cross( a, b );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'trivial'; ///
+  var a = [ 1, 2, 3 ];
+  var b = [ 4, 5, 6 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 78, 6, -66 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'zero'; /* */
+  var a = [ 0, 0, 0 ];
+  var b = [ 0, 0, 0 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'same'; /* */
+  var a = [ 1, 1, 1 ];
+  var b = [ 1, 1, 1 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 0, 0, 0 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular1'; /* */
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 0, 1 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ -9, 0, 7 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular2'; /* */
+  var a = [ 0, 0, 1 ];
+  var b = [ 1, 0, 0 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 9, 0, -7 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular3'; /* */
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 1, 0 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ -8, 7, 0 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  test.case = 'perpendicular4'; /* */
+  var a = [ 0, 1, 0 ];
+  var b = [ 1, 0, 0 ];
+  var c = [ 7, 8, 9 ];
+  var expected = [ 8, -7, 0 ];
+  var got = _.avector.cross( a, b, c );
+  test.identical( got, expected );
+  test.is( got === a );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments'; ///
+  test.shouldThrowErrorSync( () => _.avector.cross( 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( undefined, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( null, [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.cross( [], function(){} ) );
+}
+
+cross.timeOut = 15000;
+
+//
+
+function abs( test )
+{
+  test.case = 'trivial';
+
+  var expected = [ 1, 2, 3 ];
+  var dst = [ -1, -2, -3 ];
+  var got = _.avector.abs( dst );
+
+  test.identical( got, expected );
+  test.is( dst === got );
+}
+
+//
+
+function add( test )
+{
+  test.case = 'vector vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var got = _.avector.add( null, ins1, ins2 );
+  test.identical( got, [ 4, 6, 8 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'vector vector vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.add( null, ins1, ins2, ins3 );
+  test.identical( got, [ 14, 26, 38 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var got = _.avector.add( null, ins1, ins2 );
+  test.identical( got, [ 11, 12, 13 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'vector scalar vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.add( null, ins1, ins2, ins3 );
+  test.identical( got, [ 21, 32, 43 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar vector, new dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var got = _.avector.add( null, ins1, ins2 );
+  test.identical( got, [ 11, 12, 13 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'vector scalar vector, new dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.add( null, ins1, ins2, ins3 );
+  test.identical( got, [ 21, 32, 43 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar scalar, new dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var got = _.avector.add( null, ins1, ins2 );
+  test.identical( got, 11 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar scalar scalar, new dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var ins3 = 100;
+  var got = _.avector.add( null, ins1, ins2, ins3 );
+  test.identical( got, 111 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'vector vector, first argument is dst'; ///
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var got = _.avector.add( ins1, ins2 );
+  test.identical( got, [ 4, 6, 8 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got === ins1 );
+
+  test.case = 'vector vector vector, first argument is dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.add( ins1, ins2, ins3 );
+  test.identical( got, [ 14, 26, 38 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got === ins1 );
+
+  test.case = 'scalar vector, first argument is dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var got = _.avector.add( ins1, ins2 );
+  test.identical( got, [ 11, 12, 13 ] );
+  test.identical( ins2, 10 );
+  test.is( got === ins1 );
+
+  test.case = 'vector scalar vector, first argument is dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.add( ins1, ins2, ins3 );
+  test.identical( got, [ 21, 32, 43 ] );
+  test.identical( ins2, 10 );
+  test.is( got === ins1 );
+
+  test.case = 'scalar vector, first argument is dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var got = _.avector.add( ins1, ins2 );
+  test.identical( got, [ 11, 12, 13 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+
+  test.case = 'vector scalar vector, first argument is dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.add( ins1, ins2, ins3 );
+  test.identical( got, [ 21, 32, 43 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+
+  test.case = 'scalar scalar, first argument is dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var got = _.avector.add( ins1, ins2 );
+  test.identical( got, 11 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+
+  test.case = 'scalar scalar scalar, first argument is dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var ins3 = 100;
+  var got = _.avector.add( ins1, ins2, ins3 );
+  test.identical( got, 111 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments'; /* */
+
+  test.shouldThrowErrorSync( () => _.avector.add( [ 1, 2, 3 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.add( [ 1, 2, 3 ], [ 3, 4, 5 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.add( '1', [ 3, 4, 5 ], null ) );
+
+  test.shouldThrowErrorSync( () => _.avector.add( [ 0, 0, 0 ], [ 1, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.add( [ 0, 0 ], [ 1, 1, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.add( [ 0 ], [ 1, 1, 1 ] ) );
+}
+
+add.timeOut = 15000;
+
+//
+
+function sub( test )
+{
+  test.case = 'trivial'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var got = _.avector.sub( ins1, ins2 );
+  test.identical( got, [ -2, -2, -2 ] );
+  test.identical( ins1, [ -2, -2, -2 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got == ins1 );
+
+  test.case = 'vector vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var got = _.avector.sub( null, ins1, ins2 );
+  test.identical( got, [ -2, -2, -2 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'vector vector vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.sub( null, ins1, ins2, ins3 );
+  test.identical( got, [ -12, -22, -32 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var got = _.avector.sub( null, ins1, ins2 );
+  test.identical( got, [ -9, -8, -7 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'vector scalar vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.sub( null, ins1, ins2, ins3 );
+  test.identical( got, [ -19, -28, -37 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar vector, new dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var got = _.avector.sub( null, ins1, ins2 );
+  test.identical( got, [ 9, 8, 7 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'vector scalar vector, new dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.sub( null, ins1, ins2, ins3 );
+  test.identical( got, [ -1, -12, -23 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar scalar, new dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var got = _.avector.sub( null, ins1, ins2 );
+  test.identical( got, -9 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar scalar scalar, new dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var ins3 = 100;
+  var got = _.avector.sub( null, ins1, ins2, ins3 );
+  test.identical( got, -109 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'vector vector, first argument is dst'; ///
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var got = _.avector.sub( ins1, ins2 );
+  test.identical( got, [ -2, -2, -2 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got === ins1 );
+
+  test.case = 'vector vector vector, first argument is dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.sub( ins1, ins2, ins3 );
+  test.identical( got, [ -12, -22, -32 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got === ins1 );
+
+  test.case = 'scalar vector, first argument is dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var got = _.avector.sub( ins1, ins2 );
+  test.identical( got, [ -9, -8, -7 ] );
+  test.identical( ins2, 10 );
+  test.is( got === ins1 );
+
+  test.case = 'vector scalar vector, first argument is dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.sub( ins1, ins2, ins3 );
+  test.identical( got, [ -19, -28, -37 ] );
+  test.identical( ins2, 10 );
+  test.is( got === ins1 );
+
+  test.case = 'scalar vector, first argument is dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var got = _.avector.sub( ins1, ins2 );
+  test.identical( got, [ 9, 8, 7 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+
+  test.case = 'vector scalar vector, first argument is dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.sub( ins1, ins2, ins3 );
+  test.identical( got, [ -1, -12, -23 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+
+  test.case = 'scalar scalar, first argument is dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var got = _.avector.sub( ins1, ins2 );
+  test.identical( got, -9 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+
+  test.case = 'scalar scalar scalar, first argument is dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var ins3 = 100;
+  var got = _.avector.sub( ins1, ins2, ins3 );
+  test.identical( got, -109 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments'; /* */
+
+  test.shouldThrowErrorSync( () => _.avector.sub( [ 1, 2, 3 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.sub( [ 1, 2, 3 ], [ 3, 4, 5 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.sub( '1', [ 3, 4, 5 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.sub( [ 0, 0, 0 ], [ 1, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.sub( [ 0, 0 ], [ 1, 1, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.sub( [ 0 ], [ 1, 1, 1 ] ) );
+}
+
+sub.timeOut = 15000;
+
+//
+
+function mul( test )
+{
+  test.case = 'vector vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var got = _.avector.mul( null, ins1, ins2 );
+  test.identical( got, [ 3, 8, 15 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'vector vector vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.mul( null, ins1, ins2, ins3 );
+  test.identical( got, [ 30, 160, 450 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var got = _.avector.mul( null, ins1, ins2 );
+  test.identical( got, [ 10, 20, 30 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'vector scalar vector, new dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.mul( null, ins1, ins2, ins3 );
+  test.identical( got, [ 100, 400, 900 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar vector, new dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var got = _.avector.mul( null, ins1, ins2 );
+  test.identical( got, [ 10, 20, 30 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'vector scalar vector, new dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.mul( null, ins1, ins2, ins3 );
+  test.identical( got, [ 100, 400, 900 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar scalar, new dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var got = _.avector.mul( null, ins1, ins2 );
+  test.identical( got, 10 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar scalar scalar, new dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var ins3 = 100;
+  var got = _.avector.mul( null, ins1, ins2, ins3 );
+  test.identical( got, 1000 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'vector vector, first argument is dst'; ///
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var got = _.avector.mul( ins1, ins2 );
+  test.identical( got, [ 3, 8, 15 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got === ins1 );
+
+  test.case = 'vector vector vector, first argument is dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.mul( ins1, ins2, ins3 );
+  test.identical( got, [ 30, 160, 450 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got === ins1 );
+
+  test.case = 'scalar vector, first argument is dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var got = _.avector.mul( ins1, ins2 );
+  test.identical( got, [ 10, 20, 30 ] );
+  test.identical( ins2, 10 );
+  test.is( got === ins1 );
+
+  test.case = 'vector scalar vector, first argument is dst'; /* */
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.mul( ins1, ins2, ins3 );
+  test.identical( got, [ 100, 400, 900 ] );
+  test.identical( ins2, 10 );
+  test.is( got === ins1 );
+
+  test.case = 'scalar vector, first argument is dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var got = _.avector.mul( ins1, ins2 );
+  test.identical( got, [ 10, 20, 30 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+
+  test.case = 'vector scalar vector, first argument is dst'; /* */
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var ins3 = [ 10, 20, 30 ];
+  var got = _.avector.mul( ins1, ins2, ins3 );
+  test.identical( got, [ 100, 400, 900 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+
+  test.case = 'scalar scalar, first argument is dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var got = _.avector.mul( ins1, ins2 );
+  test.identical( got, 10 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+
+  test.case = 'scalar scalar scalar, first argument is dst'; /* */
+  var ins1 = 1;
+  var ins2 = 10;
+  var ins3 = 100;
+  var got = _.avector.mul( ins1, ins2, ins3 );
+  test.identical( got, 1000 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments'; /* */
+
+  test.shouldThrowErrorSync( () => _.avector.mul( [ 1, 2, 3 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.mul( [ 1, 2, 3 ], [ 3, 4, 5 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.mul( '1', [ 3, 4, 5 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.mul( [ 0, 0, 0 ], [ 1, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mul( [ 0, 0 ], [ 1, 1, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mul( [ 0 ], [ 1, 1, 1 ] ) );
+}
+
+mul.timeOut = 15000;
+
+//
+
+function div( test )
+{
+  test.case = 'vector vector, new dst'; /* */
+
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+
+  var got = _.avector.div( null, ins1, ins2 );
+
+  test.equivalent( got, [ 1/3, 2/4, 3/5 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'vector vector vector, new dst'; /* */
+
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var ins3 = [ 10, 20, 30 ];
+
+  var got = _.avector.div( null, ins1, ins2, ins3 );
+
+  test.equivalent( got, [ 1/3/10, 2/4/20, 3/5/30 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar vector, new dst'; /* */
+
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+
+  var got = _.avector.div( null, ins1, ins2 );
+
+  test.equivalent( got, [ 1/10, 2/10, 3/10 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'vector scalar vector, new dst'; /* */
+
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var ins3 = [ 10, 20, 30 ];
+
+  var got = _.avector.div( null, ins1, ins2, ins3 );
+
+  test.equivalent( got, [ 1/10/10, 2/10/20, 3/10/30 ] );
+  test.identical( ins1, [ 1, 2, 3 ] );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar vector, new dst'; /* */
+
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+
+  var got = _.avector.div( null, ins1, ins2 );
+
+  test.equivalent( got, [ 10/1, 10/2, 10/3 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'vector scalar vector, new dst'; /* */
+
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var ins3 = [ 10, 20, 30 ];
+
+  var got = _.avector.div( null, ins1, ins2, ins3 );
+
+  test.equivalent( got, [ 10/1/10, 10/2/20, 10/3/30 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar scalar, new dst'; /* */
+
+  var ins1 = 1;
+  var ins2 = 10;
+
+  var got = _.avector.div( null, ins1, ins2 );
+  test.equivalent( got, 1/10 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  test.case = 'scalar scalar scalar, new dst'; /* */
+
+  var ins1 = 1;
+  var ins2 = 10;
+  var ins3 = 100;
+
+  var got = _.avector.div( null, ins1, ins2, ins3 );
+
+  test.equivalent( got, 1/10/100 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+  test.is( got !== ins1 );
+
+  /* -- */
+
+  test.case = 'vector vector, first argument is dst';
+
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+
+  var got = _.avector.div( ins1, ins2 );
+
+  test.equivalent( got, [ 1/3, 2/4, 3/5 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got === ins1 );
+
+  test.case = 'vector vector vector, first argument is dst'; /* */
+
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = [ 3, 4, 5 ];
+  var ins3 = [ 10, 20, 30 ];
+
+  var got = _.avector.div( ins1, ins2, ins3 );
+
+  test.equivalent( got, [ 1/3/10, 2/4/20, 3/5/30 ] );
+  test.identical( ins2, [ 3, 4, 5 ] );
+  test.is( got === ins1 );
+
+  test.case = 'scalar vector, first argument is dst'; /* */
+
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+
+  var got = _.avector.div( ins1, ins2 );
+
+  test.equivalent( got, [ 1/10, 2/10, 3/10 ] );
+  test.identical( ins2, 10 );
+  test.is( got === ins1 );
+
+  test.case = 'vector scalar vector, first argument is dst'; /* */
+
+  var ins1 = [ 1, 2, 3 ];
+  var ins2 = 10;
+  var ins3 = [ 10, 20, 30 ];
+
+  var got = _.avector.div( ins1, ins2, ins3 );
+
+  test.equivalent( got, [ 1/10/10, 2/10/20, 3/10/30 ] );
+  test.identical( ins2, 10 );
+  test.is( got === ins1 );
+
+  test.case = 'scalar vector, first argument is dst'; /* */
+
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+
+  var got = _.avector.div( ins1, ins2 );
+
+  test.equivalent( got, [ 10/1, 10/2, 10/3 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+
+  test.case = 'vector scalar vector, first argument is dst'; /* */
+
+  var ins1 = 10;
+  var ins2 = [ 1, 2, 3 ];
+  var ins3 = [ 10, 20, 30 ];
+
+  var got = _.avector.div( ins1, ins2, ins3 );
+
+  test.equivalent( got, [ 10/1/10, 10/2/20, 10/3/30 ] );
+  test.identical( ins1, 10 );
+  test.identical( ins2, [ 1, 2, 3 ] );
+
+  test.case = 'scalar scalar, first argument is dst'; /* */
+
+  var ins1 = 1;
+  var ins2 = 10;
+
+  var got = _.avector.div( ins1, ins2 );
+
+  test.equivalent( got, 1/10 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+
+  test.case = 'scalar scalar scalar, first argument is dst'; /* */
+
+  var ins1 = 1;
+  var ins2 = 10;
+  var ins3 = 100;
+
+  var got = _.avector.div( ins1, ins2, ins3 );
+
+  test.equivalent( got, 1/10/100 );
+  test.identical( ins1, 1 );
+  test.identical( ins2, 10 );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments'; /* */
+
+  test.shouldThrowErrorSync( () => _.avector.div( [ 1, 2, 3 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.div( [ 1, 2, 3 ], [ 3, 4, 5 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.div( '1', [ 3, 4, 5 ], null ) );
+  test.shouldThrowErrorSync( () => _.avector.div( [ 0, 0, 0 ], [ 1, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.div( [ 0, 0 ], [ 1, 1, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.div( [ 0 ], [ 1, 1, 1 ] ) );
+}
+
+div.timeOut = 15000;
+
+//
+
+function heterogeneousScaledRoutines( test )
+{
+  test.case = 'addScaled null, vector, vector, vector'; /* */
+
+  var expected = [ 31, 42, 33 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.addScaled( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 31, 42, 33 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.addScaled( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'addScaled scalar, vector, vector, vector'; /* */
+
+  var expected = [ 14 ];
+  var dst = [ 9 ];
+  var src0 = 2;
+  var src1 = 3;
+  var src2 = 4;
+  var got = _.avector.addScaled( dst, src0, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'addScaled vector, vector, vector, vector'; /* */
+
+  var expected = [ 31, 42, 33 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.addScaled( dst, dst.slice(), src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 31, 42, 33 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.addScaled( dst, dst.slice(), src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'addScaled vector, vector, vector'; /* */
+
+  var expected = [ 31, 42, 33 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 31, 42, 33 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'addScaled scalar, vector, vector'; /* */
+
+  var expected = [ 130, 140, 130 ];
+  var dst = [ 1, 2, 3 ];
+  var dst = 100;
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 130, 140, 130 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var dst = 100;
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'subScaled vector, vector, vector'; /* */
+
+  var expected = [ -29, -38, -27 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.subScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ -29, -38, -27 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'mulScaled vector, vector, vector'; /* */
+
+  var expected = [ 30, 80, 90 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.mulScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30, 80, 90 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'divScaled vector, vector, vector'; /* */
+
+  var expected = [ 1/30, 2/40, 3/30 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = [ 10, 20, 30 ];
+  var got = _.avector.divScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 1/30, 2/40, 3/30 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = vec([ 10, 20, 30 ]);
+  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'addScaled vector, vector, scaler'; /* */
+
+  var expected = [ 31, 22, 13 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = 10;
+  var got = _.avector.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = [ 1, 2, 3 ];
+  var got = _.avector.addScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 31, 22, 13 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = 10;
+  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = vec([ 1, 2, 3 ]);
+  var got = _.vectorAdapter.addScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'subScaled vector, vector, scaler'; /* */
+
+  var expected = [ -29, -18, -7 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = 10;
+  var got = _.avector.subScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = [ 1, 2, 3 ];
+  var got = _.avector.subScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ -29, -18, -7 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = 10;
+  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = vec([ 1, 2, 3 ]);
+  var got = _.vectorAdapter.subScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'mulScaled vector, vector, scaler'; /* */
+
+  var expected = [ 30, 40, 30 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = 10;
+  var got = _.avector.mulScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = [ 1, 2, 3 ];
+  var got = _.avector.mulScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30, 40, 30 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = 10;
+  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = vec([ 1, 2, 3 ]);
+  var got = _.vectorAdapter.mulScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'divScaled vector, vector, scaler'; /* */
+
+  var expected = [ 1/30, 2/20, 3/10 ];
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 3, 2, 1 ];
+  var src2 = 10;
+  var got = _.avector.divScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = [ 1, 2, 3 ];
+  var got = _.avector.divScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 1/30, 2/20, 3/10 ]);
+  var dst = vec([ 1, 2, 3 ]);
+  var src1 = vec([ 3, 2, 1 ]);
+  var src2 = 10;
+  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+  var dst = vec([ 1, 2, 3 ]);
+  var got = _.vectorAdapter.divScaled( dst, src2, src1 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'empty vector'; /* */
+
+  function checkEmpty( rname )
+  {
+    var op = _.vectorAdapter[ rname ].operation;
+
+    var dst = [];
+    var args = _.dup( [], op.takingArguments[ 0 ]-1 );
+    args.unshift( dst );
+    var got = _.avector[ rname ].apply( _, args );
+    test.is( got === dst );
+    test.identical( got , [] );
+
+    var dst = vec([]);
+    var args = _.dup( vec([]), op.takingArguments[ 0 ]-1 );
+    args.unshift( dst );
+    var got = _.vectorAdapter[ rname ].apply( _, args );
+    test.is( got === dst );
+    test.identical( got , vec([]) );
+
+  }
+
+  checkEmpty( 'addScaled' );
+  checkEmpty( 'subScaled' );
+  checkEmpty( 'mulScaled' );
+  checkEmpty( 'subScaled' );
+
+  test.case = 'bad arguments'; /* */
+
+  if( !Config.debug )
+  return;
+
+  function shouldThrowErrorOfAnyKind( rname )
+  {
+
+    test.case = 'bad arguments for ' + rname;
+
+    test.shouldThrowErrorSync( () => _.avector[ rname ]() );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
+    // test.shouldThrowErrorSync( () => _.avector[ rname ]( 1, [ 3, 3 ], [ 5, 5 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], undefined ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], '1' ) );
+
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ] ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ) );
+
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]() );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
+
+    // test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
+
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]) ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]), vec([ 3, 4 ]) ) );
+    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5, 6 ]) ) );
+
+    test.shouldThrowErrorSync( () => _.vectorAdapter.addScaled( 1, vec([ 1 ]), vec([ 1 ]), vec([ 1 ]) ) );
+
+  }
+
+  shouldThrowErrorOfAnyKind( 'addScaled' );
+  shouldThrowErrorOfAnyKind( 'subScaled' );
+  shouldThrowErrorOfAnyKind( 'mulScaled' );
+  shouldThrowErrorOfAnyKind( 'subScaled' );
+  // shouldThrowErrorOfAnyKind( 'clamp' );
+}
+
+heterogeneousScaledRoutines.timeOut = 15000;
+
+//
+
+function clamp( test )
+{
+  test.case = 'clamp vectors, 4 arguments'; /* */
+
+  var expected = [ 30, 20, 20, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = [ 30, 20, 20, 20, 10, 10 ];
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'clamp vectors, 3 arguments and null'; /* */
+
+  var expected = [ 30, 20, 20, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = [ 30, 20, 20, 20, 10, 10 ];
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'clamp vectors, 3 arguments'; /* */
+
+  var expected = [ 30, 20, 20, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = [ 30, 20, 20, 20, 10, 10 ];
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'clamp vector and scaler, 4 arguments'; /* */
+
+  var expected = [ 20, 20, 20, 20, 20, 15 ];
+  var dst = [ 10, 20, 10, 20, 20, 15 ];
+  var src1 = [ 20, 20, 20, 20, 10, 10 ];
+  var src2 = 20;
+  var got = _.avector.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
+  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
+  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
+  var src2 = 20;
+  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = [ 15, 20, 15, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = 15;
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = 15;
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'clamp vector and scaler, 3 arguments and null'; /* */
+
+  var expected = [ 20, 20, 20, 20, 20, 15 ];
+  var dst = [ 10, 20, 10, 20, 20, 15 ];
+  var src1 = [ 20, 20, 20, 20, 10, 10 ];
+  var src2 = 20;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
+  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
+  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
+  var src2 = 20;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = [ 15, 20, 15, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = 15;
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = 15;
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec([ 17, 20, 17, 17, 10, 25 ]);
+  var dst = 17;
+  var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
+  var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'clamp vector and scaler, 3 arguments'; /* */
+
+  var expected = [ 20, 20, 20, 20, 20, 15 ];
+  var dst = [ 10, 20, 10, 20, 20, 15 ];
+  var src1 = [ 20, 20, 20, 20, 10, 10 ];
+  var src2 = 20;
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
+  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
+  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
+  var src2 = 20;
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = [ 15, 20, 15, 20, 15, 15 ];
+  var dst = [ 10, 20, 10, 30, 30, 15 ];
+  var src1 = 15;
+  var src2 = [ 40, 20, 20, 20, 15, 15 ];
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
+  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
+  var src1 = 15;
+  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec([ 17, 20, 17, 17, 10, 25 ]);
+  var dst = 17;
+  var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
+  var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = '3 arguments, all scalar'; /* */
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'null + 3 arguments, all scalar'; /* */
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = '3 arguments, 2 scalar 1 vector'; /* */
+  var expected = [ 16 ];
+  var dst = [ 15 ];
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  var expected = vec( [ 16 ] );
+  var dst = vec( [ 15 ] );
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'null + 3 arguments, 2 scalar 1 vector'; /* */
+  var expected = [ 16 ];
+  var dst = [ 15 ];
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = vec( [ 16 ] );
+  var dst = vec( [ 15 ] );
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'null + 3 scalar arguments;' /* */
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.avector.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  var expected = 16;
+  var dst = 15;
+  var src1 = 16
+  var src2 = 40;
+  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'empty vectors, 3 arguments'; /* */
+
+  var op = _.vectorAdapter.clamp.operation;
+
+  var args = _.dup( [], op.takingArguments[ 0 ] );
+  var got = _.avector.clamp.apply( _, args );
+  test.is( got === args[ 0 ] );
+  test.identical( got , [] );
+
+  var args = _.dup( vec([]), op.takingArguments[ 0 ] );
+  var got = _.vectorAdapter.clamp.apply( _, args );
+  test.is( got === args[ 0 ] );
+  test.identical( got , vec([]) );
+
+  test.case = 'empty vectors, 4 arguments'; /* */
+
+  var op = _.vectorAdapter.clamp.operation;
+
+  var dst = [];
+  var args = _.dup( [], op.takingArguments[ 0 ] );
+  args.unshift( dst );
+  var got = _.avector.clamp.apply( _, args );
+  test.is( got === dst );
+  test.identical( got , [] );
+
+  var dst = vec([]);
+  var args = _.dup( vec([]), op.takingArguments[ 0 ] );
+  args.unshift( dst );
+  var got = _.vectorAdapter.clamp.apply( _, args );
+  test.is( got === dst );
+  test.identical( got , vec([]) );
+
+  test.case = 'bad arguments'; /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+
+  test.shouldThrowErrorSync( () => _.avector.clamp() );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
+  // test.shouldThrowErrorSync( () => _.avector.clamp( 1, [ 3, 3 ], [ 5, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], '1' ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp() );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
+
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+}
+
+clamp.timeOut = 15000;
+
+//
+
+function randomInRange( test )
+{
+  // test.case = '2 scalar argument'; /* */
+
+  // var src1 = 0;
+  // var src2 = 1;
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
+
+  test.case = 'null + 2 scalar argument'; /* */
+
+  var src1 = 0;
+  var src2 = 1;
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
+
+  // test.case = '2 vectors argument'; /* */
+
+  // var src1 = [ 0 ];
+  // var src2 = [ 1 ];
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
+  // test.is( src1 === got )
+
+  // var src1 = vec( [ 0 ] );
+  // var src2 = vec( [ 1 ] );
+  // var got = _.vectorAdapter.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  // test.is( src1 === got )
+
+  test.case = 'null + 2 vectors argument'; /* */
+
+  var src1 = [ 0 ];
+  var src2 = [ 1 ];
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 !== got )
+
+  var src1 = vec( [ 0 ] );
+  var src2 = vec( [ 1 ] );
+  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 !== got )
+
+  // test.case = 'vector and scalar'; /* */
+
+  // var src1 = [ 0 ];
+  // var src2 = 1;
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
+  // test.is( src1 === got )
+
+  // var src1 = vec( [ 0 ] );
+  // var src2 = 1;
+  // var got = _.vectorAdapter.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
+  // test.is( src1 === got )
+
+  // test.case = 'scalar and vector'; /* */
+
+  // var src1 = 0;
+  // var src2 = [ 1 ];
+  // var got = _.avector.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ]) );
+  // test.is( _.numberIs( src1 ) )
+
+  // var src1 = 0;
+  // var src2 = vec( [ 1 ] );
+  // var got = _.vectorAdapter.randomInRange( src1, src2 );
+  // test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  // test.is( _.numberIs( src1 ) )
+
+  test.case = 'null + vector and scalar'; /* */
+
+  var src1 = [ 0 ];
+  var src2 = 1;
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
+  test.is( src1 !== got )
+
+  var src1 = vec( [ 0 ] );
+  var src2 = 1;
+  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
+  test.is( src1 !== got )
+
+  test.case = 'null + scalar and vector'; /* */
+
+  var src1 = 0;
+  var src2 = [ 1 ];
+  var got = _.avector.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ] ) );
+  test.is( _.numberIs( src1 ) )
+
+  var src1 = 0;
+  var src2 = vec( [ 1 ] );
+  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
+  test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 )) );
+  test.is( _.numberIs( src1 ) )
+
+  // test.case = 'scalar scalar scalar'; /* */
+
+  // var src1 = 0;
+  // var src2 = 2;
+  // var src3 = 3;
+  // var got = _.avector.randomInRange( src1, src2, src3 );
+  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
+  // test.identical( src1, 0 );
+
+  // var src1 = 0;
+  // var src2 = 2;
+  // var src3 = 3;
+  // var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
+  // test.identical( src1, 0 );
+
+  test.case = 'vector scalar scalar'; /* */
+
+  var src1 = [ 0 ];
+  var src2 = 2;
+  var src3 = 3;
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3 ], got[ 0 ] ) );
+  test.is( src1 === got );
+
+  var src1 = vec([ 0 ]);
+  var src2 = 2;
+  var src3 = 3;
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3 ], got.eGet( 0 ) ) );
+  test.is( src1 === got );
+
+  test.case = 'vector scalar vector'; /* */
+
+  var src1 = [ 0 ];
+  var src2 = 2;
+  var src3 = [ 3 ];
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 === got );
+
+  var src1 = vec( [ 0 ] );
+  var src2 = 2;
+  var src3 = vec( [ 3 ] );
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2, src3.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 === got );
+
+  test.case = 'vector vector vector'; /* */
+
+  var src1 = [ 0 ];
+  var src2 = [ 2 ];
+  var src3 = [ 3 ];
+  var got = _.avector.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2[ 0 ], src3[ 0 ] ], got[ 0 ] ) );
+  test.is( src1 === got );
+
+  var src1 = vec( [ 0 ] );
+  var src2 = vec( [ 2 ] );
+  var src3 = vec( [ 3 ] );
+  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
+  test.is( _.rangeInInclusive( [ src2.eGet( 0 ), src3.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.is( src1 === got );
+
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+
+  test.shouldThrowErrorSync( () => _.avector.randomInRange() );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( null, [ 1 ], [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], undefined ) );
+  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], '1' ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange() );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( null, vec([ 1 ]), vec([ 1 ]), vec([ 1 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
+}
+
+randomInRange.timeOut = 15000;
+
+//
+
+function mix( test )
+{
+  // var got = _.avector.mix( null, [ 1, 2 ], [ 3, 4 ] );
+  // var dst = [ 9 ];
+  // var got = _.avector.mix( dst, 1, 3, 0.5 );
+
+  /* 3 arguments */
+
+  test.case = 'all arrays, 3 arguments';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
+  var expected = [ 1.2 , 2.4 , 3.6 ];
+
+  test.equivalent( got, expected );
+  test.is( src === got );
+
+  test.case = 'mixed, 3 arguments';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( src, 5, 0.1 );
+  var expected = [ 1.4 , 2.3 , 3.2 ];
+
+  test.equivalent( got, expected );
+  test.is( src === got );
+
+  var src = [ 1, 2, 3 ]
+  var got = _.avector.mix( 5, src, 0.1 );
+  var expected = [ 4.6 , 4.7 , 4.8 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+
+  test.case = 'many elements in progress, 3 arguments';
+
+  var got = _.avector.mix( 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
+  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
+  test.equivalent( got, expected );
+
+  test.case = 'only scalars, 3 arguments';
+
+  var got = _.avector.mix( 1, 3, 0.5 );
+  var expected = 2;
+  test.equivalent( got, expected );
+
+  /* 4 arguments with null */
+
+  test.case = 'all arrays, 4 arguments, dst null';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( null, src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
+  var expected = [ 1.2 , 2.4 , 3.6 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+
+  test.case = 'mixed, 4 arguments, dst null';
+
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( null, src, 5, 0.1 );
+  var expected = [ 1.4 , 2.3 , 3.2 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+
+  var src = [ 1, 2, 3 ]
+  var got = _.avector.mix( null, 5, src, 0.1 );
+  var expected = [ 4.6 , 4.7 , 4.8 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+
+  test.case = 'many elements in progress, 4 arguments, dst null';
+
+  var got = _.avector.mix( null, 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
+  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
+  test.equivalent( got, expected );
+
+  test.case = 'only scalars, 4 arguments, dst null';
+
+  var got = _.avector.mix( null, 1, 3, 0.5 );
+  var expected = 2;
+  test.equivalent( got, expected );
+
+  /* 4 arguments with provided container */
+
+  test.case = 'all arrays, 4 arguments, dst null';
+
+  var dst = [ -1, -1, -1 ];
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( dst, src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
+  var expected = [ 1.2 , 2.4 , 3.6 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+  test.is( dst === got );
+
+  test.case = 'mixed, 4 arguments, dst null';
+
+  var dst = [ -1, -1, -1 ];
+  var src = [ 1, 2, 3 ];
+  var got = _.avector.mix( dst, src, 5, 0.1 );
+  var expected = [ 1.4 , 2.3 , 3.2 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+  test.is( dst === got );
+
+  var dst = [ -1, -1, -1 ];
+  var src = [ 1, 2, 3 ]
+  var got = _.avector.mix( dst, 5, src, 0.1 );
+  var expected = [ 4.6 , 4.7 , 4.8 ];
+
+  test.equivalent( got, expected );
+  test.is( src !== got );
+  test.is( dst === got );
+
+  test.case = 'many elements in progress, 4 arguments, dst null';
+
+  var dst = [ -1, -1, -1, -1, -1, -1 ];
+  var got = _.avector.mix( dst, 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
+  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
+  test.equivalent( got, expected );
+  test.is( dst === got );
+
+  test.case = 'only scalars, 3 arguments';
+
+  var got = _.avector.mix( 1, 3, 0.5 );
+  var expected = 2;
+  test.equivalent( got, expected );
+
+  test.case = '3 scalars and dst long';
+
+  var dst = [ 9 ];
+  var got = _.avector.mix( dst, 1, 3, 0.5 );
+  var expected = [ 2 ];
+  test.equivalent( got, expected );
+  test.is( dst === got );
+
+  test.case = '3 scalars and dst null';
+
+  var got = _.avector.mix( null, 1, 3, 0.5 );
+  var expected = [ 2 ];
+  test.equivalent( got, expected );
+
+  test.case = 'all scalars, but last';
+
+  var dst = [ 1, 2 ];
+  var got = _.avector.mix( dst, [ 3, 4 ], [ 5, 6 ], 1 );
+  var expected = [ 5, 6 ];
+  test.equivalent( got, expected );
+  test.is( dst === got );
+
+  /* throwing error */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => _.avector.mix( -1, 1, 3, 0.5 ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3 ], 0.5 ) );
+  test.shouldThrowErrorSync( () => _.avector.mix() );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( null, [ 1, 2 ], [ 3, 4 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( '0', [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( undefined, [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( undefined, [ 3, 4 ], [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( false, [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( true, [ 3, 4 ], [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], '0', [ 5, 6 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], '0' ) );
+  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 4, 4 ], [ 3, 4 ] ) );
+}
+
+mix.timeOut = 15000;
+
+//
+
+function polynomApply( test )
+{
+  test.case = 'trivial';
+
+  var expected = 7;
+  var got = _.avector.polynomApply( [ 1, 1, 1 ], 2 );
+  test.identical( got, expected );
+
+  test.case = 'trivial'; /* */
+
+  var expected = 36;
+  var got = _.avector.polynomApply( [ 0, 1, 2 ], 4 );
+  test.identical( got, expected );
+
+  test.case = 'trivial'; /* */
+
+  var expected = 6;
+  var got = _.avector.polynomApply( [ 2, 1, 0 ], 4 );
+  test.identical( got, expected );
+
+  test.case = 'trivial'; /* */
+
+  var expected = 262;
+  var got = _.avector.polynomApply( [ 2, 1, 0, 4 ], 4 );
+  test.identical( got, expected );
+}
+
+//
+
+function mean( test )
+{
+  test.case = 'simple even'; /* */
+
+  var expected = 2.5;
+  var got = _.avector.mean([ 1, 2, 3, 4 ]);
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd'; /* */
+
+  var expected = 2;
+  var got = _.avector.mean([ 1, 2, 3 ]);
+  test.equivalent( got, expected );
+
+  test.case = 'empty'; /* */
+
+  var expected = 0;
+  var got = _.avector.mean([]);
+  test.equivalent( got, expected );
+
+  test.case = 'simple even, filtering'; /* */
+
+  var expected = 2;
+  var got = _.avector.meanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd, filtering'; /* */
+
+  var expected = 2;
+  var got = _.avector.meanConditional( [ 1, 2, 3 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'empty, filtering'; /* */
+
+  var expected = 0;
+  var got = _.avector.meanConditional( [], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+  test.shouldThrowErrorSync( () => _.mean() );
+  test.shouldThrowErrorSync( () => _.mean( 'x' ) );
+  test.shouldThrowErrorSync( () => _.mean( 1 ) );
+  test.shouldThrowErrorSync( () => _.mean( [ 1 ], 'x' ) );
+  test.shouldThrowErrorSync( () => _.mean( [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.mean( [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.mean( [ 1 ], [ 1 ] ) );
+
+  test.shouldThrowErrorSync( () => _.meanConditional() );
+  test.shouldThrowErrorSync( () => _.meanConditional( () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], [ 1 ], () => true ) );
 
 }
+
+mean.timeOut = 15000;
+
+//
+
+function moment( test )
+{
+  test.case = 'first even'; /* */
+
+  var expected = 2.5;
+  var got = _.avector.moment( [ 1, 2, 3, 4 ], 1 );
+  test.equivalent( got, expected );
+
+  test.case = 'first odd'; /* */
+
+  var expected = 2;
+  var got = _.avector.moment( [ 1, 2, 3 ], 1 );
+  test.equivalent( got, expected );
+
+  test.case = 'first empty'; /* */
+
+  var expected = 0;
+  var got = _.avector.moment( [], 1 );
+  test.equivalent( got, expected );
+
+  test.case = 'second even'; /* */
+
+  var expected = 30 / 4;
+  var got = _.avector.moment( [ 1, 2, 3, 4 ], 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'second odd'; /* */
+
+  var expected = 14 / 3;
+  var got = _.avector.moment( [ 1, 2, 3 ], 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'second empty'; /* */
+
+  var expected = 0;
+  var got = _.avector.moment( [], 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'simple even, filtering'; /* */
+
+  var expected = 5;
+  var got = _.avector.momentConditional( [ 1, 2, 3, 4 ], 2, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd, filtering'; /* */
+
+  var expected = 5;
+  var got = _.avector.momentConditional( [ 1, 2, 3 ], 2, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'empty, filtering'; /* */
+
+  var expected = 0;
+  var got = _.avector.momentConditional( [], 2, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+  test.shouldThrowErrorSync( () => _.moment() );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.moment( 1 ) );
+  test.shouldThrowErrorSync( () => _.moment( 'x', 1 ) );
+  test.shouldThrowErrorSync( () => _.moment( 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ], 'x' ) );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.moment( [ 1 ], [ 1 ] ) );
+
+  test.shouldThrowErrorSync( () => _.momentConditional() );
+  test.shouldThrowErrorSync( () => _.momentConditional( () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( 'x', 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( 1, 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( 1, [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], [ 1 ], () => true ) );
+}
+
+moment.timeOut = 15000;
+
+//
+
+function reduceToMean( test )
+{
+  test.case = 'simple even'; /* */
+
+  var expected = 2.5;
+  var got = _.avector.reduceToMean([ 1, 2, 3, 4 ]);
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd'; /* */
+
+  var expected = 2;
+  var got = _.avector.reduceToMean([ 1, 2, 3 ]);
+  test.equivalent( got, expected );
+
+  test.case = 'several vectors'; /* */
+
+  var expected = 3;
+  var got = _.avector.reduceToMean( [ 1, 2, 3 ], [ 4, 5 ] );
+  test.equivalent( got, expected );
+
+  test.case = 'empty'; /* */
+
+  var expected = NaN;
+  var got = _.avector.reduceToMean([]);
+  test.equivalent( got, expected );
+
+  test.case = 'simple even, filtering'; /* */
+
+  var expected = 2;
+  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'simple odd, filtering'; /* */
+
+  var expected = 2;
+  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'several vectors, filtering'; /* */
+
+  var expected = 3;
+  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3 ], [ 4, 5 ], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  test.case = 'empty, filtering'; /* */
+
+  var expected = NaN;
+  var got = _.avector.reduceToMeanConditional( [], ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean() );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean( 'x' ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean( 1 ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean( [ 1 ], 'x' ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMean( [ 1 ], 1 ) );
+
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional() );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( () => true ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( [ 1 ], 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( [ 1 ], 1, () => true ) );
+
+}
+
+reduceToMean.timeOut = 15000;
+
+//
+
+function distributionRangeSummary( test )
+{
+  var empty = [];
+  var a = [ 1, 2, 3, 4, 5 ];
+  var b = [ 55, 22, 33, 99, 2, 22, 3, 33, 4, 99, 5, 44 ];
+  var filter = ( e, o ) => !(e % 2);
+
+  test.case = 'distributionRangeSummary single element'; /* */
+
+  var ar = [ 1 ];
+  var expected =
+  {
+    min : { value : 1, index : 0, container : vec( ar ) },
+    max : { value : 1, index : 0, container : vec( ar ) },
+    median : 1,
+  };
+
+  var got = _.avector.distributionRangeSummary( ar );
+  test.identical( got, expected );
+
+  test.case = 'reduceToMax single element'; /* */
+
+  var ar = [ 1 ];
+  var expected = { value : 1, index : 0, container : vec( ar ) };
+  var got = _.avector.reduceToMax( ar );
+  test.identical( got, expected );
+
+  var ar = [ 1 ];
+  var expected = { value : 1, index : 0, container : vec( ar ) };
+  var got = vad.reduceToMax( vec( ar ) );
+  test.identical( got, expected );
+
+  test.case = 'trivial'; /* */
+
+  var expected =
+  {
+    min : { value : 1, index : 0, container : vec( a ) },
+    max : { value : 5, index : 4, container : vec( a ) },
+    median : 3,
+  };
+
+  var got = _.avector.distributionRangeSummary( a );
+  test.identical( got, expected );
+
+  test.case = 'simplest case with filtering'; /* */
+
+  var expected =
+  {
+    min : { value : 2, index : 1, container : vec( a ) },
+    max : { value : 4, index : 3, container : vec( a ) },
+    median : 3,
+  };
+
+  var got = _.avector.distributionRangeSummaryConditional( a, filter );
+  test.identical( got, expected );
+
+  test.case = 'several vectors'; /* */
+
+  var expected =
+  {
+    min : { value : 1, index : 0, container : vec( a ) },
+    max : { value : 99, index : 3, container : vec( b ) },
+    median : 50,
+  };
+
+  var got = _.avector.distributionRangeSummary( a, b );
+  test.identical( got, expected );
+
+  test.case = 'several vectors with filtering'; /* */
+
+  var expected =
+  {
+    min : { value : 2, index : 1, container : vec( a ) },
+    max : { value : 44, index : 11, container : vec( b ) },
+    median : 23,
+  };
+
+  var got = _.avector.distributionRangeSummaryConditional( a, b, filter );
+  test.identical( got, expected );
+
+  test.case = 'empty array'; /* */
+
+  var expected =
+  {
+    min : { value : NaN, index : -1, container : null },
+    max : { value : NaN, index : -1, container : null },
+    median : NaN,
+  };
+  var got = _.avector.distributionRangeSummary( empty );
+  test.identical( got, expected )
+
+  test.case = 'empty array with filtering'; /* */
+
+  var expected =
+  {
+    min : { value : NaN, index : -1, container : null },
+    max : { value : NaN, index : -1, container : null },
+    median : NaN,
+  };
+  var got = _.avector.distributionRangeSummaryConditional( empty, filter );
+  test.identical( got, expected )
+
+  // test.case = 'no array'; /* */
+  //
+  // var expected =
+  // {
+  //   min : { value : NaN, index : -1, container : null },
+  //   max : { value : NaN, index : -1, container : null },
+  // };
+  // var got = _.avector.distributionRangeSummary();
+  // test.identical( got, expected )
+  //
+  // test.case = 'no array with filtering'; /* */
+  //
+  // var expected =
+  // {
+  //   min : { value : NaN, index : -1, container : null },
+  //   max : { value : NaN, index : -1, container : null },
+  // };
+  // var got = _.avector.distributionRangeSummaryConditional( filter );
+  // test.identical( got, expected )
+
+  test.case = 'bad arguments'; /* */
+
+  if( Config.debug )
+  {
+
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary() );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( 1 ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( '1' ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( [ 1 ], 1 ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( [ 1 ], undefined ) );
+
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional() );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ] ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ], null ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ], () => true ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( 1, filter ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1 ], 1, filter ) );
+    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1 ], undefined, filter ) );
+
+  }
+}
+
+distributionRangeSummary.timeOut = 15000;
 
 // --
 //
@@ -465,9 +3270,7 @@ function _isIdentical( test, r, t, array )
   test.identical( got, expected );
 
   var expected = array( f, f, t );
-  debugger;
   var got = _.avector[ r ]( 3, array( 1, 2, 3 ) );
-  debugger;
   test.identical( got, expected );
 
   test.case = 'scalar and scalar'; /* */
@@ -509,9 +3312,7 @@ function _isIdentical( test, r, t, array )
   test.case = 'trivial, with dst'; /* */
   var expected = array( f, f, t );
   var dst = array( -1, -1, -1 );
-  debugger;
   var got = _.avector[ r ]( dst, array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  debugger;
   test.identical( got, expected );
   test.is( got === dst );
   var expected = array( t, f, f );
@@ -574,7 +3375,6 @@ function _isIdentical( test, r, t, array )
   test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
   test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
   test.shouldThrowErrorSync( () => _.avector[ r ]( 3, 3, 3 ) );
-
 }
 
 //
@@ -665,139 +3465,139 @@ function isNotEquivalent( test )
 
 }
 
+// //
+// 
+// function _isEquivalent( test, r, t, Array, array )
+// {
+//   var f = !t;
+//   var e = _.accuracy * 0.5;
+// 
+//   /* */
+// 
+//   test.case = 'trivial'; /* */
+//   var expected = array( f, f, t );
+//   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
+//   test.identical( got, expected );
+//   var expected = array( t, f, f );
+//   var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 1, 9 ) );
+//   test.identical( got, expected );
+// 
+//   if( Array !== U32x )
+//   {
+// 
+//     test.case = 'very close, positive elements'; /* */
+//     var expected = array( t, t, t, t, t, t );
+//     var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
+//     test.identical( got, expected );
+// 
+//     test.case = 'very close, negative elements'; /* */
+//     var expected = array( t, t, t, t, t, t );
+//     var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
+//     test.identical( got, expected );
+// 
+//   }
+// 
+//   test.case = 'very close, scalars'; /* */
+//   var expected = t;
+//   var got = _.avector[ r ]( 1+e, 1 );
+//   test.identical( got, expected );
+//   var expected = t;
+//   var got = _.avector[ r ]( 1-e, 1 );
+//   test.identical( got, expected );
+//   var expected = t;
+//   var got = _.avector[ r ]( 1, 1+e );
+//   test.identical( got, expected );
+//   var expected = t;
+//   var got = _.avector[ r ]( 1, 1-e );
+//   test.identical( got, expected );
+// 
+//   /* */
+// 
+//   test.case = 'trivial, with null dst'; /* */
+//   var expected = array( f, f, t );
+//   var got = _.avector[ r ]( null, array( 1, 2, 3 ), array( 3, 4, 3+e ) );
+//   test.identical( got, expected );
+//   var expected = array( t, f, f );
+//   var got = _.avector[ r ]( null, array( 1, 2, 3 ), array( 1+e, 1, 9 ) );
+//   test.identical( got, expected );
+// 
+//   test.case = 'vector and scalar, with null dst'; /* */
+//   var expected = array( f, f, t );
+//   var got = _.avector[ r ]( null, array( 1, 2, 3 ), 3+e );
+//   test.identical( got, expected );
+//   var expected = array( f, f, t );
+//   var got = _.avector[ r ]( null, 3, array( 1, 2, 3+e ) );
+//   test.identical( got, expected );
+// 
+//   test.case = 'scalar and scalar, with null dst'; /* */
+//   var expected = t;
+//   var got = _.avector[ r ]( null, 3+e, 3 );
+//   test.identical( got, expected );
+//   var expected = f;
+//   var got = _.avector[ r ]( null, 3, 4-e );
+//   test.identical( got, expected );
+// 
+//   /* */
+// 
+//   test.case = 'trivial, with dst'; /* */
+//   var expected = array( f, f, t );
+//   var dst = array( -1, -1, -1 );
+//   var got = _.avector[ r ]( dst, array( 1, 2, 3+e ), array( 3, 4, 3 ) );
+//   test.identical( got, expected );
+//   test.is( got === dst );
+//   var expected = array( t, f, f );
+//   var dst = array( -1, -1, -1 );
+//   var got = _.avector[ r ]( dst, array( 1+e, 2, 3 ), array( 1, 1, 9 ) );
+//   test.identical( got, expected );
+//   test.is( got === dst );
+// 
+//   test.case = 'vector and scalar, with dst'; /* */
+//   var expected = array( f, f, t );
+//   var dst = array( -1, -1, -1 );
+//   var got = _.avector[ r ]( dst, array( 1, 2, 3 ), 3+e );
+//   test.identical( got, expected );
+//   test.is( got === dst );
+//   var expected = array( f, f, t );
+//   var dst = array( -1, -1, -1 );
+//   var got = _.avector[ r ]( dst, 3, array( 1, 2, 3+e ) );
+//   test.identical( got, expected );
+//   test.is( got === dst );
+// 
+//   test.case = 'scalar and scalar, with scalar dst'; /* */
+//   var expected = t;
+//   var dst = 0;
+//   var got = _.avector[ r ]( dst, 3, 3+e );
+//   test.identical( got, expected );
+//   test.is( got !== dst );
+//   var expected = f;
+//   var dst = t;
+//   var got = _.avector[ r ]( dst, 3, 4-e );
+//   test.identical( got, expected );
+//   test.is( got !== dst );
+// 
+//   test.case = 'scalar and scalar, with vector dst'; /* */
+//   var expected = array( t, t, t );
+//   var dst = array( -1, -1, -1 );
+//   var got = _.avector[ r ]( dst, 3, 3+e );
+//   test.identical( got, expected );
+//   test.is( got === dst );
+//   var expected = array( f, f, f );
+//   var dst = array( -1, -1, -1 );
+//   var got = _.avector[ r ]( dst, 3, 4-e );
+//   test.identical( got, expected );
+//   test.is( got === dst );
+// 
+//   test.case = 'different types of containers'; /* */
+// 
+//   var expected = [ t, t, t ] ;
+//   var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
+//   test.identical( got, expected );
+//   var expected = array( t, t, t );
+//   var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+//   test.identical( got, expected );
+// 
+// }
 //
-
-function _isEquivalent( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = array( f, f, t );
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = array( t, f, f );
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 1, 9 ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = array( t, t, t, t, t, t );
-    var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = array( t, t, t, t, t, t );
-    var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'trivial, with null dst'; /* */
-  var expected = array( f, f, t );
-  var got = _.avector[ r ]( null, array( 1, 2, 3 ), array( 3, 4, 3+e ) );
-  test.identical( got, expected );
-  var expected = array( t, f, f );
-  var got = _.avector[ r ]( null, array( 1, 2, 3 ), array( 1+e, 1, 9 ) );
-  test.identical( got, expected );
-
-  test.case = 'vector and scalar, with null dst'; /* */
-  var expected = array( f, f, t );
-  var got = _.avector[ r ]( null, array( 1, 2, 3 ), 3+e );
-  test.identical( got, expected );
-  var expected = array( f, f, t );
-  var got = _.avector[ r ]( null, 3, array( 1, 2, 3+e ) );
-  test.identical( got, expected );
-
-  test.case = 'scalar and scalar, with null dst'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( null, 3+e, 3 );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( null, 3, 4-e );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'trivial, with dst'; /* */
-  var expected = array( f, f, t );
-  var dst = array( -1, -1, -1 );
-  var got = _.avector[ r ]( dst, array( 1, 2, 3+e ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var expected = array( t, f, f );
-  var dst = array( -1, -1, -1 );
-  var got = _.avector[ r ]( dst, array( 1+e, 2, 3 ), array( 1, 1, 9 ) );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'vector and scalar, with dst'; /* */
-  var expected = array( f, f, t );
-  var dst = array( -1, -1, -1 );
-  var got = _.avector[ r ]( dst, array( 1, 2, 3 ), 3+e );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var expected = array( f, f, t );
-  var dst = array( -1, -1, -1 );
-  var got = _.avector[ r ]( dst, 3, array( 1, 2, 3+e ) );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'scalar and scalar, with scalar dst'; /* */
-  var expected = t;
-  var dst = 0;
-  var got = _.avector[ r ]( dst, 3, 3+e );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  var expected = f;
-  var dst = t;
-  var got = _.avector[ r ]( dst, 3, 4-e );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'scalar and scalar, with vector dst'; /* */
-  var expected = array( t, t, t );
-  var dst = array( -1, -1, -1 );
-  var got = _.avector[ r ]( dst, 3, 3+e );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var expected = array( f, f, f );
-  var dst = array( -1, -1, -1 );
-  var got = _.avector[ r ]( dst, 3, 4-e );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = [ t, t, t ] ;
-  var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = array( t, t, t );
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
-  test.identical( got, expected );
-
-}
-
 // //
 //
 // function isEquivalent2( test )
@@ -942,7 +3742,6 @@ function _isGreater( test, r, t, array )
   test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
   test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
   test.shouldThrowErrorSync( () => _.avector[ r ]( 0, 4, 3 ) );
-
 }
 
 //
@@ -1332,7 +4131,6 @@ function _isLessAprox( test, r, t, array )
   test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
   test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
   test.shouldThrowErrorSync( () => _.avector[ r ]( 0, 3, 4 ) );
-
 }
 
 //
@@ -1477,7 +4275,6 @@ function _isGreaterAprox( test, r, t, array )
   test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
   test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
   test.shouldThrowErrorSync( () => _.avector[ r ]( 0, 3, 4 ) );
-
 }
 
 //
@@ -1611,12 +4408,199 @@ function isGreaterAprox( test )
 
 //
 
+/* aaa : ask how to improve */
+/* Dmytro : improved, moved routines in right position */
+
+function isZero( test )
+{
+  test.open( 'Array constructor' );
+
+  _isZero( test, 'isZero', true, function()
+  {
+    return _.longMake( Array, arguments );
+  });
+  
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _isZero( test, 'isZero', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _isZero( test, 'isZero', true, function()
+  {
+    return _.longMake( F32x, arguments );
+  });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _isZero( test, r, t, array )
+  {
+    var f = !t;
+
+    /* */
+
+    test.case = 'vector'; /* */
+    var expected = array( t, t, t );
+    var src = array( 0, 0, 0 );
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( f, f, t );
+    var src = array( 1, 2, 0 );
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( t, f, f );
+    var src = array( 0, 2, 3 );
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'scalar'; /* */
+    var expected = f;
+    var src = 3;
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+
+    var expected = t;
+    var src = 0;
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector'; /* */
+    var expected = array();
+    var src = array();
+    var got = _.avector[ r ]( src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'vector with null'; /* */
+    var expected = array( t, t, t );
+    var src = array( 0, 0, 0 );
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( f, f, t );
+    var src = array( 1, 2, 0 );
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( t, f, f );
+    var src = array( 0, 2, 3 );
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'scalar with null'; /* */
+    var expected = f;
+    var src = 3;
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+
+    var expected = t;
+    var src = 0;
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector with null'; /* */
+    var expected = array();
+    var src = array();
+    var got = _.avector[ r ]( null, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'vector with dst'; /* */
+
+    var expected = array( t, t, t );
+    var src = array( 0, 0, 0 );
+    var dst = array( -1, -1, -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( f, f, t );
+    var src = array( 1, 2, 0 );
+    var dst = array( -1, -1, -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    var expected = array( t, f, f );
+    var src = array( 0, 2, 3 );
+    var dst = array( -1, -1, -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'scalar with dst'; /* */
+
+    var expected = array( f );
+    var src = 3;
+    var dst = array( -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+
+    var expected = array( t );
+    var src = 0;
+    var dst = array( -1 );
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector with dst'; /* */
+    var expected = array();
+    var src = array();
+    var dst = array();
+    var got = _.avector[ r ]( dst, src );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    if( Config.debug )
+    test.shouldThrowErrorSync( () => _.avector[ r ]( -1, 3 ) );
+  } 
+}
+
+isZero.timeOut = 15000;
+
+//
+
 function logical2ArgsZipperWithBadArguments( test, r, t, array )
 {
   var f = !t;
 
-  /*
-  */
+  /* */
 
   for( r in _.vectorAdapter )
   {
@@ -1726,7 +4710,7 @@ function _allIdentical( test, r, t, array )
 
 function allIdentical( test )
 {
-
+  
   this._allIdentical( test, 'allIdentical', true, function()
   {
     return _.longMake/*longMakeUndefined*/( Array, arguments );
@@ -1928,344 +4912,103 @@ allNotIdentical.timeOut = 15000;
 
 //
 
-function _allEquivalent( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
-function _allLessAprox( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
-function _allLessEqualAprox( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 2, 3, 4 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
-function _allGreaterAprox( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
-function _allGreaterEqualAprox( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 0, 1, 2 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
 function allEquivalent( test )
 {
-  this._allEquivalent( test, 'allEquivalent', true, Array, function()
+  /* - */ 
+
+  test.open( 'Array constructor' );
+  
+  _allEquivalent( test, 'allEquivalent', true, Array, function()
   {
-    return _.longMake/*longMakeUndefined*/( Array, arguments );
+    return _.longMake( Array, arguments );
   });
 
-  this._allEquivalent( test, 'allEquivalent', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _allEquivalent( test, 'allEquivalent', true, U32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( F32x, arguments );
+    return _.longMake( U32x, arguments );
   });
 
-  this._allEquivalent( test, 'allEquivalent', true, U32x, function()
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x' );
+
+  _allEquivalent( test, 'allEquivalent', true, F32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( U32x, arguments );
+    return _.longMake( F32x, arguments );
   });
+
+  test.close( 'F32x' );
+  
+  /* - */
+
+  function _allEquivalent( test, r, t, Array, array )
+  {
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial';
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements';
+      var expected = t;
+      var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements';
+      var expected = t;
+      var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars';
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors';
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers';
+    var expected = t;
+    var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    test.identical( got, expected );
+  }
 }
 
 allEquivalent.timeOut = 15000;
@@ -2316,82 +5059,81 @@ allNotEquivalent.timeOut = 15000;
 
 //
 
-function _allGreater( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = ' trivial'; /* */
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 2, 2, 9 ), array( 1, 1, 8 ) );
-  test.identical( got, expected );
-
-  test.case = 'vector and scalar'; /* */
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), 3 );
-  test.identical( got, expected );
-
-  var expected = t;
-  var got = _.avector[ r ]( 2, array( 1, 1, 1 ) );
-  test.identical( got, expected );
-
-  test.case = 'scalar and scalar'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 4, 3 );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( 3, 4 );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = f;
-  var got = _.avector[ r ]( [ 1, 2, 4 ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
-  test.identical( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.avector[ r ]() );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( 10 ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( undefined, 3, 4 ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( '1', 3, 4 ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5 ], [ 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 4 ], [ 4 ], [ 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
-
-}
-
-//
-
 function allGreater( test )
 {
-  this._allGreater( test, 'allGreater', true, function()
+  _allGreater( test, 'allGreater', true, function()
   {
     return _.longMake( Array, arguments );
   });
 
-  this._allGreater( test, 'allGreater', true, function()
+  _allGreater( test, 'allGreater', true, function()
   {
     return _.longMake( F32x, arguments );
   });
 
-  this._allGreater( test, 'allGreater', true, function()
+  _allGreater( test, 'allGreater', true, function()
   {
     return _.longMake( U32x, arguments );
   });
+
+  /* - */
+
+  function _allGreater( test, r, t, array )
+  {
+    var f = !t;
+
+    /* */
+
+    test.case = ' trivial'; /* */
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+    var expected = t;
+    var got = _.avector[ r ]( array( 2, 2, 9 ), array( 1, 1, 8 ) );
+    test.identical( got, expected );
+
+    test.case = 'vector and scalar'; /* */
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), 3 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 2, array( 1, 1, 1 ) );
+    test.identical( got, expected );
+
+    test.case = 'scalar and scalar'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 4, 3 );
+    test.identical( got, expected );
+    var expected = f;
+    var got = _.avector[ r ]( 3, 4 );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+
+    var expected = f;
+    var got = _.avector[ r ]( [ 1, 2, 4 ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
+    test.identical( got, expected );
+
+    test.case = 'bad arguments'; /* */
+
+    if( Config.debug )
+    {
+      test.shouldThrowErrorSync( () => _.avector[ r ]() );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( 10 ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( undefined, 3, 4 ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( '1', 3, 4 ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5 ], [ 6 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 4 ], [ 4 ], [ 5 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5, 3 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
+    }
+  }
 }
 
 allGreater.timeOut = 150000;
@@ -2400,20 +5142,109 @@ allGreater.timeOut = 150000;
 
 function allGreaterEqualAprox( test )
 {
-  this._allGreaterEqualAprox( test, 'allGreaterEqualAprox', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _allGreaterEqualAprox( test, 'allGreaterEqualAprox', true, Array, function()
   {
-    return _.longMake/*longMakeUndefined*/( Array, arguments );
+    return _.longMake( Array, arguments );
   });
 
-  this._allGreaterEqualAprox( test, 'allGreaterEqualAprox', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _allGreaterEqualAprox( test, 'allGreaterEqualAprox', true, U32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( F32x, arguments );
+    return _.longMake( U32x, arguments );
   });
 
-  this._allGreaterEqualAprox( test, 'allGreaterEqualAprox', true, U32x, function()
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _allGreaterEqualAprox( test, 'allGreaterEqualAprox', true, F32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( U32x, arguments );
+    return _.longMake( F32x, arguments );
   });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _allGreaterEqualAprox( test, r, t, Array, array )
+  {
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 0, 1, 2 ) );
+    test.identical( got, expected );
+    
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+    
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    test.identical( got, expected );
+  }
 }
 
 allGreaterEqualAprox.timeOut = 150000;
@@ -2422,20 +5253,101 @@ allGreaterEqualAprox.timeOut = 150000;
 
 function allGreaterAprox( test )
 {
-  this._allGreaterAprox( test, 'allGreaterAprox', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _allGreaterAprox( test, 'allGreaterAprox', true, Array, function()
   {
-    return _.longMake/*longMakeUndefined*/( Array, arguments );
+    return _.longMake( Array, arguments );
   });
 
-  this._allGreaterAprox( test, 'allGreaterAprox', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */ 
+
+  test.open( 'U32x constructor' );
+
+  _allGreaterAprox( test, 'allGreaterAprox', true, U32x, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _allGreaterAprox( test, 'allGreaterAprox', true, F32x, function()
   {
     return _.longMake/*longMakeUndefined*/( F32x, arguments );
   });
 
-  this._allGreaterAprox( test, 'allGreaterAprox', true, U32x, function()
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _allGreaterAprox( test, r, t, Array, array )
   {
-    return _.longMake/*longMakeUndefined*/( U32x, arguments );
-  });
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+    
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+    
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+    
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors';
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers';
+    var expected = t;
+    var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
+    test.identical( got, expected );
+    
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    test.identical( got, expected );
+  }
 }
 
 allGreaterAprox.timeOut = 150000;
@@ -2444,20 +5356,109 @@ allGreaterAprox.timeOut = 150000;
 
 function allLessEqualAprox( test )
 {
-  this._allLessEqualAprox( test, 'allLessEqualAprox', true, Array, function()
+  /* - */ 
+
+  test.open( 'Array constructor' );
+
+  _allLessEqualAprox( test, 'allLessEqualAprox', true, Array, function()
   {
     return _.longMake( Array, arguments );
   });
 
-  this._allLessEqualAprox( test, 'allLessEqualAprox', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _allLessEqualAprox( test, 'allLessEqualAprox', true, U32x, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _allLessEqualAprox( test, 'allLessEqualAprox', true, F32x, function()
   {
     return _.longMake( F32x, arguments );
   });
 
-  this._allLessEqualAprox( test, 'allLessEqualAprox', true, U32x, function()
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _allLessEqualAprox( test, r, t, Array, array )
   {
-    return _.longMake( U32x, arguments );
-  });
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 2, 3, 4 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    test.identical( got, expected );
+  }
 }
 
 allLessEqualAprox.timeOut = 150000;
@@ -2466,24 +5467,233 @@ allLessEqualAprox.timeOut = 150000;
 
 function allLessAprox( test )
 {
-  this._allLessAprox( test, 'allLessAprox', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _allLessAprox( test, 'allLessAprox', true, Array, function()
   {
-    return _.longMake/*longMakeUndefined*/( Array, arguments );
+    return _.longMake( Array, arguments );
   });
 
-  this._allLessAprox( test, 'allLessAprox', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+  
+  test.open( 'U32x constructor' );
+  
+  _allLessAprox( test, 'allLessAprox', true, U32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( F32x, arguments );
+    return _.longMake( U32x, arguments );
   });
 
-  this._allLessAprox( test, 'allLessAprox', true, U32x, function()
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _allLessAprox( test, 'allLessAprox', true, F32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( U32x, arguments );
+    return _.longMake( F32x, arguments );
   });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _allLessAprox( test, r, t, Array, array )
+  {
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1 + e, 2 + e, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0+e, 1+e, 1001+e, 0-e, 1-e, 1001-e ), array( -0, +1, +1001, -0, +1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( -0+e, -1+e, -1001+e, -0-e, -1-e, -1001-e ), array( +0, -1, -1001, +0, -1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    test.identical( got, expected );
+  }
 }
 
 allLessAprox.timeOut = 150000;
 
+//
+
+function allZero( test )
+{
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _allZero( test, 'allZero', true, function()
+  {
+    return _.longMake( Array, arguments );
+  });
+
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _allZero( test, 'allZero', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _allZero( test, 'allZero', true, function()
+  {
+    return _.longMake( F32x, arguments );
+  });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _allZero( test, r, t, array )
+  {
+    var f = !t;
+
+    /* */
+
+    test.case = 'vector';
+    var expected = t;
+    var got = _.avector[ r ]( array( 0, 0, 0 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 0 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 0, 2, 3 ) );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'scalar';
+    var expected = f;
+    var got = _.avector[ r ]( 3 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 0 );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector';
+    var expected = t;
+    var got = _.avector[ r ]( array() );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'not';
+    test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
+    test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
+    test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
+    test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
+    test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
+    test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
+    test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
+    test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
+  }
+}
+
+allZero.timeOut = 15000;
+//
+
+function allFinite( test )
+{
+
+  test.identical( _.avector.allFinite([ 1, 2, 3 ]), true );
+  test.identical( _.avector.allFinite([ 0, 0, 0 ]), true );
+  test.identical( _.avector.allFinite([ 0, 0, 1 ]), true );
+
+  test.identical( _.avector.allFinite([ 1, 3, NaN ]), false );
+  test.identical( _.avector.allFinite([ 1, NaN, 3 ]), false );
+  test.identical( _.avector.allFinite([ 1, 3, -Infinity ]), false );
+  test.identical( _.avector.allFinite([ 1, +Infinity, 3 ]), false );
+
+  test.identical( _.avector.allFinite([ 1.1, 0, 1 ]), true );
+  test.identical( _.avector.allFinite([ 1, 0, 1.1 ]), true );
+
+}
+
+//
+
+function allInt( test )
+{
+
+  test.identical( _.avector.allInt([ 1, 2, 3 ]), true );
+  test.identical( _.avector.allInt([ 0, 0, 0 ]), true );
+  test.identical( _.avector.allInt([ 0, 0, 1 ]), true );
+
+  test.identical( _.avector.allInt([ 1, 3, NaN ]), false );
+  test.identical( _.avector.allInt([ 1, NaN, 3 ]), false );
+  test.identical( _.avector.allInt([ 1, 3, -Infinity ]), true );
+  test.identical( _.avector.allInt([ 1, +Infinity, 3 ]), true );
+
+  test.identical( _.avector.allInt([ 1.1, 0, 1 ]), false );
+  test.identical( _.avector.allInt([ 1, 0, 1.1 ]), false );
+
+}
 
 //
 
@@ -2552,335 +5762,103 @@ anyNotIdentical.timeOut = 15000;
 
 //
 
-function _anyEquivalent( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
-function _anyLessAprox( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
-function _anyLessEqualAprox( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 5 ), array( 1, 4, 3 ) );
-  test.identical( got, expected );
-  var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
-function _anyGreaterAprox( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
-  test.identical( got, expected );
-
-}
-
-//
-
-function _anyGreaterEqualAprox( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 5 ), array( 1, 3, 4 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = t;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
-  test.identical( got, expected );
-
-}
-
 function anyEquivalent( test )
 {
-  this._anyEquivalent( test, 'anyEquivalent', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _anyEquivalent( test, 'anyEquivalent', true, Array, function()
   {
     return _.longMake( Array, arguments );
   });
 
-  this._anyEquivalent( test, 'anyEquivalent', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _anyEquivalent( test, 'anyEquivalent', true, U32x, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _anyEquivalent( test, 'anyEquivalent', true, F32x, function()
   {
     return _.longMake( F32x, arguments );
   });
 
-  this._anyEquivalent( test, 'anyEquivalent', true, U32x, function()
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _anyEquivalent( test, r, t, Array, array )
   {
-    return _.longMake( U32x, arguments );
-  });
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+ 
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    test.identical( got, expected );
+  }
 }
 
 anyEquivalent.timeOut = 15000;
@@ -2929,85 +5907,105 @@ function anyNotEquivalent( test )
 
 anyNotEquivalent.timeOut = 15000;
 
-
-//
-
-function _anyGreater( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = ' trivial'; /* */
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 1, 9 ), array( 1, 1, 8 ) );
-  test.identical( got, expected );
-
-  test.case = 'vector and scalar'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 4 ), 3 );
-  test.identical( got, expected );
-
-  var expected = f;
-  var got = _.avector[ r ]( 2, array( 3, 3, 3 ) );
-  test.identical( got, expected );
-
-  test.case = 'scalar and scalar'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( 4, 3 );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( 3, 4 );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = t;
-  var got = _.avector[ r ]( [ 1, 2, 4 ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
-  test.identical( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.avector[ r ]() );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( 10 ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( undefined, 3, 4 ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( '1', 3, 4 ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5 ], [ 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 4 ], [ 4 ], [ 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
-
-}
-
 //
 
 function anyGreater( test )
 {
-  this._anyGreater( test, 'anyGreater', true, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _anyGreater( test, 'anyGreater', true, function()
   {
-    return _.longMake/*longMakeUndefined*/( Array, arguments );
+    return _.longMake( Array, arguments );
   });
 
-  this._anyGreater( test, 'anyGreater', true, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _anyGreater( test, 'anyGreater', true, function()
   {
-    return _.longMake/*longMakeUndefined*/( F32x, arguments );
+    return _.longMake( U32x, arguments );
   });
 
-  this._anyGreater( test, 'anyGreater', true, function()
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _anyGreater( test, 'anyGreater', true, function()
   {
-    return _.longMake/*longMakeUndefined*/( U32x, arguments );
+    return _.longMake( F32x, arguments );
   });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _anyGreater( test, r, t, array )
+  {
+    var f = !t;
+
+    /* */
+
+    test.case = ' trivial'; /* */
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 1, 9 ), array( 1, 1, 8 ) );
+    test.identical( got, expected );
+
+    test.case = 'vector and scalar'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 4 ), 3 );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( 2, array( 3, 3, 3 ) );
+    test.identical( got, expected );
+
+    test.case = 'scalar and scalar'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 4, 3 );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( 3, 4 );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 1, 2, 4 ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
+    test.identical( got, expected );
+
+    test.case = 'bad arguments'; /* */
+
+    /* - */ 
+
+    if( Config.debug )
+    {
+      test.shouldThrowErrorSync( () => _.avector[ r ]() );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( 10 ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( undefined, 3, 4 ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( '1', 3, 4 ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5 ], [ 6 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 4 ], [ 4 ], [ 5 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5, 3 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
+    }
+  }
 }
 
 anyGreater.timeOut = 15000;
@@ -3016,20 +6014,105 @@ anyGreater.timeOut = 15000;
 
 function anyGreaterEqualAprox( test )
 {
-  this._anyGreaterEqualAprox( test, 'anyGreaterEqualAprox', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _anyGreaterEqualAprox( test, 'anyGreaterEqualAprox', true, Array, function()
   {
-    return _.longMake/*longMakeUndefined*/( Array, arguments );
+    return _.longMake( Array, arguments );
   });
 
-  this._anyGreaterEqualAprox( test, 'anyGreaterEqualAprox', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _anyGreaterEqualAprox( test, 'anyGreaterEqualAprox', true, U32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( F32x, arguments );
+    return _.longMake( U32x, arguments );
   });
 
-  this._anyGreaterEqualAprox( test, 'anyGreaterEqualAprox', true, U32x, function()
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _anyGreaterEqualAprox( test, 'anyGreaterEqualAprox', true, F32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( U32x, arguments );
+    return _.longMake( F32x, arguments );
   });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _anyGreaterEqualAprox( test, r, t, Array, array )
+  {
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 5 ), array( 1, 3, 4 ) );
+    test.identical( got, expected );
+    
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+    
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    test.identical( got, expected );
+  }
 }
 
 anyGreaterEqualAprox.timeOut = 15000;
@@ -3038,20 +6121,101 @@ anyGreaterEqualAprox.timeOut = 15000;
 
 function anyGreaterAprox( test )
 {
-  this._anyGreaterAprox( test, 'anyGreaterAprox', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _anyGreaterAprox( test, 'anyGreaterAprox', true, Array, function()
   {
-    return _.longMake/*longMakeUndefined*/( Array, arguments );
+    return _.longMake( Array, arguments );
   });
 
-  this._anyGreaterAprox( test, 'anyGreaterAprox', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _anyGreaterAprox( test, 'anyGreaterAprox', true, U32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( F32x, arguments );
+    return _.longMake( U32x, arguments );
   });
 
-  this._anyGreaterAprox( test, 'anyGreaterAprox', true, U32x, function()
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _anyGreaterAprox( test, 'anyGreaterAprox', true, F32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( U32x, arguments );
+    return _.longMake( F32x, arguments );
   });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _anyGreaterAprox( test, r, t, Array, array )
+  {
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+    
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    test.identical( got, expected );
+  }
 }
 
 anyGreaterAprox.timeOut = 15000;
@@ -3060,20 +6224,104 @@ anyGreaterAprox.timeOut = 15000;
 
 function anyLessEqualAprox( test )
 {
-  this._anyLessEqualAprox( test, 'anyLessEqualAprox', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _anyLessEqualAprox( test, 'anyLessEqualAprox', true, Array, function()
   {
-    return _.longMake/*longMakeUndefined*/( Array, arguments );
+    return _.longMake( Array, arguments );
   });
 
-  this._anyLessEqualAprox( test, 'anyLessEqualAprox', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */ 
+
+  test.open( 'U32x constructor' );
+
+  _anyLessEqualAprox( test, 'anyLessEqualAprox', true, U32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( F32x, arguments );
+    return _.longMake( U32x, arguments );
   });
 
-  this._anyLessEqualAprox( test, 'anyLessEqualAprox', true, U32x, function()
+  test.close( 'U32x constructor' );
+
+  /* - */ 
+
+  test.open( 'F32x constructor' );
+
+  _anyLessEqualAprox( test, 'anyLessEqualAprox', true, F32x, function()
   {
-    return _.longMake/*longMakeUndefined*/( U32x, arguments );
+    return _.longMake( F32x, arguments );
   });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _anyLessEqualAprox( test, r, t, Array, array )
+  {
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 5 ), array( 1, 4, 3 ) );
+    test.identical( got, expected );
+   
+    var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+   
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    test.identical( got, expected );
+  }
 }
 
 anyLessEqualAprox.timeOut = 15000;
@@ -3082,23 +6330,219 @@ anyLessEqualAprox.timeOut = 15000;
 
 function anyLessAprox( test )
 {
-  this._anyLessAprox( test, 'anyLessAprox', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _anyLessAprox( test, 'anyLessAprox', true, Array, function()
   {
     return _.longMake( Array, arguments );
   });
 
-  this._anyLessAprox( test, 'anyLessAprox', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _anyLessAprox( test, 'anyLessAprox', true, U32x, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _anyLessAprox( test, 'anyLessAprox', true, F32x, function()
   {
     return _.longMake( F32x, arguments );
   });
 
-  this._anyLessAprox( test, 'anyLessAprox', true, U32x, function()
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _anyLessAprox( test, r, t, Array, array )
   {
-    return _.longMake( U32x, arguments );
-  });
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+    
+    var expected = t
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = t;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    test.identical( got, expected );
+  }
 }
 
 anyGreaterAprox.timeOut = 15000;
+
+//
+
+function anyZero( test )
+{
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _anyZero( test, 'anyZero', true, function()
+  {
+    return _.longMake( Array, arguments );
+  });
+
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _anyZero( test, 'anyZero', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _anyZero( test, 'anyZero', true, function()
+  {
+    return _.longMake( F32x, arguments );
+  });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _anyZero( test, r, t, array )
+  {
+    var f = !t;
+
+    /* */
+
+    test.case = 'vector';
+    var expected = t;
+    var got = _.avector[ r ]( array( 0, 0, 0 ) );
+    test.identical( got, expected );
+    
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 0 ) );
+    test.identical( got, expected );
+    
+    var expected = t;
+    var got = _.avector[ r ]( array( 0, 2, 3 ) );
+    test.identical( got, expected );
+    
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'scalar';
+    var expected = f;
+    var got = _.avector[ r ]( 3 );
+    test.identical( got, expected );
+    
+    var expected = t;
+    var got = _.avector[ r ]( 0 );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector';
+    var expected = t;
+    var got = _.avector[ r ]( array() );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'not';
+    test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
+    test.identical( _.avector[ r ]([ 3, 4, 1 ]), false );
+    test.identical( _.avector[ r ]([ 1, 3, NaN ]), false );
+    test.identical( _.avector[ r ]([ 1, NaN, 3 ]), false );
+    test.identical( _.avector[ r ]([ 1, 3, -Infinity ]), false );
+    test.identical( _.avector[ r ]([ 1, +Infinity, 3 ]), false );
+    test.identical( _.avector[ r ]([ 1.1, 0.001, 1 ]), false );
+    test.identical( _.avector[ r ]([ 1, 0.001, 1.1 ]), false );
+  }
+}
+
+anyZero.timeOut = 15000;
+
+//
+
+function anyNan( test )
+{
+
+  test.identical( _.avector.anyNan([ 1, 2, 3 ]), false );
+  test.identical( _.avector.anyNan([ 0, 0, 0 ]), false );
+  test.identical( _.avector.anyNan([ 0, 0, 1 ]), false );
+
+  test.identical( _.avector.anyNan([ 1, 3, NaN ]), true );
+  test.identical( _.avector.anyNan([ 1, NaN, 3 ]), true );
+  test.identical( _.avector.anyNan([ 1, 3, -Infinity ]), false );
+  test.identical( _.avector.anyNan([ 1, +Infinity, 3 ]), false );
+
+  test.identical( _.avector.anyNan([ 1.1, 0, 1 ]), false );
+  test.identical( _.avector.anyNan([ 1, 0, 1.1 ]), false );
+
+}
 
 //
 
@@ -3143,74 +6587,6 @@ function noneNotIdentical( test )
 }
 
 noneNotIdentical.timeOut = 15000;
-
-//
-
-function _noneEquivalent( test, r, t, Array, array )
-{
-  var f = !t;
-  var e = _.accuracy * 0.5;
-
-  /* */
-
-  test.case = 'trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 4, 5, 6 ) );
-  test.identical( got, expected );
-
-  if( Array !== U32x )
-  {
-
-    test.case = 'very close, positive elements'; /* */
-    var expected = f;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
-    test.identical( got, expected );
-
-    test.case = 'very close, negative elements'; /* */
-    var expected = f;
-    var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
-    test.identical( got, expected );
-
-  }
-
-  test.case = 'very close, scalars'; /* */
-  var expected = f;
-  var got = _.avector[ r ]( 1+e, 1 );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( 1-e, 1 );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( 1, 1+e );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( 1, 1-e );
-  test.identical( got, expected );
-
-  test.case = 'empty vectors'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array(), array() );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 4, 5, 6 ]  );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
-  test.identical( got, expected );
-
-
-}
 
 //
 
@@ -3352,20 +6728,109 @@ function _noneLessAprox( test, r, t, Array, array )
 
 function noneEquivalent( test )
 {
-  this._noneEquivalent( test, 'noneEquivalent', true, Array, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _noneEquivalent( test, 'noneEquivalent', true, Array, function()
   {
     return _.longMake( Array, arguments );
   });
 
-  this._noneEquivalent( test, 'noneEquivalent', true, F32x, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _noneEquivalent( test, 'noneEquivalent', true, U32x, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _noneEquivalent( test, 'noneEquivalent', true, F32x, function()
   {
     return _.longMake( F32x, arguments );
   });
 
-  this._noneEquivalent( test, 'noneEquivalent', true, U32x, function()
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _noneEquivalent( test, r, t, Array, array )
   {
-    return _.longMake( U32x, arguments );
-  });
+    var f = !t;
+    var e = _.accuracy * 0.5;
+
+    /* */
+
+    test.case = 'trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 5 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+    
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 1, 2, 3 + e ) );
+    test.identical( got, expected );
+    
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 4, 5, 6 ) );
+    test.identical( got, expected );
+
+    if( Array !== U32x )
+    {
+      test.case = 'very close, positive elements'; /* */
+      var expected = f;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, 1001-e ), array( 0, 1, 1001, 0, 1, +1001 ) );
+      test.identical( got, expected );
+
+      test.case = 'very close, negative elements'; /* */
+      var expected = f;
+      var got = _.avector[ r ]( array( 0, 1, 1001, 0, 1, -1001-e ), array( 0, 1, 1001, 0, 1, -1001 ) );
+      test.identical( got, expected );
+    }
+
+    test.case = 'very close, scalars'; /* */
+    var expected = f;
+    var got = _.avector[ r ]( 1+e, 1 );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( 1-e, 1 );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( 1, 1+e );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( 1, 1-e );
+    test.identical( got, expected );
+
+    test.case = 'empty vectors'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array(), array() );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 4, 5, 6 ]  );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    test.identical( got, expected );
+  }
 }
 
 noneEquivalent.timeOut = 15000;
@@ -3416,82 +6881,103 @@ noneNotEquivalent.timeOut = 15000;
 
 //
 
-function _noneGreater( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = ' trivial'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 2, 2, 9 ), array( 1, 1, 8 ) );
-  test.identical( got, expected );
-
-  test.case = 'vector and scalar'; /* */
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), 3 );
-  test.identical( got, expected );
-
-  var expected = f;
-  var got = _.avector[ r ]( 2, array( 1, 1, 1 ) );
-  test.identical( got, expected );
-
-  test.case = 'scalar and scalar'; /* */
-  var expected = f;
-  var got = _.avector[ r ]( 4, 3 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 3, 4 );
-  test.identical( got, expected );
-
-  test.case = 'different types of containers'; /* */
-
-  var expected = f;
-  var got = _.avector[ r ]( [ 1, 2, 4 ], array( 1, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
-  test.identical( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.avector[ r ]() );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( 10 ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( undefined, 3, 4 ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( '1', 3, 4 ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5 ], [ 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 4 ], [ 4 ], [ 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
-
-}
-
-//
-
 function noneGreater( test )
 {
-  this._noneGreater( test, 'noneGreater', true, function()
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _noneGreater( test, 'noneGreater', true, function()
   {
     return _.longMake( Array, arguments );
   });
 
-  this._noneGreater( test, 'noneGreater', true, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _noneGreater( test, 'noneGreater', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _noneGreater( test, 'noneGreater', true, function()
   {
     return _.longMake( F32x, arguments );
   });
 
-  this._noneGreater( test, 'noneGreater', true, function()
+  test.close( 'F32x constructor' );
+
+
+  /* - */
+
+  function _noneGreater( test, r, t, array )
   {
-    return _.longMake( U32x, arguments );
-  });
+    var f = !t;
+
+    /* */
+
+    test.case = ' trivial'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), array( 3, 4, 3 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 2, 2, 9 ), array( 1, 1, 8 ) );
+    test.identical( got, expected );
+
+    test.case = 'vector and scalar'; /* */
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), 3 );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( 2, array( 1, 1, 1 ) );
+    test.identical( got, expected );
+
+    test.case = 'scalar and scalar'; /* */
+    var expected = f;
+    var got = _.avector[ r ]( 4, 3 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 3, 4 );
+    test.identical( got, expected );
+
+    test.case = 'different types of containers'; /* */
+    var expected = f;
+    var got = _.avector[ r ]( [ 1, 2, 4 ], array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
+    test.identical( got, expected );
+
+    /* - */
+
+    if( Config.debug )
+    {
+      test.case = 'bad arguments';
+      test.shouldThrowErrorSync( () => _.avector[ r ]() );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( 10 ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( undefined, 3, 4 ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( '1', 3, 4 ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5 ], [ 6 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 4 ], [ 4 ], [ 5 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4 ], [ 5, 3 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3 ], [ 4, 3 ] ) );
+      test.shouldThrowErrorSync( () => _.avector[ r ]( [ 3, 3 ], [ 4 ] ) );
+    }
+  }
 }
 
 noneGreater.timeOut = 15000;
@@ -3586,6 +7072,102 @@ noneLessEqualAprox.timeOut = 150000;
 
 //
 
+function noneZero( test )
+{
+  /* - */
+
+  test.open( 'Array constructor' );
+
+  _noneZero( test, 'noneZero', true, function()
+  {
+    return _.longMake( Array, arguments );
+  });
+
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _noneZero( test, 'noneZero', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _noneZero( test, 'noneZero', true, function()
+  {
+    return _.longMake( F32x, arguments );
+  });
+
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _noneZero( test, r, t, array )
+  {
+    var f = !t;
+
+    /* */
+
+    test.case = 'vector';
+    var expected = f;
+    var got = _.avector[ r ]( array( 0, 0, 0 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 0 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 0, 2, 3 ) );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( array( 1, 2, 3 ) );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'scalar';
+    var expected = t;
+    var got = _.avector[ r ]( 3 );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( 0 );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector';
+    var expected = t;
+    var got = _.avector[ r ]( array() );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'not';
+    test.identical( _.avector[ r ]([ 1, 0, 3 ]), false );
+    test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
+    test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
+    test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
+    test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
+    test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
+    test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
+    test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
+  }
+}
+
+noneZero.timeOut = 15000;
+
+//
+
 function logical2ArgsReducerWithBadArguments( test, r, t, array )
 {
   var f = !t;
@@ -3677,175 +7259,6 @@ logical2ArgsReducerWithBadArguments.timeOut = 30000;
 
 //
 
-function _isZero( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = 'vector'; /* */
-  var expected = array( t, t, t );
-  var src = array( 0, 0, 0 );
-  var got = _.avector[ r ]( src );
-  test.identical( got, expected );
-  test.is( got !== src );
-  var expected = array( f, f, t );
-  var src = array( 1, 2, 0 );
-  var got = _.avector[ r ]( src );
-  test.identical( got, expected );
-  test.is( got !== src );
-  var expected = array( t, f, f );
-  var src = array( 0, 2, 3 );
-  var got = _.avector[ r ]( src );
-  test.identical( got, expected );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'scalar'; /* */
-  var expected = f;
-  var src = 3;
-  var got = _.avector[ r ]( src );
-  test.identical( got, expected );
-  var expected = t;
-  var src = 0;
-  var got = _.avector[ r ]( src );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector'; /* */
-  var expected = array();
-  var src = array();
-  var got = _.avector[ r ]( src );
-  test.identical( got, expected );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'vector with null'; /* */
-  var expected = array( t, t, t );
-  var src = array( 0, 0, 0 );
-  var got = _.avector[ r ]( null, src );
-  test.identical( got, expected );
-  test.is( got !== src );
-  var expected = array( f, f, t );
-  var src = array( 1, 2, 0 );
-  var got = _.avector[ r ]( null, src );
-  test.identical( got, expected );
-  test.is( got !== src );
-  var expected = array( t, f, f );
-  var src = array( 0, 2, 3 );
-  var got = _.avector[ r ]( null, src );
-  test.identical( got, expected );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'scalar with null'; /* */
-  var expected = f;
-  var src = 3;
-  var got = _.avector[ r ]( null, src );
-  test.identical( got, expected );
-  var expected = t;
-  var src = 0;
-  var got = _.avector[ r ]( null, src );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector with null'; /* */
-  var expected = array();
-  var src = array();
-  var got = _.avector[ r ]( null, src );
-  test.identical( got, expected );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'vector with dst'; /* */
-
-  var expected = array( t, t, t );
-  var src = array( 0, 0, 0 );
-  var dst = array( -1, -1, -1 );
-  var got = _.avector[ r ]( dst, src );
-  test.identical( got, expected );
-  test.is( got !== src );
-
-  var expected = array( f, f, t );
-  var src = array( 1, 2, 0 );
-  var dst = array( -1, -1, -1 );
-  var got = _.avector[ r ]( dst, src );
-  test.identical( got, expected );
-  test.is( got !== src );
-
-  var expected = array( t, f, f );
-  var src = array( 0, 2, 3 );
-  var dst = array( -1, -1, -1 );
-  var got = _.avector[ r ]( dst, src );
-  test.identical( got, expected );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'scalar with dst'; /* */
-
-  var expected = array( f );
-  var src = 3;
-  var dst = array( -1 );
-  var got = _.avector[ r ]( dst, src );
-  test.identical( got, expected );
-
-  var expected = array( t );
-  var src = 0;
-  var dst = array( -1 );
-  var got = _.avector[ r ]( dst, src );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector with dst'; /* */
-  var expected = array();
-  var src = array();
-  var dst = array();
-  var got = _.avector[ r ]( dst, src );
-  test.identical( got, expected );
-  test.is( got !== src );
-
-  if( Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.avector[ r ]( -1, 3 ) );
-
-}
-
-//
-
-/* qqq : ask how to improve */
-function isZero( test )
-{
-
-  this._isZero( test, 'isZero', true, function()
-  {
-    return _.longMake( Array, arguments );
-  });
-
-  this._isZero( test, 'isZero', true, function()
-  {
-    return _.longMake( F32x, arguments );
-  });
-
-  this._isZero( test, 'isZero', true, function()
-  {
-    return _.longMake( U32x, arguments );
-  });
-
-}
-
-isZero.timeOut = 15000;
-
-//
-
 function logical1ArgsSinglerWithBadArguments( test, r, t, array )
 {
   var f = !t;
@@ -3911,243 +7324,6 @@ function logical1ArgsSinglerWithBadArguments( test, r, t, array )
 }
 
 logical1ArgsSinglerWithBadArguments.timeOut = 25000;
-
-//
-
-function _allZero( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = 'vector';
-  var expected = t;
-  var got = _.avector[ r ]( array( 0, 0, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 0, 2, 3 ) );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'scalar';
-  var expected = f;
-  var got = _.avector[ r ]( 3 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 0 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector';
-  var expected = t;
-  var got = _.avector[ r ]( array() );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'not';
-
-  test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
-
-  test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
-  test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
-  test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
-
-  test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
-
-}
-
-//
-
-function allZero( test )
-{
-
-  this._allZero( test, 'allZero', true, function()
-  {
-    return _.longMake( Array, arguments );
-  });
-
-  this._allZero( test, 'allZero', true, function()
-  {
-    return _.longMake( F32x, arguments );
-  });
-
-  this._allZero( test, 'allZero', true, function()
-  {
-    return _.longMake( U32x, arguments );
-  });
-
-}
-
-allZero.timeOut = 15000;
-
-//
-
-function _anyZero( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = 'vector';
-  var expected = t;
-  var got = _.avector[ r ]( array( 0, 0, 0 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 0 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 0, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ) );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'scalar';
-  var expected = f;
-  var got = _.avector[ r ]( 3 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 0 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector';
-  var expected = t;
-  var got = _.avector[ r ]( array() );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'not';
-
-  test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
-  test.identical( _.avector[ r ]([ 3, 4, 1 ]), false );
-
-  test.identical( _.avector[ r ]([ 1, 3, NaN ]), false );
-  test.identical( _.avector[ r ]([ 1, NaN, 3 ]), false );
-  test.identical( _.avector[ r ]([ 1, 3, -Infinity ]), false );
-  test.identical( _.avector[ r ]([ 1, +Infinity, 3 ]), false );
-
-  test.identical( _.avector[ r ]([ 1.1, 0.001, 1 ]), false );
-  test.identical( _.avector[ r ]([ 1, 0.001, 1.1 ]), false );
-
-}
-
-//
-
-function anyZero( test )
-{
-
-  this._anyZero( test, 'anyZero', true, function()
-  {
-    return _.longMake( Array, arguments );
-  });
-
-  this._anyZero( test, 'anyZero', true, function()
-  {
-    return _.longMake( F32x, arguments );
-  });
-
-  this._anyZero( test, 'anyZero', true, function()
-  {
-    return _.longMake( U32x, arguments );
-  });
-
-}
-
-anyZero.timeOut = 15000;
-
-//
-
-function _noneZero( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = 'vector';
-  var expected = f;
-  var got = _.avector[ r ]( array( 0, 0, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 0, 2, 3 ) );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ) );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'scalar';
-  var expected = t;
-  var got = _.avector[ r ]( 3 );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( 0 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector';
-  var expected = t;
-  var got = _.avector[ r ]( array() );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'not';
-
-  test.identical( _.avector[ r ]([ 1, 0, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
-
-  test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
-  test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
-  test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
-
-  test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
-
-}
-
-//
-
-function noneZero( test )
-{
-
-  this._noneZero( test, 'noneZero', true, function()
-  {
-    return _.longMake( Array, arguments );
-  });
-
-  this._noneZero( test, 'noneZero', true, function()
-  {
-    return _.longMake( F32x, arguments );
-  });
-
-  this._noneZero( test, 'noneZero', true, function()
-  {
-    return _.longMake( U32x, arguments );
-  });
-
-}
-
-noneZero.timeOut = 15000;
 
 //
 
@@ -4217,56 +7393,620 @@ logical1ArgsReducerWithBadArguments.timeOut = 30000;
 
 //
 
-function sort( test )
+function areParallelDefaultAccuracy( test ) 
 {
+  let e = _.accuracy || 10 ** -7;
 
-  // 13.00 13.00 10.00 10.00 10.00 2.00 10.00 15.00 2.00 14.00 10.00 6.00 6.000 15.00 4.00 8.00
+  /* - */
 
-  var samples =
-  [
+  test.open( 'without deviation' );
 
-    [ 0 ],
+  test.case = 'empty vectors, equivalent, zeros';
+  var src1 = [];
+  var src2 = [];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
 
-    [ 0, 1 ],
-    [ 1, 0 ],
+  /* */
 
-    [ 1, 0, 2 ],
-    [ 2, 0, 1 ],
-    [ 0, 1, 2 ],
-    [ 0, 2, 1 ],
-    [ 2, 1, 0 ],
-    [ 1, 2, 0 ],
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = [ 0 ];
+  var src2 = [ 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
 
-    [ 0, 1, 1 ],
-    [ 1, 0, 1 ],
-    [ 1, 1, 0 ],
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = [ 5 ];
+  var src2 = [ 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
 
-    [ 0, 0, 1, 1 ],
-    [ 0, 1, 1, 0 ],
-    [ 1, 1, 0, 0 ],
-    [ 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1 ],
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = [ -5 ];
+  var src2 = [ -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
 
-  ];
+  test.case = 'single element vectors, not equivalent';
+  var src1 = [ 5 ];
+  var src2 = [ -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
 
-  for( var s = 0 ; s < samples.length ; s++ )
-  {
-    var sample1 = samples[ s ].slice();
-    var sample2 = samples[ s ].slice();
-    _.vectorAdapter.sort( _.vectorAdapter.fromLong( sample1 ) );
-    sample2.sort();
-    test.identical( sample1, sample2 );
-  }
+  /* */
 
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ -5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500, 1 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zeros';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = [ 10, -100, 20 ];
+  var src2 = [ 50, -500, 100 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0, 0, 0 ];
+  var src2 = [ 0, 0, 0, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ 5, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5, -5, -5 ];
+  var src2 = [ -5, -5, -5, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ -5, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5, -25, 50, -500, 1 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5, -25, 50, -500, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = [ 1, -5, 10, -100, 20 ];
+  var src2 = [ 5, -25, 50, -500, 100 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.close( 'without deviation' );
+
+  /* - */
+
+  test.open( 'with deviation' );
+
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = [ 0 ];
+  var src2 = [ 0 + e * 10 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = [ 5 ];
+  var src2 = [ 5 + e * 10 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = [ -5 ];
+  var src2 = [ -5 + e * 10 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent';
+  var src1 = [ 5 ];
+  var src2 = [ -5 + e * 10 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0 + e * 10, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5 + e * 10, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5 + e * 10, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ -5 + e * 10, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500 + e * 10, 1 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500  + 0.05, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = [ 10, -100, 20 ];
+  var src2 = [ 50, -500, 100  + 0.05 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0, 0, 0 ];
+  var src2 = [ 0 + e * 10, 0, 0, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ 5 + e * 10, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5, -5, -5 ];
+  var src2 = [ -5 + e * 10, -5, -5, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ -5 + e * 10, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5 + e * 10, -25, 50, -500, 1 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5 + e * 100, -25, 50, -500, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = [ 1, -5, 10, -100, 20 ];
+  var src2 = [ 5 + e * 100, -25, 50, -500, 100 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.close( 'with deviation' );
+
+  /* - */ 
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.avector.areParallel() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1 ] ) );
+
+  test.case = 'wrong type of src1';
+  test.shouldThrowErrorSync( () => _.avector.areParallel( 'wrong', [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( null, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( undefined, [ 1 ], 0.1 ) );
+
+  test.case = 'wrong type of src2';
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1 ], {} ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1 ], new Set( [] ), 0.1 ) );
+
+  test.case = 'wrong type of accuracy';
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1, 2 ], [ 1, 2 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.avector.areParallel( [ 1, 2 ], [ 1, 2 ], null ) );
 }
 
-sort.timeOut = 15000;
+//
+
+function areParallelNotDefaultAccuracy( test )
+{
+  let e = _.accuracy || 10 ** -7;
+
+  /* - */
+
+  test.open( 'without deviation' );
+
+  test.case = 'empty vectors, equivalent, zeros';
+  var src1 = [];
+  var src2 = [];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = [ 0 ];
+  var src2 = [ 0 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = [ 5 ];
+  var src2 = [ 5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = [ -5 ];
+  var src2 = [ -5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent';
+  var src1 = [ 5 ];
+  var src2 = [ -5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ -5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500, 1 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zeros';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500, 0 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = [ 10, -100, 20 ];
+  var src2 = [ 50, -500, 100 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0, 0, 0 ];
+  var src2 = [ 0, 0, 0, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ 5, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5, -5, -5 ];
+  var src2 = [ -5, -5, -5, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ -5, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5, -25, 50, -500, 1 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5, -25, 50, -500, 0 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = [ 1, -5, 10, -100, 20 ];
+  var src2 = [ 5, -25, 50, -500, 100 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.close( 'without deviation' );
+
+  /* - */
+
+  test.open( 'with deviation' );
+
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = [ 0 ];
+  var src2 = [ 0 + e * 10 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = [ 5 ];
+  var src2 = [ 5 + e * 10 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = [ -5 ];
+  var src2 = [ -5 + e * 10 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent';
+  var src1 = [ 5 ];
+  var src2 = [ -5 + e * 10 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0 + e * 10, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5 + e * 10, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5 + e * 10, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ -5 + e * 10, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500 + e * 10, 1 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500  + e * 10, 0 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = [ 10, -100, 20 ];
+  var src2 = [ 50, -500, 100  + e * 10 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0, 0, 0 ];
+  var src2 = [ 0 + e * 10, 0, 0, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ 5 + e * 10, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5, -5, -5 ];
+  var src2 = [ -5 + e * 10, -5, -5, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ -5 + e * 10, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5 + e * 10, -25, 50, -500, 1 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5 + e * 10, -25, 50, -500, 0 ];
+  var got = _.avector.areParallel( src1, src2, 20 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = [ 1, -5, 10, -100, 20 ];
+  var src2 = [ 5 + e * 10, -25, 50, -500, 100 ];
+  var got = _.avector.areParallel( src1, src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.close( 'with deviation' );
+}
+
+//
+
+function mag( test )
+{
+  test.case = 'basic';
+  var a = [ 0, 0, 2 ];
+  var exp = 2;
+  var got = _.avector.mag( a );
+  test.identical( got, exp );
+}
 
 //
 
 function dot( test )
 {
-
   var a = [ 1, 2, 3, 4 ];
   var b = [ 6, 7, 8, 9 ];
 
@@ -4274,42 +8014,38 @@ function dot( test )
   var or2 = [ -1, 3, 0 ];
 
   test.case = 'anrarrays'; /* */
-
   var expected = 80;
   var got = _.avector.dot( a, b );
   test.identical( got, expected )
 
   test.case = 'orthogonal anrarrays'; /* */
-
   var expected = 0;
   var got = _.avector.dot( or1, or2 );
   test.identical( got, expected )
 
   test.case = 'empty anarrays'; /* */
-
   var expected = 0;
   var got = _.avector.dot( [], [] );
   test.identical( got, expected )
 
   test.case = 'empty vectors'; /* */
-
   var expected = 0;
   var got = _.avector.dot( vec([]), vec([]) );
   test.identical( got, expected )
 
   test.case = 'subarray vectors'; /* */
-
   var av = _.vectorAdapter.fromLongLrange( a, 1, 3 );
   var bv = _.vectorAdapter.fromLongLrange( b, 1, 3 );
   var expected = 74;
   var got = _.avector.dot( av, bv );
   test.identical( got, expected );
 
-  test.case = 'bad arguments'; /* */
+  /* - */
 
   if( !Config.debug )
   return;
 
+  test.case = 'bad arguments'; /* */
   test.shouldThrowErrorSync( () => _.avector.dot( 1 ) );
   test.shouldThrowErrorSync( () => _.avector.dot( undefined, 1 ) );
   test.shouldThrowErrorSync( () => _.avector.dot( [ 1 ], 1 ) );
@@ -4318,230 +8054,237 @@ function dot( test )
   test.shouldThrowErrorSync( () => _.avector.dot( [ 1 ], [ 1 ], 1 ) );
   test.shouldThrowErrorSync( () => _.avector.dot( [ 1 ], [ 1 ], [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.avector.dot( [], function(){} ) );
-
 }
 
 dot.timeOut = 15000;
 
 //
 
-function cross( test )
+function median( test )
 {
 
-  test.case = 'trivial, make new'; /* */
+  test.case = 'simple even'; /* */
 
-  var a = [ 1, 2, 3 ];
-  var b = [ 4, 5, 6 ];
-  var expected = [ -3, +6, -3 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
+  var expected = 5;
+  var got = _.avector.median([ 1, 2, 3, 9 ]);
+  test.equivalent( got, expected );
 
-  test.case = 'zero, make new'; /* */
+  test.case = 'simple odd'; /* */
 
-  var a = [ 0, 0, 0 ];
-  var b = [ 0, 0, 0 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
+  var expected = 5;
+  var got = _.avector.median([ 1, 2, 9 ]);
+  test.equivalent( got, expected );
 
-  test.case = 'same, make new'; /* */
+  test.case = 'empty'; /* */
 
-  var a = [ 1, 1, 1 ];
-  var b = [ 1, 1, 1 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
+  var expected = NaN;
+  var got = _.avector.median([]);
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular1, make new'; /* */
+}
 
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 0, 1 ];
-  var expected = [ 0, -1, 0 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
+median.timeOut = 15000;
 
-  test.case = 'perpendicular2, make new'; /* */
+//
 
-  var a = [ 0, 0, 1 ];
-  var b = [ 1, 0, 0 ];
-  var expected = [ 0, +1, 0 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
+function momentCentral( test )
+{
+  test.case = 'first even'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 1, 2.5 );
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular3, make new'; /* */
+  test.case = 'first odd'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [ 1, 2, 3 ], 1, 2 );
+  test.equivalent( got, expected );
 
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 1, 0 ];
-  var expected = [ 0, 0, +1 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
+  test.case = 'first empty'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [], 1, 0 );
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular4, make new'; /* */
+  test.case = 'second even'; /* */
+  var expected = 5 / 4;
+  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 2, 2.5 );
+  test.equivalent( got, expected );
 
-  var a = [ 0, 1, 0 ];
-  var b = [ 1, 0, 0 ];
-  var expected = [ 0, 0, -1 ];
-  var got = _.avector.cross( null, a, b );
-  test.identical( got, expected );
-  test.is( got !== a );
+  test.case = 'second odd'; /* */
+  var expected = 2 / 3;
+  var got = _.avector.momentCentral( [ 1, 2, 3 ], 2, 2 );
+  test.equivalent( got, expected );
 
-  test.case = 'trivial'; ///
+  test.case = 'second empty'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [], 2, 0 );
+  test.equivalent( got, expected );
 
-  var a = [ 1, 2, 3 ];
-  var b = [ 4, 5, 6 ];
-  var expected = [ -3, +6, -3 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'first even'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 1 );
+  test.equivalent( got, expected );
 
-  test.case = 'zero'; /* */
+  test.case = 'first odd'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [ 1, 2, 3 ], 1 );
+  test.equivalent( got, expected );
 
-  var a = [ 0, 0, 0 ];
-  var b = [ 0, 0, 0 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'first empty'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [], 1 );
+  test.equivalent( got, expected );
 
-  test.case = 'same'; /* */
+  test.case = 'second even'; /* */
+  var expected = 5 / 4;
+  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 2 );
+  test.equivalent( got, expected );
 
-  var a = [ 1, 1, 1 ];
-  var b = [ 1, 1, 1 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'second odd'; /* */
+  var expected = 2 / 3;
+  var got = _.avector.momentCentral( [ 1, 2, 3 ], 2 );
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular1'; /* */
+  test.case = 'second empty'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [], 2 );
+  test.equivalent( got, expected );
 
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 0, 1 ];
-  var expected = [ 0, -1, 0 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'first even, with mean : null'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 1, null );
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular2'; /* */
+  test.case = 'first odd, with mean : null'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [ 1, 2, 3 ], 1, null );
+  test.equivalent( got, expected );
 
-  var a = [ 0, 0, 1 ];
-  var b = [ 1, 0, 0 ];
-  var expected = [ 0, +1, 0 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'first empty, with mean : null'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [], 1, null );
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular3'; /* */
+  test.case = 'second even, with mean : null'; /* */
+  var expected = 5 / 4;
+  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 2, null );
+  test.equivalent( got, expected );
 
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 1, 0 ];
-  var expected = [ 0, 0, +1 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'second odd, with mean : null'; /* */
+  var expected = 2 / 3;
+  var got = _.avector.momentCentral( [ 1, 2, 3 ], 2, null );
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular4'; /* */
+  test.case = 'second empty, with mean : null'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentral( [], 2, null );
+  test.equivalent( got, expected );
 
-  var a = [ 0, 1, 0 ];
-  var b = [ 1, 0, 0 ];
-  var expected = [ 0, 0, -1 ];
-  var got = _.avector.cross( a, b );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'first even, filtering'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentralConditional( [ 1, 2, 3, 4 ], 1, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  test.case = 'trivial'; ///
+  test.case = 'first odd, filtering'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentralConditional( [ 1, 2, 3 ], 1, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  var a = [ 1, 2, 3 ];
-  var b = [ 4, 5, 6 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 78, 6, -66 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'first empty, filtering'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentralConditional( [], 1, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  test.case = 'zero'; /* */
+  test.case = 'second even, filtering'; /* */
+  var expected = 1;
+  var got = _.avector.momentCentralConditional( [ 1, 2, 3, 4 ], 2, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  var a = [ 0, 0, 0 ];
-  var b = [ 0, 0, 0 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'second odd, filtering'; /* */
+  var expected = 1;
+  var got = _.avector.momentCentralConditional( [ 1, 2, 3 ], 2, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  test.case = 'same'; /* */
+  test.case = 'second empty, filtering'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentralConditional( [], 2, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  var a = [ 1, 1, 1 ];
-  var b = [ 1, 1, 1 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 0, 0, 0 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'first even, filtering, with mean : null'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentralConditional( [ 1, 2, 3, 4 ], 1, null, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular1'; /* */
+  test.case = 'first odd, filtering, with mean : null'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentralConditional( [ 1, 2, 3 ], 1, null, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 0, 1 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ -9, 0, 7 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'first empty, filtering, with mean : null'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentralConditional( [], 1, null, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular2'; /* */
+  test.case = 'second even, filtering, with mean : null'; /* */
+  var expected = 1;
+  var got = _.avector.momentCentralConditional( [ 1, 2, 3, 4 ], 2, null, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  var a = [ 0, 0, 1 ];
-  var b = [ 1, 0, 0 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 9, 0, -7 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
+  test.case = 'second odd, filtering, with mean : null'; /* */
+  var expected = 1;
+  var got = _.avector.momentCentralConditional( [ 1, 2, 3 ], 2, null, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  test.case = 'perpendicular3'; /* */
+  test.case = 'second empty, filtering, with mean : null'; /* */
+  var expected = 0;
+  var got = _.avector.momentCentralConditional( [], 2, null, ( e, op ) => e % 2 );
+  test.equivalent( got, expected );
 
-  var a = [ 1, 0, 0 ];
-  var b = [ 0, 1, 0 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ -8, 7, 0 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'perpendicular4'; /* */
-
-  var a = [ 0, 1, 0 ];
-  var b = [ 1, 0, 0 ];
-  var c = [ 7, 8, 9 ];
-  var expected = [ 8, -7, 0 ];
-  var got = _.avector.cross( a, b, c );
-  test.identical( got, expected );
-  test.is( got === a );
-
-  test.case = 'bad arguments'; ///
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( () => _.avector.cross( 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( undefined, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( null, [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], undefined ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [ 1 ], [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.cross( [], function(){} ) );
+  test.case = 'bad arguments'; /* */
+  test.shouldThrowErrorSync( () => _.momentCentral() );
+  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], '1' ) );
+  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.momentCentral( 1 ) );
+  test.shouldThrowErrorSync( () => _.momentCentral( 'x', 1 ) );
+  test.shouldThrowErrorSync( () => _.momentCentral( 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], 'x' ) );
+  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], [ 1 ] ) );
 
+  test.shouldThrowErrorSync( () => _.momentCentralConditional() );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], '1', () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( 'x', 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( 1, 1, () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], 'x', () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( 1, [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], [ 1 ], () => true ) );
+  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], [ 1 ], () => true ) );
 }
 
-cross.timeOut = 15000;
+momentCentral.timeOut = 15000;
+
+//
+
+function distributionSummaryExperiment( test )
+{
+
+  var summary = _.avector.distributionSummary([ 1, 2, 3, 4, 9 ]);
+  logger.log( 'summary', summary );
+
+  test.identical( 1, 1 );
+}
+
+distributionSummaryExperiment.experimental = 1;
 
 // //
 //
@@ -4600,1503 +8343,7 @@ cross.timeOut = 15000;
 // }
 //
 // subarray.timeOut = 15000;
-
 //
-
-function add( test )
-{
-
-  test.case = 'vector vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-
-  var got = _.avector.add( null, ins1, ins2 );
-
-  test.identical( got, [ 4, 6, 8 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'vector vector vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.add( null, ins1, ins2, ins3 );
-
-  test.identical( got, [ 14, 26, 38 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-
-  var got = _.avector.add( null, ins1, ins2 );
-
-  test.identical( got, [ 11, 12, 13 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'vector scalar vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.add( null, ins1, ins2, ins3 );
-
-  test.identical( got, [ 21, 32, 43 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar vector, new dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-
-  var got = _.avector.add( null, ins1, ins2 );
-
-  test.identical( got, [ 11, 12, 13 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'vector scalar vector, new dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.add( null, ins1, ins2, ins3 );
-
-  test.identical( got, [ 21, 32, 43 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar scalar, new dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-
-  var got = _.avector.add( null, ins1, ins2 );
-
-  test.identical( got, 11 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar scalar scalar, new dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-  var ins3 = 100;
-
-  var got = _.avector.add( null, ins1, ins2, ins3 );
-
-  test.identical( got, 111 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'vector vector, first argument is dst'; ///
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var got = _.avector.add( ins1, ins2 );
-
-  test.identical( got, [ 4, 6, 8 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got === ins1 );
-
-  test.case = 'vector vector vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.add( ins1, ins2, ins3 );
-
-  test.identical( got, [ 14, 26, 38 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got === ins1 );
-
-  test.case = 'scalar vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-
-  var got = _.avector.add( ins1, ins2 );
-
-  test.identical( got, [ 11, 12, 13 ] );
-  test.identical( ins2, 10 );
-  test.is( got === ins1 );
-
-  test.case = 'vector scalar vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.add( ins1, ins2, ins3 );
-
-  test.identical( got, [ 21, 32, 43 ] );
-  test.identical( ins2, 10 );
-  test.is( got === ins1 );
-
-  test.case = 'scalar vector, first argument is dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-
-  var got = _.avector.add( ins1, ins2 );
-
-  test.identical( got, [ 11, 12, 13 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-
-  test.case = 'vector scalar vector, first argument is dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-  var ins3 = [ 10, 20, 30 ];
-  var got = _.avector.add( ins1, ins2, ins3 );
-
-  test.identical( got, [ 21, 32, 43 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-
-  test.case = 'scalar scalar, first argument is dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-
-  var got = _.avector.add( ins1, ins2 );
-
-  test.identical( got, 11 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-
-  test.case = 'scalar scalar scalar, first argument is dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-  var ins3 = 100;
-
-  var got = _.avector.add( ins1, ins2, ins3 );
-
-  test.identical( got, 111 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.avector.add( [ 1, 2, 3 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.add( [ 1, 2, 3 ], [ 3, 4, 5 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.add( '1', [ 3, 4, 5 ], null ) );
-
-  test.shouldThrowErrorSync( () => _.avector.add( [ 0, 0, 0 ], [ 1, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.add( [ 0, 0 ], [ 1, 1, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.add( [ 0 ], [ 1, 1, 1 ] ) );
-
-}
-
-add.timeOut = 15000;
-
-//
-
-function sub( test )
-{
-
-  test.case = 'trivial'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var got = _.avector.sub( ins1, ins2 );
-
-  test.identical( got, [ -2, -2, -2 ] );
-  test.identical( ins1, [ -2, -2, -2 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got == ins1 );
-
-  test.case = 'vector vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-
-  var got = _.avector.sub( null, ins1, ins2 );
-
-  test.identical( got, [ -2, -2, -2 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'vector vector vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.sub( null, ins1, ins2, ins3 );
-
-  test.identical( got, [ -12, -22, -32 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-
-  var got = _.avector.sub( null, ins1, ins2 );
-
-  test.identical( got, [ -9, -8, -7 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'vector scalar vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.sub( null, ins1, ins2, ins3 );
-
-  test.identical( got, [ -19, -28, -37 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar vector, new dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-
-  var got = _.avector.sub( null, ins1, ins2 );
-
-  test.identical( got, [ 9, 8, 7 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'vector scalar vector, new dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.sub( null, ins1, ins2, ins3 );
-
-  test.identical( got, [ -1, -12, -23 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar scalar, new dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-
-  var got = _.avector.sub( null, ins1, ins2 );
-
-  test.identical( got, -9 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar scalar scalar, new dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-  var ins3 = 100;
-
-  var got = _.avector.sub( null, ins1, ins2, ins3 );
-
-  test.identical( got, -109 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'vector vector, first argument is dst'; ///
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-
-  var got = _.avector.sub( ins1, ins2 );
-
-  test.identical( got, [ -2, -2, -2 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got === ins1 );
-
-  test.case = 'vector vector vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.sub( ins1, ins2, ins3 );
-
-  test.identical( got, [ -12, -22, -32 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got === ins1 );
-
-  test.case = 'scalar vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-
-  var got = _.avector.sub( ins1, ins2 );
-
-  test.identical( got, [ -9, -8, -7 ] );
-  test.identical( ins2, 10 );
-  test.is( got === ins1 );
-
-  test.case = 'vector scalar vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.sub( ins1, ins2, ins3 );
-
-  test.identical( got, [ -19, -28, -37 ] );
-  test.identical( ins2, 10 );
-  test.is( got === ins1 );
-
-  test.case = 'scalar vector, first argument is dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-
-  var got = _.avector.sub( ins1, ins2 );
-
-  test.identical( got, [ 9, 8, 7 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-
-  test.case = 'vector scalar vector, first argument is dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.sub( ins1, ins2, ins3 );
-
-  test.identical( got, [ -1, -12, -23 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-
-  test.case = 'scalar scalar, first argument is dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-
-  var got = _.avector.sub( ins1, ins2 );
-
-  test.identical( got, -9 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-
-  test.case = 'scalar scalar scalar, first argument is dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-  var ins3 = 100;
-
-  var got = _.avector.sub( ins1, ins2, ins3 );
-
-  test.identical( got, -109 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.avector.sub( [ 1, 2, 3 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.sub( [ 1, 2, 3 ], [ 3, 4, 5 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.sub( '1', [ 3, 4, 5 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.sub( [ 0, 0, 0 ], [ 1, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.sub( [ 0, 0 ], [ 1, 1, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.sub( [ 0 ], [ 1, 1, 1 ] ) );
-
-}
-
-sub.timeOut = 15000;
-
-//
-
-function mul( test )
-{
-
-  test.case = 'vector vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-
-  var got = _.avector.mul( null, ins1, ins2 );
-
-  test.identical( got, [ 3, 8, 15 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'vector vector vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.mul( null, ins1, ins2, ins3 );
-
-  test.identical( got, [ 30, 160, 450 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-
-  var got = _.avector.mul( null, ins1, ins2 );
-
-  test.identical( got, [ 10, 20, 30 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'vector scalar vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.mul( null, ins1, ins2, ins3 );
-
-  test.identical( got, [ 100, 400, 900 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar vector, new dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-
-  var got = _.avector.mul( null, ins1, ins2 );
-
-  test.identical( got, [ 10, 20, 30 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'vector scalar vector, new dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.mul( null, ins1, ins2, ins3 );
-
-  test.identical( got, [ 100, 400, 900 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar scalar, new dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-
-  var got = _.avector.mul( null, ins1, ins2 );
-
-  test.identical( got, 10 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar scalar scalar, new dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-  var ins3 = 100;
-
-  var got = _.avector.mul( null, ins1, ins2, ins3 );
-
-  test.identical( got, 1000 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'vector vector, first argument is dst'; ///
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-
-  var got = _.avector.mul( ins1, ins2 );
-
-  test.identical( got, [ 3, 8, 15 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got === ins1 );
-
-  test.case = 'vector vector vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.mul( ins1, ins2, ins3 );
-
-  test.identical( got, [ 30, 160, 450 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got === ins1 );
-
-  test.case = 'scalar vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-
-  var got = _.avector.mul( ins1, ins2 );
-
-  test.identical( got, [ 10, 20, 30 ] );
-  test.identical( ins2, 10 );
-  test.is( got === ins1 );
-
-  test.case = 'vector scalar vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.mul( ins1, ins2, ins3 );
-
-  test.identical( got, [ 100, 400, 900 ] );
-  test.identical( ins2, 10 );
-  test.is( got === ins1 );
-
-  test.case = 'scalar vector, first argument is dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-
-  var got = _.avector.mul( ins1, ins2 );
-
-  test.identical( got, [ 10, 20, 30 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-
-  test.case = 'vector scalar vector, first argument is dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.mul( ins1, ins2, ins3 );
-
-  test.identical( got, [ 100, 400, 900 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-
-  test.case = 'scalar scalar, first argument is dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-
-  var got = _.avector.mul( ins1, ins2 );
-
-  test.identical( got, 10 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-
-  test.case = 'scalar scalar scalar, first argument is dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-  var ins3 = 100;
-
-  var got = _.avector.mul( ins1, ins2, ins3 );
-
-  test.identical( got, 1000 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.avector.mul( [ 1, 2, 3 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.mul( [ 1, 2, 3 ], [ 3, 4, 5 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.mul( '1', [ 3, 4, 5 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.mul( [ 0, 0, 0 ], [ 1, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mul( [ 0, 0 ], [ 1, 1, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mul( [ 0 ], [ 1, 1, 1 ] ) );
-
-}
-
-mul.timeOut = 15000;
-
-//
-
-function div( test )
-{
-
-  test.case = 'vector vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-
-  var got = _.avector.div( null, ins1, ins2 );
-
-  test.equivalent( got, [ 1/3, 2/4, 3/5 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'vector vector vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.div( null, ins1, ins2, ins3 );
-
-  test.equivalent( got, [ 1/3/10, 2/4/20, 3/5/30 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-
-  var got = _.avector.div( null, ins1, ins2 );
-
-  test.equivalent( got, [ 1/10, 2/10, 3/10 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'vector scalar vector, new dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.div( null, ins1, ins2, ins3 );
-
-  test.equivalent( got, [ 1/10/10, 2/10/20, 3/10/30 ] );
-  test.identical( ins1, [ 1, 2, 3 ] );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar vector, new dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-
-  var got = _.avector.div( null, ins1, ins2 );
-
-  test.equivalent( got, [ 10/1, 10/2, 10/3 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'vector scalar vector, new dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.div( null, ins1, ins2, ins3 );
-
-  test.equivalent( got, [ 10/1/10, 10/2/20, 10/3/30 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar scalar, new dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-
-  var got = _.avector.div( null, ins1, ins2 );
-  test.equivalent( got, 1/10 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  test.case = 'scalar scalar scalar, new dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-  var ins3 = 100;
-
-  var got = _.avector.div( null, ins1, ins2, ins3 );
-
-  test.equivalent( got, 1/10/100 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-  test.is( got !== ins1 );
-
-  /* -- */
-
-  test.case = 'vector vector, first argument is dst';
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-
-  var got = _.avector.div( ins1, ins2 );
-
-  test.equivalent( got, [ 1/3, 2/4, 3/5 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got === ins1 );
-
-  test.case = 'vector vector vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = [ 3, 4, 5 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.div( ins1, ins2, ins3 );
-
-  test.equivalent( got, [ 1/3/10, 2/4/20, 3/5/30 ] );
-  test.identical( ins2, [ 3, 4, 5 ] );
-  test.is( got === ins1 );
-
-  test.case = 'scalar vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-
-  var got = _.avector.div( ins1, ins2 );
-
-  test.equivalent( got, [ 1/10, 2/10, 3/10 ] );
-  test.identical( ins2, 10 );
-  test.is( got === ins1 );
-
-  test.case = 'vector scalar vector, first argument is dst'; /* */
-
-  var ins1 = [ 1, 2, 3 ];
-  var ins2 = 10;
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.div( ins1, ins2, ins3 );
-
-  test.equivalent( got, [ 1/10/10, 2/10/20, 3/10/30 ] );
-  test.identical( ins2, 10 );
-  test.is( got === ins1 );
-
-  test.case = 'scalar vector, first argument is dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-
-  var got = _.avector.div( ins1, ins2 );
-
-  test.equivalent( got, [ 10/1, 10/2, 10/3 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-
-  test.case = 'vector scalar vector, first argument is dst'; /* */
-
-  var ins1 = 10;
-  var ins2 = [ 1, 2, 3 ];
-  var ins3 = [ 10, 20, 30 ];
-
-  var got = _.avector.div( ins1, ins2, ins3 );
-
-  test.equivalent( got, [ 10/1/10, 10/2/20, 10/3/30 ] );
-  test.identical( ins1, 10 );
-  test.identical( ins2, [ 1, 2, 3 ] );
-
-  test.case = 'scalar scalar, first argument is dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-
-  var got = _.avector.div( ins1, ins2 );
-
-  test.equivalent( got, 1/10 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-
-  test.case = 'scalar scalar scalar, first argument is dst'; /* */
-
-  var ins1 = 1;
-  var ins2 = 10;
-  var ins3 = 100;
-
-  var got = _.avector.div( ins1, ins2, ins3 );
-
-  test.equivalent( got, 1/10/100 );
-  test.identical( ins1, 1 );
-  test.identical( ins2, 10 );
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.avector.div( [ 1, 2, 3 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.div( [ 1, 2, 3 ], [ 3, 4, 5 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.div( '1', [ 3, 4, 5 ], null ) );
-  test.shouldThrowErrorSync( () => _.avector.div( [ 0, 0, 0 ], [ 1, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.div( [ 0, 0 ], [ 1, 1, 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.div( [ 0 ], [ 1, 1, 1 ] ) );
-
-}
-
-div.timeOut = 15000;
-
-//
-
-function abs( test )
-{
-
-  test.case = 'trivial';
-
-  var expected = [ 1, 2, 3 ];
-  var dst = [ -1, -2, -3 ];
-  var got = _.avector.abs( dst );
-
-  test.identical( got, expected );
-  test.is( dst === got );
-
-}
-
-abs.timeOut = 15000;
-
-//
-
-function distributionRangeSummary( test )
-{
-
-  var empty = [];
-  var a = [ 1, 2, 3, 4, 5 ];
-  var b = [ 55, 22, 33, 99, 2, 22, 3, 33, 4, 99, 5, 44 ];
-  var filter = ( e, o ) => !(e % 2);
-
-  test.case = 'distributionRangeSummary single element'; /* */
-
-  var ar = [ 1 ];
-  var expected =
-  {
-    min : { value : 1, index : 0, container : vec( ar ) },
-    max : { value : 1, index : 0, container : vec( ar ) },
-    median : 1,
-  };
-
-  var got = _.avector.distributionRangeSummary( ar );
-  test.identical( got, expected );
-
-  test.case = 'reduceToMax single element'; /* */
-
-  var ar = [ 1 ];
-  var expected = { value : 1, index : 0, container : vec( ar ) };
-  var got = _.avector.reduceToMax( ar );
-  test.identical( got, expected );
-
-  var ar = [ 1 ];
-  var expected = { value : 1, index : 0, container : vec( ar ) };
-  var got = vad.reduceToMax( vec( ar ) );
-  test.identical( got, expected );
-
-  test.case = 'trivial'; /* */
-
-  var expected =
-  {
-    min : { value : 1, index : 0, container : vec( a ) },
-    max : { value : 5, index : 4, container : vec( a ) },
-    median : 3,
-  };
-
-  var got = _.avector.distributionRangeSummary( a );
-  test.identical( got, expected );
-
-  test.case = 'simplest case with filtering'; /* */
-
-  var expected =
-  {
-    min : { value : 2, index : 1, container : vec( a ) },
-    max : { value : 4, index : 3, container : vec( a ) },
-    median : 3,
-  };
-
-  var got = _.avector.distributionRangeSummaryConditional( a, filter );
-  test.identical( got, expected );
-
-  test.case = 'several vectors'; /* */
-
-  var expected =
-  {
-    min : { value : 1, index : 0, container : vec( a ) },
-    max : { value : 99, index : 3, container : vec( b ) },
-    median : 50,
-  };
-
-  var got = _.avector.distributionRangeSummary( a, b );
-  test.identical( got, expected );
-
-  test.case = 'several vectors with filtering'; /* */
-
-  var expected =
-  {
-    min : { value : 2, index : 1, container : vec( a ) },
-    max : { value : 44, index : 11, container : vec( b ) },
-    median : 23,
-  };
-
-  var got = _.avector.distributionRangeSummaryConditional( a, b, filter );
-  test.identical( got, expected );
-
-  test.case = 'empty array'; /* */
-
-  var expected =
-  {
-    min : { value : NaN, index : -1, container : null },
-    max : { value : NaN, index : -1, container : null },
-    median : NaN,
-  };
-  var got = _.avector.distributionRangeSummary( empty );
-  test.identical( got, expected )
-
-  test.case = 'empty array with filtering'; /* */
-
-  var expected =
-  {
-    min : { value : NaN, index : -1, container : null },
-    max : { value : NaN, index : -1, container : null },
-    median : NaN,
-  };
-  var got = _.avector.distributionRangeSummaryConditional( empty, filter );
-  test.identical( got, expected )
-
-  // test.case = 'no array'; /* */
-  //
-  // var expected =
-  // {
-  //   min : { value : NaN, index : -1, container : null },
-  //   max : { value : NaN, index : -1, container : null },
-  // };
-  // var got = _.avector.distributionRangeSummary();
-  // test.identical( got, expected )
-  //
-  // test.case = 'no array with filtering'; /* */
-  //
-  // var expected =
-  // {
-  //   min : { value : NaN, index : -1, container : null },
-  //   max : { value : NaN, index : -1, container : null },
-  // };
-  // var got = _.avector.distributionRangeSummaryConditional( filter );
-  // test.identical( got, expected )
-
-  test.case = 'bad arguments'; /* */
-
-  if( Config.debug )
-  {
-
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary() );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( 1 ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( '1' ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( [ 1 ], 1 ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummary( [ 1 ], undefined ) );
-
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional() );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ] ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ], null ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1, 2, 3 ], () => true ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( 1, filter ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1 ], 1, filter ) );
-    test.shouldThrowErrorSync( () => _.avector.distributionRangeSummaryConditional( [ 1 ], undefined, filter ) );
-
-  }
-
-}
-
-distributionRangeSummary.timeOut = 15000;
-
-//
-
-function reduceToMean( test )
-{
-
-  test.case = 'simple even'; /* */
-
-  var expected = 2.5;
-  var got = _.avector.reduceToMean([ 1, 2, 3, 4 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd'; /* */
-
-  var expected = 2;
-  var got = _.avector.reduceToMean([ 1, 2, 3 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'several vectors'; /* */
-
-  var expected = 3;
-  var got = _.avector.reduceToMean( [ 1, 2, 3 ], [ 4, 5 ] );
-  test.equivalent( got, expected );
-
-  test.case = 'empty'; /* */
-
-  var expected = NaN;
-  var got = _.avector.reduceToMean([]);
-  test.equivalent( got, expected );
-
-  test.case = 'simple even, filtering'; /* */
-
-  var expected = 2;
-  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd, filtering'; /* */
-
-  var expected = 2;
-  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'several vectors, filtering'; /* */
-
-  var expected = 3;
-  var got = _.avector.reduceToMeanConditional( [ 1, 2, 3 ], [ 4, 5 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'empty, filtering'; /* */
-
-  var expected = NaN;
-  var got = _.avector.reduceToMeanConditional( [], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean() );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean( 'x' ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean( 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean( [ 1 ], 'x' ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMean( [ 1 ], 1 ) );
-
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional() );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( () => true ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( [ 1 ], 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.avector.reduceToMeanConditional( [ 1 ], 1, () => true ) );
-
-}
-
-reduceToMean.timeOut = 15000;
-
-//
-
-function median( test )
-{
-
-  test.case = 'simple even'; /* */
-
-  var expected = 5;
-  var got = _.avector.median([ 1, 2, 3, 9 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd'; /* */
-
-  var expected = 5;
-  var got = _.avector.median([ 1, 2, 9 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'empty'; /* */
-
-  var expected = NaN;
-  var got = _.avector.median([]);
-  test.equivalent( got, expected );
-
-}
-
-median.timeOut = 15000;
-
-//
-
-function mean( test )
-{
-
-  test.case = 'simple even'; /* */
-
-  var expected = 2.5;
-  var got = _.avector.mean([ 1, 2, 3, 4 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd'; /* */
-
-  var expected = 2;
-  var got = _.avector.mean([ 1, 2, 3 ]);
-  test.equivalent( got, expected );
-
-  test.case = 'empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.mean([]);
-  test.equivalent( got, expected );
-
-  test.case = 'simple even, filtering'; /* */
-
-  var expected = 2;
-  var got = _.avector.meanConditional( [ 1, 2, 3, 4 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd, filtering'; /* */
-
-  var expected = 2;
-  var got = _.avector.meanConditional( [ 1, 2, 3 ], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'empty, filtering'; /* */
-
-  var expected = 0;
-  var got = _.avector.meanConditional( [], ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.mean() );
-  test.shouldThrowErrorSync( () => _.mean( 'x' ) );
-  test.shouldThrowErrorSync( () => _.mean( 1 ) );
-  test.shouldThrowErrorSync( () => _.mean( [ 1 ], 'x' ) );
-  test.shouldThrowErrorSync( () => _.mean( [ 1 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.mean( [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.mean( [ 1 ], [ 1 ] ) );
-
-  test.shouldThrowErrorSync( () => _.meanConditional() );
-  test.shouldThrowErrorSync( () => _.meanConditional( () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.meanConditional( [ 1 ], [ 1 ], () => true ) );
-
-}
-
-mean.timeOut = 15000;
-
-//
-
-function moment( test )
-{
-
-  test.case = 'first even'; /* */
-
-  var expected = 2.5;
-  var got = _.avector.moment( [ 1, 2, 3, 4 ], 1 );
-  test.equivalent( got, expected );
-
-  test.case = 'first odd'; /* */
-
-  var expected = 2;
-  var got = _.avector.moment( [ 1, 2, 3 ], 1 );
-  test.equivalent( got, expected );
-
-  test.case = 'first empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.moment( [], 1 );
-  test.equivalent( got, expected );
-
-  test.case = 'second even'; /* */
-
-  var expected = 30 / 4;
-  var got = _.avector.moment( [ 1, 2, 3, 4 ], 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second odd'; /* */
-
-  var expected = 14 / 3;
-  var got = _.avector.moment( [ 1, 2, 3 ], 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.moment( [], 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'simple even, filtering'; /* */
-
-  var expected = 5;
-  var got = _.avector.momentConditional( [ 1, 2, 3, 4 ], 2, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'simple odd, filtering'; /* */
-
-  var expected = 5;
-  var got = _.avector.momentConditional( [ 1, 2, 3 ], 2, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'empty, filtering'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentConditional( [], 2, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.moment() );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.moment( 1 ) );
-  test.shouldThrowErrorSync( () => _.moment( 'x', 1 ) );
-  test.shouldThrowErrorSync( () => _.moment( 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ], 'x' ) );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.moment( [ 1 ], [ 1 ] ) );
-
-  test.shouldThrowErrorSync( () => _.momentConditional() );
-  test.shouldThrowErrorSync( () => _.momentConditional( () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( 'x', 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( 1, 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( 1, [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentConditional( [ 1 ], [ 1 ], () => true ) );
-
-}
-
-moment.timeOut = 15000;
-
-//
-
-function momentCentral( test )
-{
-
-  test.case = 'first even'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 1, 2.5 );
-  test.equivalent( got, expected );
-
-  test.case = 'first odd'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [ 1, 2, 3 ], 1, 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'first empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [], 1, 0 );
-  test.equivalent( got, expected );
-
-  test.case = 'second even'; /* */
-
-  var expected = 5 / 4;
-  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 2, 2.5 );
-  test.equivalent( got, expected );
-
-  test.case = 'second odd'; /* */
-
-  var expected = 2 / 3;
-  var got = _.avector.momentCentral( [ 1, 2, 3 ], 2, 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [], 2, 0 );
-  test.equivalent( got, expected );
-
-  test.case = 'first even'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 1 );
-  test.equivalent( got, expected );
-
-  test.case = 'first odd'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [ 1, 2, 3 ], 1 );
-  test.equivalent( got, expected );
-
-  test.case = 'first empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [], 1 );
-  test.equivalent( got, expected );
-
-  test.case = 'second even'; /* */
-
-  var expected = 5 / 4;
-  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second odd'; /* */
-
-  var expected = 2 / 3;
-  var got = _.avector.momentCentral( [ 1, 2, 3 ], 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second empty'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [], 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'first even, with mean : null'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 1, null );
-  test.equivalent( got, expected );
-
-  test.case = 'first odd, with mean : null'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [ 1, 2, 3 ], 1, null );
-  test.equivalent( got, expected );
-
-  test.case = 'first empty, with mean : null'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [], 1, null );
-  test.equivalent( got, expected );
-
-  test.case = 'second even, with mean : null'; /* */
-
-  var expected = 5 / 4;
-  var got = _.avector.momentCentral( [ 1, 2, 3, 4 ], 2, null );
-  test.equivalent( got, expected );
-
-  test.case = 'second odd, with mean : null'; /* */
-
-  var expected = 2 / 3;
-  var got = _.avector.momentCentral( [ 1, 2, 3 ], 2, null );
-  test.equivalent( got, expected );
-
-  test.case = 'second empty, with mean : null'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentral( [], 2, null );
-  test.equivalent( got, expected );
-
-  test.case = 'first even, filtering'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentralConditional( [ 1, 2, 3, 4 ], 1, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'first odd, filtering'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentralConditional( [ 1, 2, 3 ], 1, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'first empty, filtering'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentralConditional( [], 1, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second even, filtering'; /* */
-
-  var expected = 1;
-  var got = _.avector.momentCentralConditional( [ 1, 2, 3, 4 ], 2, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second odd, filtering'; /* */
-
-  var expected = 1;
-  var got = _.avector.momentCentralConditional( [ 1, 2, 3 ], 2, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second empty, filtering'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentralConditional( [], 2, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'first even, filtering, with mean : null'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentralConditional( [ 1, 2, 3, 4 ], 1, null, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'first odd, filtering, with mean : null'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentralConditional( [ 1, 2, 3 ], 1, null, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'first empty, filtering, with mean : null'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentralConditional( [], 1, null, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second even, filtering, with mean : null'; /* */
-
-  var expected = 1;
-  var got = _.avector.momentCentralConditional( [ 1, 2, 3, 4 ], 2, null, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second odd, filtering, with mean : null'; /* */
-
-  var expected = 1;
-  var got = _.avector.momentCentralConditional( [ 1, 2, 3 ], 2, null, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'second empty, filtering, with mean : null'; /* */
-
-  var expected = 0;
-  var got = _.avector.momentCentralConditional( [], 2, null, ( e, op ) => e % 2 );
-  test.equivalent( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  test.shouldThrowErrorSync( () => _.momentCentral() );
-  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], '1' ) );
-  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.momentCentral( 1 ) );
-  test.shouldThrowErrorSync( () => _.momentCentral( 'x', 1 ) );
-  test.shouldThrowErrorSync( () => _.momentCentral( 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], 'x' ) );
-  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], 1 ) );
-  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.momentCentral( [ 1 ], [ 1 ] ) );
-
-  test.shouldThrowErrorSync( () => _.momentCentralConditional() );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], '1', () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( 'x', 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( 1, 1, () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], 'x', () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( 1, [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], [ 1 ], () => true ) );
-  test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], [ 1 ], () => true ) );
-
-}
-
-momentCentral.timeOut = 15000;
-
 // //
 //
 // function homogeneousWithScalar( test )
@@ -6209,7 +8456,7 @@ momentCentral.timeOut = 15000;
 // }
 //
 // homogeneousWithScalar.timeOut = 15000;
-
+//
 // //
 //
 // function homogeneousOnlyVectors( test )
@@ -6447,1298 +8694,6 @@ momentCentral.timeOut = 15000;
 //
 // homogeneousOnlyVectors.timeOut = 15000;
 
-//
-
-function heterogeneous( test )
-{
-
-  test.case = 'addScaled null, vector, vector, vector'; /* */
-
-  var expected = [ 31, 42, 33 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.addScaled( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 31, 42, 33 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.addScaled( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'addScaled scalar, vector, vector, vector'; /* */
-
-  var expected = [ 14 ];
-  var dst = [ 9 ];
-  var src0 = 2;
-  var src1 = 3;
-  var src2 = 4;
-  var got = _.avector.addScaled( dst, src0, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'addScaled vector, vector, vector, vector'; /* */
-
-  var expected = [ 31, 42, 33 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.addScaled( dst, dst.slice(), src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 31, 42, 33 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.addScaled( dst, dst.slice(), src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'addScaled vector, vector, vector'; /* */
-
-  var expected = [ 31, 42, 33 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 31, 42, 33 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'addScaled scalar, vector, vector'; /* */
-
-  var expected = [ 130, 140, 130 ];
-  var dst = [ 1, 2, 3 ];
-  var dst = 100;
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 130, 140, 130 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var dst = 100;
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'subScaled vector, vector, vector'; /* */
-
-  var expected = [ -29, -38, -27 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.subScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ -29, -38, -27 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'mulScaled vector, vector, vector'; /* */
-
-  var expected = [ 30, 80, 90 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.mulScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 30, 80, 90 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'divScaled vector, vector, vector'; /* */
-
-  var expected = [ 1/30, 2/40, 3/30 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = [ 10, 20, 30 ];
-  var got = _.avector.divScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 1/30, 2/40, 3/30 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = vec([ 10, 20, 30 ]);
-  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'addScaled vector, vector, scaler'; /* */
-
-  var expected = [ 31, 22, 13 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = 10;
-  var got = _.avector.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = [ 1, 2, 3 ];
-  var got = _.avector.addScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 31, 22, 13 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = 10;
-  var got = _.vectorAdapter.addScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = vec([ 1, 2, 3 ]);
-  var got = _.vectorAdapter.addScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'subScaled vector, vector, scaler'; /* */
-
-  var expected = [ -29, -18, -7 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = 10;
-  var got = _.avector.subScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = [ 1, 2, 3 ];
-  var got = _.avector.subScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ -29, -18, -7 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = 10;
-  var got = _.vectorAdapter.subScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = vec([ 1, 2, 3 ]);
-  var got = _.vectorAdapter.subScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'mulScaled vector, vector, scaler'; /* */
-
-  var expected = [ 30, 40, 30 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = 10;
-  var got = _.avector.mulScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = [ 1, 2, 3 ];
-  var got = _.avector.mulScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 30, 40, 30 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = 10;
-  var got = _.vectorAdapter.mulScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = vec([ 1, 2, 3 ]);
-  var got = _.vectorAdapter.mulScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'divScaled vector, vector, scaler'; /* */
-
-  var expected = [ 1/30, 2/20, 3/10 ];
-  var dst = [ 1, 2, 3 ];
-  var src1 = [ 3, 2, 1 ];
-  var src2 = 10;
-  var got = _.avector.divScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = [ 1, 2, 3 ];
-  var got = _.avector.divScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 1/30, 2/20, 3/10 ]);
-  var dst = vec([ 1, 2, 3 ]);
-  var src1 = vec([ 3, 2, 1 ]);
-  var src2 = 10;
-  var got = _.vectorAdapter.divScaled( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-  var dst = vec([ 1, 2, 3 ]);
-  var got = _.vectorAdapter.divScaled( dst, src2, src1 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'empty vector'; /* */
-
-  function checkEmpty( rname )
-  {
-    var op = _.vectorAdapter[ rname ].operation;
-
-    var dst = [];
-    var args = _.dup( [], op.takingArguments[ 0 ]-1 );
-    args.unshift( dst );
-    var got = _.avector[ rname ].apply( _, args );
-    test.is( got === dst );
-    test.identical( got , [] );
-
-    var dst = vec([]);
-    var args = _.dup( vec([]), op.takingArguments[ 0 ]-1 );
-    args.unshift( dst );
-    var got = _.vectorAdapter[ rname ].apply( _, args );
-    test.is( got === dst );
-    test.identical( got , vec([]) );
-
-  }
-
-  checkEmpty( 'addScaled' );
-  checkEmpty( 'subScaled' );
-  checkEmpty( 'mulScaled' );
-  checkEmpty( 'subScaled' );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  function shouldThrowErrorOfAnyKind( rname )
-  {
-
-    test.case = 'bad arguments for ' + rname;
-
-    test.shouldThrowErrorSync( () => _.avector[ rname ]() );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
-    // test.shouldThrowErrorSync( () => _.avector[ rname ]( 1, [ 3, 3 ], [ 5, 5 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], undefined ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( [ 1, 2 ], [ 3, 4 ], '1' ) );
-
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ] ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ) );
-
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]() );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]) ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]) ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
-
-    // test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
-
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-    test.shouldThrowErrorSync( () => _.vectorAdapter[ rname ]( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
-
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]) ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]), vec([ 3, 4 ]) ) );
-    test.shouldThrowErrorSync( () => _.avector[ rname ]( undefined, vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5, 6 ]) ) );
-
-    test.shouldThrowErrorSync( () => _.vectorAdapter.addScaled( 1, vec([ 1 ]), vec([ 1 ]), vec([ 1 ]) ) );
-
-  }
-
-  shouldThrowErrorOfAnyKind( 'addScaled' );
-  shouldThrowErrorOfAnyKind( 'subScaled' );
-  shouldThrowErrorOfAnyKind( 'mulScaled' );
-  shouldThrowErrorOfAnyKind( 'subScaled' );
-  // shouldThrowErrorOfAnyKind( 'clamp' );
-
-}
-
-heterogeneous.timeOut = 15000;
-
-//
-
-function clamp( test )
-{
-
-  test.case = 'clamp vectors, 4 arguments'; /* */
-
-  var expected = [ 30, 20, 20, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = [ 30, 20, 20, 20, 10, 10 ];
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'clamp vectors, 3 arguments and null'; /* */
-
-  var expected = [ 30, 20, 20, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = [ 30, 20, 20, 20, 10, 10 ];
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'clamp vectors, 3 arguments'; /* */
-
-  var expected = [ 30, 20, 20, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = [ 30, 20, 20, 20, 10, 10 ];
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 30, 20, 20, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = vec([ 30, 20, 20, 20, 10, 10 ]);
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'clamp vector and scaler, 4 arguments'; /* */
-
-  var expected = [ 20, 20, 20, 20, 20, 15 ];
-  var dst = [ 10, 20, 10, 20, 20, 15 ];
-  var src1 = [ 20, 20, 20, 20, 10, 10 ];
-  var src2 = 20;
-  var got = _.avector.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
-  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
-  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
-  var src2 = 20;
-  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = [ 15, 20, 15, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = 15;
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = 15;
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( dst, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'clamp vector and scaler, 3 arguments and null'; /* */
-
-  var expected = [ 20, 20, 20, 20, 20, 15 ];
-  var dst = [ 10, 20, 10, 20, 20, 15 ];
-  var src1 = [ 20, 20, 20, 20, 10, 10 ];
-  var src2 = 20;
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
-  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
-  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
-  var src2 = 20;
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = [ 15, 20, 15, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = 15;
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = 15;
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec([ 17, 20, 17, 17, 10, 25 ]);
-  var dst = 17;
-  var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
-  var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'clamp vector and scaler, 3 arguments'; /* */
-
-  var expected = [ 20, 20, 20, 20, 20, 15 ];
-  var dst = [ 10, 20, 10, 20, 20, 15 ];
-  var src1 = [ 20, 20, 20, 20, 10, 10 ];
-  var src2 = 20;
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 20, 20, 20, 20, 20, 15 ]);
-  var dst = vec([ 10, 20, 10, 20, 20, 15 ]);
-  var src1 = vec([ 20, 20, 20, 20, 10, 10 ]);
-  var src2 = 20;
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = [ 15, 20, 15, 20, 15, 15 ];
-  var dst = [ 10, 20, 10, 30, 30, 15 ];
-  var src1 = 15;
-  var src2 = [ 40, 20, 20, 20, 15, 15 ];
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 15, 20, 15, 20, 15, 15 ]);
-  var dst = vec([ 10, 20, 10, 30, 30, 15 ]);
-  var src1 = 15;
-  var src2 = vec([ 40, 20, 20, 20, 15, 15 ]);
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec([ 17, 20, 17, 17, 10, 25 ]);
-  var dst = 17;
-  var src1 = vec([ 15, 20, 15, 10, 10, 25 ]);
-  var src2 = vec([ 40, 20, 20, 20, 10, 25 ]);
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = '3 arguments, all scalar'; /* */
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'null + 3 arguments, all scalar'; /* */
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = '3 arguments, 2 scalar 1 vector'; /* */
-  var expected = [ 16 ];
-  var dst = [ 15 ];
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  var expected = vec( [ 16 ] );
-  var dst = vec( [ 15 ] );
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got === dst );
-
-  test.case = 'null + 3 arguments, 2 scalar 1 vector'; /* */
-  var expected = [ 16 ];
-  var dst = [ 15 ];
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = vec( [ 16 ] );
-  var dst = vec( [ 15 ] );
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'null + 3 scalar arguments;' /* */
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.avector.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  var expected = 16;
-  var dst = 15;
-  var src1 = 16
-  var src2 = 40;
-  var got = _.vectorAdapter.clamp( null, dst, src1, src2 );
-  test.identical( got, expected );
-  test.is( got !== dst );
-
-  test.case = 'empty vectors, 3 arguments'; /* */
-
-  var op = _.vectorAdapter.clamp.operation;
-
-  var args = _.dup( [], op.takingArguments[ 0 ] );
-  var got = _.avector.clamp.apply( _, args );
-  test.is( got === args[ 0 ] );
-  test.identical( got , [] );
-
-  var args = _.dup( vec([]), op.takingArguments[ 0 ] );
-  var got = _.vectorAdapter.clamp.apply( _, args );
-  test.is( got === args[ 0 ] );
-  test.identical( got , vec([]) );
-
-  test.case = 'empty vectors, 4 arguments'; /* */
-
-  var op = _.vectorAdapter.clamp.operation;
-
-  var dst = [];
-  var args = _.dup( [], op.takingArguments[ 0 ] );
-  args.unshift( dst );
-  var got = _.avector.clamp.apply( _, args );
-  test.is( got === dst );
-  test.identical( got , [] );
-
-  var dst = vec([]);
-  var args = _.dup( vec([]), op.takingArguments[ 0 ] );
-  args.unshift( dst );
-  var got = _.vectorAdapter.clamp.apply( _, args );
-  test.is( got === dst );
-  test.identical( got , vec([]) );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'bad arguments';
-
-  test.shouldThrowErrorSync( () => _.avector.clamp() );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
-  // test.shouldThrowErrorSync( () => _.avector.clamp( 1, [ 3, 3 ], [ 5, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], undefined ) );
-  test.shouldThrowErrorSync( () => _.avector.clamp( [ 1, 2 ], [ 3, 4 ], '1' ) );
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp() );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( 1, vec([ 3, 3 ]), vec([ 5, 5 ]) ) );
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.clamp( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
-
-}
-
-clamp.timeOut = 15000;
-
-//
-
-function randomInRange( test )
-{
-  // test.case = '2 scalar argument'; /* */
-
-  // var src1 = 0;
-  // var src2 = 1;
-  // var got = _.avector.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
-
-  test.case = 'null + 2 scalar argument'; /* */
-
-  var src1 = 0;
-  var src2 = 1;
-  var got = _.avector.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1, src2 ], got ) );
-
-  // test.case = '2 vectors argument'; /* */
-
-  // var src1 = [ 0 ];
-  // var src2 = [ 1 ];
-  // var got = _.avector.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
-  // test.is( src1 === got )
-
-  // var src1 = vec( [ 0 ] );
-  // var src2 = vec( [ 1 ] );
-  // var got = _.vectorAdapter.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
-  // test.is( src1 === got )
-
-  test.case = 'null + 2 vectors argument'; /* */
-
-  var src1 = [ 0 ];
-  var src2 = [ 1 ];
-  var got = _.avector.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
-  test.is( src1 !== got )
-
-  var src1 = vec( [ 0 ] );
-  var src2 = vec( [ 1 ] );
-  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
-  test.is( src1 !== got )
-
-  // test.case = 'vector and scalar'; /* */
-
-  // var src1 = [ 0 ];
-  // var src2 = 1;
-  // var got = _.avector.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
-  // test.is( src1 === got )
-
-  // var src1 = vec( [ 0 ] );
-  // var src2 = 1;
-  // var got = _.vectorAdapter.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
-  // test.is( src1 === got )
-
-  // test.case = 'scalar and vector'; /* */
-
-  // var src1 = 0;
-  // var src2 = [ 1 ];
-  // var got = _.avector.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ]) );
-  // test.is( _.numberIs( src1 ) )
-
-  // var src1 = 0;
-  // var src2 = vec( [ 1 ] );
-  // var got = _.vectorAdapter.randomInRange( src1, src2 );
-  // test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 ) ) );
-  // test.is( _.numberIs( src1 ) )
-
-  test.case = 'null + vector and scalar'; /* */
-
-  var src1 = [ 0 ];
-  var src2 = 1;
-  var got = _.avector.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
-  test.is( src1 !== got )
-
-  var src1 = vec( [ 0 ] );
-  var src2 = 1;
-  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
-  test.is( src1 !== got )
-
-  test.case = 'null + scalar and vector'; /* */
-
-  var src1 = 0;
-  var src2 = [ 1 ];
-  var got = _.avector.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ] ) );
-  test.is( _.numberIs( src1 ) )
-
-  var src1 = 0;
-  var src2 = vec( [ 1 ] );
-  var got = _.vectorAdapter.randomInRange( null, src1, src2 );
-  test.is( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 )) );
-  test.is( _.numberIs( src1 ) )
-
-  // test.case = 'scalar scalar scalar'; /* */
-
-  // var src1 = 0;
-  // var src2 = 2;
-  // var src3 = 3;
-  // var got = _.avector.randomInRange( src1, src2, src3 );
-  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
-  // test.identical( src1, 0 );
-
-  // var src1 = 0;
-  // var src2 = 2;
-  // var src3 = 3;
-  // var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  // test.is( _.rangeInInclusive( [ src2, src3 ], got ) );
-  // test.identical( src1, 0 );
-
-  test.case = 'vector scalar scalar'; /* */
-
-  var src1 = [ 0 ];
-  var src2 = 2;
-  var src3 = 3;
-  var got = _.avector.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3 ], got[ 0 ] ) );
-  test.is( src1 === got );
-
-  var src1 = vec([ 0 ]);
-  var src2 = 2;
-  var src3 = 3;
-  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3 ], got.eGet( 0 ) ) );
-  test.is( src1 === got );
-
-  test.case = 'vector scalar vector'; /* */
-
-  var src1 = [ 0 ];
-  var src2 = 2;
-  var src3 = [ 3 ];
-  var got = _.avector.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3[ 0 ] ], got[ 0 ] ) );
-  test.is( src1 === got );
-
-  var src1 = vec( [ 0 ] );
-  var src2 = 2;
-  var src3 = vec( [ 3 ] );
-  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2, src3.eGet( 0 ) ], got.eGet( 0 ) ) );
-  test.is( src1 === got );
-
-  test.case = 'vector vector vector'; /* */
-
-  var src1 = [ 0 ];
-  var src2 = [ 2 ];
-  var src3 = [ 3 ];
-  var got = _.avector.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2[ 0 ], src3[ 0 ] ], got[ 0 ] ) );
-  test.is( src1 === got );
-
-  var src1 = vec( [ 0 ] );
-  var src2 = vec( [ 2 ] );
-  var src3 = vec( [ 3 ] );
-  var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.is( _.rangeInInclusive( [ src2.eGet( 0 ), src3.eGet( 0 ) ], got.eGet( 0 ) ) );
-  test.is( src1 === got );
-
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'bad arguments';
-
-  test.shouldThrowErrorSync( () => _.avector.randomInRange() );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( null, [ 1 ], [ 1 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], [ 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3 ], [ 5, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], undefined ) );
-  test.shouldThrowErrorSync( () => _.avector.randomInRange( [ 1, 2 ], [ 3, 4 ], '1' ) );
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange() );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( null, vec([ 1 ]), vec([ 1 ]), vec([ 1 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), vec([ 5 ]) ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3 ]), vec([ 5, 5 ]) ) );
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), undefined ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.randomInRange( vec([ 1, 2 ]), vec([ 3, 4 ]), '1' ) );
-
-}
-
-randomInRange.timeOut = 15000;
-
-//
-
-function mix( test )
-{
-
-  // debugger;
-  // var got = _.avector.mix( null, [ 1, 2 ], [ 3, 4 ] );
-  // debugger;
-  // var dst = [ 9 ];
-  // var got = _.avector.mix( dst, 1, 3, 0.5 );
-  // debugger;
-
-  /* 3 arguments */
-
-  test.case = 'all arrays, 3 arguments';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
-  var expected = [ 1.2 , 2.4 , 3.6 ];
-
-  test.equivalent( got, expected );
-  test.is( src === got );
-
-  test.case = 'mixed, 3 arguments';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( src, 5, 0.1 );
-  var expected = [ 1.4 , 2.3 , 3.2 ];
-
-  test.equivalent( got, expected );
-  test.is( src === got );
-
-  var src = [ 1, 2, 3 ]
-  var got = _.avector.mix( 5, src, 0.1 );
-  var expected = [ 4.6 , 4.7 , 4.8 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-
-  test.case = 'many elements in progress, 3 arguments';
-
-  var got = _.avector.mix( 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
-  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
-  test.equivalent( got, expected );
-
-  test.case = 'only scalars, 3 arguments';
-
-  var got = _.avector.mix( 1, 3, 0.5 );
-  var expected = 2;
-  test.equivalent( got, expected );
-
-  /* 4 arguments with null */
-
-  test.case = 'all arrays, 4 arguments, dst null';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( null, src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
-  var expected = [ 1.2 , 2.4 , 3.6 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-
-  test.case = 'mixed, 4 arguments, dst null';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( null, src, 5, 0.1 );
-  var expected = [ 1.4 , 2.3 , 3.2 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-
-  var src = [ 1, 2, 3 ]
-  var got = _.avector.mix( null, 5, src, 0.1 );
-  var expected = [ 4.6 , 4.7 , 4.8 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-
-  test.case = 'many elements in progress, 4 arguments, dst null';
-
-  var got = _.avector.mix( null, 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
-  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
-  test.equivalent( got, expected );
-
-  test.case = 'only scalars, 4 arguments, dst null';
-
-  var got = _.avector.mix( null, 1, 3, 0.5 );
-  var expected = 2;
-  test.equivalent( got, expected );
-
-  /* 4 arguments with provided container */
-
-  test.case = 'all arrays, 4 arguments, dst null';
-
-  var dst = [ -1, -1, -1 ];
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( dst, src, [ 3, 4, 5 ], [ 0.1, 0.2, 0.3 ] );
-  var expected = [ 1.2 , 2.4 , 3.6 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-  test.is( dst === got );
-
-  test.case = 'mixed, 4 arguments, dst null';
-
-  var dst = [ -1, -1, -1 ];
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.mix( dst, src, 5, 0.1 );
-  var expected = [ 1.4 , 2.3 , 3.2 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-  test.is( dst === got );
-
-  var dst = [ -1, -1, -1 ];
-  var src = [ 1, 2, 3 ]
-  var got = _.avector.mix( dst, 5, src, 0.1 );
-  var expected = [ 4.6 , 4.7 , 4.8 ];
-
-  test.equivalent( got, expected );
-  test.is( src !== got );
-  test.is( dst === got );
-
-  test.case = 'many elements in progress, 4 arguments, dst null';
-
-  var dst = [ -1, -1, -1, -1, -1, -1 ];
-  var got = _.avector.mix( dst, 1, 3, [ -1, 0, 0.3, 0.7, 1, 2 ] );
-  var expected = [ -1 , 1 , 1.6 , 2.4 , 3 , 5 ];
-  test.equivalent( got, expected );
-  test.is( dst === got );
-
-  test.case = 'only scalars, 3 arguments';
-
-  var got = _.avector.mix( 1, 3, 0.5 );
-  var expected = 2;
-  test.equivalent( got, expected );
-
-  test.case = '3 scalars and dst long';
-
-  var dst = [ 9 ];
-  var got = _.avector.mix( dst, 1, 3, 0.5 );
-  var expected = [ 2 ];
-  test.equivalent( got, expected );
-  test.is( dst === got );
-
-  test.case = '3 scalars and dst null';
-
-  var got = _.avector.mix( null, 1, 3, 0.5 );
-  var expected = [ 2 ];
-  test.equivalent( got, expected );
-
-  test.case = 'all scalars, but last';
-
-  var dst = [ 1, 2 ];
-  var got = _.avector.mix( dst, [ 3, 4 ], [ 5, 6 ], 1 );
-  var expected = [ 5, 6 ];
-  test.equivalent( got, expected );
-  test.is( dst === got );
-
-  /* throwing error */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.avector.mix( -1, 1, 3, 0.5 ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3 ], 0.5 ) );
-  test.shouldThrowErrorSync( () => _.avector.mix() );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( null, [ 1, 2 ], [ 3, 4 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( '0', [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( undefined, [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( undefined, [ 3, 4 ], [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( false, [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( true, [ 3, 4 ], [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], '0', [ 5, 6 ] ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], '0' ) );
-  test.shouldThrowErrorSync( () => _.avector.mix( [ 1, 2 ], [ 3, 4 ], [ 5, 6 ], [ 4, 4 ], [ 3, 4 ] ) );
-
-}
-
-mix.timeOut = 15000;
-
-//
-
-function swap( test )
-{
-
-  test.case = 'swapVectors vectors'; /* */
-
-  var v1 = vad.from([ 1, 2, 3 ]);
-  var v2 = vad.from([ 10, 20, 30 ]);
-  var v1Expected = vad.from([ 10, 20, 30 ]);
-  var v2Expected = vad.from([ 1, 2, 3 ]);
-
-  var r = vad.swapVectors( v1, v2 );
-
-  test.is( r === undefined );
-  test.identical( v1, v1Expected );
-  test.identical( v2, v2Expected );
-
-  test.case = 'swapVectors arrays'; /* */
-
-  var v1 = [ 1, 2, 3 ];
-  var v2 = [ 10, 20, 30 ];
-  var v1Expected = [ 10, 20, 30 ];
-  var v2Expected = [ 1, 2, 3 ];
-
-  var r = avector.swapVectors( v1, v2 );
-
-  test.is( r === undefined );
-  test.identical( v1, v1Expected );
-  test.identical( v2, v2Expected );
-
-  test.case = 'swapVectors empty arrays'; /* */
-
-  var v1 = [];
-  var v2 = [];
-  var v1Expected = [];
-  var v2Expected = [];
-
-  var r = avector.swapVectors( v1, v2 );
-
-  test.is( r === undefined );
-  test.identical( v1, v1Expected );
-  test.identical( v2, v2Expected );
-
-  test.case = 'swapAtoms vectors'; /* */
-
-  var v1 = vad.from([ 1, 2, 3 ]);
-  var v1Expected = vad.from([ 3, 2, 1 ]);
-  var r = vad.swapAtoms( v1, 0, 2 );
-
-  test.is( r === v1 );
-  test.identical( v1, v1Expected );
-
-  test.case = 'swapAtoms arrays'; /* */
-
-  var v1 = [ 1, 2, 3 ];
-  var v1Expected = [ 3, 2, 1 ];
-  var r = avector.swapAtoms( v1, 0, 2 );
-
-  test.is( r === v1 );
-  test.identical( v1, v1Expected );
-
-  test.case = 'swapAtoms array with single atom'; /* */
-
-  var v1 = [ 1 ];
-  var v1Expected = [ 1 ];
-  var r = avector.swapAtoms( v1, 0, 0 );
-
-  test.is( r === v1 );
-  test.identical( v1, v1Expected );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => vad.swapVectors() );
-  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), vad.from([ 1, 2, 3 ]), vad.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), vad.from([ 1, 2 ]) ) );
-  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => vad.swapVectors( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
-
-  test.shouldThrowErrorSync( () => vad.swapAtoms() );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0 ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0, +3 ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0, -1 ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), '0', '1' ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
-
-}
-
-swap.timeOut = 15000;
-
-//
-
-function polynomApply( test )
-{
-
-  test.case = 'trivial'; /* */
-
-  var expected = 7;
-  var got = _.avector.polynomApply( [ 1, 1, 1 ], 2 );
-  test.identical( got, expected );
-
-  test.case = 'trivial'; /* */
-
-  var expected = 36;
-  var got = _.avector.polynomApply( [ 0, 1, 2 ], 4 );
-  test.identical( got, expected );
-
-  test.case = 'trivial'; /* */
-
-  var expected = 6;
-  var got = _.avector.polynomApply( [ 2, 1, 0 ], 4 );
-  test.identical( got, expected );
-
-  test.case = 'trivial'; /* */
-
-  var expected = 262;
-  var got = _.avector.polynomApply( [ 2, 1, 0, 4 ], 4 );
-  test.identical( got, expected );
-
-}
-
-polynomApply.timeOut = 15000;
-
-//
-
-function assign( test )
-{
-
-  test.case = 'assign scalar';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.assign( src, 0 );
-  var expected = [ 0, 0, 0 ];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign scalar to null vector';
-
-  var src = [];
-  var got = _.avector.assign( src, 1 );
-  var expected = [];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign avector';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.assign( src, [ 4, 5, 6 ] );
-  var expected = [ 4, 5, 6 ];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign multiple scalars';
-
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.assign( src, 4, 5, 6 );
-  var expected = [ 4, 5, 6 ];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'null avector';
-
-  var src = [];
-  var got = _.avector.assign( src );
-  var expected = [];
-  test.identical( expected, got );
-  test.is( got === src );
-
-  /* */
-
-  test.case = 'assign scalar by method';
-
-  var src = vad.fromLong([ 1, 2, 3 ]);
-  var got = src.assign( 0 );
-  var expected = vad.fromLong([ 0, 0, 0 ]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign scalar to null vector';
-
-  var src = vad.fromLong([]);
-  var got = src.assign( 1 );
-  var expected = vad.fromLong([]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign avector';
-
-  var src = vad.fromLong([ 1, 2, 3 ]);
-  var got = src.assign([ 4, 5, 6 ] );
-  var expected = vad.fromLong([ 4, 5, 6 ]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'assign multiple scalars';
-
-  var src = vad.fromLong([ 1, 2, 3 ]);
-  var got = src.assign([ 4, 5, 6 ]);
-  var expected = vad.fromLong([ 4, 5, 6 ]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  test.case = 'null avector';
-
-  var src = vad.fromLong([]);
-  var got = src.assign();
-  var expected = vad.fromLong([]);
-  test.identical( expected, got );
-  test.is( got === src );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.avector.assign() );
-  test.shouldThrowErrorSync( () => _.avector.assign( [], 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], '1' ) );
-  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], [ 1, 1 ] ) );
-
-}
-
-assign.timeOut = 15000;
-
-//
-
-function mag( test )
-{
-
-  test.case = 'basic';
-  var a = [ 0, 0, 2 ];
-  var exp = 2;
-  debugger;
-  var got = _.avector.mag( a );
-  debugger;
-  test.identical( got, exp );
-
-}
-
-//
-
-function experiment( test )
-{
-
-  var summary = _.avector.distributionSummary([ 1, 2, 3, 4, 9 ]);
-  logger.log( 'summary', summary );
-
-  test.identical( 1, 1 );
-}
-
-experiment.experimental = 1;
-
 // --
 // proto
 // --
@@ -7753,7 +8708,7 @@ var Self =
   {
 
     _isIdentical,
-    _isEquivalent,
+    // _isEquivalent,
     _isGreater,
     _isLess,
 
@@ -7762,51 +8717,61 @@ var Self =
 
     _allIdentical,
     _allNotIdentical,
-    _allEquivalent,
-    _allLessAprox,
-    _allLessEqualAprox,
-    _allGreater,
-    _allGreaterAprox,
-    _allGreaterEqualAprox,
 
     _anyIdentical,
     _anyNotIdentical,
-    _anyGreater,
-    _anyGreaterAprox,
-    _anyGreaterEqualAprox,
-    _anyLessAprox,
-    _anyLessEqualAprox,
-    _anyEquivalent,
 
     _noneIdentical,
-    _noneGreater,
     _noneGreaterAprox,
     _noneLessAprox,
-    _noneEquivalent,
-
-    _isZero,
-    _allZero,
-    _anyZero,
-    _noneZero,
 
   },
 
-  tests : /* qqq : move out routines which should be in VectorAdapter.test.s. ask how */
+  tests :
   {
 
-    comparator,
-    vectorAdapterIs,
-    basic,
+    /* aaa : move out routines which should be in VectorAdapter.test.s. ask how */
+    /* Dmytro : all routines with vectorAdapter moved to VectorAdapter.test.s */
 
-    allFinite,
-    anyNan,
-    allInt,
+    /* aaa : sort routines order*/
+    /* Dmytro : sorted */
 
-    to,
-    toLong,
+    assign,
+
+    review,
+
+    //
+
     map,
 
-    /* */
+    cross3,
+    cross,
+
+    abs,
+
+    //
+
+    add,
+    sub,
+    mul,
+    div,
+
+    heterogeneousScaledRoutines,
+    
+    clamp,
+    randomInRange,
+    mix,
+
+    polynomApply,
+
+    //
+
+    mean,
+    moment,
+    reduceToMean,
+    distributionRangeSummary,
+
+    // 
 
     isIdentical,
     isNotIdentical,
@@ -7821,6 +8786,8 @@ var Self =
     isGreaterEqual,
     isGreaterEqualAprox,
     isGreaterAprox,
+
+    isZero,
 
     logical2ArgsZipperWithBadArguments,
 
@@ -7837,6 +8804,12 @@ var Self =
     allLessEqualAprox,
     allLessAprox,
 
+    allZero, /* aaa : group all* routines */ /* Dmytro : grouped */
+    allFinite,
+    allInt,
+
+    //
+
     anyIdentical,
     anyNotIdentical,
     anyEquivalent,
@@ -7847,6 +8820,11 @@ var Self =
     anyGreaterAprox,
     anyLessEqualAprox,
     anyLessAprox,
+
+    anyZero, /* aaa : group any* routines */ /* Dmytro : grouped */
+    anyNan,
+
+    //
 
     noneIdentical,
     noneNotIdentical,
@@ -7859,59 +8837,39 @@ var Self =
     noneLessAprox,
     noneLessEqualAprox,
 
+    noneZero, /* aaa : group none* routines */ /* Dmytro : grouped */
+
+    //
+
     logical2ArgsReducerWithBadArguments,
-
-    /* */
-
-    isZero,
 
     logical1ArgsSinglerWithBadArguments,
 
-    /* */
-
-    /* qqq : sort routines order*/
-    allZero, /* qqq : group all* routines */
-    anyZero, /* qqq : group any* routines */
-    noneZero, /* qqq : group none* routines */
-
     logical1ArgsReducerWithBadArguments,
 
-    /* */
+    //
 
-    sort,
-    dot,
-    cross,
-    // subarray,
+    areParallelDefaultAccuracy,
+    areParallelNotDefaultAccuracy,
 
-    add,
-    sub,
-    mul,
-    div,
+    //
 
-    abs,
-
-    distributionRangeSummary,
-    reduceToMean,
-    median,
-    mean,
-    moment,
-    momentCentral,
-
-    // homogeneousWithScalar,
-    // homogeneousOnlyVectors,
-    heterogeneous,
-
-    clamp,
-    randomInRange,
-    mix,
-
-    swap,
-    polynomApply,
-
-    assign,
     mag,
 
-    experiment,
+    //
+
+    dot,
+
+    median,
+    momentCentral,
+
+    distributionSummaryExperiment,
+
+    // deprecated
+
+    // subarray,
+    // homogeneousWithScalar,
+    // homogeneousOnlyVectors,
 
   },
 

@@ -31,6 +31,179 @@ _.assert( _.routineIs( sqrt ) );
 // from
 // --
 
+function comparator( test )
+{
+
+  test.case = 'trivial';
+
+  let v1 = vad.from([ 1, 2, 3 ]);
+  let v2 = vad.from([ 1, 2, 4 ]);
+
+  let diff = _.entityDiff( v1, v2 );
+  let expected =
+`
+at /2
+- src1 :
+  1.000 2.000 3.000
+- src2 :
+  1.000 2.000 4.000
+- difference :
+  1.000 2.000 *
+`
+
+  console.log( diff );
+
+  test.identical.apply( test, _.strLinesStrip( diff, expected ) );
+  test.notIdentical( v1, v2 );
+
+}
+
+//
+
+function vectorAdapterIs( test )
+{
+  /* Dmytro : the first part of routine in module wTools */
+
+  test.case = 'src - vectorAdapter, routine from';
+  var src = vad.from( [ 1, 2, 3 ] );
+  test.is( _.vectorAdapterIs( src ) );
+
+  test.case = 'src - vectorAdapter, routine fromLong';
+  var src = vad.fromLong( [ 1, 2, 3 ] );
+  test.is( _.vectorAdapterIs( src ) );
+
+  test.case = 'src - vectorAdapter, routine fromLongWithStride';
+  var src = vad.fromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
+  test.is( _.vectorAdapterIs( src ) );
+
+  test.case = 'src - vectorAdapter, routine fromLongLrange';
+  var src = vad.fromLongLrange( [ -1, 1, 2, 3, -1 ], 1, 3 );
+  test.is( _.vectorAdapterIs( src ) );
+
+  test.case = 'src - vectorAdapter, routine fromLongLrangeAndStride';
+  var src = vad.fromLongLrangeAndStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
+  test.is( _.vectorAdapterIs( src ) );
+}
+
+//
+
+function constructorIsVector( test )
+{
+  /* Dmytro : the first part of routine in module wTools */
+
+  test.case = 'src - vectorAdapter constructor, routine from';
+  var src = vad.from( [ 1, 2, 3 ] );
+  test.is( _.constructorIsVector( src.constructor ) );
+
+  test.case = 'src - vectorAdapter constructor, routine fromLong';
+  var src = vad.fromLong( [ 1, 2, 3 ] );
+  test.is( _.constructorIsVector( src.constructor ) );
+
+  test.case = 'src - vectorAdapter constructor, routine fromLongWithStride';
+  var src = vad.fromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
+  test.is( _.constructorIsVector( src.constructor ) );
+
+  test.case = 'src - vectorAdapter constructor, routine fromLongLrange';
+  var src = vad.fromLongLrange( [ -1, 1, 2, 3, -1 ], 1, 3 );
+  test.is( _.constructorIsVector( src.constructor ) );
+
+  test.case = 'src - vectorAdapter constructor, routine fromLongLrangeAndStride';
+  var src = vad.fromLongLrangeAndStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
+  test.is( _.constructorIsVector( src.constructor ) );
+}
+
+//
+
+function to( test )
+{
+
+  test.case = 'vector to array'; /* */
+
+  var v = vad.from([ 1, 2, 3 ]);
+  var got = v.to( [].constructor );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+
+  test.case = 'vector to vector'; /* */
+
+  var v = vad.from([ 1, 2, 3 ]);
+  var got = v.to( vad.fromLong( [] ).constructor );
+  test.is( got === v );
+
+  test.case = 'bad arguments'; /* */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to() );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( [], 1 ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( 1 ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( null ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( '1' ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( [], 1 ) );
+
+}
+
+//
+
+function toLong( test )
+{
+
+  test.case = 'trivial'; /* */
+
+  var v = vad.from([ 1, 2, 3 ]);
+  var got = v.toLong();
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer === got );
+
+  test.case = 'trivial with fromLongLrangeAndStride'; /* */
+
+  var v = vad.fromLongLrangeAndStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
+  var got = v.toLong();
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer === got );
+
+  test.case = 'with custom offset'; /* */
+
+  var v = vad.fromLongLrange( [ 1, 2, 3, 4, 5 ], 1 );
+  var got = v.toLong();
+  var expected = [ 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer !== got );
+
+  test.case = 'with custom length'; /* */
+
+  var v = vad.fromLongLrange( [ 1, 2, 3, 4, 5 ], 0, 4 );
+  var got = v.toLong();
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer !== got );
+
+  test.case = 'with fromLongLrangeAndStride'; /* */
+
+  var v = vad.fromLongLrangeAndStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
+  var got = v.toLong();
+  var expected = [ 2, 4 ];
+  test.identical( got, expected );
+  test.is( v._vectorBuffer !== got );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( 0 ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( undefined ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( null ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( _.vectorAdapter.from([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( '123' ) );
+  test.shouldThrowErrorSync( () => vad.from([ 1, 2, 3 ]).to( function( a, b, c ){} ) );
+
+}
+
+//
+
 function fromLongReview( test )
 {
 
@@ -164,24 +337,175 @@ function fromNumberReview( test )
 
 }
 
+//
+
+function review( test )
+{
+
+  /* */
+
+  test.case = 'fromNumber';
+
+  var exp = vad.from( vad.long.longMake([ 1, 1, 1, 1 ]) );
+  var vad1 = vad.fromNumber( 1, 4 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 1, 1 ]) );
+  var vad1 = vad.fromNumber( 1, 4 );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer !== got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromNumber( 1, 4 );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromNumber( 1, 4 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLong';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLongLrange';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLongLrangeAndStride';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLongWithStride';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+}
+
 // --
 // iterator
 // --
 
 function map( test )
 {
+  test.case = 'single argument';
+  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
+  var got = _.vectorAdapter.map( dst );
+  test.is( got === dst );
+
+  test.case = 'dst and undefined';
+  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
+  var got = _.vectorAdapter.map( dst, undefined );
+  test.is( got === dst );
+
+  test.case = 'dst and null';
+  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
+  var got = _.vectorAdapter.map( dst, null );
+  test.is( got === dst );
 
   /* */
 
   test.case = 'dst = src';
-
   function onElement1( src )
   {
     return - 5 < src && src < 0 ; /* numbers in range */
   }
   var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
   var got = _.vectorAdapter.map( src, onElement1 );
-
   var exp = _.vectorAdapter.from( [ true, true, true ] );
   test.identical( got, exp );
   test.is( got === src );
@@ -189,14 +513,12 @@ function map( test )
   /* */
 
   test.case = 'dst = null';
-
   function onElement1( src )
   {
     return - 5 < src && src < 0 ; /* numbers in range */
   }
   var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
   var got = _.vectorAdapter.map( null, src, onElement1 );
-
   var exp = _.vectorAdapter.make( [ 1, 1, 1 ] );
   test.identical( got, exp );
 
@@ -206,152 +528,119 @@ function map( test )
   /* */
 
   test.case = 'Check if a number is > 0 - empty';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var src = _.vectorAdapter.from( [ ] );
   var got = _.vectorAdapter.map( src, positiveNumber );
-
   var exp = _.vectorAdapter.from( [ ] );
   test.identical( got, exp );
 
   /* */
 
   test.case = 'Check if a number is > 0 - true';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var src = _.vectorAdapter.from( [ 0, 1, 0, 2, 1000, 307 ] );
   var got = _.vectorAdapter.map( src, positiveNumber );
-
   var exp = _.vectorAdapter.from( [ true, true, true, true, true, true ] );
   test.identical( got, exp );
 
   /* */
 
   test.case = 'Check if a number is > 0 - false some';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var src = _.vectorAdapter.from( [ 0, - 1, 0, 2, 1000, '307' ] );
   var got = _.vectorAdapter.map( src, positiveNumber );
-
   var exp = _.vectorAdapter.from( [ true, false, true, true, true, false ] );
   test.identical( got, exp );
 
   /* */
 
   test.case = 'Check if a number is > 0 - false none';
-
   function positiveNumber( src )
   {
     return _.numberIs( src ) && src >= 0 ; /* positive numbers */
   }
   var src = _.vectorAdapter.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
   var got = _.vectorAdapter.map( src, positiveNumber );
-
   var exp = _.vectorAdapter.from( [ false, false, false, false, false ] );
   test.identical( got, exp );
 
   /* */
 
   test.case = 'Check if a string starts with h - true';
-
   function stringLengthThree( src )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; /* str starts with H */
   }
   var src = _.vectorAdapter.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
   var got = _.vectorAdapter.map( src, stringLengthThree );
-
   var expectedStr = _.vectorAdapter.from( [ true, true, true, true, true, true, true, true ] );
   test.identical( got, expectedStr );
 
   /* */
 
   test.case = 'Check if a string starts with h - false';
-
   function stringLengthThree( src )
   {
     return _.strIs( src ) && src.charAt( 0 ) === 'h' ; /* str starts with H */
   }
   var src = _.vectorAdapter.from( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
   var got = _.vectorAdapter.map( src, stringLengthThree );
-
   var exp = _.vectorAdapter.from( [ false, true, false, false, false ] );
   test.identical( got, exp );
 
   /* */
 
   test.case = 'Check an array´s length - true';
-
   function arrayLength( src )
   {
     return _.arrayIs( src ) && src.length === 4 ; /* arrays of length 4 */
   }
   var src = _.vectorAdapter.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
   var got = _.vectorAdapter.map( src, arrayLength );
-
   var expectedArr = _.vectorAdapter.from( [ true, true ] );
   test.identical( got, expectedArr );
 
   /* */
 
   test.case = 'Check an array´s length - false';
-
   function arrayLength( src )
   {
     return _.arrayIs( src ) && src.length === 4 ; /* arrays of length 4 */
   }
   var src = _.vectorAdapter.from( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
   var got = _.vectorAdapter.map( src, arrayLength );
-
   var exp =  _.vectorAdapter.from( [ false, false ] );
   test.identical( got, exp );
 
-  /* */
-
-  test.case = 'single argument';
-
-  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
-  var got = _.vectorAdapter.map( dst );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'dst and undefined';
-
-  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
-  var got = _.vectorAdapter.map( dst, undefined );
-  test.is( got === dst );
-
-  /* */
+  /* - */
 
   if( !Config.debug )
   return;
 
-  /* */
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map() );
 
   test.case = 'Only one argument';
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( undefined ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( null ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( NaN ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( undefined ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 'string' ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 2 ) );
 
   /* */
 
   test.case = 'Wrong second argument';
 
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* aaa : add such test case */ /* Dmytro : added */
   test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
@@ -370,7 +659,6 @@ function map( test )
   test.shouldThrowErrorSync( () => _.vectorAdapter.map( 'string', onEvaluate ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.map( [ 0, 1, 2, 3 ], onEvaluate ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.map( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
 }
 
 //
@@ -653,6 +941,478 @@ function none( test )
 
 }
 
+//
+
+function sort( test )
+{
+
+  // 13.00 13.00 10.00 10.00 10.00 2.00 10.00 15.00 2.00 14.00 10.00 6.00 6.000 15.00 4.00 8.00
+
+  var samples =
+  [
+
+    [ 0 ],
+
+    [ 0, 1 ],
+    [ 1, 0 ],
+
+    [ 1, 0, 2 ],
+    [ 2, 0, 1 ],
+    [ 0, 1, 2 ],
+    [ 0, 2, 1 ],
+    [ 2, 1, 0 ],
+    [ 1, 2, 0 ],
+
+    [ 0, 1, 1 ],
+    [ 1, 0, 1 ],
+    [ 1, 1, 0 ],
+
+    [ 0, 0, 1, 1 ],
+    [ 0, 1, 1, 0 ],
+    [ 1, 1, 0, 0 ],
+    [ 1, 0, 1, 0 ],
+    [ 0, 1, 0, 1 ],
+
+  ];
+
+  for( var s = 0 ; s < samples.length ; s++ )
+  {
+    var sample1 = samples[ s ].slice();
+    var sample2 = samples[ s ].slice();
+    _.vectorAdapter.sort( _.vectorAdapter.fromLong( sample1 ) );
+    sample2.sort();
+    test.identical( sample1, sample2 );
+  }
+
+}
+
+sort.timeOut = 15000;
+
+//
+
+function cross3( test ) 
+{
+  test.open( 'src1 and src2 - vectorAdapter instances' );
+
+  test.case = 'dst - only zeros, src1 and src2 - only zeros';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - only zeros';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - different elements, src1 - only zeros, src2 - different elements';
+  var dst = vad.from( [ 1, -1, 3 ] );
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 5, 4, 3 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 - different elements, src2 - only zeros';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ 10, -5, 4 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same positive number';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same positive number';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same negative number';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same negative number';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different positive values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ 1, 2, 3 ] );
+  var src2 = vad.from( [ 4, 5, 6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different positive values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ 1, 2, 3 ] );
+  var src2 = vad.from( [ 4, 5, 6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different negative values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ -1, -2, -3 ] );
+  var src2 = vad.from( [ -4, -5, -6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different negative values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ -1, -2, -3 ] );
+  var src2 = vad.from( [ -4, -5, -6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ -1, 2, 3 ] );
+  var src2 = vad.from( [ 4, -5, -6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ -1, 2, 3 ] );
+  var src2 = vad.from( [ 4, -5, -6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.close( 'src1 and src2 - vectorAdapter instances' );
+
+  /* - */
+
+  test.open( 'src1 and src2 - simple vectors' );
+
+  test.case = 'dst - only zeros, src1 and src2 - only zeros';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - only zeros';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - different elements, src1 - only zeros, src2 - different elements';
+  var dst = vad.from( [ 1, -1, 3 ] );
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 5, 4, 3 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 - different elements, src2 - only zeros';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ 10, -5, 4 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same positive number';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same positive number';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same negative number';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same negative number';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different positive values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different positive values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different negative values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ -1, -2, -3 ];
+  var src2 = [ -4, -5, -6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different negative values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ -1, -2, -3 ];
+  var src2 = [ -4, -5, -6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ -1, 2, 3 ];
+  var src2 = [ 4, -5, -6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ -1, 2, 3 ];
+  var src2 = [ 4, -5, -6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.close( 'src1 and src2 - simple vectors' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3() );
+
+  test.case = 'not enouth arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ], [ 3, 2, 1 ] ) );
+
+  test.case = 'wrong length of dst';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3, 4 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( null, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( { a : 1, b : 2, c : 3 }, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong length of src1';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3, 4 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong type of src1';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], undefined, [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], 3, [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong length of src2';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3, 4 ] ) );
+
+  test.case = 'wrong type of src2';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], true ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], 'str' ) );
+}
+
+//
+
+function swapVectors( test )
+{
+
+  test.case = 'swapVectors vectors'; /* */
+
+  var v1 = vad.from([ 1, 2, 3 ]);
+  var v2 = vad.from([ 10, 20, 30 ]);
+  var v1Expected = vad.from([ 10, 20, 30 ]);
+  var v2Expected = vad.from([ 1, 2, 3 ]);
+
+  var r = vad.swapVectors( v1, v2 );
+
+  test.is( r === undefined );
+  test.identical( v1, v1Expected );
+  test.identical( v2, v2Expected );
+
+  test.case = 'swapVectors arrays'; /* */
+
+  var v1 = [ 1, 2, 3 ];
+  var v2 = [ 10, 20, 30 ];
+  var v1Expected = [ 10, 20, 30 ];
+  var v2Expected = [ 1, 2, 3 ];
+
+  var r = avector.swapVectors( v1, v2 );
+
+  test.is( r === undefined );
+  test.identical( v1, v1Expected );
+  test.identical( v2, v2Expected );
+
+  test.case = 'swapVectors empty arrays'; /* */
+
+  var v1 = [];
+  var v2 = [];
+  var v1Expected = [];
+  var v2Expected = [];
+
+  var r = avector.swapVectors( v1, v2 );
+
+  test.is( r === undefined );
+  test.identical( v1, v1Expected );
+  test.identical( v2, v2Expected );
+
+  test.case = 'swapAtoms vectors'; /* */
+
+  var v1 = vad.from([ 1, 2, 3 ]);
+  var v1Expected = vad.from([ 3, 2, 1 ]);
+  var r = vad.swapAtoms( v1, 0, 2 );
+
+  test.is( r === v1 );
+  test.identical( v1, v1Expected );
+
+  test.case = 'swapAtoms arrays'; /* */
+
+  var v1 = [ 1, 2, 3 ];
+  var v1Expected = [ 3, 2, 1 ];
+  var r = avector.swapAtoms( v1, 0, 2 );
+
+  test.is( r === v1 );
+  test.identical( v1, v1Expected );
+
+  test.case = 'swapAtoms array with single atom'; /* */
+
+  var v1 = [ 1 ];
+  var v1Expected = [ 1 ];
+  var r = avector.swapAtoms( v1, 0, 0 );
+
+  test.is( r === v1 );
+  test.identical( v1, v1Expected );
+
+  test.case = 'bad arguments'; /* */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => vad.swapVectors() );
+  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), vad.from([ 1, 2, 3 ]), vad.from([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), vad.from([ 1, 2 ]) ) );
+  test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => vad.swapVectors( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.shouldThrowErrorSync( () => vad.swapAtoms() );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0 ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0, +3 ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0, -1 ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), '0', '1' ) );
+  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
+
+}
+
+swapVectors.timeOut = 15000;
+
 // --
 // etc
 // --
@@ -800,145 +1560,6 @@ function entityEqual( test )
 
 //
 
-function review( test )
-{
-
-  /* */
-
-  test.case = 'fromNumber';
-
-  var exp = vad.from( vad.long.longMake([ 1, 1, 1, 1 ]) );
-  var vad1 = vad.fromNumber( 1, 4 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 1, 1 ]) );
-  var vad1 = vad.fromNumber( 1, 4 );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer !== got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLong';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongLrange';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongLrangeAndStride';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongWithStride';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-}
-
-//
-
 function isEquivalent( test )
 {
 
@@ -969,6 +1590,607 @@ function allEquivalent( test )
 
 }
 
+//
+
+function areParallelDefaultAccuracy( test ) 
+{
+  let e = _.accuracy || 10 ** -7;
+
+  /* - */
+
+  test.open( 'without deviation' );
+
+  test.case = 'empty vectors, equivalent, zeros';
+  var src1 = vad.from( [] );
+  var src2 = vad.from( [] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0 ] );
+  var src2 = vad.from( [ 0 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5 ] );
+  var src2 = vad.from( [ 5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5 ] );
+  var src2 = vad.from( [ -5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent';
+  var src1 = vad.from( [ 5 ] );
+  var src2 = vad.from( [ -5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ -5, 5, 5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = vad.from( [ 10, -100, 0 ] );
+  var src2 = vad.from( [ 50, -500, 1 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zeros';
+  var src1 = vad.from( [ 10, -100, 0 ] );
+  var src2 = vad.from( [ 50, -500, 0 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = vad.from( [ 10, -100, 20 ] );
+  var src2 = vad.from( [ 50, -500, 100 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0, 0, 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0, 0, 0 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5, -5, -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5, -5, -5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var src2 = vad.from( [ -5, 5, 5, 5, 5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = vad.from( [ 1, -5, 10, -100, 0 ] );
+  var src2 = vad.from( [ 5, -25, 50, -500, 1 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = vad.from( [ 1, -5, 10, -100, 0 ] );
+  var src2 = vad.from( [ 5, -25, 50, -500, 0 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = vad.from( [ 1, -5, 10, -100, 20 ] );
+  var src2 = vad.from( [ 5, -25, 50, -500, 100 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.close( 'without deviation' );
+
+  /* - */
+
+  test.open( 'with deviation' );
+
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0 ] );
+  var src2 = vad.from( [ 0 + e * 10 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5 ] );
+  var src2 = vad.from( [ 5 + e * 10 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5 ] );
+  var src2 = vad.from( [ -5 + e * 10 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent';
+  var src1 = vad.from( [ 5 ] );
+  var src2 = vad.from( [ -5 + e * 10 ] );
+  var got = src1.areParallel( src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0 + e * 10, 0, 0 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5 + e * 10, 5, 5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5 + e * 10, -5, -5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ -5 + e * 10, 5, 5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = vad.from( [ 10, -100, 0 ] );
+  var src2 = vad.from( [ 50, -500 + e * 10, 1 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero';
+  var src1 = vad.from( [ 10, -100, 0 ] );
+  var src2 = vad.from( [ 50, -500  + 0.05, 0 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = vad.from( [ 10, -100, 20 ] );
+  var src2 = vad.from( [ 50, -500, 100  + 0.05 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0, 0, 0, 0, 0 ] );
+  var src2 = vad.from( [ 0 + e * 10, 0, 0, 0, 0 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var src2 = vad.from( [ 5 + e * 10, 5, 5, 5, 5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5, -5, -5, -5, -5 ] );
+  var src2 = vad.from( [ -5 + e * 10, -5, -5, -5, -5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var src2 = vad.from( [ -5 + e * 10, 5, 5, 5, 5 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = vad.from( [ 1, -5, 10, -100, 0 ] );
+  var src2 = vad.from( [ 5 + e * 10, -25, 50, -500, 1 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = vad.from( [ 1, -5, 10, -100, 0 ] );
+  var src2 = vad.from( [ 5 + e * 100, -25, 50, -500, 0 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = vad.from( [ 1, -5, 10, -100, 20 ] );
+  var src2 = vad.from( [ 5 + e * 100, -25, 50, -500, 100 ] );
+  var got = src1.areParallel( src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.close( 'with deviation' );
+
+  /* - */ 
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel( [ 1 ] ) );
+
+  test.case = 'wrong type of src1';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel( 'wrong', [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel( null, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel( undefined, [ 1 ], 0.1 ) );
+
+  test.case = 'wrong type of src2';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel( [ 1 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel( [ 1 ], {} ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel( [ 1 ], new Set( [] ), 0.1 ) );
+
+  test.case = 'wrong type of accuracy';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel( [ 1, 2 ], [ 1, 2 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.areParallel( [ 1, 2 ], [ 1, 2 ], null ) );
+}
+
+//
+
+function areParallelNotDefaultAccuracy( test )
+{
+  let e = _.accuracy || 10 ** -7;
+
+  /* - */
+
+  test.open( 'without deviation' );
+
+  test.case = 'empty vectors, equivalent, zeros';
+  var src1 = vad.from( [] );
+  var src2 = vad.from( [] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0 ] );
+  var src2 = vad.from( [ 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5 ] );
+  var src2 = vad.from( [ 5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5 ] );
+  var src2 = vad.from( [ -5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent';
+  var src1 = vad.from( [ 5 ] );
+  var src2 = vad.from( [ -5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ -5, 5, 5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = vad.from( [ 10, -100, 0 ] );
+  var src2 = vad.from( [ 50, -500, 1 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zeros';
+  var src1 = vad.from( [ 10, -100, 0 ] );
+  var src2 = vad.from( [ 50, -500, 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = vad.from( [ 10, -100, 20 ] );
+  var src2 = vad.from( [ 50, -500, 100 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0, 0, 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0, 0, 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5, -5, -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5, -5, -5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var src2 = vad.from( [ -5, 5, 5, 5, 5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = vad.from( [ 1, -5, 10, -100, 0 ] );
+  var src2 = vad.from( [ 5, -25, 50, -500, 1 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = vad.from( [ 1, -5, 10, -100, 0 ] );
+  var src2 = vad.from( [ 5, -25, 50, -500, 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = vad.from( [ 1, -5, 10, -100, 20 ] );
+  var src2 = vad.from( [ 5, -25, 50, -500, 100 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.close( 'without deviation' );
+
+  /* - */
+
+  test.open( 'with deviation' );
+
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0 ] );
+  var src2 = vad.from( [ 0 + e * 10 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5 ] );
+  var src2 = vad.from( [ 5 + e * 10 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5 ] );
+  var src2 = vad.from( [ -5 + e * 10 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent';
+  var src1 = vad.from( [ 5 ] );
+  var src2 = vad.from( [ -5 + e * 10 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0 + e * 10, 0, 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5 + e * 10, 5, 5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5 + e * 10, -5, -5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ -5 + e * 10, 5, 5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = vad.from( [ 10, -100, 0 ] );
+  var src2 = vad.from( [ 50, -500 + e * 10, 1 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero';
+  var src1 = vad.from( [ 10, -100, 0 ] );
+  var src2 = vad.from( [ 50, -500  + e * 10, 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = vad.from( [ 10, -100, 20 ] );
+  var src2 = vad.from( [ 50, -500, 100  + e * 10 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = vad.from( [ 0, 0, 0, 0, 0 ] );
+  var src2 = vad.from( [ 0 + e * 10, 0, 0, 0, 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var src2 = vad.from( [ 5 + e * 10, 5, 5, 5, 5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = vad.from( [ -5, -5, -5, -5, -5 ] );
+  var src2 = vad.from( [ -5 + e * 10, -5, -5, -5, -5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = vad.from( [ 5, 5, 5, 5, 5 ] );
+  var src2 = vad.from( [ -5 + e * 10, 5, 5, 5, 5 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = vad.from( [ 1, -5, 10, -100, 0 ] );
+  var src2 = vad.from( [ 5 + e * 10, -25, 50, -500, 1 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = vad.from( [ 1, -5, 10, -100, 0 ] );
+  var src2 = vad.from( [ 5 + e * 10, -25, 50, -500, 0 ] );
+  var got = src1.areParallel( src2, 20 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = vad.from( [ 1, -5, 10, -100, 20 ] );
+  var src2 = vad.from( [ 5 + e * 10, -25, 50, -500, 100 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.close( 'with deviation' );
+}
+
 // --
 // proto
 // --
@@ -986,6 +2208,13 @@ var Self =
   tests :
   {
 
+    comparator,
+    vectorAdapterIs, /* Dmytro : the first part of routine in module wTools */
+    constructorIsVector, /* Dmytro : the first part of routine in module wTools */
+
+    to,
+    toLong,
+
     // from
 
     fromLongReview,
@@ -994,23 +2223,36 @@ var Self =
     fromLongLrangeAndStrideReview,
     fromNumberReview,
 
+    review,
+
     // iterator
 
     map,
     filter,
     while : _while,
+
     all,
     any,
     none,
+
+    sort,
+
+    cross3,
+
+    swapVectors,
 
     // etc
 
     distributionRangeSummaryValue,
     entityEqual,
-    review,
 
     // isEquivalent,
     // allEquivalent,
+
+    //
+
+    areParallelDefaultAccuracy,
+    areParallelNotDefaultAccuracy,
 
   },
 
