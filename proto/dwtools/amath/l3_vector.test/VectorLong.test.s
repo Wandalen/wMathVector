@@ -4990,75 +4990,92 @@ allLessAprox.timeOut = 150000;
 
 //
 
-function _allZero( test, r, t, array )
-{
-  var f = !t;
-
-  /* */
-
-  test.case = 'vector';
-  var expected = t;
-  var got = _.avector[ r ]( array( 0, 0, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 0 ) );
-  test.identical( got, expected );
-  var expected = f;
-  var got = _.avector[ r ]( array( 0, 2, 3 ) );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'scalar';
-  var expected = f;
-  var got = _.avector[ r ]( 3 );
-  test.identical( got, expected );
-  var expected = t;
-  var got = _.avector[ r ]( 0 );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'empty vector';
-  var expected = t;
-  var got = _.avector[ r ]( array() );
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'not';
-
-  test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
-
-  test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
-  test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
-  test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
-  test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
-
-  test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
-  test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
-}
-
-//
-
 function allZero( test )
 {
+  /* - */
 
-  this._allZero( test, 'allZero', true, function()
+  test.open( 'Array constructor' );
+
+  _allZero( test, 'allZero', true, function()
   {
     return _.longMake( Array, arguments );
   });
 
-  this._allZero( test, 'allZero', true, function()
+  test.close( 'Array constructor' );
+
+  /* - */
+
+  test.open( 'U32x constructor' );
+
+  _allZero( test, 'allZero', true, function()
+  {
+    return _.longMake( U32x, arguments );
+  });
+
+  test.close( 'U32x constructor' );
+
+  /* - */
+
+  test.open( 'F32x constructor' );
+
+  _allZero( test, 'allZero', true, function()
   {
     return _.longMake( F32x, arguments );
   });
 
-  this._allZero( test, 'allZero', true, function()
+  test.close( 'F32x constructor' );
+
+  /* - */
+
+  function _allZero( test, r, t, array )
   {
-    return _.longMake( U32x, arguments );
-  });
+    var f = !t;
+
+    /* */
+
+    test.case = 'vector';
+    var expected = t;
+    var got = _.avector[ r ]( array( 0, 0, 0 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 1, 2, 0 ) );
+    test.identical( got, expected );
+
+    var expected = f;
+    var got = _.avector[ r ]( array( 0, 2, 3 ) );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'scalar';
+    var expected = f;
+    var got = _.avector[ r ]( 3 );
+    test.identical( got, expected );
+
+    var expected = t;
+    var got = _.avector[ r ]( 0 );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'empty vector';
+    var expected = t;
+    var got = _.avector[ r ]( array() );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'not';
+    test.identical( _.avector[ r ]([ 1, 2, 3 ]), false );
+    test.identical( _.avector[ r ]([ 0, 0, 1 ]), false );
+    test.identical( _.avector[ r ]([ 0, 3, NaN ]), false );
+    test.identical( _.avector[ r ]([ 0, NaN, 3 ]), false );
+    test.identical( _.avector[ r ]([ 0, 3, -Infinity ]), false );
+    test.identical( _.avector[ r ]([ 0, +Infinity, 3 ]), false );
+    test.identical( _.avector[ r ]([ 1.1, 0, 1 ]), false );
+    test.identical( _.avector[ r ]([ 1, 0, 1.1 ]), false );
+  }
 }
 
 allZero.timeOut = 15000;
@@ -7497,7 +7514,6 @@ var Self =
     _noneGreaterAprox,
     _noneLessAprox,
 
-    _allZero,
     _anyZero,
     _noneZero,
 
