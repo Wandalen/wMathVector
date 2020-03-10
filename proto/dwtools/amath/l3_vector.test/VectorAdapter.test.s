@@ -337,6 +337,145 @@ function fromNumberReview( test )
 
 }
 
+//
+
+function review( test )
+{
+
+  /* */
+
+  test.case = 'fromNumber';
+
+  var exp = vad.from( vad.long.longMake([ 1, 1, 1, 1 ]) );
+  var vad1 = vad.fromNumber( 1, 4 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 1, 1 ]) );
+  var vad1 = vad.fromNumber( 1, 4 );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer !== got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromNumber( 1, 4 );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromNumber( 1, 4 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLong';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLongLrange';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLongLrangeAndStride';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+  test.case = 'fromLongWithStride';
+
+  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
+  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+  test.identical( vad1, exp );
+
+  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
+  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+  var got = vad.review( vad1, [ 1, 2 ] );
+  test.identical( got, exp );
+  test.is( vad1._vectorBuffer === got._vectorBuffer );
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+    var got = vad.review( vad1, [ 2, 8 ] );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
+    var got = vad.review( vad1, [ 2, 8 ], 6 );
+  });
+
+  /* */
+
+}
+
 // --
 // iterator
 // --
@@ -1421,145 +1560,6 @@ function entityEqual( test )
 
 //
 
-function review( test )
-{
-
-  /* */
-
-  test.case = 'fromNumber';
-
-  var exp = vad.from( vad.long.longMake([ 1, 1, 1, 1 ]) );
-  var vad1 = vad.fromNumber( 1, 4 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 1, 1 ]) );
-  var vad1 = vad.fromNumber( 1, 4 );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer !== got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLong';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongLrange';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongLrangeAndStride';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongWithStride';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-  var got = vad.review( vad1, [ 1, 2 ] );
-  test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-}
-
-//
-
 function isEquivalent( test )
 {
 
@@ -2223,6 +2223,8 @@ var Self =
     fromLongLrangeAndStrideReview,
     fromNumberReview,
 
+    review,
+
     // iterator
 
     map,
@@ -2243,7 +2245,6 @@ var Self =
 
     distributionRangeSummaryValue,
     entityEqual,
-    review,
 
     // isEquivalent,
     // allEquivalent,
