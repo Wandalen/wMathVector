@@ -851,6 +851,336 @@ sort.timeOut = 15000;
 
 //
 
+function cross3( test ) 
+{
+  test.open( 'src1 and src2 - vectorAdapter instances' );
+
+  test.case = 'dst - only zeros, src1 and src2 - only zeros';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - only zeros';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - different elements, src1 - only zeros, src2 - different elements';
+  var dst = vad.from( [ 1, -1, 3 ] );
+  var src1 = vad.from( [ 0, 0, 0 ] );
+  var src2 = vad.from( [ 5, 4, 3 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 - different elements, src2 - only zeros';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ 10, -5, 4 ] );
+  var src2 = vad.from( [ 0, 0, 0 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same positive number';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same positive number';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ 5, 5, 5 ] );
+  var src2 = vad.from( [ 5, 5, 5 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same negative number';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same negative number';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ -5, -5, -5 ] );
+  var src2 = vad.from( [ -5, -5, -5 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different positive values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ 1, 2, 3 ] );
+  var src2 = vad.from( [ 4, 5, 6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different positive values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ 1, 2, 3 ] );
+  var src2 = vad.from( [ 4, 5, 6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different negative values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ -1, -2, -3 ] );
+  var src2 = vad.from( [ -4, -5, -6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different negative values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ -1, -2, -3 ] );
+  var src2 = vad.from( [ -4, -5, -6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = vad.from( [ -1, 2, 3 ] );
+  var src2 = vad.from( [ 4, -5, -6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = vad.from( [ -1, 2, 3 ] );
+  var src2 = vad.from( [ 4, -5, -6 ] );
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.close( 'src1 and src2 - vectorAdapter instances' );
+
+  /* - */
+
+  test.open( 'src1 and src2 - simple vectors' );
+
+  test.case = 'dst - only zeros, src1 and src2 - only zeros';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - only zeros';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - different elements, src1 - only zeros, src2 - different elements';
+  var dst = vad.from( [ 1, -1, 3 ] );
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 5, 4, 3 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 - different elements, src2 - only zeros';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ 10, -5, 4 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same positive number';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same positive number';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - same negative number';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - same negative number';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 0, 0, 0 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different positive values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different positive values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different negative values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ -1, -2, -3 ];
+  var src2 = [ -4, -5, -6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different negative values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ -1, -2, -3 ];
+  var src2 = [ -4, -5, -6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ -3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - only zeros, src1 and src2 - different values';
+  var dst = vad.from( [ 0, 0, 0 ] );
+  var src1 = [ -1, 2, 3 ];
+  var src2 = [ 4, -5, -6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - different elements, src1 and src2 - different values';
+  var dst = vad.from( [ 1, -5, 's' ] );
+  var src1 = [ -1, 2, 3 ];
+  var src2 = [ 4, -5, -6 ];
+  var got = dst.cross3( src1, src2 );
+  var exp = vad.from( [ 3, 6, -3 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.close( 'src1 and src2 - simple vectors' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3() );
+
+  test.case = 'not enouth arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ], [ 3, 2, 1 ] ) );
+
+  test.case = 'wrong length of dst';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3, 4 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( null, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( { a : 1, b : 2, c : 3 }, [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong length of src1';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3, 4 ], [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong type of src1';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], undefined, [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], 3, [ 1, 2, 3 ] ) );
+
+  test.case = 'wrong length of src2';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3, 4 ] ) );
+
+  test.case = 'wrong type of src2';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], true ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.cross3( [ 1, 2, 3 ], [ 1, 2, 3 ], 'str' ) );
+}
+
+//
+
 function swapVectors( test )
 {
 
@@ -1303,6 +1633,8 @@ var Self =
     none,
 
     sort,
+
+    cross3,
 
     swapVectors,
 
