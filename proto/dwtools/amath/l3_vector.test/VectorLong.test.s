@@ -2396,12 +2396,9 @@ randomInRange.timeOut = 15000;
 
 function mix( test )
 {
-  // debugger;
   // var got = _.avector.mix( null, [ 1, 2 ], [ 3, 4 ] );
-  // debugger;
   // var dst = [ 9 ];
   // var got = _.avector.mix( dst, 1, 3, 0.5 );
-  // debugger;
 
   /* 3 arguments */
 
@@ -3004,9 +3001,7 @@ function _isIdentical( test, r, t, array )
   test.identical( got, expected );
 
   var expected = array( f, f, t );
-  debugger;
   var got = _.avector[ r ]( 3, array( 1, 2, 3 ) );
-  debugger;
   test.identical( got, expected );
 
   test.case = 'scalar and scalar'; /* */
@@ -3048,9 +3043,7 @@ function _isIdentical( test, r, t, array )
   test.case = 'trivial, with dst'; /* */
   var expected = array( f, f, t );
   var dst = array( -1, -1, -1 );
-  debugger;
   var got = _.avector[ r ]( dst, array( 1, 2, 3 ), array( 3, 4, 3 ) );
-  debugger;
   test.identical( got, expected );
   test.is( got === dst );
   var expected = array( t, f, f );
@@ -7131,6 +7124,294 @@ logical1ArgsReducerWithBadArguments.timeOut = 30000;
 
 //
 
+function areParallelDefaultAccuracy( test ) 
+{
+  let e = _.accuracy || 10 ** -7;
+
+  /* - */
+
+  test.open( 'default accuracy, without deviation' );
+
+  test.case = 'empty vectors, equivalent, zeros';
+  var src1 = [];
+  var src2 = [];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = [ 0 ];
+  var src2 = [ 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = [ 5 ];
+  var src2 = [ 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = [ -5 ];
+  var src2 = [ -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent';
+  var src1 = [ 5 ];
+  var src2 = [ -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ -5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500, 1 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zeros';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = [ 10, -100, 20 ];
+  var src2 = [ 50, -500, 100 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0, 0, 0 ];
+  var src2 = [ 0, 0, 0, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ 5, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5, -5, -5 ];
+  var src2 = [ -5, -5, -5, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ -5, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5, -25, 50, -500, 1 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5, -25, 50, -500, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = [ 1, -5, 10, -100, 20 ];
+  var src2 = [ 5, -25, 50, -500, 100 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.close( 'default accuracy, without deviation' );
+
+  /* - */
+
+  test.open( 'default accuracy, with deviation' );
+
+  test.case = 'single element vectors, equivalent, zeros';
+  var src1 = [ 0 ];
+  var src2 = [ 0 + e-6 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, positive number';
+  var src1 = [ 5 ];
+  var src2 = [ 5 + e-6 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, equivalent, negative number';
+  var src1 = [ -5 ];
+  var src2 = [ -5 + e-6 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent';
+  var src1 = [ 5 ];
+  var src2 = [ -5 + e-6 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = true;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0 ];
+  var src2 = [ 0 + e-6, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ 5 + e-6, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5 ];
+  var src2 = [ -5 + e-6, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, not equivalent';
+  var src1 = [ 5, 5, 5 ];
+  var src2 = [ -5 + e-6, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500 + e-6, 1 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, with zero';
+  var src1 = [ 10, -100, 0 ];
+  var src2 = [ 50, -500  + e-6, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'three element vectors, equivalent, different values, without zero';
+  var src1 = [ 10, -100, 20 ];
+  var src2 = [ 50, -500, 100  + e-6 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'five element vectors, equivalent, zeros';
+  var src1 = [ 0, 0, 0, 0, 0 ];
+  var src2 = [ 0 + e-6, 0, 0, 0, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, positive number';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ 5 + e-6, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, negative number';
+  var src1 = [ -5, -5, -5, -5, -5 ];
+  var src2 = [ -5 + e-6, -5, -5, -5, -5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent';
+  var src1 = [ 5, 5, 5, 5, 5 ];
+  var src2 = [ -5 + e-6, 5, 5, 5, 5 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zero in single vector';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5 + e-6, -25, 50, -500, 1 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, with zeros';
+  var src1 = [ 1, -5, 10, -100, 0 ];
+  var src2 = [ 5 + e-6, -25, 50, -500, 0 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, equivalent, different values, without zero';
+  var src1 = [ 1, -5, 10, -100, 20 ];
+  var src2 = [ 5 + e-6, -25, 50, -500, 100 ];
+  var got = _.avector.areParallel( src1, src2 );
+  var exp = false;
+  test.identical( got, exp );
+
+  test.close( 'default accuracy, with deviation' );
+}
+
+//
+
 function mag( test )
 {
   test.case = 'basic';
@@ -7979,6 +8260,10 @@ var Self =
     logical1ArgsSinglerWithBadArguments,
 
     logical1ArgsReducerWithBadArguments,
+
+    //
+
+    areParallelDefaultAccuracy,
 
     //
 
