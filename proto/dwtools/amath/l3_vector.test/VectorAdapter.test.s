@@ -204,33 +204,6 @@ function toLong( test )
 
 //
 
-function fromLongReview( test )
-{
-
-  test.case = 'basic';
-  var exp = [ 1, 3, 5, 7 ];
-  var v = _.vectorAdapter.fromLong([ 1, 3, 5, 7 ]);
-  test.equivalent( v, exp );
-  var exp = [ 3, 5 ];
-  var v2 = v.review([ 1, 2 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 1, 3 ];
-  var v2 = v.review([ 0, 1 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 5, 7 ];
-  var v2 = v.review([ 2, 3 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-
-}
-
-//
-
 function fromLongWithStrideReview( test )
 {
 
@@ -449,6 +422,83 @@ function reviewSrcIsSimpleVector( test )
 //
 
 function reviewSrcIsAdapterRoutineFrom( test )
+{
+  test.case = 'src - empty vector, crange - 0';
+  var src = vad.from( [] );
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange - 0';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = vad.review( src, 2 );
+  var exp = vad.from( [ 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = vad.review( src, 6 );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = vad.from( [] );
+  var got = vad.review( src, [ 0, -1 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = vad.review( src, [ 0, 5 ] );
+  var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = vad.review( src, [ 0, 3 ] );
+  var exp = vad.from( [ 0, 1, 2, 3 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = vad.review( src, [ 1, 3 ] );
+  var exp = vad.from( [ 1, 2, 3 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = vad.review( src, [ 6, 5 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = vad.review( src, [ 3, 2 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+}
+
+//
+
+function reviewSrcIsAdapterRoutineFromLong( test )
 {
   test.case = 'src - empty vector, crange - 0';
   var src = vad.from( [] );
@@ -2264,7 +2314,6 @@ var Self =
 
     // from
 
-    fromLongReview,
     fromLongWithStrideReview,
     fromLongLrangeReview,
     fromLongLrangeAndStrideReview,
@@ -2272,6 +2321,7 @@ var Self =
 
     reviewSrcIsSimpleVector,
     reviewSrcIsAdapterRoutineFrom,
+    reviewSrcIsAdapterRoutineFromLong,
 
     // iterator
 
