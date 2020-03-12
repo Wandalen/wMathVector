@@ -239,159 +239,87 @@ function reviewSrcIsSimpleVector( test )
 
 //
 
+function reviewSrcIsAdapterRoutineFrom( test ) 
+{
+  test.case = 'src - empty vector, crange - 0';
+  var src = vad.from( [] );
+  var got = _.avector.review( src, 0 );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - 0';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, 0 );
+  var exp = [ 0, 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, 2 );
+  var exp = [ 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, 6 );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = vad.from( [] );
+  var got = _.avector.review( src, [ 0, -1 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 0, 5 ] );
+  var exp = [ 0, 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 0, 3 ] );
+  var exp = [ 0, 1, 2, 3 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 1, 3 ] );
+  var exp = [ 1, 2, 3 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 6, 5 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var got = _.avector.review( src, [ 3, 2 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+}
+
+//
+
 function review( test )
 {
-  test.open( 'src - simple vector' );
-
-  test.case = 'src - empty vector, crange - 0';
-  var src = [];
-  var got = _.avector.review( src, 0 );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got === src );
-
-  test.case = 'crange - 0';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = _.avector.review( src, 0 );
-  var exp = [ 0, 1, 2, 3, 4, 5 ];
-  test.identical( got, exp );
-  test.is( got === src );
-
-  test.case = 'crange > 0 && crange < src.length - 1';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = _.avector.review( src, 2 );
-  var exp = [ 2, 3, 4, 5 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange - src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = _.avector.review( src, 6 );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
-  var src = [];
-  var got = _.avector.review( src, [ 0, -1 ] );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got === src );
-
-  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = _.avector.review( src, [ 0, 5 ] );
-  var exp = [ 0, 1, 2, 3, 4, 5 ];
-  test.identical( got, exp );
-  test.is( got === src );
-
-  test.case = 'crange[ 0 ] - 0, crange < src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = _.avector.review( src, [ 0, 3 ] );
-  var exp = [ 0, 1, 2, 3 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange[ 0 ] > 0, crange < src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = _.avector.review( src, [ 1, 3 ] );
-  var exp = [ 1, 2, 3 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = _.avector.review( src, [ 6, 5 ] );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange[ 0 ] > crange[ 1 ]';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = _.avector.review( src, [ 3, 2 ] );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.close( 'src - simple vector' );
-
-  /* - */
-
   test.open( 'src - vectorAdapter, routine from' );
 
-  test.case = 'src - empty vector, crange - 0';
-  var src = vad.from( [] );
-  var got = _.avector.review( src, 0 );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange - 0';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  var got = _.avector.review( src, 0 );
-  var exp = [ 0, 1, 2, 3, 4, 5 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange > 0 && crange < src.length - 1';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  var got = _.avector.review( src, 2 );
-  var exp = [ 2, 3, 4, 5 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange - src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  var got = _.avector.review( src, 6 );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
-  var src = vad.from( [] );
-  var got = _.avector.review( src, [ 0, -1 ] );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  var got = _.avector.review( src, [ 0, 5 ] );
-  var exp = [ 0, 1, 2, 3, 4, 5 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange[ 0 ] - 0, crange < src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  var got = _.avector.review( src, [ 0, 3 ] );
-  var exp = [ 0, 1, 2, 3 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange[ 0 ] > 0, crange < src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  var got = _.avector.review( src, [ 1, 3 ] );
-  var exp = [ 1, 2, 3 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  var got = _.avector.review( src, [ 6, 5 ] );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  test.case = 'crange[ 0 ] > crange[ 1 ]';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  var got = _.avector.review( src, [ 3, 2 ] );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
 
   test.close( 'src - vectorAdapter, routine from' );
 
@@ -8848,6 +8776,7 @@ var Self =
     assign,
 
     reviewSrcIsSimpleVector,
+    reviewSrcIsAdapterRoutineFrom,
     review,
 
     //
