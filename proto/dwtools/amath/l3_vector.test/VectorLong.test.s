@@ -393,6 +393,83 @@ function reviewSrcIsAdapterRoutineFromLong( test )
 
 //
 
+function reviewSrcIsAdapterRoutineFromLongWithStride( test )
+{
+  test.case = 'src - empty vector, crange - 0';
+  var src = vad.fromLongWithStride( [], 2 );
+  var got = _.avector.review( src, 0 );
+  var exp =  [];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange - 0';
+  var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
+  var got = _.avector.review( src, 0 );
+  var exp =  [ 0, 2, 4, 6, 8, 10 ];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
+  var got = _.avector.review( src, 2 );
+  var exp =  [ 4, 6, 8, 10 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - src.length';
+  var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
+  var got = _.avector.review( src, 6 );
+  var exp =  [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = vad.fromLongWithStride( [], 2 );
+  var got = _.avector.review( src, [ 0, -1 ] );
+  var exp =  [];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
+  var got = _.avector.review( src, [ 0, 5 ] );
+  var exp =  [ 0, 2, 4, 6, 8, 10 ];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
+  var got = _.avector.review( src, [ 0, 3 ] );
+  var exp =  [ 0, 2, 4, 6 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
+  var got = _.avector.review( src, [ 1, 3 ] );
+  var exp =  [ 2, 4, 6 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
+  var got = _.avector.review( src, [ 6, 5 ] );
+  var exp =  [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
+  var got = _.avector.review( src, [ 3, 2 ] );
+  var exp =  [];
+  test.identical( got, exp );
+  test.is( got !== src );
+}
+
+//
+
 function review( test )
 {
   test.open( 'src - vectorAdapter, routine fromLongLrange' );
@@ -470,38 +547,6 @@ function review( test )
   test.is( got !== src );
 
   test.close( 'src - vectorAdapter, routine fromLongLrange' );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.avector.review() );
-
-  test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.avector.review( [] ) );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.avector.review( [], 0, 0 ) );
-
-  test.case = 'crange - number, crange < 0';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], -1 ) );
-
-  test.case = 'crange - number, crange > src.length - 1';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], 5 ) );
-
-  test.case = 'crange[ 0 ] < 0';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ -1, 1 ] ) );
-
-  test.case = 'crange[ 1 ] > src.length - 1';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 0, 4 ] ) );
-
-  test.case = 'crange[ 1 ] - crange[ 0 ] < -1';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 0, 4 ] ) );
-
-  test.case = 'crange[ 1 ] - src.length';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 1, 2 ] ) );
 }
 
 //
