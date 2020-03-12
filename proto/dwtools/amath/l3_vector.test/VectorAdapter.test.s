@@ -284,31 +284,31 @@ function reviewSrcIsSimpleVector( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.avector.review() );
+  test.shouldThrowErrorSync( () => vad.review() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.avector.review( [] ) );
+  test.shouldThrowErrorSync( () => vad.review( [] ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.avector.review( [], 0, 0 ) );
+  test.shouldThrowErrorSync( () => vad.review( [], 0, 0 ) );
 
   test.case = 'crange - number, crange < 0';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], -1 ) );
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], -1 ) );
 
   test.case = 'crange - number, crange > src.length - 1';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], 5 ) );
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], 5 ) );
 
   test.case = 'crange[ 0 ] < 0';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ -1, 1 ] ) );
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], [ -1, 1 ] ) );
 
   test.case = 'crange[ 1 ] > src.length - 1';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 0, 4 ] ) );
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], [ 0, 4 ] ) );
 
   test.case = 'crange[ 1 ] - crange[ 0 ] < -1';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 0, 4 ] ) );
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], [ 0, 4 ] ) );
 
   test.case = 'crange[ 1 ] - src.length';
-  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], [ 1, 2 ] ) );
 }
 
 //
@@ -919,7 +919,7 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
   test.case = 'crange[ 0 ] > crange[ 1 ]';
   var src = vad.fromMaybeNumber( vad.from( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
   var got = vad.review( src, [ 3, 2 ] );
-  var exp = vad.from( [] );
+  var exp = vad.from( [] )
   test.identical( got, exp );
   test.is( got !== src );
 
