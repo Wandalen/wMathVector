@@ -400,14 +400,14 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
   var got = _.avector.review( src, 0 );
   var exp =  [];
   test.identical( got, exp );
-  test.is( got === src );
+  test.is( got !== src );
 
   test.case = 'crange - 0';
   var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
   var got = _.avector.review( src, 0 );
   var exp =  [ 0, 2, 4, 6, 8, 10 ];
   test.identical( got, exp );
-  test.is( got === src );
+  test.is( got !== src );
 
   test.case = 'crange > 0 && crange < src.length - 1';
   var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
@@ -430,14 +430,14 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
   var got = _.avector.review( src, [ 0, -1 ] );
   var exp =  [];
   test.identical( got, exp );
-  test.is( got === src );
+  test.is( got !== src );
 
   test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
   var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
   var got = _.avector.review( src, [ 0, 5 ] );
   var exp =  [ 0, 2, 4, 6, 8, 10 ];
   test.identical( got, exp );
-  test.is( got === src );
+  test.is( got !== src );
 
   test.case = 'crange[ 0 ] - 0, crange < src.length';
   var src = vad.fromLongWithStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2 );
@@ -8893,6 +8893,7 @@ var Self =
     reviewSrcIsSimpleVector,
     reviewSrcIsAdapterRoutineFrom,
     reviewSrcIsAdapterRoutineFromLong,
+    reviewSrcIsAdapterRoutineFromLongWithStride,
     review,
 
     //
