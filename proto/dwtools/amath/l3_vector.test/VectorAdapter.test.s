@@ -420,28 +420,28 @@ function reviewSrcIsAdapterRoutineFrom( test )
 function reviewSrcIsAdapterRoutineFromLong( test )
 {
   test.case = 'src - empty vector, crange - 0';
-  var src = vad.from( [] );
+  var src = vad.fromLong( [] );
   var got = vad.review( src, 0 );
   var exp = vad.from( [] );
   test.identical( got, exp );
   test.is( got === src );
 
   test.case = 'crange - 0';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var src = vad.fromLong( [ 0, 1, 2, 3, 4, 5 ] );
   var got = vad.review( src, 0 );
   var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
   test.identical( got, exp );
   test.is( got === src );
 
   test.case = 'crange > 0 && crange < src.length - 1';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var src = vad.fromLong( [ 0, 1, 2, 3, 4, 5 ] );
   var got = vad.review( src, 2 );
   var exp = vad.from( [ 2, 3, 4, 5 ] );
   test.identical( got, exp );
   test.is( got !== src );
 
   test.case = 'crange - src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var src = vad.fromLong( [ 0, 1, 2, 3, 4, 5 ] );
   var got = vad.review( src, 6 );
   var exp = vad.from( [] );
   test.identical( got, exp );
@@ -450,42 +450,42 @@ function reviewSrcIsAdapterRoutineFromLong( test )
   /* */
 
   test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
-  var src = vad.from( [] );
+  var src = vad.fromLong( [] );
   var got = vad.review( src, [ 0, -1 ] );
   var exp = vad.from( [] );
   test.identical( got, exp );
   test.is( got === src );
 
   test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var src = vad.fromLong( [ 0, 1, 2, 3, 4, 5 ] );
   var got = vad.review( src, [ 0, 5 ] );
   var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
   test.identical( got, exp );
   test.is( got === src );
 
   test.case = 'crange[ 0 ] - 0, crange < src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var src = vad.fromLong( [ 0, 1, 2, 3, 4, 5 ] );
   var got = vad.review( src, [ 0, 3 ] );
   var exp = vad.from( [ 0, 1, 2, 3 ] );
   test.identical( got, exp );
   test.is( got !== src );
 
   test.case = 'crange[ 0 ] > 0, crange < src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var src = vad.fromLong( [ 0, 1, 2, 3, 4, 5 ] );
   var got = vad.review( src, [ 1, 3 ] );
   var exp = vad.from( [ 1, 2, 3 ] );
   test.identical( got, exp );
   test.is( got !== src );
 
   test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var src = vad.fromLong( [ 0, 1, 2, 3, 4, 5 ] );
   var got = vad.review( src, [ 6, 5 ] );
   var exp = vad.from( [] );
   test.identical( got, exp );
   test.is( got !== src );
 
   test.case = 'crange[ 0 ] > crange[ 1 ]';
-  var src = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  var src = vad.fromLong( [ 0, 1, 2, 3, 4, 5 ] );
   var got = vad.review( src, [ 3, 2 ] );
   var exp = vad.from( [] );
   test.identical( got, exp );
@@ -717,6 +717,157 @@ function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
 
   test.case = 'crange[ 0 ] > crange[ 1 ]';
   var src = vad.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ], 2, 6, 2 );
+  var got = vad.review( src, [ 3, 2 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+}
+
+//
+
+function reviewSrcIsAdapterRoutineFromNumber( test )
+{
+  test.case = 'src - empty vector, crange - 0';
+  var src = vad.fromNumber( vad.from( [] ), 0 );
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange - 0';
+  var src = vad.fromNumber( vad.from( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = vad.fromNumber( vad.from( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+  var got = vad.review( src, 2 );
+  var exp = vad.from( [ 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - src.length';
+  var src = vad.fromNumber( vad.from( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+  var got = vad.review( src, 6 );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = vad.fromNumber( vad.from( [] ), 0 );
+  var got = vad.review( src, [ 0, -1 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = vad.fromNumber( vad.from( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+  var got = vad.review( src, [ 0, 5 ] );
+  var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = vad.fromNumber( vad.from( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+  var got = vad.review( src, [ 0, 3 ] );
+  var exp = vad.from( [ 0, 1, 2, 3 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = vad.fromNumber( vad.from( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+  var got = vad.review( src, [ 1, 3 ] );
+  var exp = vad.from( [ 1, 2, 3 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = vad.fromNumber( vad.from( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+  var got = vad.review( src, [ 6, 5 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = vad.fromNumber( vad.from( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+  var got = vad.review( src, [ 3, 2 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, crange - 0';
+  var src = vad.fromNumber( 5, 0 );
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange - 0';
+  var src = vad.fromNumber( 5, 6 );
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = vad.fromNumber( 5, 6 );
+  var got = vad.review( src, 2 );
+  var exp = vad.from( [ 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - src.length';
+  var src = vad.fromNumber( 5, 6 );
+  var got = vad.review( src, 6 );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = vad.fromNumber( 5, 0 );
+  var got = vad.review( src, [ 0, -1 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = vad.fromNumber( 5, 6 );
+  var got = vad.review( src, [ 0, 5 ] );
+  var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = vad.fromNumber( 5, 6 );
+  var got = vad.review( src, [ 0, 3 ] );
+  var exp = vad.from( [ 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = vad.fromNumber( 5, 6 );
+  var got = vad.review( src, [ 1, 3 ] );
+  var exp = vad.from( [ 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = vad.fromNumber( 5, 6 );
+  var got = vad.review( src, [ 6, 5 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = vad.fromNumber( 5, 6 );
   var got = vad.review( src, [ 3, 2 ] );
   var exp = vad.from( [] );
   test.identical( got, exp );
@@ -2472,6 +2623,7 @@ var Self =
     reviewSrcIsAdapterRoutineFromLongWithStride,
     reviewSrcIsAdapterRoutineFromLongLrange,
     reviewSrcIsAdapterRoutineFromLongLrangeAndStride,
+    reviewSrcIsAdapterRoutineFromNumber,
 
     // iterator
 
