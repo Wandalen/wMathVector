@@ -547,6 +547,83 @@ function reviewSrcIsAdapterRoutineFromLongLrange( test )
 
 //
 
+function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
+{
+  test.case = 'src - empty vector, crange - 0';
+  var src = vad.fromLongLrangeAndStride( [], 0, 0, 1 );
+  var got = _.avector.review( src, 0 );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - 0';
+  var src = vad.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ], 0, 6, 2 );
+  var got = _.avector.review( src, 0 );
+  var exp = [ 0, 2, 4, 6, 8, 10 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = vad.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ], 0, 6, 2 );
+  var got = _.avector.review( src, 2 );
+  var exp = [ 4, 6, 8, 10 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange - src.length';
+  var src = vad.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ], 2, 6, 2 );
+  var got = _.avector.review( src, 6 );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = vad.fromLongLrangeAndStride( [], 0, 0, 2 );
+  var got = _.avector.review( src, [ 0, -1 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = vad.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ], 0, 6, 2 );
+  var got = _.avector.review( src, [ 0, 5 ] );
+  var exp = [ 0, 2, 4, 6, 8, 10 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = vad.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ], 0, 8, 2 );
+  var got = _.avector.review( src, [ 0, 3 ] );
+  var exp = [ 0, 2, 4, 6 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = vad.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ], 1, 6, 2 );
+  var got = _.avector.review( src, [ 1, 3 ] );
+  var exp = [ 3, 5, 7 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = vad.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ], 2, 6, 2  );
+  var got = _.avector.review( src, [ 6, 5 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = vad.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ], 2, 6, 2 );
+  var got = _.avector.review( src, [ 3, 2 ] );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+}
+
+//
+
 function map( test )
 {
 
@@ -8891,6 +8968,7 @@ var Self =
     reviewSrcIsAdapterRoutineFromLong,
     reviewSrcIsAdapterRoutineFromLongWithStride,
     reviewSrcIsAdapterRoutineFromLongLrange,
+    reviewSrcIsAdapterRoutineFromLongLrangeAndStride,
 
     //
 
