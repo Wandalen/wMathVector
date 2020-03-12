@@ -339,141 +339,111 @@ function fromNumberReview( test )
 
 //
 
-function review( test )
+function reviewWithSimpleVector( test )
 {
-
-  /* */
-
-  test.case = 'fromNumber';
-
-  var exp = vad.from( vad.long.longMake([ 1, 1, 1, 1 ]) );
-  var vad1 = vad.fromNumber( 1, 4 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 1, 1 ]) );
-  var vad1 = vad.fromNumber( 1, 4 );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'src - empty vector, crange - 0';
+  var src = [];
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer !== got._vectorBuffer );
+  test.is( got !== src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLong';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'crange - 0';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
+  test.is( got !== src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongLrange';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = vad.review( src, 2 );
+  var exp = vad.from( [ 2, 3, 4, 5 ] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
+  test.is( got !== src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongLrangeAndStride';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'crange - src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = vad.review( src, 6 );
+  var exp = vad.from( [] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
+  test.is( got !== src );
 
   /* */
 
-  test.case = 'fromLongWithStride';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = [];
+  var got = vad.review( src, [ 0, -1 ] );
+  var exp = vad.from( [] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
+  test.is( got !== src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = vad.review( src, [ 0, 5 ] );
+  var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = vad.review( src, [ 0, 3 ] );
+  var exp = vad.from( [ 0, 1, 2, 3 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  /* */
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = vad.review( src, [ 1, 3 ] );
+  var exp = vad.from( [ 1, 2, 3 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
 
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = vad.review( src, [ 6, 5 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = [ 0, 1, 2, 3, 4, 5 ];
+  var got = vad.review( src, [ 3, 2 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.avector.review() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.avector.review( [] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.avector.review( [], 0, 0 ) );
+
+  test.case = 'crange - number, crange < 0';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], -1 ) );
+
+  test.case = 'crange - number, crange > src.length - 1';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], 5 ) );
+
+  test.case = 'crange[ 0 ] < 0';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ -1, 1 ] ) );
+
+  test.case = 'crange[ 1 ] > src.length - 1';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 0, 4 ] ) );
+
+  test.case = 'crange[ 1 ] - crange[ 0 ] < -1';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 0, 4 ] ) );
+
+  test.case = 'crange[ 1 ] - src.length';
+  test.shouldThrowErrorSync( () => _.avector.review( [ 1, 2 ], [ 1, 2 ] ) );
 }
 
 // --
@@ -2223,7 +2193,7 @@ var Self =
     fromLongLrangeAndStrideReview,
     fromNumberReview,
 
-    review,
+    reviewWithSimpleVector,
 
     // iterator
 
