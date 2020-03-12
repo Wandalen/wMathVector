@@ -470,10 +470,8 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
 
 //
 
-function review( test )
+function reviewSrcIsAdapterRoutineFromLongLrange( test )
 {
-  test.open( 'src - vectorAdapter, routine fromLongLrange' );
-
   test.case = 'src - empty vector, crange - 0';
   var src = vad.fromLongLrange( [], 0, 0 );
   var got = _.avector.review( src, 0 );
@@ -545,8 +543,6 @@ function review( test )
   var exp = [];
   test.identical( got, exp );
   test.is( got !== src );
-
-  test.close( 'src - vectorAdapter, routine fromLongLrange' );
 }
 
 //
@@ -8894,7 +8890,7 @@ var Self =
     reviewSrcIsAdapterRoutineFrom,
     reviewSrcIsAdapterRoutineFromLong,
     reviewSrcIsAdapterRoutineFromLongWithStride,
-    review,
+    reviewSrcIsAdapterRoutineFromLongLrange,
 
     //
 
