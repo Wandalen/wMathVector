@@ -1262,7 +1262,7 @@ function mapWithoutDst( test )
   test.case = 'src - vector, onEach - null';
   var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   var got = _.vectorAdapter.map( src, null );
-  var exp = _.vectorAdapter.from( [] );
+  var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, exp );
   test.is( got === src );
 
@@ -1342,7 +1342,7 @@ function mapWithoutDst( test )
   test.case = 'src - vector, onEach returns undefined';
   var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   var got = _.vectorAdapter.map( src, ( e, k, s, d ) => undefined );
-  var exp = _.vectorAdapter.from( [] );
+  var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, exp );
   test.is( got === src );
 
@@ -1362,7 +1362,7 @@ function mapWithoutDst( test )
   test.case = 'src - vector, onEach - null';
   var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   var got = src.map( null );
-  var exp = _.vectorAdapter.from( [] );
+  var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, exp );
 
   /* */
@@ -1441,7 +1441,7 @@ function mapWithoutDst( test )
   test.case = 'src - vector, onEach returns undefined';
   var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   var got = src.map( ( e, k, s, d ) => undefined );
-  var exp = _.vectorAdapter.from( [] );
+  var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, exp );
   test.is( got === src );
 

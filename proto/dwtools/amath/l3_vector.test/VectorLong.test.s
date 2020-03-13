@@ -1170,6 +1170,208 @@ function mapDstIsNull( test )
 
 //
 
+function mapWithoutDst( test )
+{
+  test.open( 'src - instance of avector' );
+
+  test.case = 'src - empty vector, onEach - undefined';
+  var src = _.avector.make( [] );
+  var got = _.avector.map( src, undefined );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach - null';
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( src, null );
+  var exp = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns element';
+  var src = _.avector.make( [] );
+  var got = _.avector.map( src, ( e ) => e );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns element';
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( src, ( e ) => e );
+  var exp = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns key';
+  var src = _.avector.make( [] );
+  var got = _.avector.map( src, ( e, k ) => k );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns key';
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( src, ( e, k ) => k );
+  var exp = _.avector.make( [ 0, 1, 2, 3, 4 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns src.length';
+  var src = _.avector.make( [] );
+  var got = _.avector.map( src, ( e, k, s ) => s.length );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns src.length';
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( src, ( e, k, s ) => s.length );
+  var exp = _.avector.make( [ 5, 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns dst.length';
+  var src = _.avector.make( [] );
+  var got = _.avector.map( src, ( e, k, s, d ) => d.length );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns dst.length';
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( src, ( e, k, s, d ) => d.length );
+  var exp = _.avector.make( [ 5, 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns undefined';
+  var src = _.avector.make( [] );
+  var got = _.avector.map( src, ( e, k, s, d ) => undefined );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns undefined';
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( src, ( e, k, s, d ) => undefined );
+  var exp = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.close( 'src - instance of avector' );
+
+  /* - */
+
+  test.open( 'src - simple vector' );
+
+  test.case = 'src - empty vector, onEach - undefined';
+  var src = [];
+  var got = _.avector.map( src, undefined );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach - null';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.avector.map( src, null );
+  var exp = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns element';
+  var src = [];
+  var got = _.avector.map( src, ( e ) => e );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns element';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.avector.map( src, ( e ) => e );
+  var exp = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns key';
+  var src = [];
+  var got = _.avector.map( src, ( e, k ) => k );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns key';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.avector.map( src, ( e, k ) => k );
+  var exp = [ 0, 1, 2, 3, 4 ];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns src.length';
+  var src = [];
+  var got = _.avector.map( src, ( e, k, s ) => s.length );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns src.length';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.avector.map( src, ( e, k, s ) => s.length );
+  var exp = [ 5, 5, 5, 5, 5 ];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns dst.length';
+  var src = [];
+  var got = _.avector.map( src, ( e, k, s, d ) => d.length );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns dst.length';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.avector.map( src, ( e, k, s, d ) => d.length );
+  var exp = [ 5, 5, 5, 5, 5 ];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns undefined';
+  var src = [];
+  var got = _.avector.map( src, ( e, k, s, d ) => undefined );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - vector, onEach returns undefined';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.avector.map( src, ( e, k, s, d ) => undefined );
+  var exp = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.close( 'src - simple vector' );
+}
+
+//
+
 function cross3( test )
 {
   test.open( 'src1 and src2 - simple vectors' );
@@ -9362,6 +9564,7 @@ var Self =
     //
 
     mapDstIsNull,
+    mapWithoutDst,
 
     cross3,
     cross,
