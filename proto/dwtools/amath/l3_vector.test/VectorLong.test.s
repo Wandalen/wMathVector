@@ -1000,124 +1000,140 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
 
 //
 
-function map( test )
+function mapDstIsNull( test )
 {
-
-  test.case = 'single argument';
+  test.case = 'dst - vectorAdapter';
   var dst = _.avector.make( [ 2, 3, 4 ] );
   var got = _.avector.map( dst );
+  var exp = _.avector.make( [ 2, 3, 4 ] );
+  test.identical( got, exp );
   test.is( got === dst );
 
-  test.case = 'dst and undefined';
+  test.case = 'dst - vectorAdapter, src - undefined';
   var dst = _.avector.make( [ 2, 3, 4 ] );
   var got = _.avector.map( dst, undefined );
+  var exp = _.avector.make( [ 2, 3, 4 ] );
+  test.identical( got, exp );
   test.is( got === dst );
 
-  test.case = 'dst and null';
+  test.case = 'dst - vectorAdapter, src - null';
   var dst = _.avector.make( [ 2, 3, 4 ] );
   var got = _.avector.map( dst, null );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'dst = src';
-  function inRange( src )
-  {
-    return -5 < src && src < 0 ; /* numbers in range */
-  }
-  var vector = _.avector.make( [ -1, -1.5, -2 ] );
-  var gotBool = _.avector.map( vector, inRange );
-  var expected = _.avector.make( [ true, true, true ] );
-  test.identical( gotBool, expected );
-  test.is( gotBool === vector );
-
-  /* */
-
-  test.case = 'dst = null';
-  function inRange( src )
-  {
-    return - 5 < src && src < 0 ; /* numbers in range */
-  }
-  var vector = _.avector.make( [ -1, -1.5, -2 ] );
-  var gotBool = _.avector.map( null, vector, inRange );
-  var expected = _.avector.make( [ 1, 1, 1 ] );
-  test.identical( gotBool, expected );
-  var expected = _.avector.make( [ -1, -1.5, -2 ] )
-  test.equivalent( expected, vector );
-
-  /* */
-
-  test.case = 'Check if a number is > 0 - empty';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var vector = _.avector.make( [] );
-  var gotBool = _.avector.map( vector, positiveNumber );
-  var expected = _.avector.make( [] );
-  test.identical( gotBool, expected );
-
-  /* */
-
-  test.case = 'Check if a number is > 0 - true';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var vector = _.avector.make( [ 0, 1, 0, 2, 1000, 307 ] );
-  var gotBool = _.avector.map( vector, positiveNumber );
-  var expected = _.avector.make( [ true, true, true, true, true, true ] );
-  test.identical( gotBool, expected );
-
-  /* */
-
-  test.case = 'Check if a number is > 0 - false some';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var vector = _.avector.make( [ 0, - 1, 0, 2, 1000 ] );
-  var gotBool = _.avector.map( vector, positiveNumber );
-  var expected = _.avector.make( [ true, false, true, true, true ] );
-  test.identical( gotBool, expected );
-
-  /* */
-
-  test.case = 'Check if a number is > 0 - false none';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var vector = _.avector.make( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
-  var gotBool = _.avector.map( vector, positiveNumber );
-  var expected = _.avector.make( [ false, false, false, true, true ] );
-  test.identical( gotBool, expected );
-
-  /* */
-
-  test.case = 'dst is array';
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  var dst = [ 0, 1, 2, 3 ];
-  var got = _.avector.map( dst, onEvaluate );
-  test.is( got === dst );
-  var exp = [ false, false, false, true ];
+  var exp = _.avector.make( [ 2, 3, 4 ] );
   test.identical( got, exp );
+  test.is( got === dst );
+
+  /* - */
+
+  test.open( 'dst - null' );
+
+  test.case = 'src - empty vector, onEach - undefined';
+  var dst = null;
+  var src = _.avector.make( [] );
+  var got = _.avector.map( dst, src, undefined );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - vector, onEach - null';
+  var dst = null;
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( dst, src, null );
+  var exp = _.longDescriptor.from( 5 );
+  test.identical( got, exp );
+  test.is( got !== src );
 
   /* */
 
-  test.case = 'dst is typed array';
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  var dst = I8x.from([ 0, 1, 2, 3 ]);
-  var got = _.avector.map( dst, onEvaluate );
-  test.is( got === dst );
-  var exp = I8x.from([ false, false, false, true ]);
+  test.case = 'src - empty vector, onEach returns element';
+  var dst = null;
+  var src = _.avector.make( [] );
+  var got = _.avector.map( dst, src, ( e ) => e );
+  var exp = _.avector.make( [] );
   test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - vector, onEach returns element';
+  var dst = null;
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( dst, src, ( e ) => e );
+  var exp = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns key';
+  var dst = null;
+  var src = _.avector.make( [] );
+  var got = _.avector.map( dst, src, ( e, k ) => k );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - vector, onEach returns key';
+  var dst = null;
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( dst, src, ( e, k ) => k );
+  var exp = _.avector.make( [ 0, 1, 2, 3, 4 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns src.length';
+  var dst = null;
+  var src = _.avector.make( [] );
+  var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - vector, onEach returns src.length';
+  var dst = null;
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
+  var exp = _.avector.make( [ 5, 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns dst.length';
+  var dst = null;
+  var src = _.avector.make( [] );
+  var got = _.avector.map( dst, src, ( e, k, s, d ) => d.length );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - vector, onEach returns dst.length';
+  var dst = null;
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( dst, src, ( e, k, s, d ) => d.length );
+  var exp = _.avector.make( [ 5, 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns undefined';
+  var dst = null;
+  var src = _.avector.make( [] );
+  var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
+  var exp = _.avector.make( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - vector, onEach returns undefined';
+  var dst = null;
+  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
+  var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
+  var exp = _.longDescriptor.from( 5 );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.close( 'dst - null' );
 
   /* - */
 
@@ -1127,34 +1143,29 @@ function map( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.avector.map() );
 
-  test.case = 'Only one argument';
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [] ), _.avector.make( [] ), ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.map( { 1 : 0 }, _.avector.make( [ 1 ] ), ( e ) => e ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 1 ] ), { 1 : 0 }, ( e ) => e ) );
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 1, 2 ] ), _.avector.make( [ 1, 2 ] ), [] ) );
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 1 ] ), _.avector.make( [ 2 ] ), 'wrong' ) );
+
+  test.case = 'different length of dst and src';
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 1, 2 ] ), _.avector.make( [] ), ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 1 ] ), _.avector.make( [ 1, 2 ] ), ( e ) => e ) );
+
+  test.case = 'only dst, dst - null';
   test.shouldThrowErrorSync( () => _.avector.map( null ) );
-  test.shouldThrowErrorSync( () => _.avector.map( NaN ) );
-  test.shouldThrowErrorSync( () => _.avector.map( undefined ) );
-  test.shouldThrowErrorSync( () => _.avector.map( 'string' ) );
-  test.shouldThrowErrorSync( () => _.avector.map( 2 ) );
 
-  /* */
-
-  test.case = 'Wrong second argument';
-
-  // test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), null )); /* aaa : add such test case */ /* Dmytro : added */
-  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 3, 4 ] ), _.avector.make( [ 2, 3, 4 ] ) ));
-
-  /* */
-
-  test.case = 'Wrong first argument';
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.avector.map( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.avector.map( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.avector.map( 'string', onEvaluate ));
+  test.case = 'two arguments, onEach not undefined' ;
+  test.shouldThrowErrorSync( () => _.avector.map( null, _.avector.make( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.avector.map( _.avector.make( [ 2, 1 ] ), _.avector.make( [ 1, 2 ] ) ) );
 }
 
 //
@@ -9350,7 +9361,7 @@ var Self =
 
     //
 
-    map,
+    mapDstIsNull,
 
     cross3,
     cross,
