@@ -153,28 +153,28 @@ function reviewSrcIsSimpleVector( test )
     test.case = 'src - empty vector, crange - 0';
     var src = new makeLong( [] );
     var got = _.avector.review( src, 0 );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = _.avector.review( src, 0 );
-    var exp = new makeLong(  [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = _.avector.review( src, 2 );
-    var exp = new makeLong(  [ 2, 3, 4, 5 ] );
+    var exp = new makeLong( [ 2, 3, 4, 5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = _.avector.review( src, 6 );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -183,42 +183,42 @@ function reviewSrcIsSimpleVector( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = new makeLong( [] );
     var got = _.avector.review( src, [ 0, -1 ] );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = _.avector.review( src, [ 0, 5 ] );
-    var exp = new makeLong(  [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = _.avector.review( src, [ 0, 3 ] );
-    var exp = new makeLong(  [ 0, 1, 2, 3 ] );
+    var exp = new makeLong( [ 0, 1, 2, 3 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = _.avector.review( src, [ 1, 3 ] );
-    var exp = new makeLong(  [ 1, 2, 3 ] );
+    var exp = new makeLong( [ 1, 2, 3 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = _.avector.review( src, [ 6, 5 ] );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = _.avector.review( src, [ 3, 2 ] );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -473,28 +473,28 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.fromLongWithStride( new makeLong( [] ), 2 );
     var got = _.avector.review( src, 0 );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - 0';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = _.avector.review( src, 0 );
-    var exp = new makeLong(  [ 0, 2, 4, 6, 8, 10 ] );
+    var exp = new makeLong( [ 0, 2, 4, 6, 8, 10 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = _.avector.review( src, 2 );
-    var exp = new makeLong(  [ 4, 6, 8, 10 ] );
+    var exp = new makeLong( [ 4, 6, 8, 10 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = _.avector.review( src, 6 );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -503,42 +503,42 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.fromLongWithStride( new makeLong( [] ), 2 );
     var got = _.avector.review( src, [ 0, -1 ] );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = _.avector.review( src, [ 0, 5 ] );
-    var exp = new makeLong(  [ 0, 2, 4, 6, 8, 10 ] );
+    var exp = new makeLong( [ 0, 2, 4, 6, 8, 10 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = _.avector.review( src, [ 0, 3 ] );
-    var exp = new makeLong(  [ 0, 2, 4, 6 ] );
+    var exp = new makeLong( [ 0, 2, 4, 6 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = _.avector.review( src, [ 1, 3 ] );
-    var exp = new makeLong(  [ 2, 4, 6 ] );
+    var exp = new makeLong( [ 2, 4, 6 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = _.avector.review( src, [ 6, 5 ] );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = _.avector.review( src, [ 3, 2 ] );
-    var exp = new makeLong(  [] );
+    var exp = new makeLong( [] );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -625,7 +625,7 @@ function reviewSrcIsAdapterRoutineFromLongLrange( test )
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
-    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2, 6  );
+    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2, 6 );
     var got = _.avector.review( src, [ 6, 5 ] );
     var exp = new makeLong( [] );
     test.identical( got, exp );
@@ -721,7 +721,7 @@ function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
-    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 2, 6, 2  );
+    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 2, 6, 2 );
     var got = _.avector.review( src, [ 6, 5 ] );
     var exp = new makeLong( [] );
     test.identical( got, exp );
@@ -2339,7 +2339,7 @@ function mapDstIsVectorSimpleVector( test )
     var dst = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, null );
-    var exp = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ]  ) );
+    var exp = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2439,7 +2439,7 @@ function mapDstIsVectorSimpleVector( test )
     var dst = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ]  ) );
+    var exp = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2463,7 +2463,7 @@ function mapDstIsVectorSimpleVector( test )
     var dst = new makeLong( [ -1, -2, -3, -4, -5 ] );
     var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.avector.map( dst, src, null );
-    var exp = new makeLong( [ -1, -2, -3, -4, -5 ]  );
+    var exp = new makeLong( [ -1, -2, -3, -4, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2563,12 +2563,154 @@ function mapDstIsVectorSimpleVector( test )
     var dst = new makeLong( [ -1, -2, -3, -4, -5 ] );
     var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = new makeLong( [ -1, -2, -3, -4, -5 ]  );
+    var exp = new makeLong( [ -1, -2, -3, -4, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
 
     test.close( 'simple vector' );
+  }
+}
+
+//
+
+function mapDstIsVectorRoutineFromLong( test )
+{
+  var list = 
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, undefined );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, null );
+    var exp = new makeLong( [ -1, -2, -3, -4, -5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e ) => e );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e ) => e );
+    var exp = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e, k ) => k );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e, k ) => k );
+    var exp = new makeLong( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
+    var exp = new makeLong( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = new makeLong( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = new makeLong( [ -1, -2, -3, -4, -5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
   }
 }
 
@@ -5372,7 +5514,7 @@ function _isIdentical( test, r, t, array )
   var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1, 2, 3 ) );
   test.identical( got, expected );
   var expected = array( t, t, t );
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3 ]  );
+  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3 ] );
   test.identical( got, expected );
 
   test.case = 'bad arguments'; /* */
@@ -5609,7 +5751,7 @@ function isNotEquivalent( test )
 //   var got = _.avector[ r ]( [ 1, 2, 3 ], array( 1+e, 2, 3 ) );
 //   test.identical( got, expected );
 //   var expected = array( t, t, t );
-//   var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+//   var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ] );
 //   test.identical( got, expected );
 //
 // }
@@ -5739,7 +5881,7 @@ function _isGreater( test, r, t, array )
   var got = _.avector[ r ]( [ 1, 2, 4 ], array( 1, 2, 3 ) );
   test.identical( got, expected );
   var expected = array( f, f, f );
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
+  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ] );
   test.identical( got, expected );
 
   test.case = 'bad arguments'; /* */
@@ -6225,7 +6367,7 @@ function _isGreaterAprox( test, r, t, array )
   var expected = array( f, t, t );
   var got = _.avector[ r ]( null, array( 1, 2, 3 ), 2 );
   test.identical( got, expected );
-  var expected = array( t, t, f  );
+  var expected = array( t, t, f );
   var got = _.avector[ r ]( null, 2, array( 1, 2, 3 ) );
   test.identical( got, expected );
 
@@ -7022,7 +7164,7 @@ function allEquivalent( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ] );
     test.identical( got, expected );
   }
 }
@@ -7131,7 +7273,7 @@ function allGreater( test )
     var got = _.avector[ r ]( [ 1, 2, 4 ], array( 1, 2, 3 ) );
     test.identical( got, expected );
     var expected = f;
-    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ] );
     test.identical( got, expected );
 
     test.case = 'bad arguments'; /* */
@@ -7258,7 +7400,7 @@ function allGreaterEqualAprox( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ] );
     test.identical( got, expected );
   }
 }
@@ -7361,7 +7503,7 @@ function allGreaterAprox( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ] );
     test.identical( got, expected );
   }
 }
@@ -7472,7 +7614,7 @@ function allLessEqualAprox( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ] );
     test.identical( got, expected );
   }
 }
@@ -7575,7 +7717,7 @@ function allLessAprox( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 3+e ] );
     test.identical( got, expected );
   }
 }
@@ -7872,7 +8014,7 @@ function anyEquivalent( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ] );
     test.identical( got, expected );
   }
 }
@@ -8001,7 +8143,7 @@ function anyGreater( test )
     test.identical( got, expected );
 
     var expected = f;
-    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ] );
     test.identical( got, expected );
 
     test.case = 'bad arguments'; /* */
@@ -8126,7 +8268,7 @@ function anyGreaterEqualAprox( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ] );
     test.identical( got, expected );
   }
 }
@@ -8229,7 +8371,7 @@ function anyGreaterAprox( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ] );
     test.identical( got, expected );
   }
 }
@@ -8335,7 +8477,7 @@ function anyLessEqualAprox( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ] );
     test.identical( got, expected );
   }
 }
@@ -8438,7 +8580,7 @@ function anyLessAprox( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ] );
     test.identical( got, expected );
   }
 }
@@ -8660,13 +8802,13 @@ function _noneGreaterAprox( test, r, t, Array, array )
 
   test.case = 'different types of containers'; /* */
   var expected = t;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 4, 5, 6 ]  );
+  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 4, 5, 6 ] );
   test.identical( got, expected );
   var expected = f;
   var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
   test.identical( got, expected );
   var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ] );
   test.identical( got, expected );
 
 
@@ -8728,13 +8870,13 @@ function _noneLessAprox( test, r, t, Array, array )
 
   test.case = 'different types of containers'; /* */
   var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 4, 5, 6 ]  );
+  var got = _.avector[ r ]( array( 1, 2, 3 ), [ 4, 5, 6 ] );
   test.identical( got, expected );
   var expected = f;
   var got = _.avector[ r ]( [ 0, 1, 3+e ], array( 1, 2, 3 ) );
   test.identical( got, expected );
   var expected = f;
-  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+  var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ] );
   test.identical( got, expected );
 
 
@@ -8836,7 +8978,7 @@ function noneEquivalent( test )
 
     test.case = 'different types of containers'; /* */
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 4, 5, 6 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 4, 5, 6 ] );
     test.identical( got, expected );
 
     var expected = f;
@@ -8844,7 +8986,7 @@ function noneEquivalent( test )
     test.identical( got, expected );
 
     var expected = f;
-    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3+e ), [ 0, 1, 3 ] );
     test.identical( got, expected );
   }
 }
@@ -8974,7 +9116,7 @@ function noneGreater( test )
     test.identical( got, expected );
 
     var expected = t;
-    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ]  );
+    var got = _.avector[ r ]( array( 1, 2, 3 ), [ 1, 2, 4 ] );
     test.identical( got, expected );
 
     /* - */
@@ -10773,6 +10915,7 @@ var Self =
     mapOnlyDstRoutineFromLong,
     mapOnlyDstRoutineFromLongLrangeAndStride,
     mapDstIsVectorSimpleVector,
+    mapDstIsVectorRoutineFromLong,
 
     cross3,
     cross,
