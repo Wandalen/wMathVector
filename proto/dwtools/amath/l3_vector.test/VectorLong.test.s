@@ -2304,253 +2304,272 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
 
 //
 
-function mapDstIsVector( test )
+function mapDstIsVectorSimpleVector( test )
 {
-  test.open( 'call by namespace' );
+  var list = 
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  test.case = 'src - empty vector, onEach - undefined';
-  var dst = _.avector.make( [] );
-  var src = _.avector.make( [] );
-  var got = _.avector.map( dst, src, undefined );
-  var exp = _.avector.make( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  test.case = 'src - vector, onEach - null';
-  var dst = _.avector.make( [ -1, -2, -3, -4, -5 ] );
-  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
-  var got = _.avector.map( dst, src, null );
-  var exp = _.avector.make( [ -1, -2, -3, -4, -5 ]  );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'src - empty vector, onEach returns element';
-  var dst = _.avector.make( [] );
-  var src = _.avector.make( [] );
-  var got = _.avector.map( dst, src, ( e ) => e );
-  var exp = _.avector.make( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  test.case = 'src - vector, onEach returns element';
-  var dst = _.avector.make( [ -1, -2, -3, -4, -5 ] );
-  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
-  var got = _.avector.map( dst, src, ( e ) => e );
-  var exp = _.avector.make( [ 1, 2, 3, 4, 5 ] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'src - empty vector, onEach returns key';
-  var dst = _.avector.make( [] );
-  var src = _.avector.make( [] );
-  var got = _.avector.map( dst, src, ( e, k ) => k );
-  var exp = _.avector.make( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  test.case = 'src - vector, onEach returns key';
-  var dst = _.avector.make( [ -1, -2, -3, -4, -5 ] );
-  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
-  var got = _.avector.map( dst, src, ( e, k ) => k );
-  var exp = _.avector.make( [ 0, 1, 2, 3, 4 ] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'src - empty vector, onEach returns src.length';
-  var dst = _.avector.make( [] );
-  var src = _.avector.make( [] );
-  var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
-  var exp = _.avector.make( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  test.case = 'src - vector, onEach returns src.length';
-  var dst = _.avector.make( [ -1, -2, -3, -4, -5 ] );
-  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
-  var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
-  var exp = _.avector.make( [ 5, 5, 5, 5, 5 ] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'src - empty vector, onEach returns substruction dst and src elements';
-  var dst = _.avector.make( [] );
-  var src = _.avector.make( [] );
-  var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-  var exp = _.avector.make( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  test.case = 'src - vector, onEach returns substruction dst and src elements';
-  var dst = _.avector.make( [ -1, -2, -3, -4, -5 ] );
-  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
-  var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-  var exp = _.avector.make( [ -2, -4, -6, -8, -10 ] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'src - empty vector, onEach returns undefined';
-  var dst = _.avector.make( [] );
-  var src = _.avector.make( [] );
-  var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-  var exp = _.avector.make( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  test.case = 'src - vector, onEach returns undefined';
-  var dst = _.avector.make( [ -1, -2, -3, -4, -5 ] );
-  var src = _.avector.make( [ 1, 2, 3, 4, 5 ] );
-  var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-  var exp = _.avector.make( [ -1, -2, -3, -4, -5 ]  );
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
-
-  test.close( 'call by namespace' );
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
 
   /* - */
 
-  test.open( 'call by instance' );
+  function testRun( makeLong )
+  {
+    test.open( 'routine make' );
 
-  test.case = 'src - empty vector, onEach - undefined';
-  var dst = [];
-  var src = [];
-  var got = _.avector.map( dst, src, undefined );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.avector.make( new makeLong( [] ) );
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, undefined );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  test.case = 'src - vector, onEach - null';
-  var dst = [ -1, -2, -3, -4, -5 ];
-  var src = [ 1, 2, 3, 4, 5 ];
-  var got = _.avector.map( dst, src, null );
-  var exp = [ -1, -2, -3, -4, -5 ] ;
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - vector, onEach - null';
+    var dst = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, null );
+    var exp = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ]  ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  /* */
+    /* */
 
-  test.case = 'src - empty vector, onEach returns element';
-  var dst = [];
-  var src = [];
-  var got = _.avector.map( dst, src, ( e ) => e );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.avector.make( new makeLong( [] ) );
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e ) => e );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  test.case = 'src - vector, onEach returns element';
-  var dst = [ -1, -2, -3, -4, -5 ];
-  var src = [ 1, 2, 3, 4, 5 ];
-  var got = _.avector.map( dst, src, ( e ) => e );
-  var exp = [ 1, 2, 3, 4, 5 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e ) => e );
+    var exp = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  /* */
+    /* */
 
-  test.case = 'src - empty vector, onEach returns key';
-  var dst = [];
-  var src = [];
-  var got = _.avector.map( dst, src, ( e, k ) => k );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.avector.make( new makeLong( [] ) );
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e, k ) => k );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  test.case = 'src - vector, onEach returns key';
-  var dst = [ -1, -2, -3, -4, -5 ];
-  var src = [ 1, 2, 3, 4, 5 ];
-  var got = _.avector.map( dst, src, ( e, k ) => k );
-  var exp = [ 0, 1, 2, 3, 4 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e, k ) => k );
+    var exp = _.avector.make( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  /* */
+    /* */
 
-  test.case = 'src - empty vector, onEach returns src.length';
-  var dst = [];
-  var src = [];
-  var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.avector.make( new makeLong( [] ) );
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  test.case = 'src - vector, onEach returns src.length';
-  var dst = [ -1, -2, -3, -4, -5 ];
-  var src = [ 1, 2, 3, 4, 5 ];
-  var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
-  var exp = [ 5, 5, 5, 5, 5 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.avector.make( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  /* */
+    /* */
 
-  test.case = 'src - empty vector, onEach returns substruction dst and src elements';
-  var dst = [];
-  var src = [];
-  var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.avector.make( new makeLong( [] ) );
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  test.case = 'src - vector, onEach returns substruction dst and src elements';
-  var dst = [ -1, -2, -3, -4, -5 ];
-  var src = [ 1, 2, 3, 4, 5 ];
-  var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-  var exp = [ -2, -4, -6, -8, -10 ];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.avector.make( new makeLong( [ -2, -4, -6, -8, -10 ] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  /* */
+    /* */
 
-  test.case = 'src - empty vector, onEach returns undefined';
-  var dst = [];
-  var src = [];
-  var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-  var exp = [];
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.avector.make( new makeLong( [] ) );
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  test.case = 'src - vector, onEach returns undefined';
-  var dst = [ -1, -2, -3, -4, -5 ];
-  var src = [ 1, 2, 3, 4, 5 ];
-  var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-  var exp = [ -1, -2, -3, -4, -5 ] ;
-  test.identical( got, exp );
-  test.is( got !== src );
-  test.is( got === dst );
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ]  ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
 
-  test.close( 'call by instance' );
+    test.close( 'routine make' );
+
+    /* - */
+
+    test.open( 'simple vector' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = new makeLong( [] );
+    var src = new makeLong( [] );
+    var got = _.avector.map( dst, src, undefined );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = new makeLong( [ -1, -2, -3, -4, -5 ] );
+    var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.avector.map( dst, src, null );
+    var exp = new makeLong( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = new makeLong( [] );
+    var src = new makeLong( [] );
+    var got = _.avector.map( dst, src, ( e ) => e );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = new makeLong( [ -1, -2, -3, -4, -5 ] );
+    var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.avector.map( dst, src, ( e ) => e );
+    var exp = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = new makeLong( [] );
+    var src = new makeLong( [] );
+    var got = _.avector.map( dst, src, ( e, k ) => k );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = new makeLong( [ -1, -2, -3, -4, -5 ] );
+    var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.avector.map( dst, src, ( e, k ) => k );
+    var exp = new makeLong( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = new makeLong( [] );
+    var src = new makeLong( [] );
+    var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = new makeLong( [ -1, -2, -3, -4, -5 ] );
+    var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.avector.map( dst, src, ( e, k, s ) => s.length );
+    var exp = new makeLong( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = new makeLong( [] );
+    var src = new makeLong( [] );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = new makeLong( [ -1, -2, -3, -4, -5 ] );
+    var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = new makeLong( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = new makeLong( [] );
+    var src = new makeLong( [] );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = new makeLong( [ -1, -2, -3, -4, -5 ] );
+    var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = new makeLong( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.close( 'simple vector' );
+  }
 }
 
 //
@@ -10753,7 +10772,7 @@ var Self =
     mapOnlyDstSimpleVector,
     mapOnlyDstRoutineFromLong,
     mapOnlyDstRoutineFromLongLrangeAndStride,
-    mapDstIsVector,
+    mapDstIsVectorSimpleVector,
 
     cross3,
     cross,
