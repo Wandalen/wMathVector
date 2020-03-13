@@ -1152,7 +1152,7 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
 
 //
 
-function mapDstIsNullRoutineMake( test )
+function mapDstIsNullSimpleVector( test )
 {
   var list = 
   [
@@ -10491,7 +10491,7 @@ var Self =
 
     //
 
-    mapDstIsNullRoutineMake,
+    mapDstIsNullSimpleVector,
     mapDstIsNullRoutineFromLong,
     mapDstIsNullRoutineFromLongLrangeAndStride,
     mapDstIsNullRoutineFromNumber,
