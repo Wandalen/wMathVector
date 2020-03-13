@@ -1467,7 +1467,7 @@ function mapDstIsVector( test )
   var dst = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ] );
   var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   var got = _.vectorAdapter.map( dst, src, null );
-  var exp = _.vectorAdapter.from( [] );
+  var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
   test.identical( got, exp );
   test.is( got !== src );
   test.is( got === dst );
@@ -1567,7 +1567,7 @@ function mapDstIsVector( test )
   var dst = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ] );
   var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-  var exp = _.vectorAdapter.from( [] );
+  var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
   test.identical( got, exp );
   test.is( got !== src );
   test.is( got === dst );
@@ -1591,7 +1591,7 @@ function mapDstIsVector( test )
   var dst = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ] );
   var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   var got = dst.map( src, null );
-  var exp = _.vectorAdapter.from( [] );
+  var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
   test.identical( got, exp );
   test.is( got !== src );
   test.is( got === dst );
@@ -1691,7 +1691,7 @@ function mapDstIsVector( test )
   var dst = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ] );
   var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   var got = dst.map( src, ( e, k, s, d ) => undefined );
-  var exp = _.vectorAdapter.from( [] );
+  var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
   test.identical( got, exp );
   test.is( got !== src );
   test.is( got === dst );
