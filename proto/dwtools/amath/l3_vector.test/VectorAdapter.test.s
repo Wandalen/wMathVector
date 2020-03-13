@@ -206,77 +206,96 @@ function toLong( test )
 
 function reviewSrcIsSimpleVector( test )
 {
-  test.case = 'src - empty vector, crange - 0';
-  var src = [];
-  var got = vad.review( src, 0 );
-  var exp = vad.from( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
+  var list = 
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  test.case = 'crange - 0';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = vad.review( src, 0 );
-  var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  test.identical( got, exp );
-  test.is( got !== src );
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
 
-  test.case = 'crange > 0 && crange < src.length - 1';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = vad.review( src, 2 );
-  var exp = vad.from( [ 2, 3, 4, 5 ] );
-  test.identical( got, exp );
-  test.is( got !== src );
+  /* - */
 
-  test.case = 'crange - src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = vad.review( src, 6 );
-  var exp = vad.from( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, crange - 0';
+    var src = new makeLong( [] );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
 
-  /* */
+    test.case = 'crange - 0';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
 
-  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
-  var src = [];
-  var got = vad.review( src, [ 0, -1 ] );
-  var exp = vad.from( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
 
-  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = vad.review( src, [ 0, 5 ] );
-  var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-  test.identical( got, exp );
-  test.is( got !== src );
+    test.case = 'crange - src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
 
-  test.case = 'crange[ 0 ] - 0, crange < src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = vad.review( src, [ 0, 3 ] );
-  var exp = vad.from( [ 0, 1, 2, 3 ] );
-  test.identical( got, exp );
-  test.is( got !== src );
+    /* */
 
-  test.case = 'crange[ 0 ] > 0, crange < src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = vad.review( src, [ 1, 3 ] );
-  var exp = vad.from( [ 1, 2, 3 ] );
-  test.identical( got, exp );
-  test.is( got !== src );
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = new makeLong( [] );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
 
-  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = vad.review( src, [ 6, 5 ] );
-  var exp = vad.from( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
 
-  test.case = 'crange[ 0 ] > crange[ 1 ]';
-  var src = [ 0, 1, 2, 3, 4, 5 ];
-  var got = vad.review( src, [ 3, 2 ] );
-  var exp = vad.from( [] );
-  test.identical( got, exp );
-  test.is( got !== src );
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+  }
 
   /* - */
 
