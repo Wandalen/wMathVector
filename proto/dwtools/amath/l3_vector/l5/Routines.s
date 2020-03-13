@@ -739,7 +739,7 @@ function map( dst, src, onEach )
 
   if( arguments.length < 3 || _.routineIs( arguments[ 1 ] ) )
   {
-    src = dst;
+    src = arguments[ 0 ];
     onEach = arguments[ 1 ];
     _.assert( arguments[ 2 ] === undefined );
   }
@@ -752,7 +752,7 @@ function map( dst, src, onEach )
 
   let l = src.length;
 
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
   _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.routineIs( onEach ) );
@@ -767,6 +767,8 @@ function map( dst, src, onEach )
   }
 
   return dst;
+
+  /* */
 
   function onEach0( e, k, src, dst )
   {
@@ -2851,7 +2853,7 @@ let _routinesMathematical =
   // resizedAdapter, /* zzz : deprecate */
   // resizedLong, /* zzz : deprecate */
 
-  review, /* qqq : cover please */
+  review, /* aaa : cover please */ /* Dmytro : covered */
   // subarray, /* zzz : deprecate */
 
   bufferConstructorOf,

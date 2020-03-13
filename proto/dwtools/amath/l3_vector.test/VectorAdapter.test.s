@@ -1076,146 +1076,139 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
 // iterator
 // --
 
-function map( test )
+function mapDstIsNull( test )
 {
-  test.case = 'single argument';
+  test.case = 'dst - vectorAdapter';
   var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
   var got = _.vectorAdapter.map( dst );
+  var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+  test.identical( got, exp );
   test.is( got === dst );
 
-  test.case = 'dst and undefined';
+  test.case = 'dst - vectorAdapter, src - undefined';
   var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
   var got = _.vectorAdapter.map( dst, undefined );
+  var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+  test.identical( got, exp );
   test.is( got === dst );
 
-  test.case = 'dst and null';
+  test.case = 'dst - vectorAdapter, src - null';
   var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
   var got = _.vectorAdapter.map( dst, null );
+  var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+  test.identical( got, exp );
   test.is( got === dst );
 
-  /* */
+  /* - */
 
-  test.case = 'dst = src';
-  function onElement1( src )
-  {
-    return - 5 < src && src < 0 ; /* numbers in range */
-  }
-  var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
-  var got = _.vectorAdapter.map( src, onElement1 );
-  var exp = _.vectorAdapter.from( [ true, true, true ] );
+  test.open( 'dst - null' );
+
+  test.case = 'src - empty vector, onEach - undefined';
+  var dst = null;
+  var src = _.vectorAdapter.from( [] );
+  var got = _.vectorAdapter.map( dst, src, undefined );
+  var exp = _.vectorAdapter.from( [] );
   test.identical( got, exp );
-  test.is( got === src );
+  test.is( got !== src );
 
-  /* */
-
-  test.case = 'dst = null';
-  function onElement1( src )
-  {
-    return - 5 < src && src < 0 ; /* numbers in range */
-  }
-  var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
-  var got = _.vectorAdapter.map( null, src, onElement1 );
-  var exp = _.vectorAdapter.make( [ 1, 1, 1 ] );
-  test.identical( got, exp );
-
-  var exp = _.vectorAdapter.from( [ -1, -1.5, -2 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  test.case = 'Check if a number is > 0 - empty';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var src = _.vectorAdapter.from( [ ] );
-  var got = _.vectorAdapter.map( src, positiveNumber );
-  var exp = _.vectorAdapter.from( [ ] );
+  test.case = 'src - vector, onEach - null';
+  var dst = null;
+  var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+  var got = _.vectorAdapter.map( dst, src, null );
+  var exp = _.vectorAdapter.from( [] );
   test.identical( got, exp );
 
   /* */
 
-  test.case = 'Check if a number is > 0 - true';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var src = _.vectorAdapter.from( [ 0, 1, 0, 2, 1000, 307 ] );
-  var got = _.vectorAdapter.map( src, positiveNumber );
-  var exp = _.vectorAdapter.from( [ true, true, true, true, true, true ] );
+  test.case = 'src - empty vector, onEach returns element';
+  var dst = null;
+  var src = _.vectorAdapter.from( [] );
+  var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+  var exp = _.vectorAdapter.from( [] );
   test.identical( got, exp );
+  test.is( got !== src );
 
-  /* */
-
-  test.case = 'Check if a number is > 0 - false some';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var src = _.vectorAdapter.from( [ 0, - 1, 0, 2, 1000, '307' ] );
-  var got = _.vectorAdapter.map( src, positiveNumber );
-  var exp = _.vectorAdapter.from( [ true, false, true, true, true, false ] );
+  test.case = 'src - vector, onEach returns element';
+  var dst = null;
+  var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+  var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+  var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, exp );
+  test.is( got !== src );
 
   /* */
 
-  test.case = 'Check if a number is > 0 - false none';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var src = _.vectorAdapter.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
-  var got = _.vectorAdapter.map( src, positiveNumber );
-  var exp = _.vectorAdapter.from( [ false, false, false, false, false ] );
+  test.case = 'src - empty vector, onEach returns key';
+  var dst = null;
+  var src = _.vectorAdapter.from( [] );
+  var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+  var exp = _.vectorAdapter.from( [] );
   test.identical( got, exp );
+  test.is( got !== src );
 
-  /* */
-
-  test.case = 'Check if a string starts with h - true';
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; /* str starts with H */
-  }
-  var src = _.vectorAdapter.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
-  var got = _.vectorAdapter.map( src, stringLengthThree );
-  var expectedStr = _.vectorAdapter.from( [ true, true, true, true, true, true, true, true ] );
-  test.identical( got, expectedStr );
-
-  /* */
-
-  test.case = 'Check if a string starts with h - false';
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; /* str starts with H */
-  }
-  var src = _.vectorAdapter.from( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
-  var got = _.vectorAdapter.map( src, stringLengthThree );
-  var exp = _.vectorAdapter.from( [ false, true, false, false, false ] );
+  test.case = 'src - vector, onEach returns key';
+  var dst = null;
+  var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+  var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+  var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
   test.identical( got, exp );
+  test.is( got !== src );
 
   /* */
 
-  test.case = 'Check an array´s length - true';
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; /* arrays of length 4 */
-  }
-  var src = _.vectorAdapter.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
-  var got = _.vectorAdapter.map( src, arrayLength );
-  var expectedArr = _.vectorAdapter.from( [ true, true ] );
-  test.identical( got, expectedArr );
-
-  /* */
-
-  test.case = 'Check an array´s length - false';
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; /* arrays of length 4 */
-  }
-  var src = _.vectorAdapter.from( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
-  var got = _.vectorAdapter.map( src, arrayLength );
-  var exp =  _.vectorAdapter.from( [ false, false ] );
+  test.case = 'src - empty vector, onEach returns src.length';
+  var dst = null;
+  var src = _.vectorAdapter.from( [] );
+  var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+  var exp = _.vectorAdapter.from( [] );
   test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - vector, onEach returns src.length';
+  var dst = null;
+  var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+  var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+  var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns dst.length';
+  var dst = null;
+  var src = _.vectorAdapter.from( [] );
+  var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+  var exp = _.vectorAdapter.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - vector, onEach returns dst.length';
+  var dst = null;
+  var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+  var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+  var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty vector, onEach returns undefined';
+  var dst = null;
+  var src = _.vectorAdapter.from( [] );
+  var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+  var exp = _.vectorAdapter.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - vector, onEach returns undefined';
+  var dst = null;
+  var src = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+  var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+  var exp = _.vectorAdapter.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.close( 'dst - null' );
 
   /* - */
 
@@ -1225,36 +1218,31 @@ function map( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.vectorAdapter.map() );
 
-  test.case = 'Only one argument';
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [] ), _.vectorAdapter.from( [] ), ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( [ 1, 2 ], _.vectorAdapter.from( [ 1, 2 ] ), ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( { 1 : 0 }, _.vectorAdapter.from( [ 1 ] ), ( e ) => e ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1, 2 ] ), [ 1, 2 ], ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1 ] ), { 1 : 0 }, ( e ) => e ) );
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1, 2 ] ), _.vectorAdapter.from( [ 1, 2 ] ), [] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1 ] ), _.vectorAdapter.from( [ 2 ] ), 'wrong' ) );
+
+  test.case = 'different length of dst and src';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1, 2 ] ), _.vectorAdapter.from( [] ), ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1 ] ), _.vectorAdapter.from( [ 1, 2 ] ), ( e ) => e ) );
+
+  test.case = 'only dst, dst - null';
   test.shouldThrowErrorSync( () => _.vectorAdapter.map( null ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( NaN ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( undefined ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 'string' ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 2 ) );
 
-  /* */
-
-  test.case = 'Wrong second argument';
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* aaa : add such test case */ /* Dmytro : added */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
-
-  /* */
-
-  test.case = 'Wrong first argument';
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+  test.case = 'two arguments, onEach not undefined' ;
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( null, _.vectorAdapter.from( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 1 ] ), _.vectorAdapter.from( [ 1, 2 ] ) ) );
 }
 
 //
@@ -2824,7 +2812,7 @@ var Self =
 
     // iterator
 
-    map,
+    mapDstIsNull,
     filter,
     while : _while,
 
