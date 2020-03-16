@@ -4433,6 +4433,26 @@ function filterDstIsVectorSimpleVector( test )
     test.is( got !== src );
     test.is( got !== dst );
 
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.avector.make( new makeLong( [ -1, -2 ] ) );
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) ); 
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = _.avector.make( new makeLong( [ 1, 2 ] ) )
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.avector.make( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.avector.make( new makeLong( [ 1, 2 ] ) );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = _.avector.make( new makeLong( [ 1, 2 ] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
     test.close( 'routine make' );
 
     /* - */
@@ -4553,6 +4573,26 @@ function filterDstIsVectorSimpleVector( test )
     var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
     var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = new makeLong( [ -1, -2 ] );
+    var src = new makeLong( [ 1, 2, 3, 4, 5 ] ); 
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = _.arrayIs( got ) ? [ 1, 2, 3, 4, 5 ] : new makeLong( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( _.arrayIs( got ) ? got === dst : got !== dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = new makeLong( [ -1, -2, -3, -4, -5 ] );
+    var src = new makeLong( [ 1, 2 ] );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = new makeLong( [ 1, 2 ] );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4700,6 +4740,26 @@ function filterDstIsVectorRoutineFromLong( test )
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ); 
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = _.arrayIs( got ) ? [ 1, 2, 3, 4, 5 ] : new makeLong( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2 ] ) );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = new makeLong( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
   }
 }
 
@@ -4839,6 +4899,25 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
     var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    test.shouldThrowErrorSync( () => 
+    {
+      var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 2, 2 );
+      var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 4, 2 );
+      var got = _.avector.filter( dst, src, ( e ) => e );
+    });
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 4, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 2, 2 );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = new makeLong( [ 1, 3 ] );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4984,6 +5063,26 @@ function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 1, 2 ] ) );
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = _.arrayIs( got ) ? [ 1, 2, 3, 4, 5 ] : new makeLong( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2 ] ) ), 2 );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = new makeLong( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
   }
 }
 
@@ -5123,6 +5222,26 @@ function filterDstIsVectorRoutineFromNumberWithNumber( test )
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
     var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 1, 2 ] ) );
+    var src = _.vectorAdapter.fromNumber( 8, 5 );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = _.arrayIs( got ) ? [ 8, 8, 8, 8, 8 ] : new makeLong( [ 8, 8 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromNumber( 7, 2 );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = new makeLong( [ 7, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
