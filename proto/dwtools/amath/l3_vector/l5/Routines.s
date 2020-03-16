@@ -2167,7 +2167,7 @@ function all( src, onEach )
 
   let l = src.length;
 
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
   _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.routineIs( onEach ) );
   _.assert( _.intIs( l ) );
@@ -2180,6 +2180,8 @@ function all( src, onEach )
   }
 
   return true;
+
+  /* */
 
   function onEach0( e, k, src )
   {
