@@ -4580,8 +4580,8 @@ function filterDstIsVectorSimpleVector( test )
     /* */
 
     test.case = 'dst.length < src.length, onEach returns element';
-    var dst = new makeLong( [ -1, -2 ] );
-    var src = new makeLong( [ 1, 2, 3, 4, 5 ] ); 
+    var dst = new makeLong( [ -1, -2 ] )
+    var src = new makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.avector.filter( dst, src, ( e ) => e );
     var exp = _.arrayIs( got ) ? [ 1, 2, 3, 4, 5 ] : new makeLong( [ 1, 2 ] );
     test.identical( got, exp );
