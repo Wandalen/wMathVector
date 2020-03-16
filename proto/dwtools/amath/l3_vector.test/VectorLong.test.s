@@ -9355,6 +9355,297 @@ logical2ArgsZipperWithBadArguments.timeOut = 30000;
 
 //
 
+function allSimpleVector( test )
+{
+  var list = 
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'src - simple vector' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = new makeLong( [] );
+    var got = _.avector.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = new makeLong( [ 1, 2, 3, -1, -2, -3 ] );
+    var got = _.avector.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = new makeLong( [ 1, 0, 3, -1, -2, -3 ] );
+    var got = _.avector.all( src );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = new makeLong( [] );
+    var got = _.avector.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = new makeLong( [ 1, 2, 3, -1, -2, -3 ] );
+    var got = _.avector.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = new makeLong( [ 1, 2, 3, -1, -2, 0 ] );
+    var got = _.avector.all( src, null );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = new makeLong( [] );
+    var got = _.avector.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = new makeLong( [ 1, 2, 3, -1, -2, -3 ] );
+    var got = _.avector.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = new makeLong( [ 1, 2, 3, 0, -2, -3 ] );
+    var got = _.avector.all( src, undefined );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = new makeLong( [] );
+    var got = _.avector.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = new makeLong( [ 1, 2, 3, -1, -2, -3 ] );
+    var got = _.avector.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = new makeLong( [ 1, 2, 3, 0, -2, -3 ] );
+    var got = _.avector.all( src, ( e ) => e );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = new makeLong( [] );
+    var got = _.avector.all( src, ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = new makeLong( [ 1, 2, 3, -1, -2, -3 ] );
+    var got = _.avector.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = new makeLong( [ 1, 2, 3, 0, -2, -3 ] );
+    var got = _.avector.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = new makeLong( [] );
+    var got = _.avector.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = new makeLong( [ 1, 2, 3, -1, -2, -3 ] );
+    var got = _.avector.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = new makeLong( [ 1, 2, 3, 0, -2, -3 ] );
+    var got = _.avector.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = new makeLong( [] );
+    var got = _.avector.all( src, ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = new makeLong( [ 1, 2, 3, -1, -2, -3 ] );
+    var got = _.avector.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = new makeLong( [ 1, 2, 3, 0, -2, -3 ] );
+    var got = _.avector.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'src - simple vector' );
+
+    /* - */
+
+    test.open( 'src - from routine make' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.avector.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = _.avector.make( new makeLong( [ 1, 0, 3, -1, -2, -3 ] ) );
+    var got = _.avector.all( src );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.avector.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, -1, -2, 0 ] ) );
+    var got = _.avector.all( src, null );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.avector.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.avector.all( src, undefined );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.avector.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.avector.all( src, ( e ) => e );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.all( src, ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.avector.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.avector.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.avector.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.avector.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.all( src, ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.avector.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.avector.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'src - from routine make' );
+  }
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.avector.all());
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.all( null ));
+  test.shouldThrowErrorSync( () => _.avector.all( undefined ));
+  test.shouldThrowErrorSync( () => _.avector.all( 2 ));
+  test.shouldThrowErrorSync( () => _.avector.all( 'wrong' ));
+  test.shouldThrowErrorSync( () => _.avector.all( null, ( e, k ) => k ));
+  test.shouldThrowErrorSync( () => _.avector.all( undefined, ( e, k ) => k ));
+  test.shouldThrowErrorSync( () => _.avector.all( 'wrong', ( e, k ) => k ));
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.avector.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.avector.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'wrong' ));
+  test.shouldThrowErrorSync( () => _.avector.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.avector.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
+}
+
+//
+
 function _allIdentical( test, r, t, array )
 {
   var f = !t;
@@ -13515,6 +13806,8 @@ var Self =
     logical2ArgsZipperWithBadArguments,
 
     /* */
+
+    allSimpleVector,
 
     allIdentical,
     allNotIdentical,

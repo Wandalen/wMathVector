@@ -6573,8 +6573,7 @@ function allRoutineFromLong( test )
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( [ 0, 1, 2, 3 ], ( e, k ) => k ));
   // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* aaa : add such test case */ /* Dmytro : implemented */
 
-  test.case = 'wrong type of onEach'; //
-
+  test.case = 'wrong type of onEach';
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'wrong' ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
