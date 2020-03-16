@@ -5657,225 +5657,6 @@ function _while( test )
 
 //
 
-function all( test )
-{
-
-  /* */
-
-  test.case = 'basic false';
-
-  function onElement1( src )
-  {
-    return src < 13;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.all( src, onElement1 );
-  var exp = false;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  test.case = 'basic true';
-
-  function onElement2( src )
-  {
-    return src < 130;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.all( src, onElement2 );
-  var exp = true;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 2 ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
-
-  test.case = 'Wrong second argument'; //
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
-}
-
-//
-
-function any( test )
-{
-
-  /* */
-
-  test.case = 'basic false';
-
-  function onElement1( src )
-  {
-    return src < 0;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.any( src, onElement1 );
-  var exp = false;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  test.case = 'basic true';
-
-  function onElement2( src )
-  {
-    return src < 13;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.any( src, onElement2 );
-  var exp = true;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( undefined ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 2 ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
-
-  test.case = 'Wrong second argument'; //
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
-}
-
-//
-
-function none( test )
-{
-
-  /* */
-
-  test.case = 'basic false';
-
-  function onElement1( src )
-  {
-    return src < 13;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.none( src, onElement1 );
-  var exp = false;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  test.case = 'basic true';
-
-  function onElement2( src )
-  {
-    return src < 0;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.none( src, onElement2 );
-  var exp = true;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( undefined ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 2 ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
-
-  test.case = 'Wrong second argument'; //
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
-}
-
-//
-
 function sort( test )
 {
 
@@ -6522,6 +6303,225 @@ function allEquivalent( test )
   test.identical( got, exp );
 
 }
+
+//
+
+function all( test )
+{
+
+  /* */
+
+  test.case = 'basic false';
+
+  function onElement1( src )
+  {
+    return src < 13;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.all( src, onElement1 );
+  var exp = false;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  test.case = 'basic true';
+
+  function onElement2( src )
+  {
+    return src < 130;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.all( src, onElement2 );
+  var exp = true;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Only one argument'; //
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( NaN ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 2 ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
+
+  test.case = 'Wrong second argument'; //
+
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+}
+
+//
+
+function any( test )
+{
+
+  /* */
+
+  test.case = 'basic false';
+
+  function onElement1( src )
+  {
+    return src < 0;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.any( src, onElement1 );
+  var exp = false;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  test.case = 'basic true';
+
+  function onElement2( src )
+  {
+    return src < 13;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.any( src, onElement2 );
+  var exp = true;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Only one argument'; //
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( NaN ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( undefined ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 2 ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
+
+  test.case = 'Wrong second argument'; //
+
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+
+}
+
+//
+
+function none( test )
+{
+
+  /* */
+
+  test.case = 'basic false';
+
+  function onElement1( src )
+  {
+    return src < 13;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.none( src, onElement1 );
+  var exp = false;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  test.case = 'basic true';
+
+  function onElement2( src )
+  {
+    return src < 0;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.none( src, onElement2 );
+  var exp = true;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Only one argument'; //
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( NaN ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( undefined ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 2 ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
+
+  test.case = 'Wrong second argument'; //
+
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+
+}
+
 
 //
 
@@ -7183,10 +7183,6 @@ var Self =
 
     while : _while,
 
-    all,
-    any,
-    none,
-
     sort,
 
     cross3,
@@ -7200,6 +7196,10 @@ var Self =
 
     // isEquivalent,
     // allEquivalent,
+
+    all,
+    any,
+    none,
 
     //
 
