@@ -4919,6 +4919,276 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
 
 //
 
+function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
+{
+  var list = 
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.close( 'call by namespace, src - from vectorAdapter' );
+
+    /* - */
+
+    test.open( 'call by instance, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.close( 'call by instance, src - from vectorAdapter' );
+  }
+}
+
+//
+
 function _while( test )
 {
 
@@ -6477,6 +6747,7 @@ var Self =
     filterOnlyDstRoutineFromLongLrangeAndStride,
     filterDstIsVectorRoutineFromLong,
     filterDstIsVectorRoutineFromLongLrangeAndStride,
+    filterDstIsVectorRoutineFromNumberWithVectorAdapter,
 
     while : _while,
 
