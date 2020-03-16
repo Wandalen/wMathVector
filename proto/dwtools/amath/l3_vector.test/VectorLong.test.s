@@ -3142,6 +3142,194 @@ function mapDstIsVectorRoutineFromNumberWithNumber( test )
 
 //
 
+function filterDstIsNullSimpleVector( test )
+{
+  var list = 
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'dst - vectorAdapter';
+    var dst = _.avector.make( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.avector.filter( dst );
+    var exp = _.avector.make( new makeLong( [ 2, 3, 4 ] ) );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - undefined';
+    var dst = _.avector.make( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.avector.filter( dst, undefined );
+    var exp = _.avector.make( new makeLong( [ 2, 3, 4 ] ) );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - null';
+    var dst = _.avector.make( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.avector.filter( dst, null );
+    var exp = _.avector.make( new makeLong( [ 2, 3, 4 ] ) );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    /* - */
+
+    test.open( 'dst - null' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.filter( dst, src, undefined );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.filter( dst, src, null );
+    var exp = _.longDescriptor.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.filter( dst, src, ( e ) => e );
+    var exp = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.filter( dst, src, ( e, k ) => k );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.filter( dst, src, ( e, k ) => k );
+    var exp = _.avector.make( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.avector.make( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.avector.make( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [] ) );
+    var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.avector.make( new makeLong( [] ) );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.longDescriptor.from( 0 );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'dst - null' );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.avector.filter() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.avector.filter( _.avector.make( [] ), _.avector.make( [] ), ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.filter( { 1 : 0 }, _.avector.make( [ 1 ] ), ( e ) => e ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.filter( _.avector.make( [ 1 ] ), { 1 : 0 }, ( e ) => e ) );
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.avector.filter( _.avector.make( [ 1, 2 ] ), _.avector.make( [ 1, 2 ] ), [] ) );
+  test.shouldThrowErrorSync( () => _.avector.filter( _.avector.make( [ 1 ] ), _.avector.make( [ 2 ] ), 'wrong' ) );
+
+  test.case = 'only dst, dst - null';
+  test.shouldThrowErrorSync( () => _.avector.filter( null ) );
+
+  test.case = 'two arguments, onEach not undefined' ;
+  test.shouldThrowErrorSync( () => _.avector.filter( null, _.avector.make( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.avector.filter( _.avector.make( [ 2, 1 ] ), _.avector.make( [ 1, 2 ] ) ) );
+
+  test.case = 'dst === src, onEach returns undefined';
+  test.shouldThrowErrorSync( () => _.avector.filter( [ 1, 2, 3 ], ( e ) => undefined ) );
+}
+
+//
+
 function cross3( test )
 {
   test.open( 'src1 and src2 - simple vectors' );
@@ -11345,6 +11533,8 @@ var Self =
     mapDstIsVectorRoutineFromLongLrangeAndStride,
     mapDstIsVectorRoutineFromNumberWithVectorAdapter,
     mapDstIsVectorRoutineFromNumberWithNumber,
+
+    filterDstIsNullSimpleVector,
 
     cross3,
     cross,
