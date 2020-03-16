@@ -4175,6 +4175,124 @@ function filterOnlyDstRoutineFromLong( test )
 
 //
 
+function filterOnlyDstRoutineFromLongLrangeAndStride( test )
+{
+  var list = 
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.avector.filter( src, undefined );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.avector.filter( src, null );
+    var exp = new makeLong( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.avector.filter( src, ( e ) => e );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.avector.filter( src, ( e ) => e );
+    var exp = new makeLong( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.avector.filter( src, ( e, k ) => k );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.avector.filter( src, ( e, k ) => k );
+    var exp = new makeLong( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.avector.filter( src, ( e, k, s ) => s.length );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.avector.filter( src, ( e, k, s ) => s.length );
+    var exp = new makeLong( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.avector.filter( src, ( e, k, s, d ) => d.length );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.avector.filter( src, ( e, k, s, d ) => d.length );
+    var exp = new makeLong( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.avector.filter( src, ( e, k, s, d ) => undefined );
+    var exp = new makeLong( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    test.shouldThrowErrorSync( () => 
+    {
+      var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+      var got = _.avector.filter( src, ( e, k, s, d ) => undefined );
+    });
+  }
+}
+
+//
+
 function cross3( test )
 {
   test.open( 'src1 and src2 - simple vectors' );
@@ -12385,6 +12503,7 @@ var Self =
     filterDstIsNullRoutineFromNumber,
     filterOnlyDstSimpleVector,
     filterOnlyDstRoutineFromLong,
+    filterOnlyDstRoutineFromLongLrangeAndStride,
 
     cross3,
     cross,
