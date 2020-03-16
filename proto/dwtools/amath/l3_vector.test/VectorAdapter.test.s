@@ -4519,6 +4519,27 @@ function filterDstIsVectorRoutineFromLong( test )
     test.is( got !== src );
     test.is( got !== dst );
 
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = makeLong.name === 'arrayMake' ? _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ) : _.vectorAdapter.from( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( makeLong.name === 'arrayMake' ? got === dst : got !== dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+
     test.close( 'call by namespace' );
 
     /* - */
@@ -4639,6 +4660,26 @@ function filterDstIsVectorRoutineFromLong( test )
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.filter( src, ( e, k, s, d ) => undefined );
     var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = makeLong.name === 'arrayMake' ? _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ) : _.vectorAdapter.from( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( makeLong.name === 'arrayMake' ? got === dst : got !== dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2 ] ) );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2 ] );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4789,6 +4830,26 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     test.is( got !== src );
     test.is( got !== dst );
 
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    test.shouldThrowErrorSync( () => 
+    {
+      var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 2, 2 );
+      var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 4, 2 );
+      var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    });
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 2, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+
     test.close( 'call by namespace' );
 
     /* - */
@@ -4909,6 +4970,25 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.filter( src, ( e, k, s, d ) => undefined );
     var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    test.shouldThrowErrorSync( () => 
+    {
+      var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 2, 2 );
+      var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 4, 2 );
+      var got = dst.filter( src, ( e ) => e );
+    });
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 2, 2 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3 ] );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -5044,8 +5124,8 @@ function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
     test.case = 'src - empty vector, onEach returns undefined';
     var dst = _.vectorAdapter.fromLong( [] );
     var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
-    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
     var exp = _.vectorAdapter.from( [] );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -5053,11 +5133,32 @@ function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
     test.case = 'src - vector, onEach returns undefined';
     var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
     var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
-    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
     var exp = _.vectorAdapter.from( []  );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 ); 
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2 ] ), 2 );
+    var exp = _.vectorAdapter.from( [ 1, 2 ] );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
 
     test.close( 'call by namespace, src - from vectorAdapter' );
 
@@ -5179,6 +5280,26 @@ function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
     var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = dst.filter( src, ( e, k, s, d ) => undefined );
     var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 ); 
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2 ] ), 2 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2 ] );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -5329,6 +5450,26 @@ function filterDstIsVectorRoutineFromNumberWithNumber( test )
     test.is( got !== src );
     test.is( got !== dst );
 
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ 1, 2 ] );
+    var src = _.vectorAdapter.fromNumber( 8, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 8, 8, 8, 8, 8 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
     test.close( 'call by namespace, src - from vectorAdapter' );
 
     /* - */
@@ -5449,6 +5590,26 @@ function filterDstIsVectorRoutineFromNumberWithNumber( test )
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = dst.filter( src, ( e, k, s, d ) => undefined );
     var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ 1, 2 ] );
+    var src = _.vectorAdapter.fromNumber( 8, 5 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 8, 8, 8, 8, 8 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 2 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
