@@ -3344,26 +3344,192 @@ function mapDstIsVectorRoutineFromNumberWithNumber( test )
 
 //
 
-function filter( test )
+function filterDstIsNullRoutineFromLong( test )
 {
+  var list = 
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  /* */
-
-  test.case = 'dst = null';
-
-  function onElement1( src )
+  for( let i = 0 ; i < list.length ; i++ )
   {
-    return src + 10;
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
   }
-  var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
-  var got = _.vectorAdapter.filter( null, src, onElement1 );
-  var exp = _.vectorAdapter.make( [ 9, 8.5, 8 ] );
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ -1, -1.5, -2 ] )
-  test.equivalent( src, exp );
 
-  /* */
+  /* - */
 
+  function testRun( makeLong )
+  {
+    test.case = 'dst - vectorAdapter';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.vectorAdapter.filter( dst );
+    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.vectorAdapter.filter( dst, undefined );
+    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - null';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.vectorAdapter.filter( dst, null );
+    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    /* - */
+
+    test.open( 'dst - null' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'dst - null' );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [] ), _.vectorAdapter.from( [] ), ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( [ 1, 2 ], _.vectorAdapter.from( [ 1, 2 ] ), ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( { 1 : 0 }, _.vectorAdapter.from( [ 1 ] ), ( e ) => e ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 1, 2 ] ), [ 1, 2 ], ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 1 ] ), { 1 : 0 }, ( e ) => e ) );
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 1, 2 ] ), _.vectorAdapter.from( [ 1, 2 ] ), [] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 1 ] ), _.vectorAdapter.from( [ 2 ] ), 'wrong' ) );
+
+  test.case = 'only dst, dst - null';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( null ) );
+
+  test.case = 'two arguments, onEach not undefined' ;
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( null, _.vectorAdapter.from( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 2, 1 ] ), _.vectorAdapter.from( [ 1, 2 ] ) ) );
+
+  test.case = 'dst === src, onEach returns undefined';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( [ 1, 2, 3 ], ( e ) => undefined ) );
 }
 
 //
@@ -4919,7 +5085,8 @@ var Self =
     mapDstIsVectorRoutineFromNumberWithVectorAdapter,
     mapDstIsVectorRoutineFromNumberWithNumber,
 
-    filter,
+    filterDstIsNullRoutineFromLong,
+
     while : _while,
 
     all,

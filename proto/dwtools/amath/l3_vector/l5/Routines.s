@@ -2864,7 +2864,7 @@ let _routinesMathematical =
 
   gather,
 
-  map, /* qqq : implement perfect coverage */
+  map, /* aaa : implement perfect coverage */ /* Dmytro : implemented */
   filter, /* qqq : implement perfect coverage */
   while : _while,
 
