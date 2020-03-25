@@ -990,7 +990,7 @@ sort.timeOut = 15000;
 
 //
 
-function cross3( test ) 
+function cross3( test )
 {
   test.open( 'src1 and src2 - vectorAdapter instances' );
 
@@ -1436,6 +1436,18 @@ function entityEqual( test )
 
   /* - */
 
+  test.case = 'src1:vad-a-f32 src2:vad-a-f64 - not equivalent';
+  var vad1 = _.vectorAdapter.from( new F32x([ 1, 3, 5 ]) );
+  var vad2 = _.vectorAdapter.from( new F64x([ 1, 3, 5 ]) );
+  var got = _.equivalent( vad1, vad2 );
+  test.identical( got, true );
+  test.et( vad1, vad2 );
+  var got = _.identical( vad1, vad2 );
+  test.identical( got, false );
+  test.ni( vad1, vad2 );
+
+  /* - */
+
   test.case = 'src1:vad-a-arr src2:vad-a-arr - identical';
   var vad1 = _.vectorAdapter.from([ 1, 3, 5 ]);
   var vad2 = _.vectorAdapter.from([ 1, 3, 5 ]);
@@ -1592,7 +1604,7 @@ function allEquivalent( test )
 
 //
 
-function areParallelDefaultAccuracy( test ) 
+function areParallelDefaultAccuracy( test )
 {
   let e = _.accuracy || 10 ** -7;
 
@@ -1877,7 +1889,7 @@ function areParallelDefaultAccuracy( test )
 
   test.close( 'with deviation' );
 
-  /* - */ 
+  /* - */
 
   if( !Config.debug )
   return;
@@ -2209,8 +2221,8 @@ var Self =
   {
 
     comparator,
-    vectorAdapterIs, /* Dmytro : the first part of routine in module wTools */
-    constructorIsVector, /* Dmytro : the first part of routine in module wTools */
+    vectorAdapterIs,
+    constructorIsVector,
 
     to,
     toLong,

@@ -2492,11 +2492,11 @@ function areParallel( src1, src2, accuracy )
 
   while( s < length )
   {
-    let r = src1.eGet( s ) / src2.eGet( s );   
-    
+    let r = src1.eGet( s ) / src2.eGet( s );
+
     if( abs( r - ratio ) > accuracy )
     return false;
-    
+
     s += 1;
   }
 

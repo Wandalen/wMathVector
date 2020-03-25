@@ -300,6 +300,7 @@ function _containerTypeDeclare()
   type.name = 'VectorAdapter';
   type._elementGet = function _elementGet( container, key )
   {
+    debugger;
     return container.eGet( key );
   }
   type._elementSet = function _elementSet( container, key, val )
@@ -321,6 +322,18 @@ function _containerTypeDeclare()
       return false;
     }
     return true;
+  }
+  type._identicalTypes = function _identicalTypes( src1, src2 )
+  {
+    if( _.vectorAdapterIs( src1 ) )
+    src1 = src1._vectorBuffer;
+    if( _.vectorAdapterIs( src2 ) )
+    src2 = src2._vectorBuffer;
+    if( !src1 )
+    return false;
+    if( !src2 )
+    return false;
+    return src1.constructor === src2.constructor;
   }
 
   return _.container.typeDeclare( type );
