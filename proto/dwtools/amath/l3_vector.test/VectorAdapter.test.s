@@ -206,7 +206,7 @@ function toLong( test )
 
 function reviewSrcIsSimpleVector( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -334,7 +334,7 @@ function reviewSrcIsSimpleVector( test )
 
 function reviewSrcIsAdapterRoutineFrom( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -430,7 +430,7 @@ function reviewSrcIsAdapterRoutineFrom( test )
 
 function reviewSrcIsAdapterRoutineFromLong( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -526,7 +526,7 @@ function reviewSrcIsAdapterRoutineFromLong( test )
 
 function reviewSrcIsAdapterRoutineFromLongWithStride( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -622,7 +622,7 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
 
 function reviewSrcIsAdapterRoutineFromLongLrange( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -718,7 +718,7 @@ function reviewSrcIsAdapterRoutineFromLongLrange( test )
 
 function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -814,7 +814,7 @@ function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
 
 function reviewSrcIsAdapterRoutineFromNumber( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -984,7 +984,7 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
 
 function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -1230,7 +1230,7 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
 
 function mapDstIsNullRoutineFromLong( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -1421,7 +1421,7 @@ function mapDstIsNullRoutineFromLong( test )
 
 function mapDstIsNullRoutineFromLongLrangeAndStride( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -1578,7 +1578,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
 
 function mapDstIsNullRoutineFromNumber( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -1824,7 +1824,7 @@ function mapDstIsNullRoutineFromNumber( test )
 
 function mapOnlyDstRoutineFromLong( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -2045,7 +2045,7 @@ function mapOnlyDstRoutineFromLong( test )
 
 function mapOnlyDstRoutineFromLongLrangeAndStride( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -2266,7 +2266,7 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
 
 function mapDstIsVectorRoutineFromLong( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -2536,7 +2536,7 @@ function mapDstIsVectorRoutineFromLong( test )
 
 function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -2806,7 +2806,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
 
 function mapDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -3076,7 +3076,7 @@ function mapDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 
 function mapDstIsVectorRoutineFromNumberWithNumber( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -3346,7 +3346,7 @@ function mapDstIsVectorRoutineFromNumberWithNumber( test )
 
 function filterDstIsNullRoutineFromLong( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -3536,7 +3536,7 @@ function filterDstIsNullRoutineFromLong( test )
 
 function filterDstIsNullRoutineFromLongLrangeAndStride( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -3693,7 +3693,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
 
 function filterDstIsNullRoutineFromNumber( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -3939,7 +3939,7 @@ function filterDstIsNullRoutineFromNumber( test )
 
 function filterOnlyDstRoutineFromLong( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -4047,7 +4047,7 @@ function filterOnlyDstRoutineFromLong( test )
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns undefined';
-    test.shouldThrowErrorSync( () => 
+    test.shouldThrowErrorSync( () =>
     {
       var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
       var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => undefined );
@@ -4146,7 +4146,7 @@ function filterOnlyDstRoutineFromLong( test )
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns undefined';
-    test.shouldThrowErrorSync( () => 
+    test.shouldThrowErrorSync( () =>
     {
       var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
       var got = src.filter( ( e, k, s, d ) => undefined );
@@ -4160,7 +4160,7 @@ function filterOnlyDstRoutineFromLong( test )
 
 function filterOnlyDstRoutineFromLongLrangeAndStride( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -4268,7 +4268,7 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns undefined';
-    test.shouldThrowErrorSync( () => 
+    test.shouldThrowErrorSync( () =>
     {
       var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
       var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => undefined );
@@ -4367,7 +4367,7 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns undefined';
-    test.shouldThrowErrorSync( () => 
+    test.shouldThrowErrorSync( () =>
     {
       var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
       var got = src.filter( ( e, k, s, d ) => undefined );
@@ -4381,7 +4381,7 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
 
 function filterDstIsVectorRoutineFromLong( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -4692,7 +4692,7 @@ function filterDstIsVectorRoutineFromLong( test )
 
 function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -4833,7 +4833,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     /* */
 
     test.case = 'dst.length < src.length, onEach returns element';
-    test.shouldThrowErrorSync( () => 
+    test.shouldThrowErrorSync( () =>
     {
       var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 2, 2 );
       var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 4, 2 );
@@ -4977,7 +4977,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     /* */
 
     test.case = 'dst.length < src.length, onEach returns element';
-    test.shouldThrowErrorSync( () => 
+    test.shouldThrowErrorSync( () =>
     {
       var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 2, 2 );
       var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 4, 2 );
@@ -5001,7 +5001,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
 
 function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -5143,7 +5143,7 @@ function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 
     test.case = 'dst.length < src.length, onEach returns element';
     var dst = _.vectorAdapter.fromLong( [ -1, -2 ] );
-    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 ); 
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
     var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
     test.identical( got, exp );
@@ -5288,7 +5288,7 @@ function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 
     test.case = 'dst.length < src.length, onEach returns element';
     var dst = _.vectorAdapter.fromLong( [ -1, -2 ] );
-    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 ); 
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = dst.filter( src, ( e ) => e );
     var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, exp );
@@ -5312,7 +5312,7 @@ function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 
 function filterDstIsVectorRoutineFromNumberWithNumber( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -5704,7 +5704,7 @@ sort.timeOut = 15000;
 
 //
 
-function cross3( test ) 
+function cross3( test )
 {
   test.open( 'src1 and src2 - vectorAdapter instances' );
 
@@ -6150,6 +6150,18 @@ function entityEqual( test )
 
   /* - */
 
+  test.case = 'src1:vad-a-f32 src2:vad-a-f64 - not equivalent';
+  var vad1 = _.vectorAdapter.from( new F32x([ 1, 3, 5 ]) );
+  var vad2 = _.vectorAdapter.from( new F64x([ 1, 3, 5 ]) );
+  var got = _.equivalent( vad1, vad2 );
+  test.identical( got, true );
+  test.et( vad1, vad2 );
+  var got = _.identical( vad1, vad2 );
+  test.identical( got, false );
+  test.ni( vad1, vad2 );
+
+  /* - */
+
   test.case = 'src1:vad-a-arr src2:vad-a-arr - identical';
   var vad1 = _.vectorAdapter.from([ 1, 3, 5 ]);
   var vad2 = _.vectorAdapter.from([ 1, 3, 5 ]);
@@ -6291,7 +6303,7 @@ function isEquivalent( test )
 
 function allRoutineFromLong( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -6586,7 +6598,7 @@ function allRoutineFromLong( test )
 
 function allRoutineFromLongLrangeAndStride( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -6854,7 +6866,7 @@ function allRoutineFromLongLrangeAndStride( test )
 
 function allRoutineFromNumberWithVectorAdapter( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -7122,7 +7134,7 @@ function allRoutineFromNumberWithVectorAdapter( test )
 
 function allRoutineFromNumberWithNumber( test )
 {
-  var list = 
+  var list =
   [
     _.arrayMake,
     I16x,
@@ -7550,7 +7562,7 @@ function none( test )
 
 //
 
-function areParallelDefaultAccuracy( test ) 
+function areParallelDefaultAccuracy( test )
 {
   let e = _.accuracy || 10 ** -7;
 
@@ -7835,7 +7847,7 @@ function areParallelDefaultAccuracy( test )
 
   test.close( 'with deviation' );
 
-  /* - */ 
+  /* - */
 
   if( !Config.debug )
   return;
@@ -8167,13 +8179,13 @@ var Self =
   {
 
     comparator,
-    vectorAdapterIs, /* Dmytro : the first part of routine in module wTools */
-    constructorIsVector, /* Dmytro : the first part of routine in module wTools */
+    vectorAdapterIs,
+    constructorIsVector,
 
     to,
     toLong,
 
-    // 
+    //
 
     reviewSrcIsSimpleVector,
     reviewSrcIsAdapterRoutineFrom,
