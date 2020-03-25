@@ -739,7 +739,7 @@ function map( dst, src, onEach )
 
   if( arguments.length < 3 || _.routineIs( arguments[ 1 ] ) )
   {
-    src = dst;
+    src = arguments[ 0 ];
     onEach = arguments[ 1 ];
     _.assert( arguments[ 2 ] === undefined );
   }
@@ -752,7 +752,7 @@ function map( dst, src, onEach )
 
   let l = src.length;
 
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
   _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.routineIs( onEach ) );
@@ -767,6 +767,8 @@ function map( dst, src, onEach )
   }
 
   return dst;
+
+  /* */
 
   function onEach0( e, k, src, dst )
   {
@@ -932,138 +934,6 @@ dop.takingVectorsOnly = false;
 dop.returningSelf = true;
 dop.returningNew = true;
 dop.modifying = true;
-
-//
-
-function all( src, onEach )
-{
-
-  if( onEach === undefined || onEach === null )
-  onEach = onEach0;
-
-  let l = src.length;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.vectorAdapterIs( src ) );
-  _.assert( _.routineIs( onEach ) );
-  _.assert( _.intIs( l ) );
-
-  for( let i = 0 ; i < l ; i++ )
-  {
-    let r = onEach( src.eGet( i ), i, src );
-    if( !r )
-    return r;
-  }
-
-  return true;
-
-  function onEach0( e, k, src )
-  {
-    return e;
-  }
-}
-
-dop = all.operation = Object.create( null );
-dop.input = 'vw ?s';
-dop.atomWise = true;
-dop.homogeneous = false;
-dop.takingArguments = [ 1, 2 ];
-dop.takingVectors = [ 1, 1 ];
-dop.takingVectorsOnly = false;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.returningLong = false;
-dop.returningBoolean = true;
-dop.reducing = true;
-dop.modifying = false;
-
-//
-
-function any( src, onEach )
-{
-
-  if( onEach === undefined || onEach === null )
-  onEach = onEach0;
-
-  let l = src.length;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.vectorAdapterIs( src ) );
-  _.assert( _.routineIs( onEach ) );
-  _.assert( _.intIs( l ) );
-
-  for( let i = 0 ; i < l ; i++ )
-  {
-    let r = onEach( src.eGet( i ), i, src );
-    if( r )
-    return r;
-  }
-
-  return false;
-
-  function onEach0( e, k, src )
-  {
-    return e;
-  }
-}
-
-dop = any.operation = Object.create( null );
-dop.input = 'vw ?s';
-dop.atomWise = true;
-dop.homogeneous = false;
-dop.takingArguments = [ 1, 2 ];
-dop.takingVectors = [ 1, 1 ];
-dop.takingVectorsOnly = false;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.returningLong = false;
-dop.returningBoolean = true;
-dop.reducing = true;
-dop.modifying = false;
-
-//
-
-function none( src, onEach )
-{
-
-  if( onEach === undefined || onEach === null )
-  onEach = onEach0;
-
-  let l = src.length;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.vectorAdapterIs( src ) );
-  _.assert( _.routineIs( onEach ) );
-  _.assert( _.intIs( l ) );
-
-  for( let i = 0 ; i < l ; i++ )
-  {
-    let r = onEach( src.eGet( i ), i, src );
-    if( r )
-    return !r;
-  }
-
-  return true;
-
-  function onEach0( e, k, src )
-  {
-    return e;
-  }
-}
-
-dop = none.operation = Object.create( null );
-dop.input = 'vw ?s';
-dop.atomWise = true;
-dop.homogeneous = false;
-dop.takingArguments = [ 1, 2 ];
-dop.takingVectors = [ 1, 1 ];
-dop.takingVectorsOnly = false;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.returningLong = false;
-dop.returningBoolean = true;
-dop.reducing = true;
-dop.modifying = false;
 
 // --
 // not atom-wise : self
@@ -2287,6 +2157,139 @@ dop.modifying = false;
 // dop = le.operation = Routines.isLessEqual.operation;
 // _.assert( _.objectIs( dop ) );
 
+//
+
+function all( src, onEach )
+{
+
+  if( onEach === undefined || onEach === null )
+  onEach = onEach0;
+
+  let l = src.length;
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( _.vectorAdapterIs( src ) );
+  _.assert( _.routineIs( onEach ) );
+  _.assert( _.intIs( l ) );
+
+  for( let i = 0 ; i < l ; i++ )
+  {
+    let r = onEach( src.eGet( i ), i, src );
+    if( !r )
+    return r;
+  }
+
+  return true;
+
+  /* */
+
+  function onEach0( e, k, src )
+  {
+    return e;
+  }
+}
+
+dop = all.operation = Object.create( null );
+dop.input = 'vw ?s';
+dop.atomWise = true;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = [ 1, 1 ];
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = false;
+dop.returningBoolean = true;
+dop.reducing = true;
+dop.modifying = false;
+
+//
+
+function any( src, onEach )
+{
+
+  if( onEach === undefined || onEach === null )
+  onEach = onEach0;
+
+  let l = src.length;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.vectorAdapterIs( src ) );
+  _.assert( _.routineIs( onEach ) );
+  _.assert( _.intIs( l ) );
+
+  for( let i = 0 ; i < l ; i++ )
+  {
+    let r = onEach( src.eGet( i ), i, src );
+    if( r )
+    return r;
+  }
+
+  return false;
+
+  function onEach0( e, k, src )
+  {
+    return e;
+  }
+}
+
+dop = any.operation = Object.create( null );
+dop.input = 'vw ?s';
+dop.atomWise = true;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = [ 1, 1 ];
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = false;
+dop.returningBoolean = true;
+dop.reducing = true;
+dop.modifying = false;
+
+//
+
+function none( src, onEach )
+{
+
+  if( onEach === undefined || onEach === null )
+  onEach = onEach0;
+
+  let l = src.length;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.vectorAdapterIs( src ) );
+  _.assert( _.routineIs( onEach ) );
+  _.assert( _.intIs( l ) );
+
+  for( let i = 0 ; i < l ; i++ )
+  {
+    let r = onEach( src.eGet( i ), i, src );
+    if( r )
+    return !r;
+  }
+
+  return true;
+
+  function onEach0( e, k, src )
+  {
+    return e;
+  }
+}
+
+dop = none.operation = Object.create( null );
+dop.input = 'vw ?s';
+dop.atomWise = true;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = [ 1, 1 ];
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = false;
+dop.returningBoolean = true;
+dop.reducing = true;
+dop.modifying = false;
 
 // --
 // interruptible reductor with bool result
@@ -2851,7 +2854,7 @@ let _routinesMathematical =
   // resizedAdapter, /* zzz : deprecate */
   // resizedLong, /* zzz : deprecate */
 
-  review, /* qqq : cover please */
+  review, /* aaa : cover please */ /* Dmytro : covered */
   // subarray, /* zzz : deprecate */
 
   bufferConstructorOf,
@@ -2862,13 +2865,9 @@ let _routinesMathematical =
 
   gather,
 
-  map, /* qqq : implement perfect coverage */
-  filter, /* qqq : implement perfect coverage */
+  map, /* aaa : implement perfect coverage */ /* Dmytro : implemented */
+  filter, /* aaa : implement perfect coverage */ /* Dmytro : implemented */
   while : _while,
-
-  all, /* qqq : implement perfect coverage */
-  any, /* qqq : implement perfect coverage */
-  none, /* qqq : implement perfect coverage */
 
   // special
 
@@ -3123,6 +3122,8 @@ let _routinesMathematical =
 
   // logical2 reductor
 
+  all, /* qqq : implement perfect coverage */
+
   allIdentical : Routines.allIdentical,
   allNotIdentical : Routines.allNotIdentical,
   allEquivalent : Routines.allEquivalent,
@@ -3147,6 +3148,8 @@ let _routinesMathematical =
 
   //
 
+  any, /* qqq : implement perfect coverage */
+
   anyIdentical : Routines.anyIdentical,
   anyNotIdentical : Routines.anyNotIdentical,
   anyEquivalent : Routines.anyEquivalent,
@@ -3170,6 +3173,8 @@ let _routinesMathematical =
   anyString : Routines.anyString,
 
   //
+
+  none, /* qqq : implement perfect coverage */
 
   noneIdentical : Routines.noneIdentical,
   noneNotIdentical : Routines.noneNotIdentical,

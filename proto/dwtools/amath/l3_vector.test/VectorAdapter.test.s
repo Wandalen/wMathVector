@@ -204,422 +204,1183 @@ function toLong( test )
 
 //
 
-function fromLongReview( test )
+function reviewSrcIsSimpleVector( test )
 {
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  test.case = 'basic';
-  var exp = [ 1, 3, 5, 7 ];
-  var v = _.vectorAdapter.fromLong([ 1, 3, 5, 7 ]);
-  test.equivalent( v, exp );
-  var exp = [ 3, 5 ];
-  var v2 = v.review([ 1, 2 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 1, 3 ];
-  var v2 = v.review([ 0, 1 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 5, 7 ];
-  var v2 = v.review([ 2, 3 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
 
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, crange - 0';
+    var src = new makeLong( [] );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - 0';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = new makeLong( [] );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => vad.review() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => vad.review( [] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => vad.review( [], 0, 0 ) );
+
+  test.case = 'crange - number, crange < 0';
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], -1 ) );
+
+  test.case = 'crange - number, crange > src.length - 1';
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], 5 ) );
+
+  test.case = 'crange[ 0 ] < 0';
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], [ -1, 1 ] ) );
+
+  test.case = 'crange[ 1 ] > src.length - 1';
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], [ 0, 4 ] ) );
+
+  test.case = 'crange[ 1 ] - crange[ 0 ] < -1';
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], [ 0, 4 ] ) );
+
+  test.case = 'crange[ 1 ] - src.length';
+  test.shouldThrowErrorSync( () => vad.review( [ 1, 2 ], [ 1, 2 ] ) );
 }
 
 //
 
-function fromLongWithStrideReview( test )
+function reviewSrcIsAdapterRoutineFrom( test )
 {
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  test.case = 'basic';
-  var exp = [ 1, 3, 5, 7 ];
-  var v = _.vectorAdapter.fromLongWithStride( [ 1, 2, 3, 4, 5, 6, 7, 8 ], 2 );
-  test.equivalent( v, exp );
-  var exp = [ 3, 5 ];
-  var v2 = v.review([ 1, 2 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 1, 3 ];
-  var v2 = v.review([ 0, 1 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 5, 7 ];
-  var v2 = v.review([ 2, 3 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
 
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, crange - 0';
+    var src = vad.from( new makeLong( [] ) );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange - 0';
+    var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = vad.from( new makeLong( [] ) );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+  }
 }
 
 //
 
-function fromLongLrangeReview( test )
+function reviewSrcIsAdapterRoutineFromLong( test )
 {
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  test.case = 'basic';
-  var exp = [ 1, 3, 5, 7 ];
-  var v = _.vectorAdapter.fromLongLrange( [ 0, 1, 3, 5, 7, 0 ], [ 1, 4 ] );
-  test.equivalent( v, exp );
-  var exp = [ 3, 5 ];
-  var v2 = v.review([ 1, 2 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 1, 3 ];
-  var v2 = v.review([ 0, 1 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 5, 7 ];
-  var v2 = v.review([ 2, 3 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
 
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, crange - 0';
+    var src = vad.fromLong( new makeLong( [] ) );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange - 0';
+    var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = vad.fromLong( new makeLong( [] ) );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+  }
 }
 
 //
 
-function fromLongLrangeAndStrideReview( test )
+function reviewSrcIsAdapterRoutineFromLongWithStride( test )
 {
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  test.case = 'basic';
-  var exp = [ 1, 3, 5, 7 ];
-  var v = _.vectorAdapter.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 4 ], 2 );
-  test.equivalent( v, exp );
-  var exp = [ 3, 5 ];
-  var v2 = v.review([ 1, 2 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 1, 3 ];
-  var v2 = v.review([ 0, 1 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
-  var exp = [ 5, 7 ];
-  var v2 = v.review([ 2, 3 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer === v._vectorBuffer );
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
 
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, crange - 0';
+    var src = vad.fromLongWithStride( new makeLong( [] ), 2 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange - 0';
+    var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 2, 4, 6, 8, 10 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 4, 6, 8, 10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = vad.fromLongWithStride( new makeLong( [] ), 2 );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 2, 4, 6, 8, 10 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 2, 4, 6 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 2, 4, 6 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+  }
 }
 
 //
 
-function fromNumberReview( test )
+function reviewSrcIsAdapterRoutineFromLongLrange( test )
 {
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  test.case = 'basic';
-  var exp = [ 3, 3, 3, 3 ];
-  var v = _.vectorAdapter.fromNumber( 3, 4 );
-  test.equivalent( v, exp );
-  var exp = [ 3, 3 ];
-  var v2 = v.review([ 1, 2 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer !== v._vectorBuffer );
-  var exp = [ 3, 3 ];
-  var v2 = v.review([ 0, 1 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer !== v._vectorBuffer );
-  var exp = [ 3, 3 ];
-  var v2 = v.review([ 2, 3 ]);
-  test.equivalent( v2, exp );
-  test.is( !!v2._vectorBuffer );
-  test.is( v2._vectorBuffer !== v._vectorBuffer );
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
 
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, crange - 0';
+    var src = vad.fromLongLrange( new makeLong( [] ), 0, 0 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange - 0';
+    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 0, 6 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 0, 6 );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2, 6 );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = vad.fromLongLrange( new makeLong( [] ), 0, 0 );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 0, 6 );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 0, 8 );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 1, 8 );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2, 6  );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2, 8 );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+  }
 }
 
 //
 
-function review( test )
+function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
 {
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, crange - 0';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 1 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange - 0';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 0, 6, 2 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 2, 4, 6, 8, 10 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 0, 6, 2 );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 4, 6, 8, 10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 2, 6, 2 );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 0, 6, 2 );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 2, 4, 6, 8, 10 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 0, 8, 2 );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 2, 4, 6 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 1, 6, 2 );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 3, 5, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 2, 6, 2  );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 2, 6, 2 );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+  }
+}
+
+//
+
+function reviewSrcIsAdapterRoutineFromNumber( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, crange - 0';
+    var src = vad.fromNumber( vad.from( new makeLong( [] ) ), 0 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange - 0';
+    var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = vad.fromNumber( vad.from( new makeLong( [] ) ), 0 );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+  }
+
+    /* */
+
+    test.case = 'src - empty vector, crange - 0';
+    var src = vad.fromNumber( 5, 0 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange - 0';
+    var src = vad.fromNumber( 5, 6 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = vad.fromNumber( 5, 6 );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = vad.fromNumber( 5, 6 );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = vad.fromNumber( 5, 0 );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = vad.fromNumber( 5, 6 );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = vad.fromNumber( 5, 6 );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = vad.fromNumber( 5, 6 );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = vad.fromNumber( 5, 6 );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = vad.fromNumber( 5, 6 );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+}
+
+//
+
+function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src - empty vector, crange - 0';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [] ) ), 0 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange - 0';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [] ) ), 0 );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] )
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange - 0';
+    var src = vad.fromMaybeNumber( new makeLong( [] ), 0 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange - 0';
+    var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+    var got = vad.review( src, 0 );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange > 0 && crange < src.length - 1';
+    var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+    var got = vad.review( src, 2 );
+    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - src.length';
+    var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+    var got = vad.review( src, 6 );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+    var src = vad.fromMaybeNumber( new makeLong( [] ), 0 );
+    var got = vad.review( src, [ 0, -1 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+    var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+    var got = vad.review( src, [ 0, 5 ] );
+    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'crange[ 0 ] - 0, crange < src.length';
+    var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+    var got = vad.review( src, [ 0, 3 ] );
+    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > 0, crange < src.length';
+    var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+    var got = vad.review( src, [ 1, 3 ] );
+    var exp = vad.from( [ 1, 2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+    var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+    var got = vad.review( src, [ 6, 5 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange[ 0 ] > crange[ 1 ]';
+    var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
+    var got = vad.review( src, [ 3, 2 ] );
+    var exp = vad.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+  }
 
   /* */
 
-  test.case = 'fromNumber';
-
-  var exp = vad.from( vad.long.longMake([ 1, 1, 1, 1 ]) );
-  var vad1 = vad.fromNumber( 1, 4 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 1, 1 ]) );
-  var vad1 = vad.fromNumber( 1, 4 );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'src - empty vector, crange - 0';
+  var src = vad.fromMaybeNumber( 5, 0 );
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer !== got._vectorBuffer );
+  test.is( got === src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromNumber( 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLong';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'crange - 0';
+  var src = vad.fromMaybeNumber( 5, 6 );
+  var got = vad.review( src, 0 );
+  var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
+  test.is( got === src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLong( vad.long.longMake([ 1, 2, 3, 4 ]) );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongLrange';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'crange > 0 && crange < src.length - 1';
+  var src = vad.fromMaybeNumber( 5, 6 );
+  var got = vad.review( src, 2 );
+  var exp = vad.from( [ 5, 5, 5, 5 ] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
+  test.is( got !== src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrange( vad.long.longMake([ 0, 1, 2, 3, 4, 5 ]), 1, 4 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
-
-  /* */
-
-  test.case = 'fromLongLrangeAndStride';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'crange - src.length';
+  var src = vad.fromMaybeNumber( 5, 6 );
+  var got = vad.review( src, 6 );
+  var exp = vad.from( [] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
-
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongLrangeAndStride( vad.long.longMake([ 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 ]), 1, 4, 2 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
+  test.is( got !== src );
 
   /* */
 
-  test.case = 'fromLongWithStride';
-
-  var exp = vad.from( vad.long.longMake([ 1, 2, 3, 4 ]) );
-  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-  test.identical( vad1, exp );
-
-  var exp = vad.from( vad.long.longMake([ 2, 3 ]) );
-  var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-  var got = vad.review( vad1, [ 1, 2 ] );
+  test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
+  var src = vad.fromMaybeNumber( 5, 0 );
+  var got = vad.review( src, [ 0, -1 ] );
+  var exp = vad.from( [] );
   test.identical( got, exp );
-  test.is( vad1._vectorBuffer === got._vectorBuffer );
+  test.is( got === src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.review( vad1, [ 2, 8 ] );
-  });
+  test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
+  var src = vad.fromMaybeNumber( 5, 6 );
+  var got = vad.review( src, [ 0, 5 ] );
+  var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got === src );
 
-  test.shouldThrowErrorSync( () =>
-  {
-    var vad1 = vad.fromLongWithStride( vad.long.longMake([ 1, 0, 2, 0, 3, 0, 4 ]), 2 );
-    var got = vad.review( vad1, [ 2, 8 ], 6 );
-  });
+  test.case = 'crange[ 0 ] - 0, crange < src.length';
+  var src = vad.fromMaybeNumber( 5, 6 );
+  var got = vad.review( src, [ 0, 3 ] );
+  var exp = vad.from( [ 5, 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
 
-  /* */
+  test.case = 'crange[ 0 ] > 0, crange < src.length';
+  var src = vad.fromMaybeNumber( 5, 6 );
+  var got = vad.review( src, [ 1, 3 ] );
+  var exp = vad.from( [ 5, 5, 5 ] );
+  test.identical( got, exp );
+  test.is( got !== src );
 
+  test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
+  var src = vad.fromMaybeNumber( 5, 6 );
+  var got = vad.review( src, [ 6, 5 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] > crange[ 1 ]';
+  var src = vad.fromMaybeNumber( 5, 6 );
+  var got = vad.review( src, [ 3, 2 ] );
+  var exp = vad.from( [] );
+  test.identical( got, exp );
+  test.is( got !== src );
 }
 
 // --
 // iterator
 // --
 
-function map( test )
+function mapDstIsNullRoutineFromLong( test )
 {
-  test.case = 'single argument';
-  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
-  var got = _.vectorAdapter.map( dst );
-  test.is( got === dst );
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  test.case = 'dst and undefined';
-  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
-  var got = _.vectorAdapter.map( dst, undefined );
-  test.is( got === dst );
-
-  test.case = 'dst and null';
-  var dst = _.vectorAdapter.from( [ 2, 3, 4 ] );
-  var got = _.vectorAdapter.map( dst, null );
-  test.is( got === dst );
-
-  /* */
-
-  test.case = 'dst = src';
-  function onElement1( src )
+  for( let i = 0 ; i < list.length ; i++ )
   {
-    return - 5 < src && src < 0 ; /* numbers in range */
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
   }
-  var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
-  var got = _.vectorAdapter.map( src, onElement1 );
-  var exp = _.vectorAdapter.from( [ true, true, true ] );
-  test.identical( got, exp );
-  test.is( got === src );
 
-  /* */
+  /* - */
 
-  test.case = 'dst = null';
-  function onElement1( src )
+  function testRun( makeLong )
   {
-    return - 5 < src && src < 0 ; /* numbers in range */
+    test.case = 'dst - vectorAdapter';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.vectorAdapter.map( dst );
+    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.vectorAdapter.map( dst, undefined );
+    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - null';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.vectorAdapter.map( dst, null );
+    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    /* - */
+
+    test.open( 'dst - null' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'dst - null' );
   }
-  var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
-  var got = _.vectorAdapter.map( null, src, onElement1 );
-  var exp = _.vectorAdapter.make( [ 1, 1, 1 ] );
-  test.identical( got, exp );
-
-  var exp = _.vectorAdapter.from( [ -1, -1.5, -2 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  test.case = 'Check if a number is > 0 - empty';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var src = _.vectorAdapter.from( [ ] );
-  var got = _.vectorAdapter.map( src, positiveNumber );
-  var exp = _.vectorAdapter.from( [ ] );
-  test.identical( got, exp );
-
-  /* */
-
-  test.case = 'Check if a number is > 0 - true';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var src = _.vectorAdapter.from( [ 0, 1, 0, 2, 1000, 307 ] );
-  var got = _.vectorAdapter.map( src, positiveNumber );
-  var exp = _.vectorAdapter.from( [ true, true, true, true, true, true ] );
-  test.identical( got, exp );
-
-  /* */
-
-  test.case = 'Check if a number is > 0 - false some';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var src = _.vectorAdapter.from( [ 0, - 1, 0, 2, 1000, '307' ] );
-  var got = _.vectorAdapter.map( src, positiveNumber );
-  var exp = _.vectorAdapter.from( [ true, false, true, true, true, false ] );
-  test.identical( got, exp );
-
-  /* */
-
-  test.case = 'Check if a number is > 0 - false none';
-  function positiveNumber( src )
-  {
-    return _.numberIs( src ) && src >= 0 ; /* positive numbers */
-  }
-  var src = _.vectorAdapter.from( [ - 1, - 2, - 1000, '307', [ 3 ] ] );
-  var got = _.vectorAdapter.map( src, positiveNumber );
-  var exp = _.vectorAdapter.from( [ false, false, false, false, false ] );
-  test.identical( got, exp );
-
-  /* */
-
-  test.case = 'Check if a string starts with h - true';
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; /* str starts with H */
-  }
-  var src = _.vectorAdapter.from( [ 'hi!', 'how', 'has', 'he', 'handled', 'his', 'huge', 'hair' ] );
-  var got = _.vectorAdapter.map( src, stringLengthThree );
-  var expectedStr = _.vectorAdapter.from( [ true, true, true, true, true, true, true, true ] );
-  test.identical( got, expectedStr );
-
-  /* */
-
-  test.case = 'Check if a string starts with h - false';
-  function stringLengthThree( src )
-  {
-    return _.strIs( src ) && src.charAt( 0 ) === 'h' ; /* str starts with H */
-  }
-  var src = _.vectorAdapter.from( [ 'Hello, ', 'how', 'are', 'you', '?' ] );
-  var got = _.vectorAdapter.map( src, stringLengthThree );
-  var exp = _.vectorAdapter.from( [ false, true, false, false, false ] );
-  test.identical( got, exp );
-
-  /* */
-
-  test.case = 'Check an array´s length - true';
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; /* arrays of length 4 */
-  }
-  var src = _.vectorAdapter.from( [ ['hi!', 'how', 'are', 'you' ], [ 0, 1, 2, 3 ] ] );
-  var got = _.vectorAdapter.map( src, arrayLength );
-  var expectedArr = _.vectorAdapter.from( [ true, true ] );
-  test.identical( got, expectedArr );
-
-  /* */
-
-  test.case = 'Check an array´s length - false';
-  function arrayLength( src )
-  {
-    return _.arrayIs( src ) && src.length === 4 ; /* arrays of length 4 */
-  }
-  var src = _.vectorAdapter.from( [ [ 'Hello, ', 'how', 'are', 'you', '?' ], [ 0, 1, 2 ] ] );
-  var got = _.vectorAdapter.map( src, arrayLength );
-  var exp =  _.vectorAdapter.from( [ false, false ] );
-  test.identical( got, exp );
 
   /* - */
 
@@ -629,60 +1390,4232 @@ function map( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.vectorAdapter.map() );
 
-  test.case = 'Only one argument';
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [] ), _.vectorAdapter.from( [] ), ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( [ 1, 2 ], _.vectorAdapter.from( [ 1, 2 ] ), ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( { 1 : 0 }, _.vectorAdapter.from( [ 1 ] ), ( e ) => e ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1, 2 ] ), [ 1, 2 ], ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1 ] ), { 1 : 0 }, ( e ) => e ) );
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1, 2 ] ), _.vectorAdapter.from( [ 1, 2 ] ), [] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1 ] ), _.vectorAdapter.from( [ 2 ] ), 'wrong' ) );
+
+  test.case = 'different length of dst and src';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1, 2 ] ), _.vectorAdapter.from( [] ), ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 1 ] ), _.vectorAdapter.from( [ 1, 2 ] ), ( e ) => e ) );
+
+  test.case = 'only dst, dst - null';
   test.shouldThrowErrorSync( () => _.vectorAdapter.map( null ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( NaN ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( undefined ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 'string' ) );
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 2 ) );
 
-  /* */
-
-  test.case = 'Wrong second argument';
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* aaa : add such test case */ /* Dmytro : added */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
-
-  /* */
-
-  test.case = 'Wrong first argument';
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.map( Int8Array.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+  test.case = 'two arguments, onEach not undefined' ;
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( null, _.vectorAdapter.from( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.map( _.vectorAdapter.from( [ 2, 1 ] ), _.vectorAdapter.from( [ 1, 2 ] ) ) );
 }
 
 //
 
-function filter( test )
+function mapDstIsNullRoutineFromLongLrangeAndStride( test )
 {
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
 
-  /* */
-
-  test.case = 'dst = null';
-
-  function onElement1( src )
+  for( let i = 0 ; i < list.length ; i++ )
   {
-    return src + 10;
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
   }
-  var src = _.vectorAdapter.from( [ -1, -1.5, -2 ] );
-  var got = _.vectorAdapter.filter( null, src, onElement1 );
-  var exp = _.vectorAdapter.make( [ 9, 8.5, 8 ] );
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ -1, -1.5, -2 ] )
-  test.equivalent( src, exp );
 
-  /* */
+  /* - */
 
+  function testRun( makeLong )
+  {
+    test.case = 'dst - vectorAdapter';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst );
+    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, undefined );
+    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - null';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, null );
+    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    /* - */
+
+    test.open( 'dst - null' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 0, 0, 0 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 1 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ 0, 0, 0 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'dst - null' );
+  }
+}
+
+//
+
+function mapDstIsNullRoutineFromNumber( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.map( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.map( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'from vectorAdapter' );
+
+    /* - */
+
+    test.open( 'from number' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.map( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 10, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'from number' );
+  }
+}
+
+//
+
+function mapOnlyDstRoutineFromLong( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.map( undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.map( null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.map( ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.map( ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.map( ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.map( ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.map( ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.map( ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.map( ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.map( ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.map( ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.map( ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function mapOnlyDstRoutineFromLongLrangeAndStride( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( src, null );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.map( undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.map( null );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.map( ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.map( ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.map( ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.map( ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.map( ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.map( ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.map( ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.map( ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.map( ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.map( ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function mapDstIsVectorRoutineFromLong( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, null );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.map( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.map( src, null );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, null );
+    var exp = _.vectorAdapter.from( [ -1, -3, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -6, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ -1, -3, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.map( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.map( src, null );
+    var exp = _.vectorAdapter.from( [ -1, -3, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -6, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ -1, -3, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function mapDstIsVectorRoutineFromNumberWithVectorAdapter( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.map( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.map( dst, src, null );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.close( 'call by namespace, src - from vectorAdapter' );
+
+    /* - */
+
+    test.open( 'call by instance, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.map( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.map( src, null );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.close( 'call by instance, src - from vectorAdapter' );
+  }
+}
+
+//
+
+function mapDstIsVectorRoutineFromNumberWithNumber( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.map( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, null );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -8, -9, -10, -11, -12 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.close( 'call by namespace, src - from vectorAdapter' );
+
+    /* - */
+
+    test.open( 'call by instance, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.map( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.map( src, null );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.map( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.map( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.map( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -8, -9, -10, -11, -12 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.map( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.close( 'call by instance, src - from vectorAdapter' );
+  }
+}
+
+//
+
+function filterDstIsNullRoutineFromLong( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'dst - vectorAdapter';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.vectorAdapter.filter( dst );
+    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.vectorAdapter.filter( dst, undefined );
+    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - null';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
+    var got = _.vectorAdapter.filter( dst, null );
+    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    /* - */
+
+    test.open( 'dst - null' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'dst - null' );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [] ), _.vectorAdapter.from( [] ), ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( [ 1, 2 ], _.vectorAdapter.from( [ 1, 2 ] ), ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( { 1 : 0 }, _.vectorAdapter.from( [ 1 ] ), ( e ) => e ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 1, 2 ] ), [ 1, 2 ], ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 1 ] ), { 1 : 0 }, ( e ) => e ) );
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 1, 2 ] ), _.vectorAdapter.from( [ 1, 2 ] ), [] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 1 ] ), _.vectorAdapter.from( [ 2 ] ), 'wrong' ) );
+
+  test.case = 'only dst, dst - null';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( null ) );
+
+  test.case = 'two arguments, onEach not undefined' ;
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( null, _.vectorAdapter.from( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( _.vectorAdapter.from( [ 2, 1 ] ), _.vectorAdapter.from( [ 1, 2 ] ) ) );
+
+  test.case = 'dst === src, onEach returns undefined';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.filter( [ 1, 2, 3 ], ( e ) => undefined ) );
+}
+
+//
+
+function filterDstIsNullRoutineFromLongLrangeAndStride( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'dst - vectorAdapter';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst );
+    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, undefined );
+    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - vectorAdapter, src - null';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, null );
+    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    /* - */
+
+    test.open( 'dst - null' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 1 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'dst - null' );
+  }
+}
+
+//
+
+function filterDstIsNullRoutineFromNumber( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'from vectorAdapter' );
+
+    /* - */
+
+    test.open( 'from number' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 10, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 5, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = null;
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.close( 'from number' );
+  }
+}
+
+//
+
+function filterOnlyDstRoutineFromLong( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    test.shouldThrowErrorSync( () =>
+    {
+      var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+      var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => undefined );
+    });
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.filter( undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.filter( null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.filter( ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.filter( ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.filter( ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.filter( ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.filter( ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.filter( ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.filter( ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = src.filter( ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.filter( ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    test.shouldThrowErrorSync( () =>
+    {
+      var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+      var got = src.filter( ( e, k, s, d ) => undefined );
+    });
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function filterOnlyDstRoutineFromLongLrangeAndStride( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( src, null );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    test.shouldThrowErrorSync( () =>
+    {
+      var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+      var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => undefined );
+    });
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.filter( undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.filter( null );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.filter( ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.filter( ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.filter( ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.filter( ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.filter( ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.filter( ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.filter( ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns dst.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = src.filter( ( e, k, s, d ) => d.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.filter( ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - vector, onEach returns undefined';
+    test.shouldThrowErrorSync( () =>
+    {
+      var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+      var got = src.filter( ( e, k, s, d ) => undefined );
+    });
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function filterDstIsVectorRoutineFromLong( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = makeLong.name === 'arrayMake' ? _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ) : _.vectorAdapter.from( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( makeLong.name === 'arrayMake' ? got === dst : got !== dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2 ] ) );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.filter( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.filter( src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = makeLong.name === 'arrayMake' ? _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ) : _.vectorAdapter.from( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( makeLong.name === 'arrayMake' ? got === dst : got !== dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2 ] ) );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -6, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    test.shouldThrowErrorSync( () =>
+    {
+      var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 2, 2 );
+      var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 4, 2 );
+      var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    });
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 2, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.filter( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.filter( src, null );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -6, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    test.shouldThrowErrorSync( () =>
+    {
+      var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 2, 2 );
+      var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 4, 2 );
+      var got = dst.filter( src, ( e ) => e );
+    });
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 3, 2 );
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 2, 2 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var exp = _.vectorAdapter.from( [] );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var exp = _.vectorAdapter.from( []  );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2 ] ), 2 );
+    var exp = _.vectorAdapter.from( [ 1, 2 ] );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+
+    test.close( 'call by namespace, src - from vectorAdapter' );
+
+    /* - */
+
+    test.open( 'call by instance, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, null );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [] ), 0 );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2, 3, 4, 5 ] ), 5 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( vad.fromLong( [ 1, 2 ] ), 2 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 1, 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.close( 'call by instance, src - from vectorAdapter' );
+  }
+}
+
+//
+
+function filterDstIsVectorRoutineFromNumberWithNumber( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.filter( dst, src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, null );
+    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -8, -9, -10, -11, -12 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ 1, 2 ] );
+    var src = _.vectorAdapter.fromNumber( 8, 5 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 8, 8, 8, 8, 8 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 2 );
+    var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.close( 'call by namespace, src - from vectorAdapter' );
+
+    /* - */
+
+    test.open( 'call by instance, src - from vectorAdapter' );
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.filter( src, undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach - null';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.filter( src, null );
+    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ]  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns key';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.filter( src, ( e, k ) => k );
+    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns src.length';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.filter( src, ( e, k, s ) => s.length );
+    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns substruction dst and src elements';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
+    var exp = _.vectorAdapter.from( [ -8, -9, -10, -11, -12 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [] );
+    var src = _.vectorAdapter.fromNumber( 8, 0 );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( [] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'src - vector, onEach returns undefined';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 5 );
+    var got = dst.filter( src, ( e, k, s, d ) => undefined );
+    var exp = _.vectorAdapter.from( []  );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst.length < src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ 1, 2 ] );
+    var src = _.vectorAdapter.fromNumber( 8, 5 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 8, 8, 8, 8, 8 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got === dst );
+
+    test.case = 'dst.length > src.length, onEach returns element';
+    var dst = _.vectorAdapter.fromLong( [ -1, -2, -3, -4, -5 ] );
+    var src = _.vectorAdapter.fromNumber( 7, 2 );
+    var got = dst.filter( src, ( e ) => e );
+    var exp = _.vectorAdapter.from( [ 7, 7 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+    test.is( got !== dst );
+
+    test.close( 'call by instance, src - from vectorAdapter' );
+  }
 }
 
 //
@@ -719,225 +5652,6 @@ function _while( test )
   test.equivalent( dst, exp );
 
   /* */
-
-}
-
-//
-
-function all( test )
-{
-
-  /* */
-
-  test.case = 'basic false';
-
-  function onElement1( src )
-  {
-    return src < 13;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.all( src, onElement1 );
-  var exp = false;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  test.case = 'basic true';
-
-  function onElement2( src )
-  {
-    return src < 130;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.all( src, onElement2 );
-  var exp = true;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 2 ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
-
-  test.case = 'Wrong second argument'; //
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.all( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
-}
-
-//
-
-function any( test )
-{
-
-  /* */
-
-  test.case = 'basic false';
-
-  function onElement1( src )
-  {
-    return src < 0;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.any( src, onElement1 );
-  var exp = false;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  test.case = 'basic true';
-
-  function onElement2( src )
-  {
-    return src < 13;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.any( src, onElement2 );
-  var exp = true;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( undefined ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 2 ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
-
-  test.case = 'Wrong second argument'; //
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.any( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
-
-}
-
-//
-
-function none( test )
-{
-
-  /* */
-
-  test.case = 'basic false';
-
-  function onElement1( src )
-  {
-    return src < 13;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.none( src, onElement1 );
-  var exp = false;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  test.case = 'basic true';
-
-  function onElement2( src )
-  {
-    return src < 0;
-  }
-  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
-  var got = _.vectorAdapter.none( src, onElement2 );
-  var exp = true;
-  test.identical( got, exp );
-  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
-  test.equivalent( src, exp );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'Only one argument'; //
-
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( null ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( NaN ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( undefined ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 2 ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
-
-  test.case = 'Wrong second argument'; //
-
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
-
-  test.case = 'Wrong first argument'; //
-
-  function onEvaluate( src )
-  {
-    return src > 2 ;
-  }
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( null, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( undefined, onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 'string', onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( [ 0, 1, 2, 3 ], onEvaluate ));
-  test.shouldThrowErrorSync( () => _.vectorAdapter.none( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
 
 }
 
@@ -1587,6 +6301,1105 @@ function isEquivalent( test )
 
 //
 
+function allRoutineFromLong( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 0, 3, -1, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, 0 ] ) );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.all();
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = src.all();
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 0, 3, -1, -2, -3 ] ) );
+    var got = src.all();
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.all( null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = src.all( null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, 0 ] ) );
+    var got = src.all( null );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.all( undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = src.all( undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = src.all( undefined );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.all( ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = src.all( ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = src.all( ( e ) => e );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'call by instance' );
+  }
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all());
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'wrong' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( null, ( e, k ) => k ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined, ( e, k ) => k ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'wrong', ( e, k ) => k ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( [ 0, 1, 2, 3 ], ( e, k ) => k ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* aaa : add such test case */ /* Dmytro : implemented */
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'wrong' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* aaa : add such test case */ /* Dmytro : implemented */
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* aaa : add such test case */ /* Dmytro : implemented */
+}
+
+//
+
+function allRoutineFromLongLrangeAndStride( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 0, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, 0 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.all();
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all();
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 0, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all();
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.all( null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, 0 ] ), 0, 3, 2 );
+    var got = src.all( null );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.all( undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( undefined );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.all( ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( ( e ) => e );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ), 0, 3, 2 );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function allRoutineFromNumberWithVectorAdapter( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 0, 3, -1, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, 0 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = src.all();
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = src.all();
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 0, 3, -1, -2, -3 ] ) ), 6 );
+    var got = src.all();
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = src.all( null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = src.all( null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, 0 ] ) ), 6 );
+    var got = src.all( null );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = src.all( undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = src.all( undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = src.all( undefined );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = src.all( ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = src.all( ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = src.all( ( e ) => e );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [] ) ), 0 );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, -1, -2, -3 ] ) ), 6 );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 0, -2, -3 ] ) ), 6 );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
+function allRoutineFromNumberWithNumber( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I16x,
+    F32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.open( 'call by namespace' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = _.vectorAdapter.all( src );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = _.vectorAdapter.all( src, null );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = _.vectorAdapter.all( src, undefined );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = _.vectorAdapter.all( src, ( e ) => e );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = _.vectorAdapter.all( src, ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = _.vectorAdapter.all( src, ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'call by namespace' );
+
+    /* - */
+
+    test.open( 'call by instance' );
+
+    test.case = 'src - empty vector, without onEach';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = src.all();
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, without onEach';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = src.all();
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, without onEach';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = src.all();
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - null';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = src.all( null );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - null';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = src.all( null );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - null';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = src.all( null );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = src.all( undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = src.all( undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - undefined';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = src.all( undefined );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = src.all( ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = src.all( ( e ) => e );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns element';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = src.all( ( e ) => e );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, 0 );
+
+    test.case = 'src - vector with zeros, onEach - returns key';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = src.all( ( e, k ) => k );
+    test.identical( got, 0 );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    test.case = 'src - vector with zeros, onEach - returns src.length';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = src.all( ( e, k, s ) => s.length );
+    test.identical( got, true );
+
+    /* */
+
+    test.case = 'src - empty vector, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( 7, 0 );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, true );
+
+    test.case = 'src - vector without zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( 7, 6 );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - vector with zeros, onEach - returns undefined';
+    var src = _.vectorAdapter.fromNumber( 0, 6 );
+    var got = src.all( ( e, k, s ) => undefined );
+    test.identical( got, undefined );
+
+    test.close( 'call by instance' );
+  }
+}
+
+//
+
 function allEquivalent( test )
 {
 
@@ -1594,13 +7407,158 @@ function allEquivalent( test )
   var accuracy = 0.1;
   var a = _.vectorAdapter.from([ 1 ]);
   var b = _.vectorAdapter.from([ 1+accuracy ]);
-  debugger;
   var got = _.vectorAdapter.allEquivalent( a, b, accuracy );
-  debugger;
   var exp = true;
   test.identical( got, exp );
 
 }
+
+//
+
+function any( test )
+{
+
+  /* */
+
+  test.case = 'basic false';
+
+  function onElement1( src )
+  {
+    return src < 0;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.any( src, onElement1 );
+  var exp = false;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  test.case = 'basic true';
+
+  function onElement2( src )
+  {
+    return src < 13;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.any( src, onElement2 );
+  var exp = true;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Only one argument'; //
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( NaN ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( undefined ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 2 ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
+
+  test.case = 'Wrong second argument'; //
+
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.any( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+
+}
+
+//
+
+function none( test )
+{
+
+  /* */
+
+  test.case = 'basic false';
+
+  function onElement1( src )
+  {
+    return src < 13;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.none( src, onElement1 );
+  var exp = false;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  test.case = 'basic true';
+
+  function onElement2( src )
+  {
+    return src < 0;
+  }
+  var src = _.vectorAdapter.from( [ 5, 10, 15 ] );
+  var got = _.vectorAdapter.none( src, onElement2 );
+  var exp = true;
+  test.identical( got, exp );
+  var exp = _.vectorAdapter.from( [ 5, 10, 15 ] )
+  test.equivalent( src, exp );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Only one argument'; //
+
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( null ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( NaN ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( undefined ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 2 ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* qqq : add such test case */
+
+  test.case = 'Wrong second argument'; //
+
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
+  // test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* qqq : add such test case */
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'string' ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
+
+  test.case = 'Wrong first argument'; //
+
+  function onEvaluate( src )
+  {
+    return src > 2 ;
+  }
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( null, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( undefined, onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( 'string', onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( [ 0, 1, 2, 3 ], onEvaluate ));
+  test.shouldThrowErrorSync( () => _.vectorAdapter.none( I8x.from( [ 0, 1, 2, 3 ] ), onEvaluate ));
+
+}
+
 
 //
 
@@ -2227,25 +8185,40 @@ var Self =
     to,
     toLong,
 
-    // from
+    //
 
-    fromLongReview,
-    fromLongWithStrideReview,
-    fromLongLrangeReview,
-    fromLongLrangeAndStrideReview,
-    fromNumberReview,
-
-    review,
+    reviewSrcIsSimpleVector,
+    reviewSrcIsAdapterRoutineFrom,
+    reviewSrcIsAdapterRoutineFromLong,
+    reviewSrcIsAdapterRoutineFromLongWithStride,
+    reviewSrcIsAdapterRoutineFromLongLrange,
+    reviewSrcIsAdapterRoutineFromLongLrangeAndStride,
+    reviewSrcIsAdapterRoutineFromNumber,
+    reviewSrcIsAdapterRoutineFromMaybeNumber,
 
     // iterator
 
-    map,
-    filter,
-    while : _while,
+    mapDstIsNullRoutineFromLong,
+    mapDstIsNullRoutineFromLongLrangeAndStride,
+    mapDstIsNullRoutineFromNumber,
+    mapOnlyDstRoutineFromLong,
+    mapOnlyDstRoutineFromLongLrangeAndStride,
+    mapDstIsVectorRoutineFromLong,
+    mapDstIsVectorRoutineFromLongLrangeAndStride,
+    mapDstIsVectorRoutineFromNumberWithVectorAdapter,
+    mapDstIsVectorRoutineFromNumberWithNumber,
 
-    all,
-    any,
-    none,
+    filterDstIsNullRoutineFromLong,
+    filterDstIsNullRoutineFromLongLrangeAndStride,
+    filterDstIsNullRoutineFromNumber,
+    filterOnlyDstRoutineFromLong,
+    filterOnlyDstRoutineFromLongLrangeAndStride,
+    filterDstIsVectorRoutineFromLong,
+    filterDstIsVectorRoutineFromLongLrangeAndStride,
+    filterDstIsVectorRoutineFromNumberWithVectorAdapter,
+    filterDstIsVectorRoutineFromNumberWithNumber,
+
+    while : _while,
 
     sort,
 
@@ -2260,6 +8233,14 @@ var Self =
 
     // isEquivalent,
     // allEquivalent,
+
+    allRoutineFromLong,
+    allRoutineFromLongLrangeAndStride,
+    allRoutineFromNumberWithVectorAdapter,
+    allRoutineFromNumberWithNumber,
+
+    any,
+    none,
 
     //
 
