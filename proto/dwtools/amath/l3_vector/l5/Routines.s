@@ -756,6 +756,19 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine toLong() returns Long maiden from vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @returns { Long } - Returns default Long maiden from source vector.
+ * @function toLong
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If source vector is not a Long, not a VectorAdapter.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
+
 function toLong( src )
 {
   let result;
@@ -785,6 +798,21 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine _toStr() makes string from data in source vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Map|MapLike } o - Options map.
+ * @param { Number } o.precision - The precision of numbers in returned string. Default value is 4.
+ *
+ * @returns { String } - Returns string with elements of source vector.
+ * @function _toStr
+ * @throws { Error } If source vector is not a Long, not a VectorAdapter.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
+
+
 /* zzz : redo */
 function _toStr( src, o )
 {
@@ -792,7 +820,9 @@ function _toStr( src, o )
   let length = src.length;
 
   if( !o ) o = Object.create( null );
-  if( o.percision === undefined ) o.percision = 4;
+
+  if( o.percision === undefined )
+  o.percision = 4;
 
   if( length )
   if( o.percision === 0 )
