@@ -179,17 +179,18 @@ dop.special = true;
 //
 
 /**
- * Routine makeSimilar() makes copy of source vector {-src-}.
+ * Routine makeSimilar() makes new instance of vector {-src-} with length defined by argument {-length-}.
  *
  * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Number } length - Length of returned vector. If {-length-} is not defined, then routine makes vector with src.length.
  *
- * @returns { Long|VectorAdapter } - Returns copy of source vector.
- * @function clone
- * @throws { Error } If arguments.length is less or more then one.
+ * @returns { Long|VectorAdapter } - Returns instance of source vector with defined length.
+ * @function makeSimilar
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If {-length-} is not a Number.
  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
  * @memberof module:Tools/math/Vector.wTools.avector
 */
-
 
 function makeSimilar( src, length )
 {
@@ -247,6 +248,20 @@ dop.special = true;
   result[ r-f ] = array[ r ];
 
   return result;
+*/
+
+/**
+ * Routine slice() makes slice copy of part of vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Number } first - Start index. If {-first-} is not defined, then copying starts from index 0.
+ * @param { Number } last - End index (included). If {-last-} is not defined, then copying ends on last index of {-src-}.
+ *
+ * @returns { Long|VectorAdapter } - Returns copy of part of source vector.
+ * @function slice
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
 */
 
 function slice( src, first, last )
@@ -414,6 +429,23 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine growAdapter() makes new instance of source vector {-src-} with length equal to src.length or bigger. The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines length of new vector.
+ * @param { * } val - To fill extra elements.
+ *
+ * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
+ * If length of new vector is more then src.length, then extra elements filled by value {-val-}.
+ * @function growAdapter
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
+
 function growAdapter( src, crange, val )
 {
   let result = this.growLong.apply( this, arguments );
@@ -433,6 +465,23 @@ dop.returningLong = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine growLong() makes new instance of source vector {-src-} with length equal to src.length or bigger. The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines length of new vector.
+ * @param { * } val - To fill extra elements.
+ *
+ * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
+ * If length of new vector is more then src.length, then extra elements filled by value {-val-}.
+ * @function growLong
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
 
 function growLong( src, crange, val )
 {
@@ -483,6 +532,21 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine shrinkAdapter() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines ranges for copying.
+ *
+ * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
+ * @function shrinkAdapter
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
+
 function shrinkAdapter( src, crange )
 {
   let result = this.shrinkLong.apply( this, arguments );
@@ -502,6 +566,21 @@ dop.returningLong = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine shrinkLong() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines ranges for copying.
+ *
+ * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
+ * @function shrinkLong
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
 
 function shrinkLong( src, crange )
 {
@@ -540,6 +619,21 @@ dop.returningLong = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine review() reviews source vector {-src-} in defined range {-crange-}. Routine makes new instance of vector {-src-} if range defines length smaller then src.length. Otherwise, routine returns original vector. The elements of new vector filled by values of {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range|Number } crange - Defines ranges for copying.
+ *
+ * @returns { Long|VectorAdapter } - Returns instance of vector filled by values of original vector {-src-}. If {-src-} vector not changes, then routine returns original vector.
+ * @function review
+ * @throws { Error } If arguments.length is less or more then two.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
 
 function review( src, crange )
 {
@@ -584,6 +678,18 @@ dop.returningLong = false;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine bufferConstructorOf() returns constructor of vector {-src-}.
+ *
+ * @param { Function|Long|VectorAdapter } src - Source vector.
+ *
+ * @returns { Long|VectorAdapter } - Returns constructor of source vector.
+ * @function bufferConstructorOf
+ * @throws { Error } If source vector is not a Function, not a Long, not a VectorAdapter.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
 
 function bufferConstructorOf( src )
 {
