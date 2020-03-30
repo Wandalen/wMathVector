@@ -13,8 +13,8 @@
 ## Туторіали
 
 <details>
-  <summary><a href="./tutorial/VectorOperations.md">
+  <summary><a href="./tutorial/Introduction.md">
     Введення
   </a></summary>
-    Здійснення математичних операцій над векторами та обгортками до векторів.
+    В даній статті виконується огляд концепції вектора та його форматів задання.
 </details>
