@@ -821,11 +821,11 @@ function _toStr( src, o )
 
   if( !o ) o = Object.create( null );
 
-  if( o.percision === undefined )
-  o.percision = 4;
+  if( o.precision === undefined )
+  o.precision = 4;
 
   if( length )
-  if( o.percision === 0 )
+  if( o.precision === 0 )
   {
     throw _.err( 'not tested' );
     for( let i = 0, l = length-1 ; i < l ; i++ )
@@ -842,13 +842,13 @@ function _toStr( src, o )
     {
       let e = src.eGet( i );
       if( _.numberIs( e ) )
-      result += e.toPrecision( o.percision ) + ' ';
+      result += e.toPrecision( o.precision ) + ' ';
       else
       result += e + ' ';
     }
     let e = src.eGet( i );
     if( _.numberIs( e ) )
-    result += e.toPrecision( o.percision );
+    result += e.toPrecision( o.precision );
     else
     result += e;
   }
