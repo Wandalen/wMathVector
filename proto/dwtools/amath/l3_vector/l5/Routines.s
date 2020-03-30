@@ -36,7 +36,7 @@ _.assert( _.objectIs( operations ) );
  * Routine assign() assigns the values of second argument to the vector {-dst-}. If arguments.length is more then two, then routine assigns elements of pseudo array {-arguments-} to the vector {-dst-}. The assigning starts from the index 1.
  *
  * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } ... - Source vector. If arguments.length is 2, then source vector is second argument. Otherwise, the source vector is copy of arguments starting from index 1.
+ * @param { * } ... - Source vector. If arguments.length is 2, then source vector is second argument. Otherwise, the source vector is copy of arguments starting from index 1.
  *
  * @returns { Long|VectorAdapter } - Returns original {-dst-} vector filled by values from source vector.
  * @function assign
@@ -94,6 +94,20 @@ dop.modifying = true;
 
 //
 
+/**
+ * Routine assignVector() assigns the values of source vector {-src-} to the destination vector {-dst-}.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @returns { Long|VectorAdapter } - Returns original {-dst-} vector filled by values from source vector.
+ * @function assignVector
+ * @throws { Error } If {-dst-} or {-src-} are not vectors.
+ * @throws { Error } If length of {-src-} and {-dst-} vectors are different.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
+
 function assignVector( dst, src )
 {
   let length = dst.length;
@@ -125,6 +139,18 @@ dop.special = true;
 
 //
 
+/**
+ * Routine clone() makes copy of source vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @returns { Long|VectorAdapter } - Returns copy of source vector.
+ * @function clone
+ * @throws { Error } If arguments.length is less or more then one.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
+
 function clone( src )
 {
   let length = src.length;
@@ -151,6 +177,19 @@ dop.modifying = false;
 dop.special = true;
 
 //
+
+/**
+ * Routine makeSimilar() makes copy of source vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @returns { Long|VectorAdapter } - Returns copy of source vector.
+ * @function clone
+ * @throws { Error } If arguments.length is less or more then one.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
+
 
 function makeSimilar( src, length )
 {
