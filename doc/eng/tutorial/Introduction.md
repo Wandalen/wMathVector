@@ -81,22 +81,6 @@ We create arrays `array1` and `array2`. For them, we set simple adapters `vector
 
 Important: Adapters do not have data. Metaphorically, the adapter is an advanced kind of link on data.
 
-### Адаптер це різновид посилання
-
-Інший приклад із адаптером: множення вектора на скаляр.
-
-```js
-var array = [ 1, 2, 3 ];
-var vector1 = _.vectorAdapter.from( array );
-
-_.avector.mul( array, 2 );
-
-console.log( vector1.toStr() );
-/* log : "2.000, 4.000, 6.000" */
-```
-
-Адаптер `vector1` не створює копії вектора, а є посиланням на дані оригінального масива `array`, тому після виконання операції множення над масивом адаптер має значення в 2 рази більші від початкового.
-
 ### An adapter is a kind of link
 
 Another example with an adapter is the multiplication of a vector by a scalar.
