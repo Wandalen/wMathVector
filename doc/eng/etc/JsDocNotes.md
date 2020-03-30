@@ -70,7 +70,7 @@ Please take a note that the name of the module and namespace in "memberof/member
 For example, we have line "@memberof module:Tools/math/Vector.wTools.avector".
 In that line:
 
-* "module:" specifies entity king
+* "module:" specifies entity kind
 * "Tools/math/Vector" is a module name
 * "wTools.avector" is a namespace name
 
