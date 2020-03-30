@@ -2342,7 +2342,6 @@ let reduceToFurthest = meta._operationReduceToExtremal_functor
  *
  * @returns { Number } - Returns minimal value of source vector.
  * @function reduceToMin
- * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 */
 
@@ -2464,7 +2463,6 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
  *
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryBegin
- * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 */
 
@@ -2481,6 +2479,18 @@ function _distributionRangeSummaryBegin( o )
   o.result.max.container = null;
 
 }
+
+/**
+ * Routine _distributionRangeSummaryEach() is a callback than compares current value with biggest and lowest value in map {-o-}.
+ * If current value is bigger then biggest value in map {-o-}, then routine replace value in map {-o-}.
+ * If current value is lower then lowest value in map {-o-}, then routine replace value in map {-o-}.
+ *
+ * @param { MapLike } o - Map.
+ *
+ * @returns { Undefined } - Returns not a value, changes map {-o-}.
+ * @function _distributionRangeSummaryEach
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function _distributionRangeSummaryEach( o )
 {
@@ -2503,6 +2513,16 @@ function _distributionRangeSummaryEach( o )
 
 }
 
+/**
+ * Routine _distributionRangeSummaryEnd() finds median of lowest and biggest value in map {-o-}.
+ *
+ * @param { MapLike } o - Map.
+ *
+ * @returns { Undefined } - Returns not a value, changes map {-o-}.
+ * @function _distributionRangeSummaryEnd
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function _distributionRangeSummaryEnd( o )
 {
   if( o.result.min.index === -1 )
@@ -2512,6 +2532,17 @@ function _distributionRangeSummaryEnd( o )
   }
   o.result.median = ( o.result.min.value + o.result.max.value ) / 2;
 }
+
+/**
+ * Routine distributionRangeSummary() finds the biggest and the lowest values in source vector {-src-} and the median between them.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @returns { Map } - Returns map that contains data with biggest, lowest values and median between them.
+ * @function distributionRangeSummary
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 let distributionRangeSummary = meta._operationReduceToScalar_functor
 ({
@@ -2527,6 +2558,16 @@ let distributionRangeSummary = meta._operationReduceToScalar_functor
 _.assert( distributionRangeSummary.trivial.operation.reducing );
 
 //
+
+/**
+ * Routine reduceToMinValue() returns the minimal value in passed vectors.
+ *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
+ *
+ * @returns { Number } - Returns minimal value in arguments.
+ * @function reduceToMinValue
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function reduceToMinValue()
 {
@@ -2550,6 +2591,16 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine reduceToMaxValue() returns the maximal value in passed vectors.
+ *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
+ *
+ * @returns { Number } - Returns maximal value of source vector.
+ * @function reduceToMaxValue
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function reduceToMaxValue()
 {
   let result = this.reduceToMax.apply( this, arguments );
@@ -2568,6 +2619,16 @@ dop.returningPrimitive = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine distributionRangeSummaryValue() finds the biggest and the lowest values in passed vectors.
+ *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
+ *
+ * @returns { Array } - Returns array with lowest biggest value in passed vectors.
+ * @function distributionRangeSummaryValue
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function distributionRangeSummaryValue()
 {
@@ -2634,6 +2695,21 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine all() checks that for each element of source vector {-src-} callback {-onEach-} returns defined value.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Applies element, index and source vector.
+ *
+ * @returns { Boolean|BoolLike } - Returns true if for each element of source vector callback returns defined value. Otherwise, it returns value.
+ * @function all
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a VectorAdapter.
+ * @throws { Error } If {-onEach-} is not a Function.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+
 function all( src, onEach )
 {
 
@@ -2680,6 +2756,20 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine any() checks that for any element of source vector {-src-} callback {-onEach-} returns defined value.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Applies element, index and source vector.
+ *
+ * @returns { Boolean|BoolLike } - If result of callback is defined value, returns it values. Otherwise, returns false.
+ * @function any
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a VectorAdapter.
+ * @throws { Error } If {-onEach-} is not a Function.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function any( src, onEach )
 {
 
@@ -2723,6 +2813,20 @@ dop.reducing = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine none() checks that for none element of source vector {-src-} callback {-onEach-} returns defined value.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Applies element, index and source vector.
+ *
+ * @returns { Boolean|BoolLike } - If result of callback is defined value, returns it reversed boolean value. Otherwise, returns true.
+ * @function any
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a VectorAdapter.
+ * @throws { Error } If {-onEach-} is not a Function.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function none( src, onEach )
 {
@@ -2769,6 +2873,20 @@ dop.modifying = false;
 // --
 // interruptible reductor with bool result
 // --
+
+/**
+ * Routine _equalAre() checks that two vectors {-it.src-} and {-it.src2-} are equivalent.
+ *
+ * @param { Map } it - Options map.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-it.src-} and {-it.src2-} are equivalent, returns true. Otherwise, returns false.
+ * @function _equalAre
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-it.strictTyping-} is undefined.
+ * @throws { Error } If {-it.containing-} is undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 
 function _equalAre( it )
 {
@@ -2835,6 +2953,21 @@ dop.reducing = true;
 dop.homogeneous = true;
 
 //
+
+/**
+ * Routine equalAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
+ *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } it - Second vector.
+ * @param { Map } opts - Options map.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-it.src-} and {-it.src2-} are equivalent, returns true. Otherwise, returns false.
+ * @function equalAre
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-it.strictTyping-} is undefined.
+ * @throws { Error } If {-it.containing-} is undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function equalAre( src1, src2, opts )
 {
