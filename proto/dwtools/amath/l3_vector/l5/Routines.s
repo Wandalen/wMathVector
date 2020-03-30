@@ -2448,6 +2448,17 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
 
 //
 
+/**
+ * Routine _distributionRangeSummaryBegin() appends field `result` to map {-o-}.
+ *
+ * @param { MapLike } o - Map.
+ *
+ * @returns { Undefined } - Returns not a value, changes map {-o-}.
+ * @function _distributionRangeSummaryBegin
+ * @throws { Error } If dst.length and src.length are different.
+ * @namespaces "wTools.avector","wTools.vectorAdapter"
+*/
+
 function _distributionRangeSummaryBegin( o )
 {
 
