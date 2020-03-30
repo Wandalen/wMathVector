@@ -33,6 +33,7 @@ _.assert( _.objectIs( operations ) );
 // --
 
 /**
+
  * Routine assign() assigns the values of second argument to the vector {-dst-}.
  * If arguments.length is more then two, then routine assigns elements of pseudo array {-arguments-} to the vector {-dst-}.
  * The assigning starts from the index 1.
@@ -2004,7 +2005,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function add
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let add = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -2039,7 +2040,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function sub
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let sub = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -2074,7 +2075,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function mul
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let mul = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -2113,7 +2114,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function div
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let div = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -2154,7 +2155,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function min
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let min = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -2194,7 +2195,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function max
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let max = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -2230,7 +2231,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a1 [ 1, 2, 2, 2 ]
 //  *
 //  * @function clamp
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let clamp = meta._operationReturningSelfTakingVariantsComponentWise_functor
