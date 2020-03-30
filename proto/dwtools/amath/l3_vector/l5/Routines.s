@@ -32,6 +32,19 @@ _.assert( _.objectIs( operations ) );
 // basic
 // --
 
+/**
+ * Routine assign() assigns the values of second argument to the vector {-dst-}. If arguments.length is more then two, then routine assigns elements of pseudo array {-arguments-} to the vector {-dst-}. The assigning starts from the index 1.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } ... - Source vector. If arguments.length is 2, then source vector is second argument. Otherwise, the source vector is copy of arguments starting from index 1.
+ *
+ * @returns { Long|VectorAdapter } - Returns original {-dst-} vector filled by values from source vector.
+ * @function assign
+ * @throws { Error } If length of {-src-} and {-dst-} vectors are different.
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ * @memberof module:Tools/math/Vector.wTools.avector
+*/
+
 function assign( dst )
 {
   let length = dst.length;
