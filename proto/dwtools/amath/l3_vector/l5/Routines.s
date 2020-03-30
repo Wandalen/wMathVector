@@ -2958,14 +2958,14 @@ dop.homogeneous = true;
  * Routine equalAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
  *
  * @param { Long|VectorAdapter } src1 - First vector.
- * @param { Long|VectorAdapter } it - Second vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
  * @param { Map } opts - Options map.
  *
- * @returns { Boolean|BoolLike } - If vectors {-it.src-} and {-it.src2-} are equivalent, returns true. Otherwise, returns false.
+ * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
  * @function equalAre
  * @throws { Error } If arguments.length is less or more then one.
- * @throws { Error } If {-it.strictTyping-} is undefined.
- * @throws { Error } If {-it.containing-} is undefined.
+ * @throws { Error } If {-opts.strictTyping-} is undefined.
+ * @throws { Error } If {-opts.containing-} is undefined.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 */
 
@@ -3003,6 +3003,21 @@ dop.homogeneous = true;
 
 //
 
+/**
+ * Routine identicalAre() checks that two vectors {-src1-} and {-src2-} are identical.
+ *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Map } iterator - Options map.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are identical, returns true. Otherwise, returns false.
+ * @function identicalAre
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-iterator.strictTyping-} is undefined.
+ * @throws { Error } If {-iterator.containing-} is undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function identicalAre( src1, src2, iterator )
 {
   // _.assert( !opts, 'not tested' );
@@ -3033,6 +3048,22 @@ dop.homogeneous = true;
 
 //
 
+/**
+ * Routine equivalentAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
+ *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Map } iterator - Options map.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
+ * @function equivalentAre
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-iterator.strictTyping-} is undefined.
+ * @throws { Error } If {-iterator.containing-} is undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+
 function equivalentAre( src1, src2, iterator )
 {
   // _.assert( !opts, 'not tested' );
@@ -3061,6 +3092,20 @@ dop.reducing = true;
 dop.homogeneous = true;
 
 //
+
+/**
+ * Routine areParallel() checks that two vectors {-src1-} and {-src2-} are parallel.
+ *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Number } accuracy - Accuracy of comparison.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are parallel, returns true. Otherwise, returns false.
+ * @function areParallel
+ * @throws { Error } If src1.length and src2.length are different.
+ * @throws { Error } If {-accuracy-} is not a Number.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 /* aaa : good coverage required */
 /* Dmytro : covered */
@@ -3135,6 +3180,17 @@ meta._routinesDeclare();
 // helper
 // --
 
+/**
+ * Routine mag() calculates square root from sum of squares of vector {-v-} elements.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ *
+ * @returns { Number } - Returns square root from sum of squares of source vector elements.
+ * @function mag
+ * @throws { Error } If arguments.length is less or more then one.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function mag( v )
 {
 
@@ -3149,6 +3205,17 @@ dop.takingArguments = [ 1, 1 ];
 dop.takingVectors = [ 1, 1 ];
 
 //
+
+/**
+ * Routine magSqr() calculates sum of squares of vector {-v-} elements.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ *
+ * @returns { Number } - Returns sum of squares of source vector elements.
+ * @function magSqr
+ * @throws { Error } If arguments.length is less or more then one.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function magSqr( v )
 {
@@ -3169,6 +3236,23 @@ dop.takingVectors = [ 1, 1 ];
 // --
 
 //
+
+/**
+ * Routine dot() calculates sum of multiplication of vectors {-dst-} and {-src-}.
+ *
+ * @param { VectorAdapter } dst - Source vector.
+ * @param { VectorAdapter } src - Source vector.
+ *
+ * @returns { Number } - Returns sum of multiplication of vectors {-dst-} and {-src-}.
+ * @function dot
+ * @throws { Error } If arguments.length is less or more then two.
+ * @throws { Error } If {-dst-} is not a VectorAdapter.
+ * @throws { Error } If {-src-} is not a VectorAdapter.
+ * @throws { Error } If dst.length and src.length are not equivalent.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+/* Dmytro : maybe, parameters should have name src1 and src2 */
 
 function dot( dst, src )
 {
@@ -3199,6 +3283,19 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine distance() calculates square root from sum of squares of substruction vectors {-src1-} and {-src2-}.
+ *
+ * @param { VectorAdapter } src1 - Source vector.
+ * @param { VectorAdapter } src2 - Source vector.
+ *
+ * @returns { Number } - Returns square root from sum of squares of substruction vectors {-src1-} and {-src2-}.
+ * @function distance
+ * @throws { Error } If src1.length and src2.length are not equivalent.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+
 function distance( src1, src2 )
 {
   let result = this.distanceSqr( src1, src2 );
@@ -3216,6 +3313,19 @@ dop.returningNew = false;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine distanceSqr() calculates sum of squares of substruction vectors {-src1-} and {-src2-}.
+ *
+ * @param { VectorAdapter } src1 - Source vector.
+ * @param { VectorAdapter } src2 - Source vector.
+ *
+ * @returns { Number } - Returns sum of squares of substruction vectors {-src1-} and {-src2-}.
+ * @function distanceSqr
+ * @throws { Error } If src1.length and src2.length are not equivalent.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 
 function distanceSqr( src1, src2 )
 {
