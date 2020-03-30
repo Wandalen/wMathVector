@@ -434,7 +434,8 @@ dop.modifying = false;
 //
 
 /**
- * Routine growAdapter() makes new instance of source vector {-src-} with length equal to src.length or bigger. The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
+ * Routine growAdapter() makes new instance of source vector {-src-} with length equal to src.length or bigger.
+ * The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Range } crange - Defines length of new vector.
@@ -470,7 +471,8 @@ dop.modifying = false;
 //
 
 /**
- * Routine growLong() makes new instance of source vector {-src-} with length equal to src.length or bigger. The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
+ * Routine growLong() makes new instance of source vector {-src-} with length equal to src.length or bigger.
+ * The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Range } crange - Defines length of new vector.
@@ -3285,9 +3287,10 @@ dop.modifying = false;
 
 /**
  * Routine distance() calculates square root from sum of squares of substruction vectors {-src1-} and {-src2-}.
+ * It is distance between vectors, a normal to vectors.
  *
- * @param { VectorAdapter } src1 - Source vector.
- * @param { VectorAdapter } src2 - Source vector.
+ * @param { Long|VectorAdapter } src1 - Source vector.
+ * @param { Long|VectorAdapter } src2 - Source vector.
  *
  * @returns { Number } - Returns square root from sum of squares of substruction vectors {-src1-} and {-src2-}.
  * @function distance
@@ -3317,8 +3320,8 @@ dop.modifying = false;
 /**
  * Routine distanceSqr() calculates sum of squares of substruction vectors {-src1-} and {-src2-}.
  *
- * @param { VectorAdapter } src1 - Source vector.
- * @param { VectorAdapter } src2 - Source vector.
+ * @param { Long|VectorAdapter } src1 - Source vector.
+ * @param { Long|VectorAdapter } src2 - Source vector.
  *
  * @returns { Number } - Returns sum of squares of substruction vectors {-src1-} and {-src2-}.
  * @function distanceSqr
@@ -3353,6 +3356,16 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine median() calculates median between lowest and biggest values of vector {-v-}.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ *
+ * @returns { Number } - Returns median of source vector.
+ * @function median
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function median( v )
 {
   debugger;
@@ -3365,6 +3378,19 @@ dop = median.operation = _.mapExtend( null , distributionRangeSummary.trivial.op
 // dop.input = 'vr';
 
 //
+
+/**
+ * Routine momentCentral() calculates a probability distribution of a random variable about the random variable's mean.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } degree - Degree of moment.
+ * @param { Number } mean - Mean of value.
+ *
+ * @returns { Number } - Returns a value of probability distribution of a random variable about the variable's mean.
+ * @function momentCentral
+ * @throws { Error } If arguments.length is less then two or more then three.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function momentCentral( v, degree, mean )
 {
@@ -3381,6 +3407,21 @@ dop.input = 'vr s ?s';
 dop.takingArguments = [ 2, 3 ];
 
 //
+
+/**
+ * Routine momentCentralConditional() calculates a probability distribution of a random variable about the random variable's mean.
+ * If {-mean-} is undefined, then it calculates from source vector {-v-}, due to that elements of {-v-} filters by callback {-filter-}.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } degree - Degree of moment.
+ * @param { Number } mean - Mean of value.
+ * @param { Function } filter - Callback.
+ *
+ * @returns { Number } - Returns a value of probability distribution of a random variable about the  variable's mean.
+ * @function momentCentralConditional
+ * @throws { Error } If arguments.length is less then two or more then three.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function momentCentralConditional( v, degree, mean, filter )
 {
