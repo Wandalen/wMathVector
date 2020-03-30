@@ -4,7 +4,7 @@
 
 /**
  *@summary Collection of functions for vector math
-  @namespace "wTools.vector"
+  @namespaces "wTools.avector","wTools.vectorAdapter"
   @memberof module:Tools/math/Vector
 */
 
