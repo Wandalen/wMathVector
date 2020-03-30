@@ -14,7 +14,7 @@
 
 <details>
   <summary><a href="./tutorial/Introduction.md">
-    Введення
+    Introduction
   </a></summary>
-    В даній статті виконується огляд концепції вектора та його форматів задання.
+    This article reviews the concept of a vector and its job formats.
 </details>

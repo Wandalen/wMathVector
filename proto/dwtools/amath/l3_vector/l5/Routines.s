@@ -33,6 +33,7 @@ _.assert( _.objectIs( operations ) );
 // --
 
 /**
+
  * Routine assign() assigns the values of second argument to the vector {-dst-}.
  * If arguments.length is more then two, then routine assigns elements of pseudo array {-arguments-} to the vector {-dst-}.
  * The assigning starts from the index 1.
@@ -101,6 +102,24 @@ dop.modifying = true;
 
 //
 
+/**
+ * Routine assignVector() assigns the values of source vector {-src-} to the destination vector {-dst-}.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.assignVector( [ 1, 2, 3 ], [ 0, 1, 0 ] );
+ * console.log( got );
+ * // log [ 0, 1, 0 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns original {-dst-} vector filled by values from source vector.
+ * @function assignVector
+ * @throws { Error } If {-dst-} or {-src-} are not vectors.
+ * @throws { Error } If length of {-src-} and {-dst-} vectors are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function assignVector( dst, src )
 {
   let length = dst.length;
@@ -132,6 +151,25 @@ dop.special = true;
 
 //
 
+/**
+ * Routine clone() makes copy of source vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var src = _.avector.make( [ 1, 2, 3 ] )
+ * var got = _.avector.clone( src );
+ * console.log( got );
+ * // log [ 1, 2, 3 ];
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Long|VectorAdapter } - Returns copy of source vector.
+ * @function clone
+ * @throws { Error } If arguments.length is less or more then one.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function clone( src )
 {
   let length = src.length;
@@ -158,6 +196,24 @@ dop.modifying = false;
 dop.special = true;
 
 //
+
+/**
+ * Routine makeSimilar() makes new instance of vector {-src-} with length defined by argument {-length-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Number } length - Length of returned vector. If {-length-} is not defined, then routine makes vector with src.length.
+ *
+ * @example
+ * var got = _.avector.makeSimilar( [ 1, 2, 3 ], 2 );
+ * console.log( got );
+ * // log [ undefined, undefined ];
+ *
+ * @returns { Long|VectorAdapter } - Returns instance of source vector with defined length.
+ * @function makeSimilar
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If {-length-} is not a Number.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function makeSimilar( src, length )
 {
@@ -215,6 +271,24 @@ dop.special = true;
   result[ r-f ] = array[ r ];
 
   return result;
+*/
+
+/**
+ * Routine slice() makes slice copy of part of vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Number } first - Start index. If {-first-} is not defined, then copying starts from index 0.
+ * @param { Number } last - End index (included). If {-last-} is not defined, then copying ends on last index of {-src-}.
+ *
+ * @example
+ * var got = _.avector.slice( [ 1, 2, 3, 4, 5 ], 1, 3 );
+ * console.log( got );
+ * // log [ 2, 3, 4 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns copy of part of source vector.
+ * @function slice
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 */
 
 function slice( src, first, last )
@@ -382,6 +456,28 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine growAdapter() makes new instance of source vector {-src-} with length equal to src.length or bigger.
+ * The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines length of new vector.
+ * @param { * } val - To fill extra elements.
+ *
+ * @example
+ * var got = _.vectorAdapter.growAdapter( [ 1, 2, 3 ], [ 1, 4 ], 5 );
+ * console.log( got.toStr() );
+ * // log "1.000, 2.000, 3.000, 5.000, 5.000"
+ *
+ * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
+ * If length of new vector is more then src.length, then extra elements filled by value {-val-}.
+ * @function growAdapter
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function growAdapter( src, crange, val )
 {
   let result = this.growLong.apply( this, arguments );
@@ -401,6 +497,28 @@ dop.returningLong = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine growLong() makes new instance of source vector {-src-} with length equal to src.length or bigger.
+ * The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines length of new vector.
+ * @param { * } val - To fill extra elements.
+ *
+ * @example
+ * var got = _.avector.growLong( [ 1, 2, 3 ], [ 1, 4 ], 5 );
+ * console.log( got );
+ * // log [ 1, 2, 3, 5, 5 ]
+ *
+ * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
+ * If length of new vector is more then src.length, then extra elements filled by value {-val-}.
+ * @function growLong
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function growLong( src, crange, val )
 {
@@ -451,6 +569,25 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine shrinkAdapter() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines ranges for copying.
+ *
+ * @example
+ * var got = _.vectorAdapter.shrinkAdapter( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * console.log( got.toStr() );
+ * // log "2.000, 3.000, 4.000"
+ *
+ * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
+ * @function shrinkAdapter
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function shrinkAdapter( src, crange )
 {
   let result = this.shrinkLong.apply( this, arguments );
@@ -470,6 +607,25 @@ dop.returningLong = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine shrinkLong() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines ranges for copying.
+ *
+ * @example
+ * var got = _.avector.shrinkLong( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ *
+ * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
+ * @function shrinkLong
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function shrinkLong( src, crange )
 {
@@ -508,6 +664,25 @@ dop.returningLong = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine review() reviews source vector {-src-} in defined range {-crange-}. Routine makes new instance of vector {-src-} if range defines length smaller then src.length. Otherwise, routine returns original vector. The elements of new vector filled by values of {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range|Number } crange - Defines ranges for copying.
+ *
+ * @example
+ * var got = _.avector.review( [ 1, 2, 3 ], 0 );
+ * console.log( got );
+ * // log [ 1, 2, 3 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns instance of vector filled by values of original vector {-src-}. If {-src-} vector not changes, then routine returns original vector.
+ * @function review
+ * @throws { Error } If arguments.length is less or more then two.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function review( src, crange )
 {
@@ -552,6 +727,22 @@ dop.returningLong = false;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine bufferConstructorOf() returns constructor of vector {-src-}.
+ *
+ * @param { Function|Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.bufferConstructorOf( [ 1, 2, 3 ] );
+ * console.log( got );
+ * // log [function Array];
+ *
+ * @returns { Long|VectorAdapter } - Returns constructor of source vector.
+ * @function bufferConstructorOf
+ * @throws { Error } If source vector is not a Function, not a Long, not a VectorAdapter.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function bufferConstructorOf( src )
 {
@@ -618,6 +809,24 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine toLong() returns Long maiden from vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( [ 1, 2, 3 ] );
+ * var got = src.toLong();
+ * console.log( got );
+ * // log [ 1, 2, 3 ];
+ *
+ * @returns { Long } - Returns default Long maiden from source vector.
+ * @function toLong
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If source vector is not a Long, not a VectorAdapter.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function toLong( src )
 {
   let result;
@@ -647,6 +856,26 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine _toStr() makes string from data in source vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Map|MapLike } o - Options map.
+ * @param { Number } o.precision - The precision of numbers in returned string. Default value is 4.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( [ 1, 2, 3 ] );
+ * var got = src.toStr();
+ * console.log( got );
+ * // log "1.000, 2.000, 3.000";
+ *
+ * @returns { String } - Returns string with elements of source vector.
+ * @function _toStr
+ * @throws { Error } If source vector is not a Long, not a VectorAdapter.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+
 /* zzz : redo */
 function _toStr( src, o )
 {
@@ -654,10 +883,12 @@ function _toStr( src, o )
   let length = src.length;
 
   if( !o ) o = Object.create( null );
-  if( o.percision === undefined ) o.percision = 4;
+
+  if( o.precision === undefined )
+  o.precision = 4;
 
   if( length )
-  if( o.percision === 0 )
+  if( o.precision === 0 )
   {
     throw _.err( 'not tested' );
     for( let i = 0, l = length-1 ; i < l ; i++ )
@@ -674,13 +905,13 @@ function _toStr( src, o )
     {
       let e = src.eGet( i );
       if( _.numberIs( e ) )
-      result += e.toPrecision( o.percision ) + ' ';
+      result += e.toPrecision( o.precision ) + ' ';
       else
       result += e + ' ';
     }
     let e = src.eGet( i );
     if( _.numberIs( e ) )
-    result += e.toPrecision( o.percision );
+    result += e.toPrecision( o.precision );
     else
     result += e;
   }
@@ -700,6 +931,8 @@ dop.returningNew = false;
 dop.modifying = false;
 
 //
+
+/* Dmytro : not know */
 
 function gather( dst, srcs )
 {
@@ -754,6 +987,30 @@ dop.modifying = true;
 
 //
 
+/**
+ * Routine map() provides replacing of elements in destination vector {-dst-} using results of execution {-onEach-} callback.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Accepts element of {-src-}, element index, {-src-} and {-dst-}.
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.avector.map( src, [ 3, 2, 1 ], ( e ) => e );
+ * console.log( got );
+ * // log [ 3, 2, 1 ];
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { Long|VectorAdapter } - Returns original destination vector with replaced elements.
+ * @function map
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If destination vector is not a Long, not a VectorAdapter.
+ * @throws { Error } If source vector is not a Long, not a VectorAdapter.
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function map( dst, src, onEach )
 {
 
@@ -807,6 +1064,31 @@ dop.returningNew = true;
 dop.modifying = true;
 
 //
+
+/**
+ * Routine filter() provides filtering of elements in destination vector {-dst-} using results of execution {-onEach-} callback.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Accepts element of {-src-}, element index, {-src-} and {-dst-}.
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.avector.filter( src, [ 3, 2, 1 ], ( e ) => k );
+ * console.log( got );
+ * // log [ 0, 1, 2 ];
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { Long|VectorAdapter } - Returns original destination vector without filtered elements.
+ * @function filter
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If destination vector is not a Long, not a VectorAdapter.
+ * @throws { Error } If source vector is not a Long, not a VectorAdapter.
+ * @throws { Error } If dst.length and src.length are different.
+ * @throws { Error } If {-dst-} and {-src-} is the same vector and it has filtered elements.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function filter( dst, src, onEach )
 {
@@ -881,6 +1163,30 @@ dop.returningNew = true;
 dop.modifying = true;
 
 //
+
+/**
+ * Routine _while() provides replacing of elements in destination vector {-dst-} using results of execution {-onEach-} callback.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Accepts element of {-src-}, element index, {-src-} and {-dst-}.
+ *
+ * @example
+ * var src = [ 1, 2, 3 ];
+ * var got = _.avector._while( src, [ 3, 2, 1 ], ( e ) => e );
+ * console.log( got );
+ * // log [ 3, 2, 1 ];
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { Long|VectorAdapter } - Returns original destination vector with replaced elements.
+ * @function _while
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If destination vector is not a Long, not a VectorAdapter.
+ * @throws { Error } If source vector is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-onEach-} at least once returns undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function _while( dst, src, onEach )
 {
@@ -959,6 +1265,23 @@ dop.modifying = true;
 // not atom-wise : self
 // --
 
+/**
+ * Routine sort() sorts elements of destination vector {-dst-} using callback {-comparator-}.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Function } comparator - Callback to compare two values.
+ *
+ * @example
+ * var got = _.avector.map( [ 3, 2, 1 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns original destination vector with sorted elements.
+ * @function sort
+ * @throws { Error } If {-comparator-} is not a routine, not undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function sort( dst, comparator )
 {
   let length = dst.length;
@@ -1019,6 +1342,10 @@ dop.modifying = true;
 
 //
 
+/**
+Dmytro : not know
+*/
+
 function randomInRadius( dst, radius )
 {
   let length = dst.length;
@@ -1064,12 +1391,36 @@ dop.modifying = true;
 //
 
 // function crossWithPoints( a, b, c, result )
+
+/**
+ * Routine crossWithPoints() provides multiplication of three 3-elements vectors.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } a - First vector.
+ * @param { Long|VectorAdapter } b - Second vector.
+ * @param { Long|VectorAdapter } c - Third vector.
+ *
+ * @example
+ * var dst = [ 1, 2, 3 ];
+ * var got = _.avector.crossWithPoints( dst, [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ] );
+ * console.log( got );
+ * // log [ 0, 0, 0 ];
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { Long|VectorAdapter } - Returns original destination vector with results of multiplications.
+ * @function crossWithPoints
+ * @throws { Error } If arguments.length is less or more then four.
+ * @throws { Error } If {-a-}, {-b-}, {-c-} lengths are different and not equal to 3.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function crossWithPoints( dst, a, b, c )
 {
   _.assert( arguments.length === 4 );
   _.assert( a.length === 3 && b.length === 3 && c.length === 3, 'implemented only for 3D' );
 
-  _.assert( 0, 'not tested' );
+  //_.assert( 0, 'not tested' );
   dst = dst || this.make( 3 );
   // dst = dst || this.long.longMake( 3 );
 
@@ -1304,10 +1655,28 @@ dop.modifying = true;
 
 //
 
+/**
+ * Routine reflect() makes vector multiplication of vector {-normal-} and algebraic sum of multiplication vector {-v-} and vector {-normal-}.
+ *
+ * @param { Long|VectorAdapter } v - Vector.
+ * @param { Long|VectorAdapter } normal - Vector.
+ *
+ * @example
+ * var got = _.avector.reflect( _.vectorAdapter.fromLong( [ 3, 2, 1 ] ), _.vectorAdapter.fromLong( [ 1, 2, 3 ] ) );
+ * console.log( got );
+ * // log [ 20, 40, 60 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns copy of vector {-normal-} multiplied on algebraic sum of multiplication vector {-v-} and vector {-normal-}.
+ * @function reflect
+ * @throws { Error } If arguments.length is less or more then two.
+ * @throws { Error } If v.length and normal.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function reflect( v, normal )
 {
 
-  _.assert( arguments.length === 3, 'Expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.vectorAdapterIs( v ) );
   _.assert( _.vectorAdapterIs( normal ) );
 
@@ -1393,6 +1762,29 @@ dop.modifying = true;
 
 //
 
+/**
+ * Routine swapVectors() swaps content of two vectors.
+ *
+ * @param { Long|VectorAdapter } v1 - Vector.
+ * @param { Long|VectorAdapter } v2 - Vector.
+ *
+ * @example
+ * var src1 = [ 1, 2, 3 ];
+ * var src2 = [ 4, 5, 6 ];
+ * var got = _.avector.swapVectors( src1, src2 );
+ * console.log( src1 );
+ * // log [ 4, 5, 6 ];
+ * var got = _.avector.swapVectors( src1, src2 );
+ * console.log( src2 );
+ * // log [ 1, 2, 3 ];
+ *
+ * @returns { Undefined } - Returns not a value, swaps two vectors.
+ * @function swapVectors
+ * @throws { Error } If arguments.length is less or more then two.
+ * @throws { Error } If v1.length and v2.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function swapVectors( v1, v2 )
 {
 
@@ -1420,6 +1812,26 @@ dop.returningNew = false;
 dop.modifying = true;
 
 //
+
+/**
+ * Routine swapAtoms() swaps elements of vector {-v-}.
+ *
+ * @param { Long|VectorAdapter } v1 - Vector.
+ * @param { Number } i1 - Index of first element.
+ * @param { Number } i2 - Index of second element.
+ *
+ * @example
+ * var got = _.avector.swapAtoms( [ 1, 2, 3 ], 0, 2 );
+ * console.log( got );
+ * // log [ 3, 2, 1 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns vector {-v-}.
+ * @function swapAtoms
+ * @throws { Error } If arguments.length is less or more then three.
+ * @throws { Error } If i1 or i2 are out of ranges of vector {-v-}.
+ * @throws { Error } If i1 or i2 are not Number.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function swapAtoms( v, i1, i2 )
 {
@@ -1449,6 +1861,24 @@ dop.returningNew = false;
 dop.modifying = true;
 
 //
+
+/**
+ * Routine formate() replaces elements of destination vector {-dst-} by values from source elements in container {-srcs-}.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Array } srcs - Source container with elements.
+ *
+ * @example
+ * var got = _.avector.formate( [ 1, 2, 3, 4, 5, 6 ], [ 0, 1 );
+ * console.log( got );
+ * // log [ 0, 1, 0, 1, 0, 1 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
+ * @function formate
+ * @throws { Error } If {-srcs-} is not an Array.
+ * @throws { Error } If dst.length / srcs.length is not an Integer.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function formate( dst, srcs )
 {
@@ -1497,6 +1927,24 @@ dop.homogeneous = false;
 // atom-wise, modifying, taking single vector : self
 // --
 
+
+/**
+ * Routine inv() replaces elements of vector {-dst-} by inverted values of vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.inv( [ 1, 2, 4 ], [ 0.25, 0.5, 1 ] );
+ * console.log( got );
+ * // log [ 4, 2, 1 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
+ * @function inv
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 let inv = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
   onEach : function _inv( dst, src, i )
@@ -1506,6 +1954,23 @@ let inv = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 });
 
 //
+
+/**
+ * Routine invOrOne() replaces elements of vector {-dst-} by inverted values of vector {-src-}. If {-src-} element is 0, then element with its index sets to 1.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.invOrOne( [ 1, 2, 4 ], [ 0.25, 0, 1 ] );
+ * console.log( got );
+ * // log [ 4, 1, 1 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
+ * @function invOrOne
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 let invOrOne = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
@@ -1520,6 +1985,24 @@ let invOrOne = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 
 //
 
+/**
+ * Routine absRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} with absolute values.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.absRoutine( [ 1, 2, 4 ], [ -2, 3, -1 ] );
+ * console.log( got );
+ * // log [ 2, 3, 1 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
+ * @function absRoutine
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+
 let absRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
   onEach : function _abs( dst, src, i )
@@ -1529,6 +2012,24 @@ let absRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 });
 
 //
+
+/**
+ * Routine floorRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to smaller values.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.floorRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 1 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
+ * @function floorRoutine
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 
 let floorRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
@@ -1540,6 +2041,23 @@ let floorRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 
 //
 
+/**
+ * Routine ceilRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to bigger values.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.ceilRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
+ * console.log( got );
+ * // log [ 2, 3, 2 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
+ * @function ceilRoutine
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 let ceilRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
   onEach : function _ceil( dst, src, i )
@@ -1549,6 +2067,23 @@ let ceilRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 });
 
 //
+
+/**
+ * Routine roundRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} with rounded values.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.roundRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
+ * console.log( got );
+ * // log [ 1, 3, 2 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
+ * @function roundRoutine
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 let roundRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
@@ -1561,6 +2096,23 @@ let roundRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 
 //
 
+/**
+ * Routine ceilToPowerOfTwo() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to closes value power of two.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.ceilToPowerOfTwo( [ 1, 2, 4 ], [ 3, 5, 13 ] );
+ * console.log( got );
+ * // log [ 4, 8, 16 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
+ * @function ceilToPowerOfTwo
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
   onEach : function _ceil( dst, src, i )
@@ -1570,6 +2122,23 @@ let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_fun
 });
 
 //
+
+/**
+ * Routine normalize() replaces elements of vector {-dst-} by elements of vector {-src-} that multiplied on square root of sum of squares of {-src-} elements.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.normalize( [ 1, 2, 4 ], [ 1, 1, 1 ] );
+ * console.log( got );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ *
+ * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
+ * @function normalize
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 let _normalizeM;
 let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
@@ -1605,7 +2174,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function add
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let add = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -1640,7 +2209,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function sub
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let sub = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -1675,7 +2244,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function mul
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let mul = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -1714,7 +2283,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function div
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let div = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -1755,7 +2324,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function min
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let min = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -1795,7 +2364,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a2 [ 1, 2, 3, 4 ]
 //  *
 //  * @function max
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let max = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -1831,7 +2400,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //  * //a1 [ 1, 2, 2, 2 ]
 //  *
 //  * @function clamp
-//  * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+//  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 // */
 //
 // let clamp = meta._operationReturningSelfTakingVariantsComponentWise_functor
@@ -1935,6 +2504,25 @@ let reduceToFurthest = meta._operationReduceToExtremal_functor
 
 //
 
+/**
+ * Routine reduceToMin() returns the minimal value of source vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.reduceToMin( [ 1, -4, 2 ] );
+ * console.log( got );
+ * // log {
+ * //       container : VectorAdapterFromLong { _vectorBuffer : [ 1, -4, 3 ] },
+ * //       index : 1,
+ * //       value : -4
+ * // }
+ *
+ * @returns { Number } - Returns minimal value of source vector.
+ * @function reduceToMin
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 let reduceToMin = meta._operationReduceToExtremal_functor
 ({
   onDistance : function( o )
@@ -1956,6 +2544,26 @@ let reduceToMin = meta._operationReduceToExtremal_functor
 
 //
 
+/**
+ * Routine reduceToMinAbs() returns the absolute minimal value of source vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.reduceToMinAbs( [ 1, -4, 2 ] );
+ * console.log( got );
+ * // log {
+ * //       container : VectorAdapterFromLong { _vectorBuffer : [ 1, -4, 2 ] },
+ * //       index : 0,
+ * //       value : 1
+ * // }
+ *
+ * @returns { Number } - Returns absolute minimal value of source vector.
+ * @function reduceToMinAbs
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 let reduceToMinAbs = meta._operationReduceToExtremal_functor
 ({
   onDistance : function( o )
@@ -1974,6 +2582,26 @@ let reduceToMinAbs = meta._operationReduceToExtremal_functor
 });
 
 //
+
+/**
+ * Routine reduceToMax() returns the maximal value of source vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.reduceToMax( [ 1, -4, 2 ] );
+ * console.log( got );
+ * // log {
+ * //       container : VectorAdapterFromLong { _vectorBuffer : [ 1, -4, 2 ] },
+ * //       index : 2,
+ * //       value : 2
+ * // }
+ *
+ * @returns { Number } - Returns maximal value of source vector.
+ * @function reduceToMax
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 let reduceToMax = meta._operationReduceToExtremal_functor
 ({
@@ -1994,6 +2622,26 @@ let reduceToMax = meta._operationReduceToExtremal_functor
 
 //
 
+/**
+ * Routine reduceToMaxAbs() returns the absolute maximal value of source vector {-src-}.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.reduceToMin( [ 1, -4, 2 ] );
+ * console.log( got );
+ * // log {
+ * //       container : VectorAdapterFromLong { _vectorBuffer : [ 1, -4, 3 ] },
+ * //       index : 2,
+ * //       value : -4
+ * // }
+ *
+ * @returns { Number } - Returns absolute maximal value of source vector.
+ * @function reduceToMaxAbs
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 let reduceToMaxAbs = meta._operationReduceToExtremal_functor
 ({
   onDistance : function( o )
@@ -2013,6 +2661,16 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
 
 //
 
+/**
+ * Routine _distributionRangeSummaryBegin() appends field `result` to map {-o-}.
+ *
+ * @param { MapLike } o - Map.
+ *
+ * @returns { Undefined } - Returns not a value, changes map {-o-}.
+ * @function _distributionRangeSummaryBegin
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function _distributionRangeSummaryBegin( o )
 {
 
@@ -2026,6 +2684,18 @@ function _distributionRangeSummaryBegin( o )
   o.result.max.container = null;
 
 }
+
+/**
+ * Routine _distributionRangeSummaryEach() is a callback than compares current value with biggest and lowest value in map {-o-}.
+ * If current value is bigger then biggest value in map {-o-}, then routine replace value in map {-o-}.
+ * If current value is lower then lowest value in map {-o-}, then routine replace value in map {-o-}.
+ *
+ * @param { MapLike } o - Map.
+ *
+ * @returns { Undefined } - Returns not a value, changes map {-o-}.
+ * @function _distributionRangeSummaryEach
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function _distributionRangeSummaryEach( o )
 {
@@ -2048,6 +2718,16 @@ function _distributionRangeSummaryEach( o )
 
 }
 
+/**
+ * Routine _distributionRangeSummaryEnd() finds median of lowest and biggest value in map {-o-}.
+ *
+ * @param { MapLike } o - Map.
+ *
+ * @returns { Undefined } - Returns not a value, changes map {-o-}.
+ * @function _distributionRangeSummaryEnd
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function _distributionRangeSummaryEnd( o )
 {
   if( o.result.min.index === -1 )
@@ -2057,6 +2737,17 @@ function _distributionRangeSummaryEnd( o )
   }
   o.result.median = ( o.result.min.value + o.result.max.value ) / 2;
 }
+
+/**
+ * Routine distributionRangeSummary() finds the biggest and the lowest values in source vector {-src-} and the median between them.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @returns { Map } - Returns map that contains data with biggest, lowest values and median between them.
+ * @function distributionRangeSummary
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 let distributionRangeSummary = meta._operationReduceToScalar_functor
 ({
@@ -2072,6 +2763,16 @@ let distributionRangeSummary = meta._operationReduceToScalar_functor
 _.assert( distributionRangeSummary.trivial.operation.reducing );
 
 //
+
+/**
+ * Routine reduceToMinValue() returns the minimal value in passed vectors.
+ *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
+ *
+ * @returns { Number } - Returns minimal value in arguments.
+ * @function reduceToMinValue
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function reduceToMinValue()
 {
@@ -2095,6 +2796,16 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine reduceToMaxValue() returns the maximal value in passed vectors.
+ *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
+ *
+ * @returns { Number } - Returns maximal value of source vector.
+ * @function reduceToMaxValue
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function reduceToMaxValue()
 {
   let result = this.reduceToMax.apply( this, arguments );
@@ -2113,6 +2824,16 @@ dop.returningPrimitive = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine distributionRangeSummaryValue() finds the biggest and the lowest values in passed vectors.
+ *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
+ *
+ * @returns { Array } - Returns array with lowest biggest value in passed vectors.
+ * @function distributionRangeSummaryValue
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function distributionRangeSummaryValue()
 {
@@ -2179,6 +2900,21 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine all() checks that for each element of source vector {-src-} callback {-onEach-} returns defined value.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Applies element, index and source vector.
+ *
+ * @returns { Boolean|BoolLike } - Returns true if for each element of source vector callback returns defined value. Otherwise, it returns value.
+ * @function all
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a VectorAdapter.
+ * @throws { Error } If {-onEach-} is not a Function.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+
 function all( src, onEach )
 {
 
@@ -2225,6 +2961,20 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine any() checks that for any element of source vector {-src-} callback {-onEach-} returns defined value.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Applies element, index and source vector.
+ *
+ * @returns { Boolean|BoolLike } - If result of callback is defined value, returns it values. Otherwise, returns false.
+ * @function any
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a VectorAdapter.
+ * @throws { Error } If {-onEach-} is not a Function.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function any( src, onEach )
 {
 
@@ -2268,6 +3018,20 @@ dop.reducing = true;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine none() checks that for none element of source vector {-src-} callback {-onEach-} returns defined value.
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Applies element, index and source vector.
+ *
+ * @returns { Boolean|BoolLike } - If result of callback is defined value, returns it reversed boolean value. Otherwise, returns true.
+ * @function any
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a VectorAdapter.
+ * @throws { Error } If {-onEach-} is not a Function.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function none( src, onEach )
 {
@@ -2314,6 +3078,20 @@ dop.modifying = false;
 // --
 // interruptible reductor with bool result
 // --
+
+/**
+ * Routine _equalAre() checks that two vectors {-it.src-} and {-it.src2-} are equivalent.
+ *
+ * @param { Map } it - Options map.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-it.src-} and {-it.src2-} are equivalent, returns true. Otherwise, returns false.
+ * @function _equalAre
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-it.strictTyping-} is undefined.
+ * @throws { Error } If {-it.containing-} is undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 
 function _equalAre( it )
 {
@@ -2381,6 +3159,21 @@ dop.homogeneous = true;
 
 //
 
+/**
+ * Routine equalAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
+ *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Map } opts - Options map.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
+ * @function equalAre
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-opts.strictTyping-} is undefined.
+ * @throws { Error } If {-opts.containing-} is undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function equalAre( src1, src2, opts )
 {
 
@@ -2415,6 +3208,21 @@ dop.homogeneous = true;
 
 //
 
+/**
+ * Routine identicalAre() checks that two vectors {-src1-} and {-src2-} are identical.
+ *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Map } iterator - Options map.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are identical, returns true. Otherwise, returns false.
+ * @function identicalAre
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-iterator.strictTyping-} is undefined.
+ * @throws { Error } If {-iterator.containing-} is undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function identicalAre( src1, src2, iterator )
 {
   // _.assert( !opts, 'not tested' );
@@ -2445,6 +3253,22 @@ dop.homogeneous = true;
 
 //
 
+/**
+ * Routine equivalentAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
+ *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Map } iterator - Options map.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
+ * @function equivalentAre
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-iterator.strictTyping-} is undefined.
+ * @throws { Error } If {-iterator.containing-} is undefined.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+
 function equivalentAre( src1, src2, iterator )
 {
   // _.assert( !opts, 'not tested' );
@@ -2473,6 +3297,20 @@ dop.reducing = true;
 dop.homogeneous = true;
 
 //
+
+/**
+ * Routine areParallel() checks that two vectors {-src1-} and {-src2-} are parallel.
+ *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Number } accuracy - Accuracy of comparison.
+ *
+ * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are parallel, returns true. Otherwise, returns false.
+ * @function areParallel
+ * @throws { Error } If src1.length and src2.length are different.
+ * @throws { Error } If {-accuracy-} is not a Number.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 /* aaa : good coverage required */
 /* Dmytro : covered */
@@ -2547,6 +3385,17 @@ meta._routinesDeclare();
 // helper
 // --
 
+/**
+ * Routine mag() calculates square root from sum of squares of vector {-v-} elements.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ *
+ * @returns { Number } - Returns square root from sum of squares of source vector elements.
+ * @function mag
+ * @throws { Error } If arguments.length is less or more then one.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function mag( v )
 {
 
@@ -2561,6 +3410,17 @@ dop.takingArguments = [ 1, 1 ];
 dop.takingVectors = [ 1, 1 ];
 
 //
+
+/**
+ * Routine magSqr() calculates sum of squares of vector {-v-} elements.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ *
+ * @returns { Number } - Returns sum of squares of source vector elements.
+ * @function magSqr
+ * @throws { Error } If arguments.length is less or more then one.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function magSqr( v )
 {
@@ -2581,6 +3441,23 @@ dop.takingVectors = [ 1, 1 ];
 // --
 
 //
+
+/**
+ * Routine dot() calculates sum of multiplication of vectors {-dst-} and {-src-}.
+ *
+ * @param { VectorAdapter } dst - Source vector.
+ * @param { VectorAdapter } src - Source vector.
+ *
+ * @returns { Number } - Returns sum of multiplication of vectors {-dst-} and {-src-}.
+ * @function dot
+ * @throws { Error } If arguments.length is less or more then two.
+ * @throws { Error } If {-dst-} is not a VectorAdapter.
+ * @throws { Error } If {-src-} is not a VectorAdapter.
+ * @throws { Error } If dst.length and src.length are not equivalent.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+/* Dmytro : maybe, parameters should have name src1 and src2 */
 
 function dot( dst, src )
 {
@@ -2611,6 +3488,20 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine distance() calculates square root from sum of squares of substruction vectors {-src1-} and {-src2-}.
+ * It is distance between vectors, a normal to vectors.
+ *
+ * @param { Long|VectorAdapter } src1 - Source vector.
+ * @param { Long|VectorAdapter } src2 - Source vector.
+ *
+ * @returns { Number } - Returns square root from sum of squares of substruction vectors {-src1-} and {-src2-}.
+ * @function distance
+ * @throws { Error } If src1.length and src2.length are not equivalent.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+
 function distance( src1, src2 )
 {
   let result = this.distanceSqr( src1, src2 );
@@ -2628,6 +3519,19 @@ dop.returningNew = false;
 dop.modifying = false;
 
 //
+
+/**
+ * Routine distanceSqr() calculates sum of squares of substruction vectors {-src1-} and {-src2-}.
+ *
+ * @param { Long|VectorAdapter } src1 - Source vector.
+ * @param { Long|VectorAdapter } src2 - Source vector.
+ *
+ * @returns { Number } - Returns sum of squares of substruction vectors {-src1-} and {-src2-}.
+ * @function distanceSqr
+ * @throws { Error } If src1.length and src2.length are not equivalent.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 
 function distanceSqr( src1, src2 )
 {
@@ -2655,6 +3559,16 @@ dop.modifying = false;
 
 //
 
+/**
+ * Routine median() calculates median between lowest and biggest values of vector {-v-}.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ *
+ * @returns { Number } - Returns median of source vector.
+ * @function median
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function median( v )
 {
   debugger;
@@ -2667,6 +3581,19 @@ dop = median.operation = _.mapExtend( null , distributionRangeSummary.trivial.op
 // dop.input = 'vr';
 
 //
+
+/**
+ * Routine momentCentral() calculates a probability distribution of a random variable about the random variable's mean.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } degree - Degree of moment.
+ * @param { Number } mean - Mean of value.
+ *
+ * @returns { Number } - Returns a value of probability distribution of a random variable about the variable's mean.
+ * @function momentCentral
+ * @throws { Error } If arguments.length is less then two or more then three.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function momentCentral( v, degree, mean )
 {
@@ -2683,6 +3610,21 @@ dop.input = 'vr s ?s';
 dop.takingArguments = [ 2, 3 ];
 
 //
+
+/**
+ * Routine momentCentralConditional() calculates a probability distribution of a random variable about the random variable's mean.
+ * If {-mean-} is undefined, then it calculates from source vector {-v-}, due to that elements of {-v-} filters by callback {-filter-}.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } degree - Degree of moment.
+ * @param { Number } mean - Mean of value.
+ * @param { Function } filter - Callback.
+ *
+ * @returns { Number } - Returns a value of probability distribution of a random variable about the  variable's mean.
+ * @function momentCentralConditional
+ * @throws { Error } If arguments.length is less then two or more then three.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function momentCentralConditional( v, degree, mean, filter )
 {
