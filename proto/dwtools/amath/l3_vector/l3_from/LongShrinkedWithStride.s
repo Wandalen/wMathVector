@@ -15,7 +15,7 @@ let Self = function VectorAdapterFromLongShrinkedWithStrideNumberShrinkView(){};
 
 /**
  * Routine _review() makes new instance of VectorAdapter from original Long of current adapter.
- * New adapter makes from original Long with defined stride.
+ * Elements of new vector are selected with a defined stride.
  *
  * @param { Range } crange - Defines ranges for an adapter.
  *
@@ -87,7 +87,7 @@ function _toLong()
  * Routine _bufferConstructorGet() returns constructor of original Long of current adapter.
  *
  * @example
- * var src = _.vectorAdapter.fromLong( [ 1, 2, 3 ] );
+ * var src = _.vectorAdapter.fromLongLrangeAndStride( [ 1, 2, 3 ], 0, 3, 1 );
  * var got = src._bufferConstructorGet();
  * console.log( got );
  * // log [function Array];
@@ -142,7 +142,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 * @example
 * var srcLong = [ 1, 2, 3, 4, 5, 6, 7 ];
 * var got = _.vector.fromLongLrangeAndStride( srcLong, 1, 3, 2 );
-* console.log( vec.toStr() );
+* console.log( got.toStr() );
 * // log "2.000, 4.000, 6.000"
 *
 * @returns { VectorAdapter } - Returns new VectorAdapter.
@@ -198,7 +198,7 @@ function fromLongLrangeAndStride( srcLong, offset, length, stride )
 * @example
 * var srcLong = [ 1, 2, 3, 4, 5, 6, 7 ];
 * var got = _.vector.fromLongWithStride( srcLong, 3 );
-* console.log( vec.toStr() );
+* console.log( got.toStr() );
 * // log "1.000, 4.000, 7.000"
 *
 * @returns { VectorAdapter } - Returns new VectorAdapter.
