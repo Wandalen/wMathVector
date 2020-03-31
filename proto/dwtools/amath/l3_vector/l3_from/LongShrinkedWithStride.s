@@ -17,7 +17,7 @@ let Self = function VectorAdapterFromLongShrinkedWithStrideNumberShrinkView(){};
  * Routine _review() makes new instance of VectorAdapter from original Long of current adapter.
  * New adapter makes from original Long with defined stride.
  *
- * @param { Range } crange - Defines ranges for creating adapter.
+ * @param { Range } crange - Defines ranges for an adapter.
  *
  * @example
  * var srcLong = [ 1, 2, 3, 4, 5, 6, 7 ];
