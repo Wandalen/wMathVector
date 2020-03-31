@@ -14,7 +14,7 @@ let Self = function VectorAdapterFromLongShrinked(){};
 //
 
 /**
- * Routine _review() makes new instance of VectorAdapter from original of current adapter.
+ * Routine _review() makes new instance of VectorAdapter from current adapter.
  *
  * @param { Range } crange - Defines ranges for creating adapter.
  *
@@ -24,10 +24,10 @@ let Self = function VectorAdapterFromLongShrinked(){};
  * console.log( got.toStr() );
  * // log "3.000, 4.000, 5.000"
  *
- * @returns { VectorAdapter } - Returns instance of adapter with part of original Long.
+ * @returns { VectorAdapter } - Returns instance of adapter with part of vector.
  * @throws { Error } If routine calls by not VectorAdapter instance.
  * @throws { Error } If {-crange[ 0 ]-} is less then 0.
- * @throws { Error } If {-crange[ 1 ]-} is  then 0.
+ * @throws { Error } If {-crange[ 1 ]-} is more then vector length.
  * @throws { Error } If substruction of {-crange[ 1 ]-} and {-crange[ 0 ]-} is less then 0.
  * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
  */

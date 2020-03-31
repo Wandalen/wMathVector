@@ -27,7 +27,7 @@ let Self = function VectorAdapterFromLong(){};
  * @returns { VectorAdapter } - Returns instance of adapter with part of original Long.
  * @throws { Error } If routine calls by not VectorAdapter instance.
  * @throws { Error } If {-crange[ 0 ]-} is less then 0.
- * @throws { Error } If {-crange[ 1 ]-} is  then 0.
+ * @throws { Error } If {-crange[ 1 ]-} is more then vector length.
  * @throws { Error } If substruction of {-crange[ 1 ]-} and {-crange[ 0 ]-} is less then 0.
  * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
  */
@@ -83,7 +83,6 @@ function _toLong()
  * @function _bufferConstructorGet
  * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
  */
-
 
 function _bufferConstructorGet()
 {

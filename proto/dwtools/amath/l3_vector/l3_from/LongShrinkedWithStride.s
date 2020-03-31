@@ -13,6 +13,27 @@ let Self = function VectorAdapterFromLongShrinkedWithStrideNumberShrinkView(){};
 
 //
 
+/**
+ * Routine _review() makes new instance of VectorAdapter from original Long of current adapter.
+ * New adapter makes from original Long with defined stride.
+ *
+ * @param { Range } crange - Defines ranges for creating adapter.
+ *
+ * @example
+ * var srcLong = [ 1, 2, 3, 4, 5, 6, 7 ];
+ * var src = _.vectorAdapter.fromLongLrangeAndStride( srcLong, 1, 3, 2 );
+ * var got = src._review( [ 1, 2 ] );
+ * console.log( got.toStr() );
+ * // log "4.000, 6.000"
+ *
+ * @returns { VectorAdapter } - Returns instance of adapter with part of vector.
+ * @throws { Error } If routine calls by not VectorAdapter instance.
+ * @throws { Error } If {-crange[ 0 ]-} is less then 0.
+ * @throws { Error } If {-crange[ 1 ]-} is  then 0.
+ * @throws { Error } If substruction of {-crange[ 1 ]-} and {-crange[ 0 ]-} is less then 0.
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 function _review( crange )
 {
   let offset = this.offset + crange[ 0 ]*this.stride;
@@ -24,6 +45,25 @@ function _review( crange )
 }
 
 //
+
+/**
+ * Routine _toLong() returns vector in Long format.
+ * If current adapter uses full original Long, then routine returns original Long.
+ * Otherwise, it returns new Long.
+ *
+ * @example
+ * var srcLong = [ 1, 2, 3 ];
+ * var src = _.vectorAdapter.fromLongLrangeAndStride( srcLong, 0, 3, 1 );
+ * var got = src._toLong();
+ * console.log( got );
+ * // log [ 1, 2, 3 ];
+ * console.log( got === srcLong );
+ * // log true
+ *
+ * @returns { Long } - Returns original Long of the adapter.
+ * @function _toLong
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function _toLong()
 {
@@ -42,6 +82,20 @@ function _toLong()
 }
 
 //
+
+/**
+ * Routine _bufferConstructorGet() returns constructor of original Long of current adapter.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( [ 1, 2, 3 ] );
+ * var got = src._bufferConstructorGet();
+ * console.log( got );
+ * // log [function Array];
+ *
+ * @returns { Long } - Returns constructor of original Long.
+ * @function _bufferConstructorGet
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function _bufferConstructorGet()
 {
@@ -75,6 +129,26 @@ Self.prototype =
 Object.setPrototypeOf( Self.prototype, Parent.prototype );
 
 //
+
+/**
+* Routine fromLongLrangeAndStride creates vector from part of source Long `srcLong`. The elements of the
+* vector are selected with a defined stride.
+*
+* @param { Long|VectorAdapter } srcLong - Source vector.
+* @param { Number } offset - Offset to sub array in source array `srcLong`.
+* @param { Number } length - Length of new vector.
+* @param { Number } stride - The stride to select elements of new vector.
+*
+* @example
+* var srcLong = [ 1, 2, 3, 4, 5, 6, 7 ];
+* var got = _.vector.fromLongLrangeAndStride( srcLong, 0, 3, 1 );
+* console.log( vec.toStr() );
+* // log "2.000, 4.000, 6.000"
+*
+* @returns { VectorAdapter } - Returns new VectorAdapter.
+* @function fromLongLrangeAndStride
+* @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function fromLongLrangeAndStride( srcLong, offset, length, stride )
 {
