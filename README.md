@@ -279,7 +279,7 @@ The adapter interface implements the minimum set of methods and fields required 
 - The method `eSet( i, e )` ( from "element set" ) is intended to set the value of i-th element.
 - The field `length` is a length of the vector in elements.
 
-### An example of creating a complex vector format
+### An example of a complex format to specify a vector
 
 The format in which the vector is specified is hidden behind the abstract interface so it can have any complexity, and its implementation details are irrelevant for the algorithms of the module `MathVector`.
 
