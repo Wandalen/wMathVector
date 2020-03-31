@@ -14,7 +14,7 @@ let Self = function VectorAdapterFromLong(){};
 //
 
 /**
- * Routine _review() makes new instance of VectorAdapter from original of current adapter.
+ * Routine _review() makes new instance of VectorAdapter from original Long of current adapter.
  *
  * @param { Range } crange - Defines ranges for an adapter.
  *
@@ -123,17 +123,21 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 //
 
 /**
-* @summary Creates vector from source array `srcLong`.
-* @param {Array} srcLong Source array or vector.
+* Routine fromLong creates vector from source Long `srcLong`.
+*
+* @param { Long|VectorAdapter } srcLong - Source Long or vector.
 *
 * @example
 * var srcLong = [ 1, 2, 3 ];
-* var vec = wTools.vector.fromLong( srcLong );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
+* var got = wTools.vector.fromLong( srcLong );
+* console.log( got.toStr() );
+* // log "1.000, 2.000, 3.000"
 *
+* @returns { VectorAdapter } - Returns new VectorAdapter from source Long.
 * @function fromLong
-* @memberof module:Tools/math/Vector.wTools.vectorAdapter
+* @throws { Error } If arguments.length is not equal to one.
+* @throws { Error } If {-srcLong-} is not a Long, not a VectorAdapter.
+* @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
 */
 
 function fromLong( srcLong )
