@@ -182,6 +182,11 @@ console.log( vector2 );
 
 When creating the adapter `vector1` from the buffer` buffer1`, we pass the offset to the `1` element and specify that the vector has a `3` element length. We interpret the entire second buffer as a vector. The result of the add operation is written to the vector `vector1`. Since the adapter was created from elements 1 - 3 of the buffer `buffer1`, the values of all elements outside this range remained unchanged.
 
+![VectorAdapterFromRange.png](../../img/VectorAdapterFromRange.png)
+
+The figure shows how buffers `buffer1` and` buffer2` are placed in RAM. The adapter `vector1` uses three elements of` buffer1` from the first. The adapter `vector2` uses the entire buffer `buffer2`, the adapter also consists of `3` elements.
+
+
 ### Comparison with standard typed buffers
 
 You can also achieve this [by setting offset](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/byteOffset) and [size](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/byteLength) typed buffer ( BufferTyped ) when constructing it from a non-typed buffer ( BufferRaw ). But that's where the standard views come to an end. Standard views do not allow:
