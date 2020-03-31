@@ -227,28 +227,28 @@ function reviewSrcIsSimpleVector( test )
     test.case = 'src - empty vector, crange - 0';
     var src = new makeLong( [] );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - 0';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
-    test.identical( got, exp );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
+    test.identical( got.toStr(), exp.toStr() );
     test.is( got !== src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -257,42 +257,42 @@ function reviewSrcIsSimpleVector( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = new makeLong( [] );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = new makeLong( [ 0, 1, 2, 3, 4, 5 ] );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -355,28 +355,28 @@ function reviewSrcIsAdapterRoutineFrom( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.from( new makeLong( [] ) );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -385,42 +385,42 @@ function reviewSrcIsAdapterRoutineFrom( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.from( new makeLong( [] ) );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -451,28 +451,28 @@ function reviewSrcIsAdapterRoutineFromLong( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.fromLong( new makeLong( [] ) );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -481,42 +481,42 @@ function reviewSrcIsAdapterRoutineFromLong( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.fromLong( new makeLong( [] ) );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.fromLong( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -547,28 +547,28 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.fromLongWithStride( new makeLong( [] ), 2 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 0, 2, 4, 6, 8, 10 ] );
+    var exp = vad.from( new makeLong( [ 0, 2, 4, 6, 8, 10 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 4, 6, 8, 10 ] );
+    var exp = vad.from( new makeLong( [ 4, 6, 8, 10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -577,42 +577,42 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.fromLongWithStride( new makeLong( [] ), 2 );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 0, 2, 4, 6, 8, 10 ] );
+    var exp = vad.from( new makeLong( [ 0, 2, 4, 6, 8, 10 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 0, 2, 4, 6 ] );
+    var exp = vad.from( new makeLong( [ 0, 2, 4, 6 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 2, 4, 6 ] );
+    var exp = vad.from( new makeLong( [ 2, 4, 6 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.fromLongWithStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2 );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -643,28 +643,28 @@ function reviewSrcIsAdapterRoutineFromLongLrange( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.fromLongLrange( new makeLong( [] ), 0, 0 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 0, 6 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 0, 6 );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2, 6 );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -673,42 +673,42 @@ function reviewSrcIsAdapterRoutineFromLongLrange( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.fromLongLrange( new makeLong( [] ), 0, 0 );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 0, 6 );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 0, 8 );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 1, 8 );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 2, 3, 4 ] );
+    var exp = vad.from( new makeLong( [ 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2, 6  );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.fromLongLrange( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ), 2, 8 );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -739,28 +739,28 @@ function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 1 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 0, 6, 2 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 0, 2, 4, 6, 8, 10 ] );
+    var exp = vad.from( new makeLong( [ 0, 2, 4, 6, 8, 10 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 0, 6, 2 );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 4, 6, 8, 10 ] );
+    var exp = vad.from( new makeLong( [ 4, 6, 8, 10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 2, 6, 2 );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -769,42 +769,42 @@ function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 0, 6, 2 );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 0, 2, 4, 6, 8, 10 ] );
+    var exp = vad.from( new makeLong( [ 0, 2, 4, 6, 8, 10 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 0, 8, 2 );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 0, 2, 4, 6 ] );
+    var exp = vad.from( new makeLong( [ 0, 2, 4, 6 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 1, 6, 2 );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 3, 5, 7 ] );
+    var exp = vad.from( new makeLong( [ 3, 5, 7 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 2, 6, 2  );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.fromLongLrangeAndStride( new makeLong( [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ] ), 2, 6, 2 );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -835,28 +835,28 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.fromNumber( vad.from( new makeLong( [] ) ), 0 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -865,42 +865,42 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.fromNumber( vad.from( new makeLong( [] ) ), 0 );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.fromNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -910,28 +910,28 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.fromNumber( 5, 0 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = vad.fromNumber( 5, 6 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
+    var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.fromNumber( 5, 6 );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 5, 5, 5, 5 ] );
+    var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.fromNumber( 5, 6 );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -940,42 +940,42 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.fromNumber( 5, 0 );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.fromNumber( 5, 6 );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
+    var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.fromNumber( 5, 6 );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 5, 5, 5, 5 ] );
+    var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.fromNumber( 5, 6 );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 5, 5, 5 ] );
+    var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.fromNumber( 5, 6 );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.fromNumber( 5, 6 );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 }
@@ -1005,28 +1005,28 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [] ) ), 0 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1035,42 +1035,42 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [] ) ), 0 );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.fromMaybeNumber( vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) ), 6 );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] )
+    var exp = vad.from( new makeLong( [] ) )
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1079,28 +1079,28 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
     test.case = 'src - empty vector, crange - 0';
     var src = vad.fromMaybeNumber( new makeLong( [] ), 0 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange - 0';
     var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
     var got = vad.review( src, 0 );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange > 0 && crange < src.length - 1';
     var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
     var got = vad.review( src, 2 );
-    var exp = vad.from( [ 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange - src.length';
     var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
     var got = vad.review( src, 6 );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1109,42 +1109,42 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
     test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
     var src = vad.fromMaybeNumber( new makeLong( [] ), 0 );
     var got = vad.review( src, [ 0, -1 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
     var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
     var got = vad.review( src, [ 0, 5 ] );
-    var exp = vad.from( [ 0, 1, 2, 3, 4, 5 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'crange[ 0 ] - 0, crange < src.length';
     var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
     var got = vad.review( src, [ 0, 3 ] );
-    var exp = vad.from( [ 0, 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 0, 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > 0, crange < src.length';
     var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
     var got = vad.review( src, [ 1, 3 ] );
-    var exp = vad.from( [ 1, 2, 3 ] );
+    var exp = vad.from( new makeLong( [ 1, 2, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
     var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
     var got = vad.review( src, [ 6, 5 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'crange[ 0 ] > crange[ 1 ]';
     var src = vad.fromMaybeNumber( new makeLong( [ 0, 1, 2, 3, 4, 5 ] ), 6 );
     var got = vad.review( src, [ 3, 2 ] );
-    var exp = vad.from( [] );
+    var exp = vad.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
   }
@@ -1154,28 +1154,28 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
   test.case = 'src - empty vector, crange - 0';
   var src = vad.fromMaybeNumber( 5, 0 );
   var got = vad.review( src, 0 );
-  var exp = vad.from( [] );
+  var exp = vad.from( _.longDescriptor.make( [] ) );
   test.identical( got, exp );
   test.is( got === src );
 
   test.case = 'crange - 0';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = vad.review( src, 0 );
-  var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.is( got === src );
 
   test.case = 'crange > 0 && crange < src.length - 1';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = vad.review( src, 2 );
-  var exp = vad.from( [ 5, 5, 5, 5 ] );
+  var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.is( got !== src );
 
   test.case = 'crange - src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = vad.review( src, 6 );
-  var exp = vad.from( [] );
+  var exp = vad.from( _.longDescriptor.make( [] ) );
   test.identical( got, exp );
   test.is( got !== src );
 
@@ -1184,42 +1184,42 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
   test.case = 'src - empty vector, crange[ 0 ] and crange[ 1 ] - -1';
   var src = vad.fromMaybeNumber( 5, 0 );
   var got = vad.review( src, [ 0, -1 ] );
-  var exp = vad.from( [] );
+  var exp = vad.from( _.longDescriptor.make( [] ) );
   test.identical( got, exp );
   test.is( got === src );
 
   test.case = 'crange[ 0 ] - 0, crange[ 1 ] - src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = vad.review( src, [ 0, 5 ] );
-  var exp = vad.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.is( got === src );
 
   test.case = 'crange[ 0 ] - 0, crange < src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = vad.review( src, [ 0, 3 ] );
-  var exp = vad.from( [ 5, 5, 5, 5 ] );
+  var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.is( got !== src );
 
   test.case = 'crange[ 0 ] > 0, crange < src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = vad.review( src, [ 1, 3 ] );
-  var exp = vad.from( [ 5, 5, 5 ] );
+  var exp = vad.from( _.longDescriptor.make( [ 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.is( got !== src );
 
   test.case = 'crange[ 0 ] and crange[ 1 ] - src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = vad.review( src, [ 6, 5 ] );
-  var exp = vad.from( [] );
+  var exp = vad.from( _.longDescriptor.make( [] ) );
   test.identical( got, exp );
   test.is( got !== src );
 
   test.case = 'crange[ 0 ] > crange[ 1 ]';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = vad.review( src, [ 3, 2 ] );
-  var exp = vad.from( [] );
+  var exp = vad.from( _.longDescriptor.make( [] ) );
   test.identical( got, exp );
   test.is( got !== src );
 }
@@ -1251,21 +1251,21 @@ function mapDstIsNullRoutineFromLong( test )
     test.case = 'dst - vectorAdapter';
     var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
     var got = _.vectorAdapter.map( dst );
-    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
     test.case = 'dst - vectorAdapter, src - undefined';
     var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
     var got = _.vectorAdapter.map( dst, undefined );
-    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
     test.case = 'dst - vectorAdapter, src - null';
     var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
     var got = _.vectorAdapter.map( dst, null );
-    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
@@ -1277,7 +1277,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1285,7 +1285,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1295,7 +1295,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1303,7 +1303,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1313,7 +1313,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1321,7 +1321,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1331,7 +1331,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1339,7 +1339,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1349,7 +1349,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1357,7 +1357,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1367,7 +1367,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1375,7 +1375,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1442,21 +1442,21 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     test.case = 'dst - vectorAdapter';
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst );
-    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 4, 6 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
     test.case = 'dst - vectorAdapter, src - undefined';
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, undefined );
-    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 4, 6 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
     test.case = 'dst - vectorAdapter, src - null';
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, null );
-    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 4, 6 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
@@ -1468,7 +1468,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1476,7 +1476,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( [ 0, 0, 0 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1486,7 +1486,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1494,7 +1494,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1504,7 +1504,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 1 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1512,7 +1512,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1522,7 +1522,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1530,7 +1530,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1540,7 +1540,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1548,7 +1548,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1558,7 +1558,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1566,7 +1566,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ 0, 0, 0 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1602,7 +1602,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1610,7 +1610,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1620,7 +1620,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1628,7 +1628,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1638,7 +1638,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1646,7 +1646,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1656,7 +1656,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1664,7 +1664,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1674,7 +1674,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1682,7 +1682,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1692,7 +1692,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1700,7 +1700,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1714,7 +1714,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1722,7 +1722,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1732,7 +1732,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1740,7 +1740,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 7, 7, 7, 7, 7 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1750,7 +1750,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1758,7 +1758,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1768,7 +1768,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 10, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1776,7 +1776,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1786,7 +1786,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1794,7 +1794,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1804,7 +1804,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1812,7 +1812,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ 0, 0, 0, 0, 0 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -1847,14 +1847,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach - undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach - null';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( src, null );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -1863,14 +1863,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns element';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns element';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -1879,14 +1879,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns key';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns key';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -1895,14 +1895,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -1911,14 +1911,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -1927,14 +1927,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -1947,14 +1947,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach - undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.map( undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach - null';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.map( null );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
 
     /* */
@@ -1962,14 +1962,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns element';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.map( ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns element';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.map( ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -1978,14 +1978,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns key';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.map( ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns key';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.map( ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -1994,14 +1994,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.map( ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.map( ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2010,14 +2010,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.map( ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.map( ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2026,14 +2026,14 @@ function mapOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.map( ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.map( ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2068,14 +2068,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach - undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach - null';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( src, null );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2084,14 +2084,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns element';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns element';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2100,14 +2100,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns key';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns key';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2116,14 +2116,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2132,14 +2132,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2148,14 +2148,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2168,14 +2168,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach - undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.map( undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach - null';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.map( null );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
 
     /* */
@@ -2183,14 +2183,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns element';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.map( ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns element';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.map( ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2199,14 +2199,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns key';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.map( ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns key';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.map( ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2215,14 +2215,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.map( ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.map( ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2231,14 +2231,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.map( ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.map( ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2247,14 +2247,14 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.map( ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.map( ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -2290,7 +2290,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2299,7 +2299,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ -1, -2, -3, -4, -5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2310,7 +2310,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2319,7 +2319,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2330,7 +2330,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2339,7 +2339,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2350,7 +2350,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2359,7 +2359,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2370,7 +2370,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2379,7 +2379,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ -2, -4, -6, -8, -10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2390,7 +2390,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2399,7 +2399,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ -1, -2, -3, -4, -5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2414,7 +2414,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.map( src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2423,7 +2423,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.map( src, null );
-    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ -1, -2, -3, -4, -5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2434,7 +2434,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.map( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2443,7 +2443,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.map( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2454,7 +2454,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.map( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2463,7 +2463,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.map( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2474,7 +2474,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.map( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2483,7 +2483,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.map( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2494,7 +2494,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2503,7 +2503,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ -2, -4, -6, -8, -10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2514,7 +2514,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.map( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2523,7 +2523,7 @@ function mapDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.map( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ -1, -2, -3, -4, -5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ -1, -2, -3, -4, -5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2560,7 +2560,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2569,7 +2569,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( [ -1, -3, -5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ -1, -3, -5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2580,7 +2580,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2589,7 +2589,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2600,7 +2600,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2609,7 +2609,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2620,7 +2620,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2629,7 +2629,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2640,7 +2640,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2649,7 +2649,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [ -2, -6, -10 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ -2, -6, -10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2660,7 +2660,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2669,7 +2669,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ -1, -3, -5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ -1, -3, -5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2684,7 +2684,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.map( src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2693,7 +2693,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.map( src, null );
-    var exp = _.vectorAdapter.from( [ -1, -3, -5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ -1, -3, -5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2704,7 +2704,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.map( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2713,7 +2713,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.map( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2724,7 +2724,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.map( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2733,7 +2733,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.map( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2744,7 +2744,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.map( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2753,7 +2753,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.map( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2764,7 +2764,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2773,7 +2773,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.map( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [ -2, -6, -10 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ -2, -6, -10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2784,7 +2784,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.map( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -2793,7 +2793,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.map( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [ -1, -3, -5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ -1, -3, -5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -3367,21 +3367,21 @@ function filterDstIsNullRoutineFromLong( test )
     test.case = 'dst - vectorAdapter';
     var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
     var got = _.vectorAdapter.filter( dst );
-    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
     test.case = 'dst - vectorAdapter, src - undefined';
     var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
     var got = _.vectorAdapter.filter( dst, undefined );
-    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
     test.case = 'dst - vectorAdapter, src - null';
     var dst = _.vectorAdapter.fromLong( new makeLong( [ 2, 3, 4 ] ) );
     var got = _.vectorAdapter.filter( dst, null );
-    var exp = _.vectorAdapter.from( [ 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
@@ -3393,7 +3393,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3401,7 +3401,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3411,7 +3411,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3419,7 +3419,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3429,7 +3429,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3437,7 +3437,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3447,7 +3447,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3455,7 +3455,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3465,7 +3465,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3473,7 +3473,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3483,7 +3483,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3491,7 +3491,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3557,21 +3557,21 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     test.case = 'dst - vectorAdapter';
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst );
-    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 4, 6 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
     test.case = 'dst - vectorAdapter, src - undefined';
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, undefined );
-    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 4, 6 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
     test.case = 'dst - vectorAdapter, src - null';
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 2, 3, 4, 5, 6, 7 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, null );
-    var exp = _.vectorAdapter.from( [ 2, 4, 6 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 2, 4, 6 ] ) );
     test.identical( got, exp );
     test.is( got === dst );
 
@@ -3583,7 +3583,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3591,7 +3591,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3601,7 +3601,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3609,7 +3609,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3619,7 +3619,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 1 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3627,7 +3627,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3637,7 +3637,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3645,7 +3645,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3655,7 +3655,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3663,7 +3663,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3673,7 +3673,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3681,7 +3681,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3717,7 +3717,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3725,7 +3725,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3735,7 +3735,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3743,7 +3743,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3753,7 +3753,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3761,7 +3761,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3771,7 +3771,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3779,7 +3779,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3789,7 +3789,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3797,7 +3797,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3807,7 +3807,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3815,7 +3815,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3829,7 +3829,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3837,7 +3837,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3847,7 +3847,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3855,7 +3855,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 7, 7, 7, 7, 7 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 7, 7, 7, 7, 7 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3865,7 +3865,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3873,7 +3873,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3883,7 +3883,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 10, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3891,7 +3891,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3901,7 +3901,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3909,7 +3909,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3919,7 +3919,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3927,7 +3927,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
@@ -3962,14 +3962,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach - undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach - null';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( src, null );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -3978,14 +3978,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns element';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns element';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -3994,14 +3994,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns key';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns key';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4010,14 +4010,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4026,14 +4026,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4042,7 +4042,7 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4062,14 +4062,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach - undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.filter( undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach - null';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.filter( null );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
 
     /* */
@@ -4077,14 +4077,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns element';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.filter( ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns element';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.filter( ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4093,14 +4093,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns key';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.filter( ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns key';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.filter( ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4109,14 +4109,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.filter( ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.filter( ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4125,14 +4125,14 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.filter( ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = src.filter( ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4141,7 +4141,7 @@ function filterOnlyDstRoutineFromLong( test )
     test.case = 'src - empty vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = src.filter( ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4183,14 +4183,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach - undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach - null';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( src, null );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4199,14 +4199,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns element';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns element';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4215,14 +4215,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns key';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns key';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4231,14 +4231,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4247,14 +4247,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4263,7 +4263,7 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4283,14 +4283,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach - undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.filter( undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach - null';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.filter( null );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
 
     /* */
@@ -4298,14 +4298,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns element';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.filter( ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns element';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.filter( ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4314,14 +4314,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns key';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.filter( ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns key';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.filter( ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4330,14 +4330,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.filter( ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns src.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.filter( ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4346,14 +4346,14 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.filter( ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
     test.case = 'src - vector, onEach returns dst.length';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = src.filter( ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4362,7 +4362,7 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
     test.case = 'src - empty vector, onEach returns undefined';
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = src.filter( ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got === src );
 
@@ -4405,7 +4405,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4414,7 +4414,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4425,7 +4425,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4434,7 +4434,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4445,7 +4445,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4454,7 +4454,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4465,7 +4465,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4474,7 +4474,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4485,7 +4485,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4494,7 +4494,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ -2, -4, -6, -8, -10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4505,7 +4505,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4514,7 +4514,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( []  );
+    var exp = _.vectorAdapter.from( new makeLong( []  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4525,7 +4525,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = makeLong.name === 'arrayMake' ? _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ) : _.vectorAdapter.from( [ 1, 2 ] );
+    var exp = makeLong.name === 'arrayMake' ? _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ) : _.vectorAdapter.from( new makeLong ( [ 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( makeLong.name === 'arrayMake' ? got === dst : got !== dst );
@@ -4534,7 +4534,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4550,7 +4550,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.filter( src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4559,7 +4559,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.filter( src, null );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4570,7 +4570,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4579,7 +4579,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4590,7 +4590,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.filter( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4599,7 +4599,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.filter( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2, 3, 4 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4610,7 +4610,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.filter( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4619,7 +4619,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.filter( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 5, 5, 5, 5, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4630,7 +4630,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4639,7 +4639,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [ -2, -4, -6, -8, -10 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ -2, -4, -6, -8, -10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4650,7 +4650,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = dst.filter( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4659,7 +4659,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.filter( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( []  );
+    var exp = _.vectorAdapter.from( new makeLong( []  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4670,7 +4670,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = dst.filter( src, ( e ) => e );
-    var exp = makeLong.name === 'arrayMake' ? _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ) : _.vectorAdapter.from( [ 1, 2 ] );
+    var exp = makeLong.name === 'arrayMake' ? _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ) : _.vectorAdapter.from( new makeLong( [ 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( makeLong.name === 'arrayMake' ? got === dst : got !== dst );
@@ -4679,7 +4679,7 @@ function filterDstIsVectorRoutineFromLong( test )
     var dst = _.vectorAdapter.fromLong( new makeLong( [ -1, -2, -3, -4, -5 ] ) );
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2 ] ) );
     var got = dst.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4716,7 +4716,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4725,7 +4725,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4736,7 +4736,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4745,7 +4745,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4756,7 +4756,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4765,7 +4765,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4776,7 +4776,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4785,7 +4785,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4796,7 +4796,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4805,7 +4805,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [ -2, -6, -10 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ -2, -6, -10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4816,7 +4816,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4825,7 +4825,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( []  );
+    var exp = _.vectorAdapter.from( new makeLong( []  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4844,7 +4844,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 2, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4860,7 +4860,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.filter( src, undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4869,7 +4869,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.filter( src, null );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ]  );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ]  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4880,7 +4880,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4889,7 +4889,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3, 5 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4900,7 +4900,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.filter( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4909,7 +4909,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.filter( src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( [ 0, 1, 2 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4920,7 +4920,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.filter( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4929,7 +4929,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.filter( src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( [ 3, 3, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4940,7 +4940,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4949,7 +4949,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.filter( src, ( e, k, s, d ) => d.eGet( k ) - s.eGet( k ) );
-    var exp = _.vectorAdapter.from( [ -2, -6, -10 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ -2, -6, -10 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4960,7 +4960,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = dst.filter( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( [] );
+    var exp = _.vectorAdapter.from( new makeLong( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got === dst );
@@ -4969,7 +4969,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = dst.filter( src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( []  );
+    var exp = _.vectorAdapter.from( new makeLong( []  ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );
@@ -4988,7 +4988,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
     var dst = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ -1, -2, -3, -4, -5, -6, -7 ] ), 0, 3, 2 );
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5, 6, 7 ] ), 0, 2, 2 );
     var got = dst.filter( src, ( e ) => e );
-    var exp = _.vectorAdapter.from( [ 1, 3 ] );
+    var exp = _.vectorAdapter.from( new makeLong( [ 1, 3 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
     test.is( got !== dst );

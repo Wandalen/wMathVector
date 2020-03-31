@@ -33,7 +33,6 @@ _.assert( _.objectIs( operations ) );
 // --
 
 /**
-
  * Routine assign() assigns the values of second argument to the vector {-dst-}.
  * If arguments.length is more then two, then routine assigns elements of pseudo array {-arguments-} to the vector {-dst-}.
  * The assigning starts from the index 1.
@@ -51,7 +50,7 @@ _.assert( _.objectIs( operations ) );
  * @function assign
  * @throws { Error } If length of {-src-} and {-dst-} vectors are different.
  * @memberofs module:Tools/math/Vector.wTools.avector,module:Tools/math/Vector.wTools.vectorAdapter
-*/
+ */
 
 function assign( dst )
 {
@@ -118,7 +117,7 @@ dop.modifying = true;
  * @throws { Error } If {-dst-} or {-src-} are not vectors.
  * @throws { Error } If length of {-src-} and {-dst-} vectors are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function assignVector( dst, src )
 {
@@ -168,7 +167,7 @@ dop.special = true;
  * @function clone
  * @throws { Error } If arguments.length is less or more then one.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function clone( src )
 {
@@ -213,7 +212,7 @@ dop.special = true;
  * @throws { Error } If arguments.length is less then one or more then two.
  * @throws { Error } If {-length-} is not a Number.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function makeSimilar( src, length )
 {
@@ -289,7 +288,7 @@ dop.special = true;
  * @function slice
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function slice( src, first, last )
 {
@@ -476,7 +475,7 @@ dop.modifying = false;
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-crange-} is not a Range.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function growAdapter( src, crange, val )
 {
@@ -518,7 +517,7 @@ dop.modifying = false;
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-crange-} is not a Range.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function growLong( src, crange, val )
 {
@@ -586,7 +585,7 @@ dop.modifying = false;
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-crange-} is not a Range.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function shrinkAdapter( src, crange )
 {
@@ -625,7 +624,7 @@ dop.modifying = false;
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-crange-} is not a Range.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function shrinkLong( src, crange )
 {
@@ -682,7 +681,7 @@ dop.modifying = false;
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-crange-} is not a Range.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function review( src, crange )
 {
@@ -742,7 +741,7 @@ dop.modifying = false;
  * @function bufferConstructorOf
  * @throws { Error } If source vector is not a Function, not a Long, not a VectorAdapter.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function bufferConstructorOf( src )
 {
@@ -825,7 +824,7 @@ dop.modifying = false;
  * @throws { Error } If arguments.length is less or more then one.
  * @throws { Error } If source vector is not a Long, not a VectorAdapter.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function toLong( src )
 {
@@ -873,7 +872,7 @@ dop.modifying = false;
  * @function _toStr
  * @throws { Error } If source vector is not a Long, not a VectorAdapter.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 
 /* zzz : redo */
@@ -932,7 +931,28 @@ dop.modifying = false;
 
 //
 
-/* Dmytro : not know */
+/**
+ * Routine gather() fills destination vector {-dst-} by values from source vectors {-srcs-}.
+ * The {-srcs-} can contain numbers and vectors. The dst.length to srcs.length ratio should be
+ * an Integer. The length of element of {-srcs-} should be less then the ratio.
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Array } srcs - An array with source vectors.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( [ 0, 0, 0, 0 ] );
+ * var got = _.avector.gather( src, [ [ 1, 4 ], [ 2, 8 ] ] );
+ * console.log( got );
+ * // log [ 1, 2, 4, 8 ]
+ *
+ * @returns { Long|VectorAdapter } - Returns vector filled by elements of source vectors.
+ * @function gather
+ * @throws { Error } If arguments.length is not equal to two.
+ * @throws { Error } If source vectors is not an Array.
+ * @throws { Error } If {-dst-} is not a VectorAdapter.
+ * @throws { Error } If dst.length divided on src.length is not an Integer.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function gather( dst, srcs )
 {
@@ -1009,7 +1029,7 @@ dop.modifying = true;
  * @throws { Error } If source vector is not a Long, not a VectorAdapter.
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function map( dst, src, onEach )
 {
@@ -1088,7 +1108,7 @@ dop.modifying = true;
  * @throws { Error } If dst.length and src.length are different.
  * @throws { Error } If {-dst-} and {-src-} is the same vector and it has filtered elements.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function filter( dst, src, onEach )
 {
@@ -1186,7 +1206,7 @@ dop.modifying = true;
  * @throws { Error } If source vector is not a Long, not a VectorAdapter.
  * @throws { Error } If {-onEach-} at least once returns undefined.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function _while( dst, src, onEach )
 {
@@ -1280,7 +1300,7 @@ dop.modifying = true;
  * @function sort
  * @throws { Error } If {-comparator-} is not a routine, not undefined.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function sort( dst, comparator )
 {
@@ -1413,7 +1433,7 @@ dop.modifying = true;
  * @throws { Error } If arguments.length is less or more then four.
  * @throws { Error } If {-a-}, {-b-}, {-c-} lengths are different and not equal to 3.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function crossWithPoints( dst, a, b, c )
 {
@@ -1671,7 +1691,7 @@ dop.modifying = true;
  * @throws { Error } If arguments.length is less or more then two.
  * @throws { Error } If v.length and normal.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function reflect( v, normal )
 {
@@ -1783,7 +1803,7 @@ dop.modifying = true;
  * @throws { Error } If arguments.length is less or more then two.
  * @throws { Error } If v1.length and v2.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function swapVectors( v1, v2 )
 {
@@ -1831,7 +1851,7 @@ dop.modifying = true;
  * @throws { Error } If i1 or i2 are out of ranges of vector {-v-}.
  * @throws { Error } If i1 or i2 are not Number.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function swapAtoms( v, i1, i2 )
 {
@@ -1878,7 +1898,7 @@ dop.modifying = true;
  * @throws { Error } If {-srcs-} is not an Array.
  * @throws { Error } If dst.length / srcs.length is not an Integer.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function formate( dst, srcs )
 {
@@ -1943,7 +1963,7 @@ dop.homogeneous = false;
  * @function inv
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let inv = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
@@ -1970,7 +1990,7 @@ let inv = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @function invOrOne
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let invOrOne = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
@@ -2000,7 +2020,7 @@ let invOrOne = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @function absRoutine
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 
 let absRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
@@ -2028,7 +2048,7 @@ let absRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @function floorRoutine
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 
 let floorRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
@@ -2056,7 +2076,7 @@ let floorRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @function ceilRoutine
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let ceilRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
@@ -2083,7 +2103,7 @@ let ceilRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @function roundRoutine
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let roundRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
@@ -2111,7 +2131,7 @@ let roundRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @function ceilToPowerOfTwo
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 ({
@@ -2138,7 +2158,7 @@ let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_fun
  * @function normalize
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let _normalizeM;
 let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
@@ -2521,7 +2541,7 @@ let reduceToFurthest = meta._operationReduceToExtremal_functor
  * @returns { Number } - Returns minimal value of source vector.
  * @function reduceToMin
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let reduceToMin = meta._operationReduceToExtremal_functor
 ({
@@ -2562,7 +2582,7 @@ let reduceToMin = meta._operationReduceToExtremal_functor
  * @function reduceToMinAbs
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let reduceToMinAbs = meta._operationReduceToExtremal_functor
 ({
@@ -2601,7 +2621,7 @@ let reduceToMinAbs = meta._operationReduceToExtremal_functor
  * @function reduceToMax
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let reduceToMax = meta._operationReduceToExtremal_functor
 ({
@@ -2640,7 +2660,7 @@ let reduceToMax = meta._operationReduceToExtremal_functor
  * @function reduceToMaxAbs
  * @throws { Error } If dst.length and src.length are different.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let reduceToMaxAbs = meta._operationReduceToExtremal_functor
 ({
@@ -2679,7 +2699,7 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryBegin
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function _distributionRangeSummaryBegin( o )
 {
@@ -2717,7 +2737,7 @@ function _distributionRangeSummaryBegin( o )
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryEach
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function _distributionRangeSummaryEach( o )
 {
@@ -2761,7 +2781,7 @@ function _distributionRangeSummaryEach( o )
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryEnd
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function _distributionRangeSummaryEnd( o )
 {
@@ -2796,7 +2816,7 @@ function _distributionRangeSummaryEnd( o )
  * @function distributionRangeSummary
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 let distributionRangeSummary = meta._operationReduceToScalar_functor
 ({
@@ -2826,7 +2846,7 @@ _.assert( distributionRangeSummary.trivial.operation.reducing );
  * @returns { Number } - Returns minimal value in arguments.
  * @function reduceToMinValue
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function reduceToMinValue()
 {
@@ -2863,7 +2883,7 @@ dop.modifying = false;
  * @returns { Number } - Returns maximal value of source vector.
  * @function reduceToMaxValue
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function reduceToMaxValue()
 {
@@ -2897,7 +2917,7 @@ dop.modifying = false;
  * @returns { Array } - Returns array with lowest biggest value in passed vectors.
  * @function distributionRangeSummaryValue
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function distributionRangeSummaryValue()
 {
@@ -2981,7 +3001,7 @@ dop.modifying = false;
  * @throws { Error } If {-src-} is not a VectorAdapter.
  * @throws { Error } If {-onEach-} is not a Function.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 
 function all( src, onEach )
@@ -3047,7 +3067,7 @@ dop.modifying = false;
  * @throws { Error } If {-src-} is not a VectorAdapter.
  * @throws { Error } If {-onEach-} is not a Function.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function any( src, onEach )
 {
@@ -3110,7 +3130,7 @@ dop.modifying = false;
  * @throws { Error } If {-src-} is not a VectorAdapter.
  * @throws { Error } If {-onEach-} is not a Function.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function none( src, onEach )
 {
@@ -3174,7 +3194,7 @@ dop.modifying = false;
  * @throws { Error } If {-it.strictTyping-} is undefined.
  * @throws { Error } If {-it.containing-} is undefined.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 
 function _equalAre( it )
@@ -3261,7 +3281,7 @@ dop.homogeneous = true;
  * @throws { Error } If {-opts.strictTyping-} is undefined.
  * @throws { Error } If {-opts.containing-} is undefined.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function equalAre( src1, src2, opts )
 {
@@ -3315,7 +3335,7 @@ dop.homogeneous = true;
  * @throws { Error } If {-iterator.strictTyping-} is undefined.
  * @throws { Error } If {-iterator.containing-} is undefined.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function identicalAre( src1, src2, iterator )
 {
@@ -3365,7 +3385,7 @@ dop.homogeneous = true;
  * @throws { Error } If {-iterator.strictTyping-} is undefined.
  * @throws { Error } If {-iterator.containing-} is undefined.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 
 function equivalentAre( src1, src2, iterator )
@@ -3414,7 +3434,7 @@ dop.homogeneous = true;
  * @throws { Error } If src1.length and src2.length are different.
  * @throws { Error } If {-accuracy-} is not a Number.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 /* aaa : good coverage required */
 /* Dmytro : covered, name of routine use not common naming pattern */
@@ -3503,7 +3523,7 @@ meta._routinesDeclare();
  * @function mag
  * @throws { Error } If arguments.length is less or more then one.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function mag( v )
 {
@@ -3534,7 +3554,7 @@ dop.takingVectors = [ 1, 1 ];
  * @function magSqr
  * @throws { Error } If arguments.length is less or more then one.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function magSqr( v )
 {
@@ -3574,7 +3594,7 @@ dop.takingVectors = [ 1, 1 ];
  * @throws { Error } If {-src-} is not a VectorAdapter.
  * @throws { Error } If dst.length and src.length are not equivalent.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 /* Dmytro : maybe, parameters should have name src1 and src2 */
 
@@ -3623,7 +3643,7 @@ dop.modifying = false;
  * @function distance
  * @throws { Error } If src1.length and src2.length are not equivalent.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function distance( src1, src2 )
 {
@@ -3658,7 +3678,7 @@ dop.modifying = false;
  * @function distanceSqr
  * @throws { Error } If src1.length and src2.length are not equivalent.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function distanceSqr( src1, src2 )
 {
@@ -3699,7 +3719,7 @@ dop.modifying = false;
  * @returns { Number } - Returns median of source vector.
  * @function median
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function median( v )
 {
@@ -3730,7 +3750,7 @@ dop = median.operation = _.mapExtend( null , distributionRangeSummary.trivial.op
  * @function momentCentral
  * @throws { Error } If arguments.length is less then two or more then three.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function momentCentral( v, degree, mean )
 {
@@ -3766,7 +3786,7 @@ dop.takingArguments = [ 2, 3 ];
  * @function momentCentralConditional
  * @throws { Error } If arguments.length is less then two or more then three.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function momentCentralConditional( v, degree, mean, filter )
 {
@@ -3801,7 +3821,7 @@ dop.takingArguments = [ 3, 4 ];
  * @function distributionSummary
  * @throws { Error } If arguments.length is less then one or more then two.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function distributionSummary( v )
 {
@@ -3841,7 +3861,7 @@ dop = distributionSummary.operation = _.mapExtend( null , Routines._momentCentra
  * @function variance
  * @throws { Error } If arguments.length is less then one or more then two.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function variance( v, mean )
 {
@@ -3873,7 +3893,7 @@ dop.takingArguments = [ 1, 2 ];
  * @function variance
  * @throws { Error } If arguments.length is less then one or more then two.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function varianceConditional( v, mean, filter )
 {
@@ -3909,7 +3929,7 @@ dop.takingArguments = [ 2, 3 ];
  * @returns { Number } - Returns the dispersion of a set of values.
  * @function standardDeviation
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function standardDeviation()
 {
@@ -3937,7 +3957,7 @@ dop.input = 'vr ?s';
  * @function standardDeviationNormalized
  * @throws { Error } If arguments.length is less then one or more then two.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function standardDeviationNormalized( v, mean )
 {
@@ -3971,7 +3991,7 @@ dop.input = 'vr ?s';
  * @function kurtosis
  * @throws { Error } If arguments.length is less then one or more then two.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function kurtosis( v, mean )
 {
@@ -4007,7 +4027,7 @@ dop.input = 'vr ?s';
  * @returns { Number } - Returns normalized "tailedness" of the probability distribution of a real-valued random variable.
  * @function kurtosisNormalized
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 
 function kurtosisNormalized( v, mean )
@@ -4037,7 +4057,7 @@ dop.input = 'vr ?s';
  * @function skewness
  * @throws { Error } If arguments.length is less then one or more then two.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
-*/
+ */
 
 function skewness( v, mean )
 {
