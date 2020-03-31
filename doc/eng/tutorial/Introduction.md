@@ -129,7 +129,7 @@ Set the value of the first argument to `null` ( `dst = null` ), and then the res
 
 var srcVector1 = [ 1, 2, 3 ];
 var srcVector2 = [ 4, 5, 6 ];
-var dstVector = _.avector.add( null, srcVector, srcVector2 );
+var dstVector = _.avector.add( null, srcVector1, srcVector2 );
 
 console.log( srcVector1 );
 /* log : [ 1, 2, 3 ] */
@@ -137,7 +137,7 @@ console.log( srcVector2 );
 /* log : [ 4, 5, 6 ] */
 console.log( dstVector );
 /* log : [ 5, 7, 9 ] */
-console.log( dstVector === srcVector );
+console.log( dstVector === srcVector1 );
 /* log : false */
 
 ```
@@ -182,6 +182,11 @@ console.log( vector2 );
 
 When creating the adapter `vector1` from the buffer` buffer1`, we pass the offset to the `1` element and specify that the vector has a `3` element length. We interpret the entire second buffer as a vector. The result of the add operation is written to the vector `vector1`. Since the adapter was created from elements 1 - 3 of the buffer `buffer1`, the values of all elements outside this range remained unchanged.
 
+![VectorAdapterFromRange.png](../../img/VectorAdapterFromRange.png)
+
+The figure shows how buffers `buffer1` and` buffer2` are placed in RAM. The adapter `vector1` uses three elements of` buffer1` from the first. The adapter `vector2` uses the entire buffer `buffer2`, the adapter also consists of `3` elements.
+
+
 ### Comparison with standard typed buffers
 
 You can also achieve this [by setting offset](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/byteOffset) and [size](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/byteLength) typed buffer ( BufferTyped ) when constructing it from a non-typed buffer ( BufferRaw ). But that's where the standard views come to an end. Standard views do not allow:
@@ -222,7 +227,7 @@ console.log( vector2 );
 
 The routine `_.vectorAdapter.fromLongLrangeAndStride` creates an adapter `vector1` with an offset of `1` element, length of` 3` element and step width of `2` element. Adding vector `vector2` to vector` vector1`.
 
-![VectorAdapterFrom.png](../../img/VectorAdapterFrom.png)
+![VectorAdapterFromRangeAndStride.png](../../img/VectorAdapterFromRangeAndStride.png)
 
 The figure shows how buffers `buffer1` and` buffer2` are placed in RAM. The adapter `vector1` uses part of the elements of `buffer1` starting with the first element. The vector has step `2` and includes `3` elements. The `vector2` adapter uses the entire` buffer2` buffer, the vector consists of `3` elements.
 
@@ -308,7 +313,7 @@ console.log( _.strType( long2 ) );
 
 ### Summary
 
-- The module has 2 nameses - `_.avector` and` _.vectorAdapter`.
+- The module has 2 namespaces - `_.avector` and` _.vectorAdapter`.
 - The routines of namespace `_.avector` work with vectors in the form of `Long`-containers.
 - The routines of namespace `_.vectorAdapter` is intended to work with adapters.
 - Adapters are an abstraction, a kind of link that defines how data is interpreted.

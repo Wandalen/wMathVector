@@ -129,7 +129,7 @@ console.log( adapter1.toStr() );
 
 var srcVector1 = [ 1, 2, 3 ];
 var srcVector2 = [ 4, 5, 6 ];
-var dstVector = _.avector.add( null, srcVector, srcVector2 );
+var dstVector = _.avector.add( null, srcVector1, srcVector2 );
 
 console.log( srcVector1 );
 /* log : [ 1, 2, 3 ] */
@@ -137,7 +137,7 @@ console.log( srcVector2 );
 /* log : [ 4, 5, 6 ] */
 console.log( dstVector );
 /* log : [ 5, 7, 9 ] */
-console.log( dstVector === srcVector );
+console.log( dstVector === srcVector1 );
 /* log : false */
 
 ```
@@ -177,10 +177,14 @@ console.log( vector1 );
 /* log : [ 1, 6, 8, 10, 5, 6, 7 ] */
 console.log( vector2 );
 /* log : [ 4, 5, 6 ] */
-
 ```
 
 При створенні адаптера `vector1` до буфера `buffer1` передаємо зсув в `1` елемент та задаємо, що вектор має довжину `3` елемента. Увесь другий буфер інтерпретуємо, як вектор. Результат операції додавання записується в вектор `vector1`. Так, як адаптер було створено із елементів 1 - 3 буфера `buffer1` то значення всіх елементів за межами цієї області ( range ) залишилися без змін.
+
+![VectorAdapterFromRange.png](../../img/VectorAdapterFromRange.png)
+
+На рисунку показано як розміщено буфери `buffer1` i `buffer2` в оперативній пам'яті. Створений адаптер `vector1` використовує три елемента буфера `buffer1` починаючи з першого. Адаптер `vector2` використовує весь буфер `buffer2`, вектор також складається з `3` елементів.
+
 
 ### Порівняння із стандатними типізованими буферами
 
@@ -222,7 +226,7 @@ console.log( vector2 );
 
 Рутина `_.vectorAdapter.fromLongLrangeAndStride` створює адаптер `vector1` із зсувом `1` елемент, довжиною `3` елементи та шириною кроку `2` елементи. Додавання вектора `vector2` до вектора `vector1`.
 
-![VectorAdapterFrom.png](../../img/VectorAdapterFrom.png)
+![VectorAdapterFromRangeAndStride.png](../../img/VectorAdapterFromRangeAndStride.png)
 
 На рисунку показано як розміщено буфери `buffer1` i `buffer2` в оперативній пам'яті. Створений адаптер `vector1` використовує частину елементів буфера `buffer1` починаючи з першого елемента. Вектор має крок `2` та включає `3` елемента. Адаптер `vector2` використовує весь буфер `buffer2`, вектор складається з `3` елементів.
 
