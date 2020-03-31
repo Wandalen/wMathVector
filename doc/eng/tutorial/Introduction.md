@@ -21,7 +21,7 @@ Features of this implementation of vector mathematics are:
   - Implementation of vectors have no fields "x", "y", "z".
   - All mathematical functions have an implementation that expects vectors in arguments rather than in the context.
   - Аdapter is a nonmutable object.
-- **Native implementation**: under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
+- **Native implementation**: under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) library ( not ready ).
 - **GPGPU** implementation: under the browser, it optionally uses WebGL ( not ready ).
 - **Performance**: the optimized build has high performance ( not ready ).
 
