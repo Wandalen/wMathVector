@@ -2666,6 +2666,16 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
  *
  * @param { MapLike } o - Map.
  *
+ * @example
+ * var got = _.avector._distributionRangeSummaryBegin( {} );
+ * console.log( got );
+ * // log {
+ * //       result : {
+ * //                   min : { value : +Infinity, index : -1, container : null },
+ * //                   max : { value : -Infinity, index : -1, container : null },
+ * //                }
+ * //  }
+ *
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryBegin
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -2691,6 +2701,17 @@ function _distributionRangeSummaryBegin( o )
  * If current value is lower then lowest value in map {-o-}, then routine replace value in map {-o-}.
  *
  * @param { MapLike } o - Map.
+ * @example
+ * var got = _.avector._distributionRangeSummaryEach( o );
+ * console.log( got );
+ * // log {
+ * //       result : {
+ * //                   element : 3,
+ * //                   container : [ 1, 2, 3 ];
+ * //                   min : { value : 1, index : 0, container : [ 1, 2, 3 ] },
+ * //                   max : { value : 3, index : 2, container : [ 1, 2, 3 ] },
+ * //                }
+ * //  }
  *
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryEach
@@ -2722,6 +2743,18 @@ function _distributionRangeSummaryEach( o )
  * Routine _distributionRangeSummaryEnd() finds median of lowest and biggest value in map {-o-}.
  *
  * @param { MapLike } o - Map.
+ * @param { MapLike } o - Map.
+ * @example
+ * var got = _.avector._distributionRangeSummaryEnd( o );
+ * console.log( got );
+ * // log {
+ * //       result : {
+ * //                   element : 3,
+ * //                   container : [ 1, 2, 3 ];
+ * //                   min : { value : 1, index : 0, container : [ 1, 2, 3 ] },
+ * //                   max : { value : 3, index : 2, container : [ 1, 2, 3 ] },
+ * //                }
+ * //  }
  *
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryEnd

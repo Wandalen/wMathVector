@@ -308,7 +308,7 @@ console.log( _.strType( long2 ) );
 
 ### Summary
 
-- The module has 2 nameses - `_.avector` and` _.vectorAdapter`.
+- The module has 2 namespaces - `_.avector` and` _.vectorAdapter`.
 - The routines of namespace `_.avector` work with vectors in the form of `Long`-containers.
 - The routines of namespace `_.vectorAdapter` is intended to work with adapters.
 - Adapters are an abstraction, a kind of link that defines how data is interpreted.
