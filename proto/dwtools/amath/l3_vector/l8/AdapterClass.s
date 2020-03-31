@@ -25,6 +25,25 @@ let meta = _.vectorAdapter._meta;
 // etc
 // --
 
+/**
+ * Routine to() converts vector to instance of another class. If destination class is VectorAdapter, then routine
+ * returns original vector.
+ *
+ * @param { Function } cls - Constructor of the class. The valid constructors are: Array, _.Matrix, _.VectorAdapter.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( new U8x( [ 3, 4, 5 ] ) );
+ * var got = src.to( Array );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ *
+ * @returns { Array|Matrix|VectorAdapter } - Returns vector as instance of destination class.
+ * @function to
+ * @throws { Error } If arguments.length is not equal to one.
+ * @throws { Error } If {-cls-} is not Array, _.Matrix, _.VectorAdapter.
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 function to( cls )
 {
   let self = this;
@@ -53,6 +72,23 @@ function to( cls )
 
 //
 
+/**
+ * Routine eGet() ( from "element get" ) returns value of vector element with an index.
+ *
+ * @param { Number } index - Index of element.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( new U8x( [ 3, 4, 5 ] ) );
+ * var got = src.eGet( 1 );
+ * console.log( got );
+ * // log 4
+ *
+ * @returns { Number } - Returns element of vector.
+ * @function eGet
+ * @throws { Error } If arguments.length is not equal to one.
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 function eGet( index )
 {
   let self = this;
@@ -61,6 +97,24 @@ function eGet( index )
 }
 
 //
+
+/**
+ * Routine eSet() ( from "element set" ) returns value of vector element with an index.
+ *
+ * @param { Number } index - Index of element.
+ * @param { Number } val - Value to set.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( new U8x( [ 3, 4, 5 ] ) );
+ * src.eSet( 1, 0 );
+ * console.log( src.toStr() );
+ * // log "3.000, 0.000, 5.000"
+ *
+ * @returns { Undefined } - Returns not a value, sets element of vector.
+ * @function eSet
+ * @throws { Error } If arguments.length is not equal to two.
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function eSet( index, val )
 {
@@ -78,6 +132,24 @@ function eSet( index, val )
 // }
 
 //
+
+/**
+ * Routine copy() copies the values from source vector.
+ * The adapter and vector should have equal lengths.
+ *
+ * @param { VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( new U8x( [ 3, 4, 5 ] ) );
+ * src.copy( [ 0, 1, 1 ] );
+ * console.log( src.toStr() );
+ * // log "0.000, 1.000, 1.000"
+ *
+ * @returns { VectorAdapter } - Returns adapter filled by content of source vector.
+ * @function copy
+ * @throws { Error } If arguments.length is not equal to one.
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function copy( src )
 {
@@ -201,6 +273,25 @@ function copy( src )
 
 //
 
+/**
+ * Routine identicalWith() check that vectors are identical.
+ *
+ * @param { VectorAdapter } src2 - Source vector.
+ * @param { Map } it - Options map.
+ *
+ * @example
+ * var src1 = _.vectorAdapter.fromLong( new U8x( [ 3, 4, 5 ] ) );
+ * var src2 = _.vectorAdapter.fromLong( new U8x( [ 3, 4, 5 ] ) );
+ * var got = src1.identicalWith( src2 );
+ * console.log( got );
+ * // log true
+ *
+ * @returns { Boolean } - Returns whether the vectors are identical.
+ * @function identicalWith
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 function identicalWith( src2, it )
 {
   let src1 = this;
@@ -217,6 +308,25 @@ identicalWith.returningNew = false;
 identicalWith.modifying = false;
 
 //
+
+/**
+ * Routine equivalentWith() check that vectors are equivalent.
+ *
+ * @param { VectorAdapter } src2 - Source vector.
+ * @param { Map } it - Options map.
+ *
+ * @example
+ * var src1 = _.vectorAdapter.fromLong( new U8x( [ 3, 4, 5 ] ) );
+ * var src2 = _.vectorAdapter.fromLong( new U8x( [ 3, 4.0000001, 5 ] ) );
+ * var got = src1.equivalentWith( src2 );
+ * console.log( got );
+ * // log true
+ *
+ * @returns { Boolean } - Returns whether the vectors are equivalent.
+ * @function equivalentWith
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function equivalentWith( src2, it )
 {
@@ -259,6 +369,24 @@ equivalentWith.modifying = false;
 // sameWith.modifying = false;
 
 //
+
+/**
+ * Routine hasShape() check that vectors have identical length.
+ *
+ * @param { VectorAdapter|Matrix } src - Source vector.
+ *
+ * @example
+ * var src1 = _.vectorAdapter.fromLong( new U8x( [ 3, 4, 5 ] ) );
+ * var src2 = _.vectorAdapter.fromLong( [ 0, 0, 0 ] );
+ * var got = src1.hasShape( src2 );
+ * console.log( got );
+ * // log true
+ *
+ * @returns { Boolean } - Returns whether the vectors have identical length.
+ * @function hasShape
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function hasShape( src )
 {
@@ -330,6 +458,6 @@ _.assert( _.routineIs( Self.prototype.slice ) );
 _.assert( _.routineIs( Self.prototype.allZero ) );
 
 _.assert( _.routineIs( _.vectorAdapter.toLong ) );
-_.assert( _.routineIs( _.vectorAdapter.toStr ) ); 
+_.assert( _.routineIs( _.vectorAdapter.toStr ) );
 
 })();
