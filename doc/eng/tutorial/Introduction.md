@@ -1,6 +1,6 @@
 # Introduction
 
-This article reviews the concept of a vector and its job formats.
+This article reviews the concept of a vector and its formats.
 
 The unique features of vector mathematics implementation of this module are:
 - Cleanliness: The module does not inject methods, does not contaminate or alter the standard interface.

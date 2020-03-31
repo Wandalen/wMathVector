@@ -16,5 +16,5 @@
   <summary><a href="./tutorial/Introduction.md">
     Introduction
   </a></summary>
-    This article reviews the concept of a vector and its job formats.
+    This article reviews the concept of a vector and its formats.
 </details>
