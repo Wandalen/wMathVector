@@ -15,7 +15,7 @@ let Self = function AdapterFromNumber() {};
 
 /**
  * Routine _review() makes new instance of VectorAdapter.
- * The buffer fills by number of current vector, the length defines by range {-crange-}.
+ * The buffer is filled by number of current vector, the length is defined by range {-crange-}.
  *
  * @param { Range } crange - Defines ranges for an adapter.
  *
@@ -49,7 +49,7 @@ function _review( crange )
  * console.log( got );
  * // log [ 2, 2, 2 ];
  *
- * @returns { Long } - Returns original Long of the adapter.
+ * @returns { Long } - Returns new Long with content of the vector.
  * @function _toLong
  * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
  */
