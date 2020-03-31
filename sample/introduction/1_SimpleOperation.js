@@ -1,7 +1,4 @@
-if( typeof module !== 'undefined' )
-require( 'wmathvector' );
-
-var _ = wTools;
+var _ = require( 'wmathvector' );
 
 var vector1 = [ 1, 2, 3 ];
 var vector2 = [ 4, 5, 6 ];

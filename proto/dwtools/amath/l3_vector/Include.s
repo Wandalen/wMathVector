@@ -44,4 +44,10 @@ if( module !== 'undefined' )
 
 }
 
+if( module !== 'undefined' )
+{
+  if( typeof module !== 'undefined' && module !== null )
+  module[ 'exports' ] = _global_.wTools;
+}
+
 })();

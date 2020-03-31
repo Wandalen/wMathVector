@@ -1,7 +1,4 @@
-if( typeof module !== 'undefined' )
-require( 'wmathvector' );
-
-var _ = wTools;
+var _ = require( 'wmathvector' );
 
 var long1 = new F32x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
 var vector1 = _.vectorAdapter.fromLongLrangeAndStride( long1, 1, 3, 2 );

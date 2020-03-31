@@ -1,7 +1,4 @@
-if( typeof module !== 'undefined' )
-require( 'wmathvector' );
-
-var _ = wTools;
+var _ = require( 'wmathvector' );
 
 var srcVector1 = [ 1, 2, 3 ];
 var srcVector2 = [ 4, 5, 6 ];
@@ -15,4 +12,3 @@ console.log( dstVector );
 /* log : [ 5, 7, 9 ] */
 console.log( dstVector === srcVector1 );
 /* log : false */
-

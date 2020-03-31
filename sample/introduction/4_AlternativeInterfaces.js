@@ -1,7 +1,4 @@
-if( typeof module !== 'undefined' )
-require( 'wmathvector' );
-
-var _ = wTools;
+var _ = require( 'wmathvector' );
 
 var array1 = [ 1, 2, 3 ];
 var adapter1 = _.vectorAdapter.from( array1 );

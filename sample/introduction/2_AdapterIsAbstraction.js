@@ -1,7 +1,4 @@
-if( typeof module !== 'undefined' )
-require( 'wmathvector' );
-
-var _ = wTools;
+var _ = require( 'wmathvector' );
 
 var array1 = [ 1, 2, 3 ];
 var array2 = [ 4, 5, 6 ];
@@ -24,4 +21,3 @@ console.log( array1 );
 /* log : [ 5, 7, 9 ] */
 console.log( array2 );
 /* log : [ 4, 5, 6 ] */
-

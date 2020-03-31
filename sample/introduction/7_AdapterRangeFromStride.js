@@ -1,7 +1,4 @@
-if( typeof module !== 'undefined' )
-require( 'wmathvector' );
-
-var _ = wTools;
+var _ = require( 'wmathvector' );
 
 var buffer1 = new F32x([ 1, 2, 3, 4, 5, 6, 7 ]);
 var buffer2 = new F32x([ 4, 5, 6 ]);
@@ -24,4 +21,3 @@ console.log( vector1 );
 /* log : [ 1, 6, 3, 9, 5, 12, 7 ] */
 console.log( vector2 );
 /* log : [ 4, 5, 6 ] */
-
