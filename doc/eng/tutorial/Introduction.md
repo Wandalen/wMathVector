@@ -2,28 +2,33 @@
 
 This article reviews the concept of a vector and its formats.
 
+
+
+### Unique features
+
 The unique features of this implementation of vector mathematics are:
 
 - Cleanliness: The module does not inject methods, does not contaminate or alter the standard interface.
-- Regular array or typed buffer could be interpreted as a vector.
+- A regular array or typed buffer could be interpreted as a vector.
 - The module uses the principles of functional programming.
-  - The vector is not an object, but abstraction.
+  - The vector is not an object, but an abstraction.
   - Implementation of vectors have no fields "x", "y", "z".
   - All mathematical functions have an implementation that expects vectors in arguments rather than in the context.
-  - The adapter is a nonmutable object.
-- The readability and conciseness of the code which uses the module are as performance of the module.
-- It's highly flexible thanks to the ability to specify vector with help of adapter.
+  - Аdapter is a nonmutable object.
+- The readability and conciseness of the code which uses the module are as important for us as the performance of the module.
+- It's highly flexible, thanks to the ability to specify a vector with the help of an adapter.
 - It implements the same interface for different data types and formats of specifying. The code written for the adapter looks the same as the code written for the array.
-- You can write and use your own implementation of vector adapter.
+- You can write and use your own implementation of a vector adapter.
 - The module has good test coverage and documentation.
-- Under NodeJS, it uses an optional binding to native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
-- Optimized build has high performance ( not ready ).
+- Under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
+- Under the browser, it optionally uses WebGL ( not ready ).
+- The optimized build has high performance ( not ready ).
 
 ### Concepts of vector and vector adapter
 
-The vector in this module means an ordered set of scalars.
+The vector in this module means an ordered set of scalars. The vector is not an object, but an abstraction.
 
-Vector adapter is an abstraction, a kind of link that defines how to interpret data as the vector.
+Vector adapter is an implementation of the abstract interface, a kind of link that defines how to interpret data as the vector. The interface of the adapter has many implementations.
 
 ### The formats of vector specifying
 
@@ -108,7 +113,7 @@ Another technical metaphor is interpretation. The adapter does not own the data,
 
 ### Alternative interfaces
 
-This example shows 3 alternative ways to use the same interface.
+This example shows three alternative ways to use the same interface.
 
 ```js
 
@@ -124,7 +129,7 @@ console.log( adapter1.toStr() );
 
 ```
 
-Three consecutive multiplication of a vector using the data container `array1`, using the adapter `adapter1` and using the adapter method `adapter1.mul()` increase the value of all vector elements making them 8 times greater.
+Three consecutive multiplication of a vector using the data container `array1`, using the adapter `adapter1` and using the adapter method `adapter1.mul()` increase the value of all vector elements, making them eight times greater.
 
 ### Convention dst=null
 
@@ -147,7 +152,7 @@ console.log( dstVector === srcVector1 );
 
 ```
 
-Because the first argument of the call `_.avector.add`  is `null`, a new container is created for the result. The container gets type of the input argument `Array`. It is used to write down the result of adding two vectors `srcVector1` and` srcVector2`.
+Because the first argument of the call `_.avector.add`  is `null`, a new container is created for the result. The container gets a type of the input argument `Array`. It is used to write down the result of adding two vectors `srcVector1` and` srcVector2`.
 
 The same convention applies to all adapters and all routines of the module `MathVector`.
 
@@ -159,7 +164,7 @@ Another strength of using vector adapters is an application [zero-copy principle
 
 ### Adapter from range
 
-Let's say there is a large typed `Float32` buffer `buffer1` in one-gigabyte size and a second buffer `buffer2` one-megabyte length. Somewhere in the first buffer, with some offset, a vector is hidden. We interpret the entire second buffer as a vector. How to multiply the first vector by the second and save the result in the first buffer?
+Let's say there is a large typed `Float32` buffer `buffer1` in one-gigabyte size and a second buffer `buffer2` one-megabyte length. Somewhere in the first buffer, with some offset, a vector is hidden. We interpret the entire second buffer as a vector. How to multiply the first vector by the second and save the result in the first buffer? How to avoid useless moving of megabytes of bytes from one place to another during the process of applying math algorithms?
 
 ```js
 
@@ -195,7 +200,7 @@ The diagram explains the logic of interpreting part of a buffer as a vector. Cre
 
 ### Comparison with standard typed buffers
 
-You can achieve the same effect by setting [offset](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/byteOffset) and [size](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/byteLength) typed buffer ( BufferTyped ) when constructing it from a non-typed buffer ( BufferRaw ). But that's where the standard views exhausted its flexibility. Standard views do not allow:
+You can achieve the same effect by setting [offset](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/byteOffset), and [size](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/byteLength) typed buffer ( BufferTyped ) when constructing it from a non-typed buffer ( BufferRaw ). But that's where the standard views exhausted its flexibility. Standard views do not allow:
 
 - Set up stride.
 - Change direction.
@@ -204,7 +209,7 @@ You can achieve the same effect by setting [offset](https://developer.mozilla.or
 
 ### Specifying stride
 
-This example is similar to the previous one. There is a large typed `Float32` buffer `buffer1` in one-gigabyte size and a second buffer `buffer2` one-megabyte length. Somewhere in the first buffer, with some offset, a vector is hidden. We interpret the entire second buffer as a vector. How to multiply the first vector by the second and save the result in the first buffer? But this time, suppose that the vector in the first buffer not only does not start from the beginning but does not go in sequence. Suppose a vector `vector1` has stride `2`. The next element of vector is next but one element in buffer.
+This example is similar to the previous one. There is a large typed `Float32` buffer `buffer1` in one-gigabyte size and a second buffer `buffer2` one-megabyte length. Somewhere in the first buffer, with some offset, a vector is hidden. We interpret the entire second buffer as a vector. How to multiply the first vector by the second and save the result in the first buffer? But this time, suppose that the vector in the first buffer not only does not start from the beginning but does not go in sequence. Suppose a vector `vector1` has stride `2`. The next element of the vector is next, but one element in the buffer.
 
 ```js
 
@@ -303,7 +308,7 @@ The example should demonstrate the flexibility of the vector adapters.
 
 ### Converting to Long type
 
-Use the routine `_.avector.toLong()` to convert the adapter to the `Long` type. The routine `toLong` returns the original behind the adapter, if it's possible, otherwise creates a new container of the same type as the original that filled by the content of vector.
+Use the routine `_.avector.toLong()` to convert the adapter to the `Long` type. The routine `toLong` returns the original behind the adapter if it's possible, otherwise creates a new container of the same type as the original that filled by the content of vector.
 
 ```js
 
@@ -322,10 +327,10 @@ console.log( _.strType( long2 ) );
 - `null` in the first argument changes the semantics of the routine, instructing it to create a new container.
 - The module has 2 namespaces: `_.avector` and` _.vectorAdapter`.
 - The routines of namespace `_.avector` work with vectors in the form of `Long`-containers.
-- The routines of namespace `_.vectorAdapter` work with vectors in form of adapters.
-- Vector adapter is an abstraction, a kind of link that defines how to interpret data as the vector.
+- The routines of namespace `_.vectorAdapter` work with vectors in the form of adapters.
+- Vector adapter is an implementation of the abstract interface, a kind of link that defines how to interpret data as the vector.
 - Adapter does not own data, does not directly contain vector data, only metadata - link to data, start, length, type, etc.
 - Adapter can not only select the buffer span to be interpreted as a vector but also specify a stride.
-- You can write and use your own implementation of vector adapter.
+- You can write and use your own implementation of a vector adapter.
 
 [Back to content](../README.md#Tutorials)
