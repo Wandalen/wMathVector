@@ -76,6 +76,26 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 
 //
 
+/**
+ * Routine fromLongLrangeAndStride creates vector from part of source Long `srcLong`. The elements of the
+ * vector are selected with a defined stride.
+ *
+ * @param { Long|VectorAdapter } srcLong - Source vector.
+ * @param { Number } offset - Offset to sub array in source array `srcLong`.
+ * @param { Number } length - Length of new vector.
+ * @param { Number } stride - The stride to select elements of new vector.
+ *
+ * @example
+ * var srcLong = [ 1, 2, 3, 4, 5, 6, 7 ];
+ * var got = _.vector.fromLongLrangeAndStride( srcLong, 1, 3, 2 );
+ * console.log( got.toStr() );
+ * // log "2.000, 4.000, 6.000"
+ *
+ * @returns { VectorAdapter } - Returns new VectorAdapter.
+ * @function fromLongLrangeAndStride
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 function fromLongLrangeAndStride( srcLong, offset, length, stride )
 {
 
@@ -113,6 +133,24 @@ function fromLongLrangeAndStride( srcLong, offset, length, stride )
 }
 
 //
+
+/**
+ * Routine fromLongWithStride creates vector from all elements of source Long `srcLong`. The elements of the
+ * vector are selected with a defined stride.
+ *
+ * @param { Long|VectorAdapter } srcLong - Source vector.
+ * @param { Number } stride - The stride to select elements of new vector.
+ *
+ * @example
+ * var srcLong = [ 1, 2, 3, 4, 5, 6, 7 ];
+ * var got = _.vector.fromLongWithStride( srcLong, 3 );
+ * console.log( got.toStr() );
+ * // log "1.000, 4.000, 7.000"
+ *
+ * @returns { VectorAdapter } - Returns new VectorAdapter.
+ * @function fromLongWithStride
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function fromLongWithStride( srcLong, stride )
 {

@@ -78,20 +78,21 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 //
 
 /**
-* @summary Creates vector from part of source array `srcLong`.
-* @param {Array} srcLong Source array.
-* @param {Array} offset Offset to sub array in source array `srcLong`.
-* @param {Array} length Length of new vector.
-*
-* @example
-* var srcLong = [ 1, 2, 3 ];
-* var vec = wTools.vector.fromLongLrange( srcLong, 0, 2 );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
-*
-* @function fromLongLrange
-* @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
+ * Routine fromLongLrange() creates vector from part of source Long `srcLong`.
+ *
+ * @param { Long|VectorAdapter } srcLong - Source Long or vector.
+ * @param { Number } offset - Offset in source Long.
+ * @param { Number } length - Length of new vector.
+ *
+ * @example
+ * var srcLong = [ 1, 2, 3 ];
+ * var got = _.vectorAdapter.fromLongLrange( srcLong, 0, 2 );
+ * console.log( got.toStr() );
+ *
+ * @returns { VectorAdapter } - Returns new VectorAdapter from part of source Long.
+ * @function fromLongLrange
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ */
 
 function fromLongLrange( srcLong, offset, length )
 {
