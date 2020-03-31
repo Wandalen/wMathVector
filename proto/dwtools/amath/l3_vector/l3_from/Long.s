@@ -14,7 +14,7 @@ let Self = function VectorAdapterFromLong(){};
 //
 
 /**
- * Routine _review() makes new instance of VectorAdapter from original of current adapter in defined range {-crange-}.
+ * Routine _review() makes new instance of VectorAdapter from original of current adapter.
  *
  * @param { Range } crange - Defines ranges for creating adapter.
  *
