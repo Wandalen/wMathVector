@@ -184,8 +184,7 @@ When creating the adapter `vector1` from the buffer` buffer1`, we pass the offse
 
 ![VectorAdapterFromRange.png](../../img/VectorAdapterFromRange.png)
 
-The figure shows how buffers `buffer1` and` buffer2` are placed in RAM. The adapter `vector1` uses three elements of` buffer1` from the first. The adapter `vector2` uses the entire buffer `buffer2`, the adapter also consists of `3` elements.
-
+The diagram explains the logic of interpreting part of a buffer as a vector. Created adapter `vector1` uses `3` elements of buffer `buffer1`, not starting from the first one. Adapter `vector2` uses the whole buffer `buffer2` and has length `3` elements too.
 
 ### Comparison with standard typed buffers
 
@@ -229,7 +228,7 @@ The routine `_.vectorAdapter.fromLongLrangeAndStride` creates an adapter `vector
 
 ![VectorAdapterFromRangeAndStride.png](../../img/VectorAdapterFromRangeAndStride.png)
 
-The figure shows how buffers `buffer1` and` buffer2` are placed in RAM. The adapter `vector1` uses part of the elements of `buffer1` starting with the first element. The vector has step `2` and includes `3` elements. The `vector2` adapter uses the entire` buffer2` buffer, the vector consists of `3` elements.
+The diagram explains the logic of interpreting part of a buffer as a vector with the help of an option stride. Created adapter `vector1` uses `3` elements of buffer `buffer1` next but one. The adapter of the vector has stride `2` elements and length `3` elements. Adapter `vector2` uses the whole buffer `buffer2` and has length `3` elements too.
 
 ### Mixing different types of vectors
 
