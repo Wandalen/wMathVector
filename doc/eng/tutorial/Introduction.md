@@ -1,26 +1,29 @@
 # Introduction
 
-This article reviews the concept of a vector and its formats.
+This article makes overview of the concept of a vector and its formats.
 
-### Unique features
+Math algorithms should be independent of the data type or format of the vector. This module revolves around the principle.
+
+### Why?
 
 The unique features of this implementation of vector mathematics are:
 
-- Cleanliness: The module does not inject methods, does not contaminate or alter the standard interface.
-- A regular array or typed buffer could be interpreted as a vector.
-- The module uses the principles of functional programming.
+- Cleanliness: the module does not inject methods, does not contaminate or alter the standard interface.
+- Zero-copy principle: the module makes possible avoid redundant moving of memory thanks to adapter.
+- Simplicity: a regular array or typed buffer could be interpreted as a vector, no need to use special classes.
+- Usability: the readability and conciseness of the code which uses the module are as important for us as the performance of the module.
+- Flexibility: it's highly flexible, thanks to the ability to specify a vector with the help of an adapter. You can write and use your own implementation of a vector adapter.
+- Applicability: It implements the same interface for different data types and formats of specifying. The code written for the adapter looks the same as the code written for the array.
+- Functional programming: the module uses the principles of functional programming.
   - The vector is not an object, but an abstraction.
   - Implementation of vectors have no fields "x", "y", "z".
   - All mathematical functions have an implementation that expects vectors in arguments rather than in the context.
   - Аdapter is a nonmutable object.
-- The readability and conciseness of the code which uses the module are as important for us as the performance of the module.
-- It's highly flexible, thanks to the ability to specify a vector with the help of an adapter.
-- It implements the same interface for different data types and formats of specifying. The code written for the adapter looks the same as the code written for the array.
-- You can write and use your own implementation of a vector adapter.
-- The module has good test coverage and documentation.
-- Under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
-- Under the browser, it optionally uses WebGL ( not ready ).
-- The optimized build has high performance ( not ready ).
+- Reliability: the module has good test coverage.
+- Accessibility: the module has documentation.
+- Native implementation: Under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
+- GPGPU implementation: Under the browser, it optionally uses WebGL ( not ready ).
+- Performance: The optimized build has high performance ( not ready ).
 
 ### Concepts of vector and vector adapter
 
