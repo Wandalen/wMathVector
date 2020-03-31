@@ -308,7 +308,7 @@ The adapter `vector1` is created from a number. All values of vector `vector1` h
 
 The example should demonstrate the flexibility of the vector adapters.
 
-### Converting to Long type
+### Coercing to type Long
 
 Use the routine `_.avector.toLong()` to convert the adapter to the `Long` type. The routine `toLong` returns the original behind the adapter if it's possible, otherwise creates a new container of the same type as the original that filled by the content of vector.
 
