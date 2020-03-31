@@ -222,7 +222,7 @@ console.log( vector2 );
 
 Рутина `_.vectorAdapter.fromLongLrangeAndStride` створює адаптер `vector1` із зсувом `1` елемент, довжиною `3` елементи та шириною кроку `2` елементи. Додавання вектора `vector2` до вектора `vector1`.
 
-![VectorAdapterFrom.png](../../img/VectorAdapterFrom.png)
+![VectorAdapterFromRangeAndStride.png](../../img/VectorAdapterFromRangeAndStride.png)
 
 На рисунку показано як розміщено буфери `buffer1` i `buffer2` в оперативній пам'яті. Створений адаптер `vector1` використовує частину елементів буфера `buffer1` починаючи з першого елемента. Вектор має крок `2` та включає `3` елемента. Адаптер `vector2` використовує весь буфер `buffer2`, вектор складається з `3` елементів.
 

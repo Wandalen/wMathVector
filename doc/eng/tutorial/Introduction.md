@@ -222,7 +222,7 @@ console.log( vector2 );
 
 The routine `_.vectorAdapter.fromLongLrangeAndStride` creates an adapter `vector1` with an offset of `1` element, length of` 3` element and step width of `2` element. Adding vector `vector2` to vector` vector1`.
 
-![VectorAdapterFrom.png](../../img/VectorAdapterFrom.png)
+![VectorAdapterFromRangeAndStride.png](../../img/VectorAdapterFromRangeAndStride.png)
 
 The figure shows how buffers `buffer1` and` buffer2` are placed in RAM. The adapter `vector1` uses part of the elements of `buffer1` starting with the first element. The vector has step `2` and includes `3` elements. The `vector2` adapter uses the entire` buffer2` buffer, the vector consists of `3` elements.
 
