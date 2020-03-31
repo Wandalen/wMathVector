@@ -3762,7 +3762,7 @@ dop.takingArguments = [ 2, 3 ];
  * console.log( got );
  * // log 1.6666666666666
  *
- * @returns { Number } - Returns a value of probability distribution of a random variable about the  variable's mean.
+ * @returns { Number } - Returns a value of probability distribution of a random variable about the variable's mean.
  * @function momentCentralConditional
  * @throws { Error } If arguments.length is less then two or more then three.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -3791,6 +3791,18 @@ dop.takingArguments = [ 3, 4 ];
 
 //
 
+/**
+ * Routine distributionSummary() calculates a set of values that characterize the source vector {-v-}.
+ * The values: min and max values, mean, variance, standard deviation, normalized kurtosis, skewness.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ *
+ * @returns { Number } - Returns the expectation of the squared deviation of a random variable from its mean.
+ * @function distributionSummary
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function distributionSummary( v )
 {
   let result = Object.create( null );
@@ -3814,6 +3826,23 @@ dop = distributionSummary.operation = _.mapExtend( null , Routines._momentCentra
 
 //
 
+/**
+ * Routine variance() calculates the expectation of the squared deviation of a random variable from its mean.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
+ *
+ * @example
+ * var got = _.avector.variance( [ 2, -4, 2 ], 1 );
+ * console.log( got );
+ * // log 9
+ *
+ * @returns { Number } - Returns the expectation of the squared deviation of a random variable from its mean.
+ * @function variance
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function variance( v, mean )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -3826,6 +3855,25 @@ dop.input = 'vr ?s';
 dop.takingArguments = [ 1, 2 ];
 
 //
+
+/**
+ * Routine varianceConditional() calculates the expectation of the squared deviation of a random variable from its mean.
+ * The values of vector can be filtered by callback {-filter-}
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
+ * @param { Function } filter - Callback.
+ *
+ * @example
+ * var got = _.avector.varianceConditional( [ 2, -4, 2 ], 1, ( e ) => e > 0 ? e : Math.abs( e ) );
+ * console.log( got );
+ * // log 3.6666666666666
+ *
+ * @returns { Number } - Returns the expectation of the squared deviation of a random variable from its mean.
+ * @function variance
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function varianceConditional( v, mean, filter )
 {
@@ -3848,6 +3896,21 @@ dop.takingArguments = [ 2, 3 ];
 
 //
 
+/**
+ * Routine standardDeviation() calculates the dispersion of a set of values in vectors.
+ *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
+ *
+ * @example
+ * var got = _.avector.standardDeviation( [ 2, -4, 2 ] );
+ * console.log( got );
+ * // log 2.8284271247461903
+ *
+ * @returns { Number } - Returns the dispersion of a set of values.
+ * @function standardDeviation
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
 function standardDeviation()
 {
   let result = this.variance.apply( this, arguments );
@@ -3858,6 +3921,23 @@ dop = standardDeviation.operation = _.mapExtend( null , variance.operation );
 dop.input = 'vr ?s';
 
 //
+
+/**
+ * Routine standardDeviationNormalized() calculates the dispersion of a set of values in vectors divided by the mean.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
+ *
+ * @example
+ * var got = _.avector.standardDeviationNormalized( [ 2, -4, 2 ], 1 );
+ * console.log( got );
+ * // log 3
+ *
+ * @returns { Number } - Returns the dispersion of a set of values divided by the mean.
+ * @function standardDeviationNormalized
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function standardDeviationNormalized( v, mean )
 {
@@ -3875,6 +3955,23 @@ dop = standardDeviationNormalized.operation = _.mapExtend( null , variance.opera
 dop.input = 'vr ?s';
 
 //
+
+/**
+ * Routine kurtosis() calculates the "tailedness" of the probability distribution of a real-valued random variable.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
+ *
+ * @example
+ * var got = _.avector.kurtosis( [ 2, -4, 2 ], 1 );
+ * console.log( got );
+ * // log 2.580246913580247
+ *
+ * @returns { Number } - Returns the "tailedness" of the probability distribution of a real-valued random variable.
+ * @function kurtosis
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function kurtosis( v, mean )
 {
@@ -3896,6 +3993,23 @@ dop.input = 'vr ?s';
 
 /* kurtosis of normal distribution is three */
 
+/**
+ * Routine kurtosisNormalized() calculates the "tailedness" of the probability distribution of a real-valued random variable subtracted by 3.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
+ *
+ * @example
+ * var got = _.avector.kurtosisNormalized( [ 2, -4, 2 ], 1 );
+ * console.log( got );
+ * // log -0.4197530864197532
+ *
+ * @returns { Number } - Returns normalized "tailedness" of the probability distribution of a real-valued random variable.
+ * @function kurtosisNormalized
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
+
+
 function kurtosisNormalized( v, mean )
 {
   let result = this.kurtosis.apply( this, arguments );
@@ -3906,6 +4020,24 @@ dop = kurtosisNormalized.operation = _.mapExtend( null , variance.operation );
 dop.input = 'vr ?s';
 
 //
+
+/**
+ * Routine skewness() calculates the asymmetry of the probability distribution of a real-valued random variable about the mean.
+ * If {-mean-} is undefined, then it calculates from source vector {-v-}.
+ *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
+ *
+ * @example
+ * var got = _.avector.skewness( [ 2, -4, 2 ], 1 );
+ * console.log( got );
+ * // log -0.5925925925925926
+ *
+ * @returns { Number } - Returns the asymmetry of the probability distribution.
+ * @function skewness
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+*/
 
 function skewness( v, mean )
 {
