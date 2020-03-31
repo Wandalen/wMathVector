@@ -7,24 +7,24 @@ Collection of functions for vector math. `MathVector` introduces missing in Java
 
 Math algorithms should be independent of the data type or format of the vector. This module revolves around the principle.
 
-The unique features of this implementation of vector mathematics are:
+Features of this implementation of vector mathematics are:
 
-- Cleanliness: the module does not inject methods, does not contaminate or alter the standard interface.
-- Zero-copy principle: the module makes it possible to avoid redundant moving of memory thanks to the concept of the adapter.
-- Simplicity: a regular array or typed buffer could be interpreted as a vector, no need to use special classes.
-- Usability: the readability and conciseness of the code which uses the module are as important for us as the performance of the module.
-- Flexibility: it's highly flexible, thanks to the ability to specify a vector with the help of an adapter. You can write and use your own implementation of a vector adapter.
-- Applicability: it implements the same interface for different data types and formats of specifying. The code written for the adapter looks the same as the code written for the array.
-- Reliability: the module has good test coverage.
-- Accessibility: the module has documentation.
-- Functional programming principles: the module uses the principles of functional programming.
+- **Cleanliness**: the module does not inject methods, does not contaminate or alter the standard interface.
+- **Zero-copy principle**: the module makes it possible to avoid redundant moving of memory thanks to the concept of the adapter.
+- **Simplicity**: a regular array or typed buffer could be interpreted as a vector, no need to use special classes.
+- **Usability**: the readability and conciseness of the code which uses the module are as important for us as the performance of the module.
+- **Flexibility**: it's highly flexible, thanks to the ability to specify a vector with the help of an adapter. You can write and use your own implementation of a vector adapter.
+- **Applicability**: it implements the same interface for different data types and formats of specifying. The code written for the adapter looks the same as the code written for the array.
+- **Reliability**: the module has good test coverage.
+- **Accessibility**: the module has documentation.
+- **Functional programming principles**: the module uses the principles of functional programming.
   - The vector is not an object, but an abstraction.
   - Implementation of vectors have no fields "x", "y", "z".
   - All mathematical functions have an implementation that expects vectors in arguments rather than in the context.
   - Аdapter is a nonmutable object.
-- Native implementation: under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
-- GPGPU implementation: under the browser, it optionally uses WebGL ( not ready ).
-- Performance: the optimized build has high performance ( not ready ).
+- **Native implementation**: under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
+- **GPGPU** implementation: under the browser, it optionally uses WebGL ( not ready ).
+- **Performance**: the optimized build has high performance ( not ready ).
 
 ### Concepts of vector and vector adapter
 
@@ -32,7 +32,7 @@ The vector in this module means an ordered set of scalars. The vector is not an 
 
 Vector adapter is an implementation of the abstract interface, a kind of link that defines how to interpret data as the vector. The interface of the adapter has many implementations.
 
-### The formats of vector specifying
+### Formats of vector specifying
 
 The vector can be defined by
 
@@ -196,7 +196,7 @@ console.log( vector2 );
 
 When creating the adapter `vector1` from the buffer` buffer1`, we pass the offset `1` element and specify that the vector has length `3` elements. The entire second buffer is interpreted as a vector. The result of the add operation is written to the vector `vector1`. Since the adapter was created from elements 1 - 3 of the buffer `buffer1`, values of all elements outside this range remained unchanged.
 
-![VectorAdapterFromRange.png](../../img/VectorAdapterFromRange.png)
+![VectorAdapterFromRange.png](./doc/img/VectorAdapterFromRange.png)
 
 The diagram explains the logic of interpreting part of a buffer as a vector. Created adapter `vector1` uses `3` elements of buffer `buffer1`, not starting from the first one. Adapter `vector2` uses the whole buffer `buffer2` and has length `3` elements too.
 
@@ -240,7 +240,7 @@ console.log( vector2 );
 
 The routine `_.vectorAdapter.fromLongLrangeAndStride` creates an adapter `vector1` with an offset of `1` element, `3` elements length and stride `2` elements. Then adding vector `vector2` to vector `vector1`.
 
-![VectorAdapterFromRangeAndStride.png](../../img/VectorAdapterFromRangeAndStride.png)
+![VectorAdapterFromRangeAndStride.png](./doc/img/VectorAdapterFromRangeAndStride.png)
 
 The diagram explains the logic of interpreting part of a buffer as a vector with the help of an option stride. Created adapter `vector1` uses `3` elements of buffer `buffer1` next but one. The adapter of the vector has stride `2` elements and length `3` elements. Adapter `vector2` uses the whole buffer `buffer2` and has length `3` elements too.
 

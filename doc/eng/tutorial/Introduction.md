@@ -6,24 +6,24 @@ This article makes overview of the concept of a vector and its formats.
 
 Math algorithms should be independent of the data type or format of the vector. This module revolves around the principle.
 
-The unique features of this implementation of vector mathematics are:
+Features of this implementation of vector mathematics are:
 
-- Cleanliness: the module does not inject methods, does not contaminate or alter the standard interface.
-- Zero-copy principle: the module makes it possible to avoid redundant moving of memory thanks to the concept of the adapter.
-- Simplicity: a regular array or typed buffer could be interpreted as a vector, no need to use special classes.
-- Usability: the readability and conciseness of the code which uses the module are as important for us as the performance of the module.
-- Flexibility: it's highly flexible, thanks to the ability to specify a vector with the help of an adapter. You can write and use your own implementation of a vector adapter.
-- Applicability: it implements the same interface for different data types and formats of specifying. The code written for the adapter looks the same as the code written for the array.
-- Reliability: the module has good test coverage.
-- Accessibility: the module has documentation.
-- Functional programming principles: the module uses the principles of functional programming.
+- **Cleanliness**: the module does not inject methods, does not contaminate or alter the standard interface.
+- **Zero-copy principle**: the module makes it possible to avoid redundant moving of memory thanks to the concept of the adapter.
+- **Simplicity**: a regular array or typed buffer could be interpreted as a vector, no need to use special classes.
+- **Usability**: the readability and conciseness of the code which uses the module are as important for us as the performance of the module.
+- **Flexibility**: it's highly flexible, thanks to the ability to specify a vector with the help of an adapter. You can write and use your own implementation of a vector adapter.
+- **Applicability**: it implements the same interface for different data types and formats of specifying. The code written for the adapter looks the same as the code written for the array.
+- **Reliability**: the module has good test coverage.
+- **Accessibility**: the module has documentation.
+- **Functional programming principles**: the module uses the principles of functional programming.
   - The vector is not an object, but an abstraction.
   - Implementation of vectors have no fields "x", "y", "z".
   - All mathematical functions have an implementation that expects vectors in arguments rather than in the context.
   - Аdapter is a nonmutable object.
-- Native implementation: under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
-- GPGPU implementation: under the browser, it optionally uses WebGL ( not ready ).
-- Performance: the optimized build has high performance ( not ready ).
+- **Native implementation**: under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
+- **GPGPU** implementation: under the browser, it optionally uses WebGL ( not ready ).
+- **Performance**: the optimized build has high performance ( not ready ).
 
 ### Concepts of vector and vector adapter
 
@@ -31,7 +31,7 @@ The vector in this module means an ordered set of scalars. The vector is not an 
 
 Vector adapter is an implementation of the abstract interface, a kind of link that defines how to interpret data as the vector. The interface of the adapter has many implementations.
 
-### The formats of vector specifying
+### Formats of vector specifying
 
 The vector can be defined by
 
