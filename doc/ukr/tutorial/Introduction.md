@@ -5,20 +5,38 @@
 Унікальними особливостями реалізації математики над векторами цього модуля є:
 
 - Чистота: модуль не здійснює інжекцію методів, не забруднює і не змінює стандатрний інтерфейс.
+- Принцип zero-copy: модуль робить можливим уникнути зайвих пересувань пам'яті.
 - Як вектор може інтерпретуватися звичайний масивом або типізованим буфером.
-- Модуль використовує принципи функціонального програмування.
-  - Вектор є не об'єктом, а абстракцією.
-  - Реалізації векторів не мають полів "x", "y", "z".
-  - Всі математичні функції мають реалізацію, що приймає вектори в якості аргументів, а не контексту.
-  - Адаптер - незмінюваний ( nonmutable ) об'єкт.
 - Читабельність та лаконічність коду, що використовує цей модул, є так само важливою для нас, як швидкодійність цього модуля.
 - Володіє великою гнучкістю завдяки можливості задати вектор через адаптер.
 - Реалізує один і той самий інтерфейс для різним типів даних і форматів їх задання. Код написаний для адаптера не відрізняється від коду написаного для масиву.
 - Ви можете написати і використовувати вашу власну реалізацію вектор адаптерів.
 - Має хороше тестове покриття та документацію.
+- Функціональне програмування: модуль використовує принципи функціонального програмування.
+  - Вектор є не об'єктом, а абстракцією.
+  - Реалізації векторів не мають полів "x", "y", "z".
+  - Всі математичні функції мають реалізацію, що приймає вектори в якості аргументів, а не контексту.
+  - Адаптер - незмінюваний ( nonmutable ) об'єкт.
 - Під NodeJS опціонально використовує зв'язку із нативною реалізацією [BLAS-like](https://github.com/flame/blis) бібліотеки ( не готово ).
 - Під браузером опціонально використовує WebGL.
 - В оптимізованій збірці має високу швидкодійність ( не готово ).
+
+- Cleanliness: the module does not inject methods, does not contaminate or alter the standard interface.
+- Zero-copy principle: the module makes possible avoid redundant moving of memory thanks to adapter.
+- Simplicity: a regular array or typed buffer could be interpreted as a vector, no need to use special classes.
+- Usability: the readability and conciseness of the code which uses the module are as important for us as the performance of the module.
+- Flexibility: it's highly flexible, thanks to the ability to specify a vector with the help of an adapter. You can write and use your own implementation of a vector adapter.
+- Applicability: It implements the same interface for different data types and formats of specifying. The code written for the adapter looks the same as the code written for the array.
+- Functional programming: the module uses the principles of functional programming.
+  - The vector is not an object, but an abstraction.
+  - Implementation of vectors have no fields "x", "y", "z".
+  - All mathematical functions have an implementation that expects vectors in arguments rather than in the context.
+  - Аdapter is a nonmutable object.
+- Reliability: the module has good test coverage.
+- Accessibility: the module has documentation.
+- Native implementation: Under the NodeJS, it optionally uses binding to the native implementation of [BLAS-like](https://github.com/flame/blis) libraries ( not ready ).
+- GPGPU implementation: Under the browser, it optionally uses WebGL ( not ready ).
+- Performance: The optimized build has high performance ( not ready ).
 
 ### Концепція вектор та вектора адаптера
 
