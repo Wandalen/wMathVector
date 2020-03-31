@@ -2701,13 +2701,14 @@ function _distributionRangeSummaryBegin( o )
  * If current value is lower then lowest value in map {-o-}, then routine replace value in map {-o-}.
  *
  * @param { MapLike } o - Map.
+ *
  * @example
  * var got = _.avector._distributionRangeSummaryEach( o );
  * console.log( got );
  * // log {
  * //       result : {
  * //                   element : 3,
- * //                   container : [ 1, 2, 3 ];
+ * //                   container : [ 1, 2, 3 ],
  * //                   min : { value : 1, index : 0, container : [ 1, 2, 3 ] },
  * //                   max : { value : 3, index : 2, container : [ 1, 2, 3 ] },
  * //                }
@@ -2743,16 +2744,17 @@ function _distributionRangeSummaryEach( o )
  * Routine _distributionRangeSummaryEnd() finds median of lowest and biggest value in map {-o-}.
  *
  * @param { MapLike } o - Map.
- * @param { MapLike } o - Map.
+ *
  * @example
  * var got = _.avector._distributionRangeSummaryEnd( o );
  * console.log( got );
  * // log {
  * //       result : {
  * //                   element : 3,
- * //                   container : [ 1, 2, 3 ];
+ * //                   container : [ 1, 2, 3 ],
  * //                   min : { value : 1, index : 0, container : [ 1, 2, 3 ] },
  * //                   max : { value : 3, index : 2, container : [ 1, 2, 3 ] },
+ * //                   median : 2
  * //                }
  * //  }
  *
@@ -2775,6 +2777,20 @@ function _distributionRangeSummaryEnd( o )
  * Routine distributionRangeSummary() finds the biggest and the lowest values in source vector {-src-} and the median between them.
  *
  * @param { Long|VectorAdapter } src - Source vector.
+ *
+ * @param { MapLike } o - Map.
+ * @example
+ * var got = _.avector.distributionRangeSummary( [ 1, 2, 3 ] );
+ * console.log( got );
+ * // log {
+ * //       result : {
+ * //                   element : 3,
+ * //                   container : [ 1, 2, 3 ],
+ * //                   min : { value : 1, index : 0, container : [ 1, 2, 3 ] },
+ * //                   max : { value : 3, index : 2, container : [ 1, 2, 3 ] },
+ * //                   median : 2
+ * //                }
+ * //  }
  *
  * @returns { Map } - Returns map that contains data with biggest, lowest values and median between them.
  * @function distributionRangeSummary
@@ -2801,6 +2817,11 @@ _.assert( distributionRangeSummary.trivial.operation.reducing );
  * Routine reduceToMinValue() returns the minimal value in passed vectors.
  *
  * @param { Long|VectorAdapter } srcs - Source vectors.
+ *
+ * @example
+ * var got = _.avector.reduceToMinValue( [ 1, -4, 2 ] );
+ * console.log( got );
+ * // log -4
  *
  * @returns { Number } - Returns minimal value in arguments.
  * @function reduceToMinValue
@@ -2834,6 +2855,11 @@ dop.modifying = false;
  *
  * @param { Long|VectorAdapter } srcs - Source vectors.
  *
+ * @example
+ * var got = _.avector.reduceToMaxValue( [ 1, -4, 2 ] );
+ * console.log( got );
+ * // log 2
+ *
  * @returns { Number } - Returns maximal value of source vector.
  * @function reduceToMaxValue
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -2862,6 +2888,11 @@ dop.modifying = false;
  * Routine distributionRangeSummaryValue() finds the biggest and the lowest values in passed vectors.
  *
  * @param { Long|VectorAdapter } srcs - Source vectors.
+ *
+ * @example
+ * var got = _.avector.distributionRangeSummaryValue( [ 1, -4, 2, -1 ] );
+ * console.log( got );
+ * // log [ -4, 2 ]
  *
  * @returns { Array } - Returns array with lowest biggest value in passed vectors.
  * @function distributionRangeSummaryValue
@@ -2939,6 +2970,11 @@ dop.modifying = false;
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Function } onEach - Callback. Applies element, index and source vector.
  *
+ * @example
+ * var got = _.avector.all( [ 1, -4, 2 ], ( e ) => e );
+ * console.log( got );
+ * // log true
+ *
  * @returns { Boolean|BoolLike } - Returns true if for each element of source vector callback returns defined value. Otherwise, it returns value.
  * @function all
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -3000,6 +3036,11 @@ dop.modifying = false;
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Function } onEach - Callback. Applies element, index and source vector.
  *
+ * @example
+ * var got = _.avector.any( [ 0, 0, 0 ], ( e ) => e );
+ * console.log( got );
+ * // log 0
+ *
  * @returns { Boolean|BoolLike } - If result of callback is defined value, returns it values. Otherwise, returns false.
  * @function any
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -3057,6 +3098,11 @@ dop.modifying = false;
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Function } onEach - Callback. Applies element, index and source vector.
+ *
+ * @example
+ * var got = _.avector.none( [ 0, 0, 0 ], ( e ) => e );
+ * console.log( got );
+ * // log true
  *
  * @returns { Boolean|BoolLike } - If result of callback is defined value, returns it reversed boolean value. Otherwise, returns true.
  * @function any
@@ -3116,6 +3162,11 @@ dop.modifying = false;
  * Routine _equalAre() checks that two vectors {-it.src-} and {-it.src2-} are equivalent.
  *
  * @param { Map } it - Options map.
+ *
+ * @example
+ * var got = _.avector._equalAre( { src : [ 1, -4, 2 ], src1 : [ 1, -4.0000001, 2 ], strictTyping : 1, containing : 1 } );
+ * console.log( got );
+ * // log true
  *
  * @returns { Boolean|BoolLike } - If vectors {-it.src-} and {-it.src2-} are equivalent, returns true. Otherwise, returns false.
  * @function _equalAre
@@ -3199,6 +3250,11 @@ dop.homogeneous = true;
  * @param { Long|VectorAdapter } src2 - Second vector.
  * @param { Map } opts - Options map.
  *
+ * @example
+ * var got = _.avector.equalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 1 } );
+ * console.log( got );
+ * // log true
+ *
  * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
  * @function equalAre
  * @throws { Error } If arguments.length is less or more then one.
@@ -3248,6 +3304,11 @@ dop.homogeneous = true;
  * @param { Long|VectorAdapter } src2 - Second vector.
  * @param { Map } iterator - Options map.
  *
+ * @example
+ * var got = _.avector.identicalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 1 } );
+ * console.log( got );
+ * // log false
+ *
  * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are identical, returns true. Otherwise, returns false.
  * @function identicalAre
  * @throws { Error } If arguments.length is less or more then one.
@@ -3292,6 +3353,11 @@ dop.homogeneous = true;
  * @param { Long|VectorAdapter } src1 - First vector.
  * @param { Long|VectorAdapter } src2 - Second vector.
  * @param { Map } iterator - Options map.
+ *
+ * @example
+ * var got = _.avector.equivalentAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 1 } );
+ * console.log( got );
+ * // log true
  *
  * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
  * @function equivalentAre
@@ -3338,6 +3404,11 @@ dop.homogeneous = true;
  * @param { Long|VectorAdapter } src2 - Second vector.
  * @param { Number } accuracy - Accuracy of comparison.
  *
+ * @example
+ * var got = _.avector.areParallel( [ 1, -4, 2 ], [ 2, -8, 4 ] );
+ * console.log( got );
+ * // log true
+ *
  * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are parallel, returns true. Otherwise, returns false.
  * @function areParallel
  * @throws { Error } If src1.length and src2.length are different.
@@ -3346,7 +3417,7 @@ dop.homogeneous = true;
 */
 
 /* aaa : good coverage required */
-/* Dmytro : covered */
+/* Dmytro : covered, name of routine use not common naming pattern */
 
 function areParallel( src1, src2, accuracy )
 {
@@ -3423,6 +3494,11 @@ meta._routinesDeclare();
  *
  * @param { Long|VectorAdapter } v - Source vector.
  *
+ * @example
+ * var got = _.avector.mag( [ 1, -4, 2, 2 ] );
+ * console.log( got );
+ * // log 5
+ *
  * @returns { Number } - Returns square root from sum of squares of source vector elements.
  * @function mag
  * @throws { Error } If arguments.length is less or more then one.
@@ -3448,6 +3524,11 @@ dop.takingVectors = [ 1, 1 ];
  * Routine magSqr() calculates sum of squares of vector {-v-} elements.
  *
  * @param { Long|VectorAdapter } v - Source vector.
+ *
+ * @example
+ * var got = _.avector.magSqr( [ 1, -4, 2, 2 ] );
+ * console.log( got );
+ * // log 25
  *
  * @returns { Number } - Returns sum of squares of source vector elements.
  * @function magSqr
@@ -3480,6 +3561,11 @@ dop.takingVectors = [ 1, 1 ];
  *
  * @param { VectorAdapter } dst - Source vector.
  * @param { VectorAdapter } src - Source vector.
+ *
+ * @example
+ * var got = _.avector.dot( [ 1, -4, 2 ], [ 2, 3, 2 ] );
+ * console.log( got );
+ * // log 6
  *
  * @returns { Number } - Returns sum of multiplication of vectors {-dst-} and {-src-}.
  * @function dot
@@ -3528,12 +3614,16 @@ dop.modifying = false;
  * @param { Long|VectorAdapter } src1 - Source vector.
  * @param { Long|VectorAdapter } src2 - Source vector.
  *
+ * @example
+ * var got = _.avector.distance( [ 1, -4, 2 ], [ 2, 3, 2 ] );
+ * console.log( got );
+ * // log 7.0710678118654755
+ *
  * @returns { Number } - Returns square root from sum of squares of substruction vectors {-src1-} and {-src2-}.
  * @function distance
  * @throws { Error } If src1.length and src2.length are not equivalent.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 */
-
 
 function distance( src1, src2 )
 {
@@ -3559,12 +3649,16 @@ dop.modifying = false;
  * @param { Long|VectorAdapter } src1 - Source vector.
  * @param { Long|VectorAdapter } src2 - Source vector.
  *
+ * @example
+ * var got = _.avector.distanceSqr( [ 1, -4, 2 ], [ 2, 3, 2 ] );
+ * console.log( got );
+ * // log 50
+ *
  * @returns { Number } - Returns sum of squares of substruction vectors {-src1-} and {-src2-}.
  * @function distanceSqr
  * @throws { Error } If src1.length and src2.length are not equivalent.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
 */
-
 
 function distanceSqr( src1, src2 )
 {
@@ -3597,6 +3691,11 @@ dop.modifying = false;
  *
  * @param { Long|VectorAdapter } v - Source vector.
  *
+ * @example
+ * var got = _.avector.median( [ 1, -4, 2 ] );
+ * console.log( got );
+ * // log -1
+ *
  * @returns { Number } - Returns median of source vector.
  * @function median
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -3621,6 +3720,11 @@ dop = median.operation = _.mapExtend( null , distributionRangeSummary.trivial.op
  * @param { Long|VectorAdapter } v - Source vector.
  * @param { Number } degree - Degree of moment.
  * @param { Number } mean - Mean of value.
+ *
+ * @example
+ * var got = _.avector.momentCentral( [ 2, -4, 2 ], 1, 1 );
+ * console.log( got );
+ * // log -1
  *
  * @returns { Number } - Returns a value of probability distribution of a random variable about the variable's mean.
  * @function momentCentral
@@ -3652,6 +3756,11 @@ dop.takingArguments = [ 2, 3 ];
  * @param { Number } degree - Degree of moment.
  * @param { Number } mean - Mean of value.
  * @param { Function } filter - Callback.
+ *
+ * @example
+ * var got = _.avector.momentCentralConditional( [ 2, -4, 2 ], 1, 1, ( e ) => e > 0 ? e : Math.abs( e ) );
+ * console.log( got );
+ * // log 1.6666666666666
  *
  * @returns { Number } - Returns a value of probability distribution of a random variable about the  variable's mean.
  * @function momentCentralConditional
