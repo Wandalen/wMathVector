@@ -105,18 +105,20 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 //
 
 /**
-* @summary Creates vector of length `length` from value of `number`.
-* @param {Number|Array} number Source number, vector or array.
-* @param {Number} length Length of new vector.
-*
-* @example
-* var vec = wTools.vector.fromNumber( 3, 1 );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
-*
-* @function fromNumber
-* @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
+ * Routine fromNumber() creates vector of length `length` from value of `number`.
+ *
+ * @param { Number } number - Source number.
+ * @param { Number } length - Length of new vector.
+ *
+ * @example
+ * var got = wTools.vector.fromNumber( 3, 2 );
+ * console.log( vec.toStr() );
+ * // log "3.000, 3.000"
+ *
+ * @returns { VectorAdapter } - Returns new VectorAdapter instance.
+ * @function fromNumber
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function fromNumber( number, length )
 {
@@ -150,18 +152,21 @@ function fromNumber( number, length )
 //
 
 /**
-* @summary Creates vector of length `length` from value of `number`.
-* @param {Number|Array} number Source number, vector or array.
-* @param {Number} length Length of new vector.
-*
-* @example
-* var vec = wTools.vector.fromMaybeNumber( 3, 1 );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
-*
-* @function fromMaybeNumber
-* @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
+ * Routine fromMaybeNumber() creates vector of length `length` from value of `number`.
+ * Also, routine can make new vector from Long or VectorAdapter.
+ *
+ * @param { Number|Long|VectorAdapter } number - Source number, vector or array.
+ * @param { Number } length - Length of new vector.
+ *
+ * @example
+ * var got = wTools.vector.fromMaybeNumber( 3, 2 );
+ * console.log( vec.toStr() );
+ * // log "3.000, 3.000"
+ *
+ * @returns { VectorAdapter } - Returns new VectorAdapter instance.
+ * @function fromMaybeNumber
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function fromMaybeNumber( number, length )
 {
