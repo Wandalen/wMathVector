@@ -13,6 +13,25 @@ let Self = function VectorAdapterFromLong(){};
 
 //
 
+/**
+ * Routine _review() makes new instance of VectorAdapter from original of current adapter in defined range {-crange-}.
+ *
+ * @param { Range } crange - Defines ranges for creating adapter.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( [ 1, 2, 3, 4, 5 ] );
+ * var got = src._review( [ 1, 3 ] );
+ * console.log( got.toStr() );
+ * // log "2.000, 3.000, 4.000"
+ *
+ * @returns { VectorAdapter } - Returns instance of adapter with part of original Long.
+ * @throws { Error } If routine calls by not VectorAdapter instance.
+ * @throws { Error } If {-crange[ 0 ]-} is less then 0.
+ * @throws { Error } If {-crange[ 1 ]-} is  then 0.
+ * @throws { Error } If substruction of {-crange[ 1 ]-} and {-crange[ 0 ]-} is less then 0.
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 function _review( crange )
 {
   let offset = crange[ 0 ];
@@ -25,6 +44,23 @@ function _review( crange )
 
 //
 
+/**
+ * Routine _toLong() returns original Long of current adapter.
+ *
+ * @example
+ * var srcLong = [ 1, 2, 3 ];
+ * var src = _.vectorAdapter.fromLong( srcLong );
+ * var got = src._toLong();
+ * console.log( got );
+ * // log [ 1, 2, 3 ];
+ * console.log( got === srcLong );
+ * // log true
+ *
+ * @returns { Long } - Returns original Long of the adapter.
+ * @function _toLong
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 function _toLong()
 {
   let result;
@@ -33,6 +69,21 @@ function _toLong()
 }
 
 //
+
+/**
+ * Routine _bufferConstructorGet() returns constructor of original Long of current adapter.
+ *
+ * @example
+ * var src = _.vectorAdapter.fromLong( [ 1, 2, 3 ] );
+ * var got = src._bufferConstructorGet();
+ * console.log( got );
+ * // log [function Array];
+ *
+ * @returns { Long } - Returns constructor of original Long.
+ * @function _bufferConstructorGet
+ * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 
 function _bufferConstructorGet()
 {
