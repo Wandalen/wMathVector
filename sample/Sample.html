@@ -1,17 +1,170 @@
 
 <!DOCTYPE html>
 <html>
- <head>
-  <meta charset="UTF-8" />
-  <title>
-   wTools unit test
-  </title>
-  <script src="./node_modules/wTools/staging/Base.s">
-  </script>
-  <script src="./Sample1.js">
-  </script>
- </head>
- <body>
- </body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      wTools unit test
+    </title>
+
+      <!--
+      <script>
+      if(_global_ === undefined)
+      {
+        var _global_ = window;
+      }
+      </script>
+      -->
+
+      <!-- Tools -->
+
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l1/Predefined.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l2/Setup.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iArray.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iBool.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iBuffer.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iContainer.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iCt.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iEntity.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iErr.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iFunctional.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iIntrospector.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iLong.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iMap.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iModule.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iNumber.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iProcess.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iRange.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iRegexp.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iRoutine.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iSet.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iStr.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iTime.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iType.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l3/iUnroll.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fArray.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fBool.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fBuffer.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fContainer.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fCt.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fEntity.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fErr.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fEvent.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fFunctional.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fIntrospector.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fLong.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fMap.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fModule.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fNumber.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fPath.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fProcess.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fRange.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fRangeOld.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fRegexp.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fRoutine.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fSorted.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fSet.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fStr.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fTime.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l5/fUnroll.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l6/ContainerAdapter.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l6/LongDescriptor.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l7/Compose.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l7/ContainerAdapterArray.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l7/ContainerAdapterSet.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l7/Field.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l7/LongContext.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gArray.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gBool.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gBuffer.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gContainer.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gCt.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gEntity.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gErr.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gFunctional.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gIntrospector.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gLong.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gMap.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gModule.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gNumber.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gPair.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gProcess.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gRange.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gRegexp.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gRoutine.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gSet.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gStr.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l8/gTime.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l0/l9/Setup.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l1/ModulesRegistry.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l1/NameTools.s"></script>
+      <script src="../node_modules/wTools/proto/dwtools/abase/l1/StrBasic.s"></script>
+
+      <!-- Blueprint -->
+
+      <script src="../node_modules/wblueprint/proto/dwtools/abase/l2_blueprint/l1/Definition.s"></script>
+      <script src="../node_modules/wblueprint/proto/dwtools/abase/l2_blueprint/l1/Proto.s"></script>
+      <script src="../node_modules/wblueprint/proto/dwtools/abase/l2_blueprint/l3/Blueprint.s"></script>
+      <script src="../node_modules/wblueprint/proto/dwtools/abase/l2_blueprint/l3/Construction.s"></script>
+      <script src="../node_modules/wblueprint/proto/dwtools/abase/l2_blueprint/l3/Trait.s"></script>
+
+      <!-- Proto -->
+
+      <script src="../node_modules/wProto/proto/dwtools/abase/l3_proto/l1/Define.s"></script>
+      <script src="../node_modules/wProto/proto/dwtools/abase/l3_proto/l1/Proto.s"></script>
+      <script src="../node_modules/wProto/proto/dwtools/abase/l3_proto/l1/Workpiece.s"></script>
+      <script src="../node_modules/wProto/proto/dwtools/abase/l3_proto/l5/Accessor.s"></script>
+      <script src="../node_modules/wProto/proto/dwtools/abase/l3_proto/l5/Class.s"></script>
+      <script src="../node_modules/wProto/proto/dwtools/abase/l3_proto/l5/Like.s"></script>
+
+      <!-- Looker -->
+
+      <script src="../node_modules/wlooker/proto/dwtools/abase/l2/Looker.s"></script>
+
+      <!-- Replicator -->
+
+      <script src="../node_modules/wreplicator/proto/dwtools/abase/l4/Replicator.s"></script>
+
+      <!-- PathTools -->
+
+      <script src="../node_modules/wpathtools/proto/dwtools/abase/l5/Glob.s"></script>
+      <script src="../node_modules/wpathtools/proto/dwtools/abase/l5/PathTools.s"></script>
+
+      <!-- Selector -->
+
+      <script src="../node_modules/wselector/proto/dwtools/abase/l5/Selector.s"></script>
+
+      <!-- Equaler -->
+
+      <script src="../node_modules/wequaler/proto/dwtools/abase/l6/Equaler.s"></script>
+
+      <!-- MathScalar -->
+
+      <script src="../node_modules/wmathscalar/proto/dwtools/amath/l1/Scalar.s"></script>
+
+      <!-- MathVector -->
+
+      <script src="../proto/dwtools/amath/l3_vector/l1/Namespaces.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l2/AdapterMake.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l2/LongMake.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l2/OperationDescriptor.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l3/LongMeta.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l3/OperationMeta.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l3/RoutineMeta.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l3_from/Long.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l3_from/LongShrinked.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l3_from/LongShrinkedWithStride.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l3_from/Number.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l4/Operations.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l5/Routines.s"></script>
+      <script src="../proto/dwtools/amath/l3_vector/l8/AdapterClass.s"></script>
+
+      <!-- main script -->
+
+      <script src="./Sample.js"></script>
+
+  </head>
+  <body>
+  </body>
 </html>
 
