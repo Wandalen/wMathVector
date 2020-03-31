@@ -129,7 +129,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 *
 * @example
 * var srcLong = [ 1, 2, 3 ];
-* var got = wTools.vector.fromLong( srcLong );
+* var got = _.vectorAdapter.fromLong( srcLong );
 * console.log( got.toStr() );
 * // log "1.000, 2.000, 3.000"
 *

@@ -24,7 +24,7 @@ let Self = function VectorAdapterFromLongShrinked(){};
  * console.log( got.toStr() );
  * // log "3.000, 4.000, 5.000"
  *
- * @returns { VectorAdapter } - Returns instance of adapter with part of vector.
+ * @returns { VectorAdapter } - Returns instance of VectorAdapter with part of vector.
  * @throws { Error } If routine calls by not VectorAdapter instance.
  * @throws { Error } If {-crange[ 0 ]-} is less then 0.
  * @throws { Error } If {-crange[ 1 ]-} is more then vector length.
@@ -131,20 +131,21 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 //
 
 /**
-* @summary Creates vector from part of source array `srcLong`.
-* @param {Array} srcLong Source array.
-* @param {Array} offset Offset to sub array in source array `srcLong`.
-* @param {Array} length Length of new vector.
-*
-* @example
-* var srcLong = [ 1, 2, 3 ];
-* var vec = wTools.vector.fromLongLrange( srcLong, 0, 2 );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
-*
-* @function fromLongLrange
-* @memberof module:Tools/math/Vector.wTools.vectorAdapter
-*/
+ * Routine fromLongLrange() creates vector from part of source Long `srcLong`.
+ *
+ * @param { Long|VectorAdapter } srcLong - Source Long or vector.
+ * @param { Number } offset - Offset in source Long.
+ * @param { Number } length - Length of new vector.
+ *
+ * @example
+ * var srcLong = [ 1, 2, 3 ];
+ * var got = _.vectorAdapter.fromLongLrange( srcLong, 0, 2 );
+ * console.log( got.toStr() );
+ *
+ * @returns { VectorAdapter } - Returns new VectorAdapter from part of source Long.
+ * @function fromLongLrange
+ * @memberof module:Tools/math/Vector.wTools.vectorAdapter
+ */
 
 function fromLongLrange( srcLong, offset, length )
 {

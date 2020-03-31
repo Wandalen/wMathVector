@@ -112,7 +112,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
  *
  * @example
  * var got = wTools.vector.fromNumber( 3, 2 );
- * console.log( vec.toStr() );
+ * console.log( got.toStr() );
  * // log "3.000, 3.000"
  *
  * @returns { VectorAdapter } - Returns new VectorAdapter instance.
@@ -159,8 +159,8 @@ function fromNumber( number, length )
  * @param { Number } length - Length of new vector.
  *
  * @example
- * var got = wTools.vector.fromMaybeNumber( 3, 2 );
- * console.log( vec.toStr() );
+ * var got = _.vectorAdapter.fromMaybeNumber( 3, 2 );
+ * console.log( got.toStr() );
  * // log "3.000, 3.000"
  *
  * @returns { VectorAdapter } - Returns new VectorAdapter instance.
