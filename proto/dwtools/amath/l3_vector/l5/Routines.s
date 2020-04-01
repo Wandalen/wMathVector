@@ -37,15 +37,14 @@ _.assert( _.objectIs( operations ) );
  * If arguments.length is more then two, then routine assigns elements of pseudo array {-arguments-} to the vector {-dst-}.
  * The assigning starts from the index 1.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { * } ... - Source vector. If arguments.length is 2, then source vector is second argument.
- * Otherwise, the source vector is copy of arguments starting from index 1.
- *
  * @example
  * var got = _.avector.assign( [ 1, 2, 3 ], 0 );
  * console.log( got );
  * // log [ 0, 0, 0 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { * } ... - Source vector. If arguments.length is 2, then source vector is second argument.
+ * Otherwise, the source vector is copy of arguments starting from index 1.
  * @returns { Long|VectorAdapter } - Returns original {-dst-} vector filled by values from source vector.
  * @function assign
  * @throws { Error } If length of {-src-} and {-dst-} vectors are different.
@@ -104,14 +103,13 @@ dop.modifying = true;
 /**
  * Routine assignVector() assigns the values of source vector {-src-} to the destination vector {-dst-}.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.assignVector( [ 1, 2, 3 ], [ 0, 1, 0 ] );
  * console.log( got );
  * // log [ 0, 1, 0 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns original {-dst-} vector filled by values from source vector.
  * @function assignVector
  * @throws { Error } If {-dst-} or {-src-} are not vectors.
@@ -153,8 +151,6 @@ dop.special = true;
 /**
  * Routine clone() makes copy of source vector {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var src = _.avector.make( [ 1, 2, 3 ] )
  * var got = _.avector.clone( src );
@@ -163,6 +159,7 @@ dop.special = true;
  * console.log( got === src );
  * // log false
  *
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns copy of source vector.
  * @function clone
  * @throws { Error } If arguments.length is less or more then one.
@@ -199,14 +196,13 @@ dop.special = true;
 /**
  * Routine makeSimilar() makes new instance of vector {-src-} with length defined by argument {-length-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Number } length - Length of returned vector. If {-length-} is not defined, then routine makes vector with src.length.
- *
  * @example
  * var got = _.avector.makeSimilar( [ 1, 2, 3 ], 2 );
  * console.log( got );
  * // log [ undefined, undefined ];
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Number } length - Length of returned vector. If {-length-} is not defined, then routine makes vector with src.length.
  * @returns { Long|VectorAdapter } - Returns instance of source vector with defined length.
  * @function makeSimilar
  * @throws { Error } If arguments.length is less then one or more then two.
@@ -275,15 +271,14 @@ dop.special = true;
 /**
  * Routine slice() makes slice copy of part of vector {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Number } first - Start index. If {-first-} is not defined, then copying starts from index 0.
- * @param { Number } last - End index (included). If {-last-} is not defined, then copying ends on last index of {-src-}.
- *
  * @example
  * var got = _.avector.slice( [ 1, 2, 3, 4, 5 ], 1, 3 );
  * console.log( got );
  * // log [ 2, 3, 4 ];
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Number } first - Start index. If {-first-} is not defined, then copying starts from index 0.
+ * @param { Number } last - End index (included). If {-last-} is not defined, then copying ends on last index of {-src-}.
  * @returns { Long|VectorAdapter } - Returns copy of part of source vector.
  * @function slice
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
@@ -459,15 +454,14 @@ dop.modifying = false;
  * Routine growAdapter() makes new instance of source vector {-src-} with length equal to src.length or bigger.
  * The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines length of new vector.
- * @param { * } val - To fill extra elements.
- *
  * @example
  * var got = _.vectorAdapter.growAdapter( [ 1, 2, 3 ], [ 1, 4 ], 5 );
  * console.log( got.toStr() );
  * // log "1.000, 2.000, 3.000, 5.000, 5.000"
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines length of new vector.
+ * @param { * } val - To fill extra elements.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
  * If length of new vector is more then src.length, then extra elements filled by value {-val-}.
  * @function growAdapter
@@ -501,15 +495,14 @@ dop.modifying = false;
  * Routine growLong() makes new instance of source vector {-src-} with length equal to src.length or bigger.
  * The elements of new vector, which index is less or equal to src.length, have values of vector {-src-}, other elements filled by value {-val-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines length of new vector.
- * @param { * } val - To fill extra elements.
- *
  * @example
  * var got = _.avector.growLong( [ 1, 2, 3 ], [ 1, 4 ], 5 );
  * console.log( got );
  * // log [ 1, 2, 3, 5, 5 ]
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines length of new vector.
+ * @param { * } val - To fill extra elements.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
  * If length of new vector is more then src.length, then extra elements filled by value {-val-}.
  * @function growLong
@@ -571,14 +564,13 @@ dop.modifying = false;
 /**
  * Routine shrinkAdapter() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines ranges for copying.
- *
  * @example
  * var got = _.vectorAdapter.shrinkAdapter( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got.toStr() );
  * // log "2.000, 3.000, 4.000"
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines ranges for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
  * @function shrinkAdapter
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -610,14 +602,13 @@ dop.modifying = false;
 /**
  * Routine shrinkLong() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines ranges for copying.
- *
  * @example
  * var got = _.avector.shrinkLong( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got );
  * // log [ 2, 3, 4 ]
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines ranges for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
  * @function shrinkLong
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -667,14 +658,13 @@ dop.modifying = false;
 /**
  * Routine review() reviews source vector {-src-} in defined range {-crange-}. Routine makes new instance of vector {-src-} if range defines length smaller then src.length. Otherwise, routine returns original vector. The elements of new vector filled by values of {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range|Number } crange - Defines ranges for copying.
- *
  * @example
  * var got = _.avector.review( [ 1, 2, 3 ], 0 );
  * console.log( got );
  * // log [ 1, 2, 3 ];
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range|Number } crange - Defines ranges for copying.
  * @returns { Long|VectorAdapter } - Returns instance of vector filled by values of original vector {-src-}. If {-src-} vector not changes, then routine returns original vector.
  * @function review
  * @throws { Error } If arguments.length is less or more then two.
@@ -730,13 +720,12 @@ dop.modifying = false;
 /**
  * Routine bufferConstructorOf() returns constructor of vector {-src-}.
  *
- * @param { Function|Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.bufferConstructorOf( [ 1, 2, 3 ] );
  * console.log( got );
  * // log [function Array];
  *
+ * @param { Function|Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns constructor of source vector.
  * @function bufferConstructorOf
  * @throws { Error } If source vector is not a Function, not a Long, not a VectorAdapter.
@@ -811,14 +800,13 @@ dop.modifying = false;
 /**
  * Routine toLong() returns Long maiden from vector {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var src = _.vectorAdapter.fromLong( [ 1, 2, 3 ] );
  * var got = src.toLong();
  * console.log( got );
  * // log [ 1, 2, 3 ];
  *
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long } - Returns default Long maiden from source vector.
  * @function toLong
  * @throws { Error } If arguments.length is less or more then one.
@@ -858,16 +846,15 @@ dop.modifying = false;
 /**
  * Routine _toStr() makes string from data in source vector {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Map|MapLike } o - Options map.
- * @param { Number } o.precision - The precision of numbers in returned string. Default value is 4.
- *
  * @example
  * var src = _.vectorAdapter.fromLong( [ 1, 2, 3 ] );
  * var got = src.toStr();
  * console.log( got );
  * // log "1.000, 2.000, 3.000";
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Map|MapLike } o - Options map.
+ * @param { Number } o.precision - The precision of numbers in returned string. Default value is 4.
  * @returns { String } - Returns string with elements of source vector.
  * @function _toStr
  * @throws { Error } If source vector is not a Long, not a VectorAdapter.
@@ -936,15 +923,14 @@ dop.modifying = false;
  * The {-srcs-} can contain numbers and vectors. The dst.length to srcs.length ratio should be
  * an Integer. The length of element of {-srcs-} should be less then the ratio.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Array } srcs - An array with source vectors.
- *
  * @example
  * var src = _.vectorAdapter.fromLong( [ 0, 0, 0, 0 ] );
  * var got = _.avector.gather( src, [ [ 1, 4 ], [ 2, 8 ] ] );
  * console.log( got );
  * // log [ 1, 2, 4, 8 ]
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Array } srcs - An array with source vectors.
  * @returns { Long|VectorAdapter } - Returns vector filled by elements of source vectors.
  * @function gather
  * @throws { Error } If arguments.length is not equal to two.
@@ -1010,10 +996,6 @@ dop.modifying = true;
 /**
  * Routine map() provides replacing of elements in destination vector {-dst-} using results of execution {-onEach-} callback.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Function } onEach - Callback. Accepts element of {-src-}, element index, {-src-} and {-dst-}.
- *
  * @example
  * var src = [ 1, 2, 3 ];
  * var got = _.avector.map( src, [ 3, 2, 1 ], ( e ) => e );
@@ -1022,6 +1004,9 @@ dop.modifying = true;
  * console.log( got === dst );
  * // log true
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Accepts element of {-src-}, element index, {-src-} and {-dst-}.
  * @returns { Long|VectorAdapter } - Returns original destination vector with replaced elements.
  * @function map
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -1088,10 +1073,6 @@ dop.modifying = true;
 /**
  * Routine filter() provides filtering of elements in destination vector {-dst-} using results of execution {-onEach-} callback.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Function } onEach - Callback. Accepts element of {-src-}, element index, {-src-} and {-dst-}.
- *
  * @example
  * var src = [ 1, 2, 3 ];
  * var got = _.avector.filter( src, [ 3, 2, 1 ], ( e ) => k );
@@ -1100,6 +1081,9 @@ dop.modifying = true;
  * console.log( got === dst );
  * // log true
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Accepts element of {-src-}, element index, {-src-} and {-dst-}.
  * @returns { Long|VectorAdapter } - Returns original destination vector without filtered elements.
  * @function filter
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -1187,10 +1171,6 @@ dop.modifying = true;
 /**
  * Routine _while() provides replacing of elements in destination vector {-dst-} using results of execution {-onEach-} callback.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Function } onEach - Callback. Accepts element of {-src-}, element index, {-src-} and {-dst-}.
- *
  * @example
  * var src = [ 1, 2, 3 ];
  * var got = _.avector._while( src, [ 3, 2, 1 ], ( e ) => e );
@@ -1199,6 +1179,9 @@ dop.modifying = true;
  * console.log( got === dst );
  * // log true
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Accepts element of {-src-}, element index, {-src-} and {-dst-}.
  * @returns { Long|VectorAdapter } - Returns original destination vector with replaced elements.
  * @function _while
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -1288,14 +1271,13 @@ dop.modifying = true;
 /**
  * Routine sort() sorts elements of destination vector {-dst-} using callback {-comparator-}.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Function } comparator - Callback to compare two values.
- *
  * @example
  * var got = _.avector.map( [ 3, 2, 1 ] );
  * console.log( got );
  * // log [ 1, 2, 3 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Function } comparator - Callback to compare two values.
  * @returns { Long|VectorAdapter } - Returns original destination vector with sorted elements.
  * @function sort
  * @throws { Error } If {-comparator-} is not a routine, not undefined.
@@ -1715,14 +1697,13 @@ dop.modifying = true;
 /**
  * Routine reflect() makes vector multiplication of vector {-normal-} and algebraic sum of multiplication vector {-v-} and vector {-normal-}.
  *
- * @param { Long|VectorAdapter } v - Vector.
- * @param { Long|VectorAdapter } normal - Vector.
- *
  * @example
  * var got = _.avector.reflect( _.vectorAdapter.fromLong( [ 3, 2, 1 ] ), _.vectorAdapter.fromLong( [ 1, 2, 3 ] ) );
  * console.log( got );
  * // log [ 20, 40, 60 ];
  *
+ * @param { Long|VectorAdapter } v - Vector.
+ * @param { Long|VectorAdapter } normal - Vector.
  * @returns { Long|VectorAdapter } - Returns copy of vector {-normal-} multiplied on algebraic sum of multiplication vector {-v-} and vector {-normal-}.
  * @function reflect
  * @throws { Error } If arguments.length is less or more then two.
@@ -1822,9 +1803,6 @@ dop.modifying = true;
 /**
  * Routine swapVectors() swaps content of two vectors.
  *
- * @param { Long|VectorAdapter } v1 - Vector.
- * @param { Long|VectorAdapter } v2 - Vector.
- *
  * @example
  * var src1 = [ 1, 2, 3 ];
  * var src2 = [ 4, 5, 6 ];
@@ -1835,6 +1813,8 @@ dop.modifying = true;
  * console.log( src2 );
  * // log [ 1, 2, 3 ];
  *
+ * @param { Long|VectorAdapter } v1 - Vector.
+ * @param { Long|VectorAdapter } v2 - Vector.
  * @returns { Undefined } - Returns not a value, swaps two vectors.
  * @function swapVectors
  * @throws { Error } If arguments.length is less or more then two.
@@ -1873,15 +1853,14 @@ dop.modifying = true;
 /**
  * Routine swapAtoms() swaps elements of vector {-v-}.
  *
- * @param { Long|VectorAdapter } v1 - Vector.
- * @param { Number } i1 - Index of first element.
- * @param { Number } i2 - Index of second element.
- *
  * @example
  * var got = _.avector.swapAtoms( [ 1, 2, 3 ], 0, 2 );
  * console.log( got );
  * // log [ 3, 2, 1 ];
  *
+ * @param { Long|VectorAdapter } v1 - Vector.
+ * @param { Number } i1 - Index of first element.
+ * @param { Number } i2 - Index of second element.
  * @returns { Long|VectorAdapter } - Returns vector {-v-}.
  * @function swapAtoms
  * @throws { Error } If arguments.length is less or more then three.
@@ -1922,14 +1901,13 @@ dop.modifying = true;
 /**
  * Routine formate() replaces elements of destination vector {-dst-} by values from source elements in container {-srcs-}.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Array } srcs - Source container with elements.
- *
  * @example
  * var got = _.avector.formate( [ 1, 2, 3, 4, 5, 6 ], [ 0, 1 );
  * console.log( got );
  * // log [ 0, 1, 0, 1, 0, 1 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Array } srcs - Source container with elements.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function formate
  * @throws { Error } If {-srcs-} is not an Array.
@@ -1988,14 +1966,13 @@ dop.homogeneous = false;
 /**
  * Routine inv() replaces elements of vector {-dst-} by inverted values of vector {-src-}.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.inv( [ 1, 2, 4 ], [ 0.25, 0.5, 1 ] );
  * console.log( got );
  * // log [ 4, 2, 1 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function inv
  * @throws { Error } If dst.length and src.length are different.
@@ -2015,14 +1992,13 @@ let inv = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 /**
  * Routine invOrOne() replaces elements of vector {-dst-} by inverted values of vector {-src-}. If {-src-} element is 0, then element with its index sets to 1.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.invOrOne( [ 1, 2, 4 ], [ 0.25, 0, 1 ] );
  * console.log( got );
  * // log [ 4, 1, 1 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function invOrOne
  * @throws { Error } If dst.length and src.length are different.
@@ -2045,14 +2021,13 @@ let invOrOne = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 /**
  * Routine absRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} with absolute values.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.absRoutine( [ 1, 2, 4 ], [ -2, 3, -1 ] );
  * console.log( got );
  * // log [ 2, 3, 1 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function absRoutine
  * @throws { Error } If dst.length and src.length are different.
@@ -2073,14 +2048,13 @@ let absRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 /**
  * Routine floorRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to smaller values.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.floorRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
  * console.log( got );
  * // log [ 1, 2, 1 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function floorRoutine
  * @throws { Error } If dst.length and src.length are different.
@@ -2101,14 +2075,13 @@ let floorRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 /**
  * Routine ceilRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to bigger values.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.ceilRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
  * console.log( got );
  * // log [ 2, 3, 2 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function ceilRoutine
  * @throws { Error } If dst.length and src.length are different.
@@ -2128,14 +2101,13 @@ let ceilRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 /**
  * Routine roundRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} with rounded values.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.roundRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
  * console.log( got );
  * // log [ 1, 3, 2 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function roundRoutine
  * @throws { Error } If dst.length and src.length are different.
@@ -2156,14 +2128,13 @@ let roundRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 /**
  * Routine ceilToPowerOfTwo() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to closes value power of two.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.ceilToPowerOfTwo( [ 1, 2, 4 ], [ 3, 5, 13 ] );
  * console.log( got );
  * // log [ 4, 8, 16 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function ceilToPowerOfTwo
  * @throws { Error } If dst.length and src.length are different.
@@ -2183,14 +2154,13 @@ let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_fun
 /**
  * Routine normalize() replaces elements of vector {-dst-} by elements of vector {-src-} that multiplied on square root of sum of squares of {-src-} elements.
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.normalize( [ 1, 2, 4 ], [ 1, 1, 1 ] );
  * console.log( got );
  * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
  *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function normalize
  * @throws { Error } If dst.length and src.length are different.
@@ -2564,8 +2534,6 @@ let reduceToFurthest = meta._operationReduceToExtremal_functor
 /**
  * Routine reduceToMin() returns the minimal value of source vector {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.reduceToMin( [ 1, -4, 2 ] );
  * console.log( got );
@@ -2575,6 +2543,7 @@ let reduceToFurthest = meta._operationReduceToExtremal_functor
  * //       value : -4
  * // }
  *
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Number } - Returns minimal value of source vector.
  * @function reduceToMin
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -2604,8 +2573,6 @@ let reduceToMin = meta._operationReduceToExtremal_functor
 /**
  * Routine reduceToMinAbs() returns the absolute minimal value of source vector {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.reduceToMinAbs( [ 1, -4, 2 ] );
  * console.log( got );
@@ -2615,6 +2582,7 @@ let reduceToMin = meta._operationReduceToExtremal_functor
  * //       value : 1
  * // }
  *
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Number } - Returns absolute minimal value of source vector.
  * @function reduceToMinAbs
  * @throws { Error } If dst.length and src.length are different.
@@ -2643,8 +2611,6 @@ let reduceToMinAbs = meta._operationReduceToExtremal_functor
 /**
  * Routine reduceToMax() returns the maximal value of source vector {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.reduceToMax( [ 1, -4, 2 ] );
  * console.log( got );
@@ -2654,6 +2620,7 @@ let reduceToMinAbs = meta._operationReduceToExtremal_functor
  * //       value : 2
  * // }
  *
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Number } - Returns maximal value of source vector.
  * @function reduceToMax
  * @throws { Error } If dst.length and src.length are different.
@@ -2682,8 +2649,6 @@ let reduceToMax = meta._operationReduceToExtremal_functor
 /**
  * Routine reduceToMaxAbs() returns the absolute maximal value of source vector {-src-}.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.reduceToMin( [ 1, -4, 2 ] );
  * console.log( got );
@@ -2693,6 +2658,7 @@ let reduceToMax = meta._operationReduceToExtremal_functor
  * //       value : -4
  * // }
  *
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Number } - Returns absolute maximal value of source vector.
  * @function reduceToMaxAbs
  * @throws { Error } If dst.length and src.length are different.
@@ -2721,8 +2687,6 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
 /**
  * Routine _distributionRangeSummaryBegin() appends field `result` to map {-o-}.
  *
- * @param { MapLike } o - Map.
- *
  * @example
  * var got = _.avector._distributionRangeSummaryBegin( {} );
  * console.log( got );
@@ -2733,6 +2697,7 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
  * //                }
  * //  }
  *
+ * @param { MapLike } o - Map.
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryBegin
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -2757,8 +2722,6 @@ function _distributionRangeSummaryBegin( o )
  * If current value is bigger then biggest value in map {-o-}, then routine replace value in map {-o-}.
  * If current value is lower then lowest value in map {-o-}, then routine replace value in map {-o-}.
  *
- * @param { MapLike } o - Map.
- *
  * @example
  * var got = _.avector._distributionRangeSummaryEach( o );
  * console.log( got );
@@ -2771,6 +2734,7 @@ function _distributionRangeSummaryBegin( o )
  * //                }
  * //  }
  *
+ * @param { MapLike } o - Map.
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryEach
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -2800,8 +2764,6 @@ function _distributionRangeSummaryEach( o )
 /**
  * Routine _distributionRangeSummaryEnd() finds median of lowest and biggest value in map {-o-}.
  *
- * @param { MapLike } o - Map.
- *
  * @example
  * var got = _.avector._distributionRangeSummaryEnd( o );
  * console.log( got );
@@ -2815,6 +2777,7 @@ function _distributionRangeSummaryEach( o )
  * //                }
  * //  }
  *
+ * @param { MapLike } o - Map.
  * @returns { Undefined } - Returns not a value, changes map {-o-}.
  * @function _distributionRangeSummaryEnd
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -2833,8 +2796,6 @@ function _distributionRangeSummaryEnd( o )
 /**
  * Routine distributionRangeSummary() finds the biggest and the lowest values in source vector {-src-} and the median between them.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- *
  * @param { MapLike } o - Map.
  * @example
  * var got = _.avector.distributionRangeSummary( [ 1, 2, 3 ] );
@@ -2849,6 +2810,7 @@ function _distributionRangeSummaryEnd( o )
  * //                }
  * //  }
  *
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Map } - Returns map that contains data with biggest, lowest values and median between them.
  * @function distributionRangeSummary
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
@@ -2873,13 +2835,12 @@ _.assert( distributionRangeSummary.trivial.operation.reducing );
 /**
  * Routine reduceToMinValue() returns the minimal value in passed vectors.
  *
- * @param { Long|VectorAdapter } srcs - Source vectors.
- *
  * @example
  * var got = _.avector.reduceToMinValue( [ 1, -4, 2 ] );
  * console.log( got );
  * // log -4
  *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
  * @returns { Number } - Returns minimal value in arguments.
  * @function reduceToMinValue
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -2910,13 +2871,12 @@ dop.modifying = false;
 /**
  * Routine reduceToMaxValue() returns the maximal value in passed vectors.
  *
- * @param { Long|VectorAdapter } srcs - Source vectors.
- *
  * @example
  * var got = _.avector.reduceToMaxValue( [ 1, -4, 2 ] );
  * console.log( got );
  * // log 2
  *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
  * @returns { Number } - Returns maximal value of source vector.
  * @function reduceToMaxValue
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -2944,13 +2904,12 @@ dop.modifying = false;
 /**
  * Routine distributionRangeSummaryValue() finds the biggest and the lowest values in passed vectors.
  *
- * @param { Long|VectorAdapter } srcs - Source vectors.
- *
  * @example
  * var got = _.avector.distributionRangeSummaryValue( [ 1, -4, 2, -1 ] );
  * console.log( got );
  * // log [ -4, 2 ]
  *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
  * @returns { Array } - Returns array with lowest biggest value in passed vectors.
  * @function distributionRangeSummaryValue
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -3024,14 +2983,13 @@ dop.modifying = false;
 /**
  * Routine all() checks that for each element of source vector {-src-} callback {-onEach-} returns defined value.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Function } onEach - Callback. Applies element, index and source vector.
- *
  * @example
  * var got = _.avector.all( [ 1, -4, 2 ], ( e ) => e );
  * console.log( got );
  * // log true
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Applies element, index and source vector.
  * @returns { Boolean|BoolLike } - Returns true if for each element of source vector callback returns defined value. Otherwise, it returns value.
  * @function all
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -3090,14 +3048,13 @@ dop.modifying = false;
 /**
  * Routine any() checks that for any element of source vector {-src-} callback {-onEach-} returns defined value.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Function } onEach - Callback. Applies element, index and source vector.
- *
  * @example
  * var got = _.avector.any( [ 0, 0, 0 ], ( e ) => e );
  * console.log( got );
  * // log 0
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Applies element, index and source vector.
  * @returns { Boolean|BoolLike } - If result of callback is defined value, returns it values. Otherwise, returns false.
  * @function any
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -3153,14 +3110,13 @@ dop.modifying = false;
 /**
  * Routine none() checks that for none element of source vector {-src-} callback {-onEach-} returns defined value.
  *
- * @param { Long|VectorAdapter } src - Source vector.
- * @param { Function } onEach - Callback. Applies element, index and source vector.
- *
  * @example
  * var got = _.avector.none( [ 0, 0, 0 ], ( e ) => e );
  * console.log( got );
  * // log true
  *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Function } onEach - Callback. Applies element, index and source vector.
  * @returns { Boolean|BoolLike } - If result of callback is defined value, returns it reversed boolean value. Otherwise, returns true.
  * @function any
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -3218,13 +3174,12 @@ dop.modifying = false;
 /**
  * Routine _equalAre() checks that two vectors {-it.src-} and {-it.src2-} are equivalent.
  *
- * @param { Map } it - Options map.
- *
  * @example
  * var got = _.avector._equalAre( { src : [ 1, -4, 2 ], src1 : [ 1, -4.0000001, 2 ], strictTyping : 1, containing : 1 } );
  * console.log( got );
  * // log true
  *
+ * @param { Map } it - Options map.
  * @returns { Boolean|BoolLike } - If vectors {-it.src-} and {-it.src2-} are equivalent, returns true. Otherwise, returns false.
  * @function _equalAre
  * @throws { Error } If arguments.length is less or more then one.
@@ -3303,15 +3258,14 @@ dop.homogeneous = true;
 /**
  * Routine equalAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
  *
- * @param { Long|VectorAdapter } src1 - First vector.
- * @param { Long|VectorAdapter } src2 - Second vector.
- * @param { Map } opts - Options map.
- *
  * @example
  * var got = _.avector.equalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 1 } );
  * console.log( got );
  * // log true
  *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Map } opts - Options map.
  * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
  * @function equalAre
  * @throws { Error } If arguments.length is less or more then one.
@@ -3357,15 +3311,14 @@ dop.homogeneous = true;
 /**
  * Routine identicalAre() checks that two vectors {-src1-} and {-src2-} are identical.
  *
- * @param { Long|VectorAdapter } src1 - First vector.
- * @param { Long|VectorAdapter } src2 - Second vector.
- * @param { Map } iterator - Options map.
- *
  * @example
  * var got = _.avector.identicalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 1 } );
  * console.log( got );
  * // log false
  *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Map } iterator - Options map.
  * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are identical, returns true. Otherwise, returns false.
  * @function identicalAre
  * @throws { Error } If arguments.length is less or more then one.
@@ -3407,15 +3360,14 @@ dop.homogeneous = true;
 /**
  * Routine equivalentAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
  *
- * @param { Long|VectorAdapter } src1 - First vector.
- * @param { Long|VectorAdapter } src2 - Second vector.
- * @param { Map } iterator - Options map.
- *
  * @example
  * var got = _.avector.equivalentAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 1 } );
  * console.log( got );
  * // log true
  *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Map } iterator - Options map.
  * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
  * @function equivalentAre
  * @throws { Error } If arguments.length is less or more then one.
@@ -3457,15 +3409,14 @@ dop.homogeneous = true;
 /**
  * Routine areParallel() checks that two vectors {-src1-} and {-src2-} are parallel.
  *
- * @param { Long|VectorAdapter } src1 - First vector.
- * @param { Long|VectorAdapter } src2 - Second vector.
- * @param { Number } accuracy - Accuracy of comparison.
- *
  * @example
  * var got = _.avector.areParallel( [ 1, -4, 2 ], [ 2, -8, 4 ] );
  * console.log( got );
  * // log true
  *
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src2 - Second vector.
+ * @param { Number } accuracy - Accuracy of comparison.
  * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are parallel, returns true. Otherwise, returns false.
  * @function areParallel
  * @throws { Error } If src1.length and src2.length are different.
@@ -3549,13 +3500,12 @@ meta._routinesDeclare();
 /**
  * Routine mag() calculates square root from sum of squares of vector {-v-} elements.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- *
  * @example
  * var got = _.avector.mag( [ 1, -4, 2, 2 ] );
  * console.log( got );
  * // log 5
  *
+ * @param { Long|VectorAdapter } v - Source vector.
  * @returns { Number } - Returns square root from sum of squares of source vector elements.
  * @function mag
  * @throws { Error } If arguments.length is less or more then one.
@@ -3580,13 +3530,12 @@ dop.takingVectors = [ 1, 1 ];
 /**
  * Routine magSqr() calculates sum of squares of vector {-v-} elements.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- *
  * @example
  * var got = _.avector.magSqr( [ 1, -4, 2, 2 ] );
  * console.log( got );
  * // log 25
  *
+ * @param { Long|VectorAdapter } v - Source vector.
  * @returns { Number } - Returns sum of squares of source vector elements.
  * @function magSqr
  * @throws { Error } If arguments.length is less or more then one.
@@ -3616,14 +3565,13 @@ dop.takingVectors = [ 1, 1 ];
 /**
  * Routine dot() calculates sum of multiplication of vectors {-dst-} and {-src-}.
  *
- * @param { VectorAdapter } dst - Source vector.
- * @param { VectorAdapter } src - Source vector.
- *
  * @example
  * var got = _.avector.dot( [ 1, -4, 2 ], [ 2, 3, 2 ] );
  * console.log( got );
  * // log 6
  *
+ * @param { VectorAdapter } dst - Source vector.
+ * @param { VectorAdapter } src - Source vector.
  * @returns { Number } - Returns sum of multiplication of vectors {-dst-} and {-src-}.
  * @function dot
  * @throws { Error } If arguments.length is less or more then two.
@@ -3668,14 +3616,13 @@ dop.modifying = false;
  * Routine distance() calculates square root from sum of squares of substruction vectors {-src1-} and {-src2-}.
  * It is distance between vectors, a normal to vectors.
  *
- * @param { Long|VectorAdapter } src1 - Source vector.
- * @param { Long|VectorAdapter } src2 - Source vector.
- *
  * @example
  * var got = _.avector.distance( [ 1, -4, 2 ], [ 2, 3, 2 ] );
  * console.log( got );
  * // log 7.0710678118654755
  *
+ * @param { Long|VectorAdapter } src1 - Source vector.
+ * @param { Long|VectorAdapter } src2 - Source vector.
  * @returns { Number } - Returns square root from sum of squares of substruction vectors {-src1-} and {-src2-}.
  * @function distance
  * @throws { Error } If src1.length and src2.length are not equivalent.
@@ -3703,14 +3650,13 @@ dop.modifying = false;
 /**
  * Routine distanceSqr() calculates sum of squares of substruction vectors {-src1-} and {-src2-}.
  *
- * @param { Long|VectorAdapter } src1 - Source vector.
- * @param { Long|VectorAdapter } src2 - Source vector.
- *
  * @example
  * var got = _.avector.distanceSqr( [ 1, -4, 2 ], [ 2, 3, 2 ] );
  * console.log( got );
  * // log 50
  *
+ * @param { Long|VectorAdapter } src1 - Source vector.
+ * @param { Long|VectorAdapter } src2 - Source vector.
  * @returns { Number } - Returns sum of squares of substruction vectors {-src1-} and {-src2-}.
  * @function distanceSqr
  * @throws { Error } If src1.length and src2.length are not equivalent.
@@ -3746,13 +3692,12 @@ dop.modifying = false;
 /**
  * Routine median() calculates median between lowest and biggest values of vector {-v-}.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- *
  * @example
  * var got = _.avector.median( [ 1, -4, 2 ] );
  * console.log( got );
  * // log -1
  *
+ * @param { Long|VectorAdapter } v - Source vector.
  * @returns { Number } - Returns median of source vector.
  * @function median
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -3774,15 +3719,14 @@ dop = median.operation = _.mapExtend( null , distributionRangeSummary.trivial.op
 /**
  * Routine momentCentral() calculates a probability distribution of a random variable about the random variable's mean.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- * @param { Number } degree - Degree of moment.
- * @param { Number } mean - Mean of value.
- *
  * @example
  * var got = _.avector.momentCentral( [ 2, -4, 2 ], 1, 1 );
  * console.log( got );
  * // log -1
  *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } degree - Degree of moment.
+ * @param { Number } mean - Mean of value.
  * @returns { Number } - Returns a value of probability distribution of a random variable about the variable's mean.
  * @function momentCentral
  * @throws { Error } If arguments.length is less then two or more then three.
@@ -3809,16 +3753,15 @@ dop.takingArguments = [ 2, 3 ];
  * Routine momentCentralConditional() calculates a probability distribution of a random variable about the random variable's mean.
  * If {-mean-} is undefined, then it calculates from source vector {-v-}, due to that elements of {-v-} filters by callback {-filter-}.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- * @param { Number } degree - Degree of moment.
- * @param { Number } mean - Mean of value.
- * @param { Function } filter - Callback.
- *
  * @example
  * var got = _.avector.momentCentralConditional( [ 2, -4, 2 ], 1, 1, ( e ) => e > 0 ? e : Math.abs( e ) );
  * console.log( got );
  * // log 1.6666666666666
  *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } degree - Degree of moment.
+ * @param { Number } mean - Mean of value.
+ * @param { Function } filter - Callback.
  * @returns { Number } - Returns a value of probability distribution of a random variable about the variable's mean.
  * @function momentCentralConditional
  * @throws { Error } If arguments.length is less then two or more then three.
@@ -3886,14 +3829,13 @@ dop = distributionSummary.operation = _.mapExtend( null , Routines._momentCentra
 /**
  * Routine variance() calculates the expectation of the squared deviation of a random variable from its mean.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- * @param { Number } mean - Mean of value.
- *
  * @example
  * var got = _.avector.variance( [ 2, -4, 2 ], 1 );
  * console.log( got );
  * // log 9
  *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
  * @returns { Number } - Returns the expectation of the squared deviation of a random variable from its mean.
  * @function variance
  * @throws { Error } If arguments.length is less then one or more then two.
@@ -3917,15 +3859,14 @@ dop.takingArguments = [ 1, 2 ];
  * Routine varianceConditional() calculates the expectation of the squared deviation of a random variable from its mean.
  * The values of vector can be filtered by callback {-filter-}
  *
- * @param { Long|VectorAdapter } v - Source vector.
- * @param { Number } mean - Mean of value.
- * @param { Function } filter - Callback.
- *
  * @example
  * var got = _.avector.varianceConditional( [ 2, -4, 2 ], 1, ( e ) => e > 0 ? e : Math.abs( e ) );
  * console.log( got );
  * // log 3.6666666666666
  *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
+ * @param { Function } filter - Callback.
  * @returns { Number } - Returns the expectation of the squared deviation of a random variable from its mean.
  * @function variance
  * @throws { Error } If arguments.length is less then one or more then two.
@@ -3956,13 +3897,12 @@ dop.takingArguments = [ 2, 3 ];
 /**
  * Routine standardDeviation() calculates the dispersion of a set of values in vectors.
  *
- * @param { Long|VectorAdapter } srcs - Source vectors.
- *
  * @example
  * var got = _.avector.standardDeviation( [ 2, -4, 2 ] );
  * console.log( got );
  * // log 2.8284271247461903
  *
+ * @param { Long|VectorAdapter } srcs - Source vectors.
  * @returns { Number } - Returns the dispersion of a set of values.
  * @function standardDeviation
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -3982,14 +3922,13 @@ dop.input = 'vr ?s';
 /**
  * Routine standardDeviationNormalized() calculates the dispersion of a set of values in vectors divided by the mean.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- * @param { Number } mean - Mean of value.
- *
  * @example
  * var got = _.avector.standardDeviationNormalized( [ 2, -4, 2 ], 1 );
  * console.log( got );
  * // log 3
  *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
  * @returns { Number } - Returns the dispersion of a set of values divided by the mean.
  * @function standardDeviationNormalized
  * @throws { Error } If arguments.length is less then one or more then two.
@@ -4016,14 +3955,13 @@ dop.input = 'vr ?s';
 /**
  * Routine kurtosis() calculates the "tailedness" of the probability distribution of a real-valued random variable.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- * @param { Number } mean - Mean of value.
- *
  * @example
  * var got = _.avector.kurtosis( [ 2, -4, 2 ], 1 );
  * console.log( got );
  * // log 2.580246913580247
  *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
  * @returns { Number } - Returns the "tailedness" of the probability distribution of a real-valued random variable.
  * @function kurtosis
  * @throws { Error } If arguments.length is less then one or more then two.
@@ -4053,14 +3991,13 @@ dop.input = 'vr ?s';
 /**
  * Routine kurtosisNormalized() calculates the "tailedness" of the probability distribution of a real-valued random variable subtracted by 3.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- * @param { Number } mean - Mean of value.
- *
  * @example
  * var got = _.avector.kurtosisNormalized( [ 2, -4, 2 ], 1 );
  * console.log( got );
  * // log -0.4197530864197532
  *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
  * @returns { Number } - Returns normalized "tailedness" of the probability distribution of a real-valued random variable.
  * @function kurtosisNormalized
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
@@ -4082,14 +4019,13 @@ dop.input = 'vr ?s';
  * Routine skewness() calculates the asymmetry of the probability distribution of a real-valued random variable about the mean.
  * If {-mean-} is undefined, then it calculates from source vector {-v-}.
  *
- * @param { Long|VectorAdapter } v - Source vector.
- * @param { Number } mean - Mean of value.
- *
  * @example
  * var got = _.avector.skewness( [ 2, -4, 2 ], 1 );
  * console.log( got );
  * // log -0.5925925925925926
  *
+ * @param { Long|VectorAdapter } v - Source vector.
+ * @param { Number } mean - Mean of value.
  * @returns { Number } - Returns the asymmetry of the probability distribution.
  * @function skewness
  * @throws { Error } If arguments.length is less then one or more then two.
