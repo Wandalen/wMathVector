@@ -1800,7 +1800,7 @@ dop.modifying = true;
 //
 
 /**
- * Routine matrixApplyTo() changes values of destination vector {-dst-} by result of multiplication of {-dst-} and source matrix {-srcMatrix_}.
+ * The routine matrixApplyTo() applies the provided source matrix {-srcMatrix-} to destination vector {-dst-}.
  *
  * @example
  * var srcMatrix = _.Matrix.make( [ 2, 2 ] ).copy( [ 1, 2, 3, 4 ] );
@@ -1840,6 +1840,29 @@ dop.modifying = true;
 
 //
 
+/**
+ * The routine matrixHomogenousApply() applies the homogenous source matrix {-srcMatrix-} to provided vector {-dst-},
+ * returns the instance of the vector.
+ *
+ * @example
+ * var srcMatrix = _.Matrix.make([ 3, 3 ]).copy
+ * ([
+ *   4, 0, 1,
+ *   0, 5, 2,
+ *   0, 0, 1,
+ * ]);
+ * var got = _.avector.matrixHomogenousApply( [ 0, 0 ], srcMatrix );
+ * console.log( got );
+ * // log [ 1, 2 ]
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Matrix } srcMatrix - Source matrix.
+ * @returns { Long|VectorAdapter } - Returns vector with changed values.
+ * @function matrixHomogenousApply
+ * @throws { Error } If arguments.length is not equal to two.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 function matrixHomogenousApply( dst, srcMatrix )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -1859,6 +1882,29 @@ dop.returningNew = false;
 dop.modifying = true;
 
 //
+
+/**
+ * The routine matrixDirectionsApply() applies the directions of source matrix {-srcMatrix-} to provided vector {-dst-},
+ * returns the instance of the vector.
+ *
+ * @example
+ * var matrix = _.Matrix.make([ 3, 3 ]).copy
+ * ([
+ *   4, 0, 1,
+ *   0, 5, 2,
+ *   0, 0, 1,
+ * ]);
+ * var got = _.avector.matrixDirectionsApply( [ 0, 0 ], srcMatrix );
+ * console.log( got );
+ * // log [ 1, 2 ]
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Matrix } srcMatrix - Source matrix.
+ * @returns { Long|VectorAdapter } - Returns vector with changed values.
+ * @function matrixDirectionsApply
+ * @throws { Error } If arguments.length is not equal to two.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function matrixDirectionsApply( v, m )
 {
@@ -2041,7 +2087,6 @@ dop.homogeneous = false;
 // --
 // atom-wise, modifying, taking single vector : self
 // --
-
 
 /**
  * Routine inv() replaces elements of vector {-dst-} by inverted values of vector {-src-}.
@@ -2565,6 +2610,24 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 // extremal reductor
 // --
 
+/**
+ * Routine reduceToClosest() returns the closest value of source vector {-src-}.
+ *
+ * @example
+ * var got = _.avector.reduceToClosest( [ 1, -4, 2 ] );
+ * console.log( got );
+ * // log {
+ * //       container : VectorAdapterFromLong { _vectorBuffer : [ 1, -4, 3 ] },
+ * //       index : 1,
+ * //       value : -4
+ * // }
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @returns { Number } - Returns minimal value of source vector.
+ * @function reduceToClosest
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 let reduceToClosest = meta._operationReduceToExtremal_functor
 ({
   onDistance : function( o )
@@ -2587,6 +2650,21 @@ let reduceToClosest = meta._operationReduceToExtremal_functor
 });
 
 //
+
+/**
+ * Routine reduceToFurthest() returns the maximal value of source vector {-src-}.
+ *
+ * @example
+ * var got = _.avector.reduceToFurthest( [ 1, -4, 2 ] );
+ * console.log( got );
+ * // log 2
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @returns { Number } - Returns maximal value of source vector.
+ * @function reduceToFurthest
+ * @throws { Error } If dst.length and src.length are different.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 let reduceToFurthest = meta._operationReduceToExtremal_functor
 ({
@@ -2617,11 +2695,7 @@ let reduceToFurthest = meta._operationReduceToExtremal_functor
  * @example
  * var got = _.avector.reduceToMin( [ 1, -4, 2 ] );
  * console.log( got );
- * // log {
- * //       container : VectorAdapterFromLong { _vectorBuffer : [ 1, -4, 3 ] },
- * //       index : 1,
- * //       value : -4
- * // }
+ * // log 1
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Number } - Returns minimal value of source vector.
