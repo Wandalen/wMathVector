@@ -1345,8 +1345,21 @@ dop.modifying = true;
 //
 
 /**
-Dmytro : not know
-*/
+ * Routine randomInRadius() replaces elements of destination vector {-dst-} by random values.
+ * This values are less of equal to square root of radius {-radius-}.
+ *
+ * @example
+ * var got = _.avector.randomInRadius( [ 3, 2, 1 ], 5 );
+ * console.log( got );
+ * // log [ -1.9156929300523022, 1.877215370279174, -0.7458539339998151 ];
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Number|Map } radius - Defines the upper range of random values.
+ * @returns { Long|VectorAdapter } - Returns original destination vector with random values.
+ * @function randomInRadius
+ * @throws { Error } If {-radius-} or {-radius.radius-} is not a Number.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function randomInRadius( dst, radius )
 {
@@ -1370,7 +1383,8 @@ function randomInRadius( dst, radius )
   for( let a = 0 ; a < attempts ; a++ )
   {
 
-    this.randomInRangeAssigning( dst, -radiusSqrt, +radiusSqrt );
+    this.randomInRangeAssigning( dst, -radiusSqrt, +radiusSqrt ); /* Dmytro : routine randomInRadiusAssigning does not exists */
+    // this.randomInRange( dst, -radiusSqrt, +radiusSqrt );
     let m = this.magSqr( dst );
     if( m < radiusSqr ) break;
 
@@ -1395,7 +1409,8 @@ dop.modifying = true;
 // function crossWithPoints( a, b, c, result )
 
 /**
- * Routine crossWithPoints() provides multiplication of three 3-elements vectors.
+ * Routine crossWithPoints() provides cross multiplication of three 3-elements vectors.
+ * The result of multiplications stores in destination vector {-dst-}.
  *
  * @example
  * var dst = [ 1, 2, 3 ];
@@ -1480,6 +1495,28 @@ dop.returningNew = false;
 dop.modifying = true;
 
 //
+
+/**
+ * Routine cross3() provides cross multiplication of two 3-elements vectors.
+ * The result of multiplications stores in destination vector {-dst-}.
+ *
+ * @example
+ * var dst = [ 1, 2, 3 ];
+ * var got = _.avector.cross3( dst, [ 2, 2, 2 ], [ 3, 3, 3 ] );
+ * console.log( got );
+ * // log [ 0, 0, 0 ];
+ * console.log( got === dst );
+ * // log true
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src1 - Second vector.
+ * @returns { Long|VectorAdapter } - Returns original destination vector with results of multiplications.
+ * @function cross3
+ * @throws { Error } If arguments.length is less or more then four.
+ * @throws { Error } If {-a-}, {-b-}, {-c-} lengths are different and not equal to 3.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 /* aaa : cover */
 /* Dmytro : covered */
