@@ -18,3 +18,17 @@
   </a></summary>
     В даній статті виконується огляд концепції вектора та його форматів задання.
 </details>
+
+<details>
+  <summary><a href="./tutorial/VectorAdapterInterface.md">
+    Інтерфейс адаптера
+  </a></summary>
+    Як використовувати методи адаптера.
+</details>
+
+<details>
+  <summary><a href="./tutorial/VectorAdapterOperations.md">
+    Як використовувати адаптер
+  </a></summary>
+    Описано окремі умови використання адаптерів.
+</details>

@@ -1497,23 +1497,22 @@ dop.modifying = true;
 //
 
 /**
- * Routine crossWithPoints() provides cross multiplication of three 3-elements vectors.
+ * Routine cross3() provides cross multiplication of two 3-elements vectors.
  * The result of multiplications stores in destination vector {-dst-}.
  *
  * @example
  * var dst = [ 1, 2, 3 ];
- * var got = _.avector.crossWithPoints( dst, [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ] );
+ * var got = _.avector.cross3( dst, [ 2, 2, 2 ], [ 3, 3, 3 ] );
  * console.log( got );
  * // log [ 0, 0, 0 ];
  * console.log( got === dst );
  * // log true
  *
  * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter } a - First vector.
- * @param { Long|VectorAdapter } b - Second vector.
- * @param { Long|VectorAdapter } c - Third vector.
+ * @param { Long|VectorAdapter } src1 - First vector.
+ * @param { Long|VectorAdapter } src1 - Second vector.
  * @returns { Long|VectorAdapter } - Returns original destination vector with results of multiplications.
- * @function crossWithPoints
+ * @function cross3
  * @throws { Error } If arguments.length is less or more then four.
  * @throws { Error } If {-a-}, {-b-}, {-c-} lengths are different and not equal to 3.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
