@@ -29,7 +29,7 @@ let avector = _.avector;
 * console.log( 'vec.toStr(): ', vec.toStr() );
 *
 * @function make
-* @memberof module:Tools/math/Vector.wTools.vectorAdapter
+* @memberof namespace:wTools.vectorAdapter
 */
 
 function make( length )
@@ -55,7 +55,7 @@ function make( length )
 * console.log( 'vec.toStr(): ', vec.toStr() );
 *
 * @function makeFilling
-* @memberof module:Tools/math/Vector.wTools.vectorAdapter
+* @memberof namespace:wTools.vectorAdapter
 */
 
 function makeFilling( length, value )
@@ -85,7 +85,7 @@ function makeFilling( length, value )
 * console.log( 'vec.toStr(): ', vec.toStr() );
 *
 * @function from
-* @memberof module:Tools/math/Vector.wTools.vectorAdapter
+* @memberof namespace:wTools.vectorAdapter
 */
 
 function from( srcLong )

@@ -71,7 +71,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
  *
  * @returns { VectorAdapter } - Returns new VectorAdapter instance.
  * @function fromNumber
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @memberof "namespace:wTools.vectorAdapter"
  */
 
 function fromNumber( number, length )
@@ -119,7 +119,7 @@ function fromNumber( number, length )
  *
  * @returns { VectorAdapter } - Returns new VectorAdapter instance.
  * @function fromMaybeNumber
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @memberof "namespace:wTools.vectorAdapter"
  */
 
 function fromMaybeNumber( number, length )
