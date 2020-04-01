@@ -1513,8 +1513,8 @@ dop.modifying = true;
  * @param { Long|VectorAdapter } src1 - Second vector.
  * @returns { Long|VectorAdapter } - Returns original destination vector with results of multiplications.
  * @function cross3
- * @throws { Error } If arguments.length is less or more then four.
- * @throws { Error } If {-a-}, {-b-}, {-c-} lengths are different and not equal to 3.
+ * @throws { Error } If arguments.length is not equal to three.
+ * @throws { Error } If {-dst-}, {-src1-}, {-src2-} lengths are not equal to 3.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
  */
 
@@ -1539,6 +1539,27 @@ function cross3( dst, src1, src2 )
 dop = cross3.operation = _.mapExtend( null, _cross3.operation );
 
 //
+
+/**
+ * Routine cross() provides cross multiplication of a set of 3-elements vectors.
+ * The result of multiplications stores in destination vector {-dst-}.
+ *
+ * @example
+ * var dst = [ 1, 2, 3 ];
+ * var got = _.avector.cross( dst, [ 2, 2, 2 ], [ 3, 3, 3 ], [ 4, 4, 4 ] );
+ * console.log( got );
+ * // log [ 72, -144, 72 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @param { Null|Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } ... - Vectors.
+ * @returns { Long|VectorAdapter } - Returns original destination vector with results of multiplications.
+ * @function cross
+ * @throws { Error } If arguments.length is less then two.
+ * @throws { Error } If dst length is not equal to 3.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function cross( dst )
 {
@@ -1576,6 +1597,26 @@ dop.returningNew = true;
 dop.modifying = true;
 
 //
+
+/**
+ * Routine quaternionApply() replaces elements of destination vector {-dst-} by its quaternion images.
+ *
+ * @example
+ * var dst = [ 1, 2, 3 ];
+ * var got = _.avector.quaternionApply( dst, [ 2, 2, 2, 2 ] );
+ * console.log( got );
+ * // log [ 48, 16, 32 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } q - Vector of quaternion basis elements.
+ * @returns { Long|VectorAdapter } - Returns original destination vector with results of transformation.
+ * @function quaternionApply
+ * @throws { Error } If dst.length is not equal to 3.
+ * @throws { Error } If q.length is not equal to 4.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
 
 function quaternionApply( dst, q )
 {
@@ -1631,6 +1672,26 @@ dop.modifying = true;
 
 //
 
+/**
+ * Routine quaternionApply2() replaces elements of destination vector {-dst-} by its quaternion images.
+ *
+ * @example
+ * var dst = [ 1, 2, 3 ];
+ * var got = _.avector.quaternionApply2( dst, [ 2, 2, 2, 2 ] );
+ * console.log( got );
+ * // log [ 48, 16, 32 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter } q - Vector of quaternion basis elements.
+ * @returns { Long|VectorAdapter } - Returns original destination vector with results of transformation.
+ * @function quaternionApply2
+ * @throws { Error } If dst.length is not equal to 3.
+ * @throws { Error } If q.length is not equal to 4.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 /*
 v' = q * v * conjugate(q)
 --
@@ -1642,7 +1703,7 @@ function quaternionApply2( dst, q )
 {
 
   _.assert( dst.length === 3 && q.length === 4, 'quaternionApply :', 'Expects vector and quaternion as arguments' );
-  throw _.err( 'not tested' );
+  // throw _.err( 'not tested' );
   let qvector = this.fromLongLrange( dst, 0, 3 );
 
   let cross1 = this.cross( qvector, dst );
@@ -1738,12 +1799,32 @@ dop.modifying = true;
 
 //
 
+/**
+ * Routine matrixApplyTo() changes values of destination vector {-dst-} by result of multiplication of {-dst-} and source matrix {-srcMatrix_}.
+ *
+ * @example
+ * var srcMatrix = _.Matrix.make( [ 2, 2 ] ).copy( [ 1, 2, 3, 4 ] );
+ * var got = _.avector.matrixApplyTo( [ 1, 1 ], srcMatrix );
+ * console.log( got );
+ * // log [ 3, 7 ]
+ *
+ * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Matrix } srcMatrix - Source matrix.
+ * @returns { Long|VectorAdapter } - Returns vector with changed values.
+ * @function matrixApplyTo
+ * @throws { Error } If arguments.length is not equal to two.
+ * @throws { Error } If dimensions of matrix is not equivalent.
+ * @throws { Error } If dimensions are different to dst.length.
+ * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
+ */
+
 function matrixApplyTo( dst, srcMatrix )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.matrixIs( srcMatrix ) );
   debugger;
-  return _.space.mul( dst, [ srcMatrix, dst ] );
+  // return _.space.mul( dst, [ srcMatrix, dst ] ); /* Dmytro : old namespace */
+  return _.Matrix.mul( dst, [ srcMatrix, dst ] );
 }
 
 dop = matrixApplyTo.operation = Object.create( null );
