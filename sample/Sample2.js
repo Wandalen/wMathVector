@@ -10,9 +10,9 @@ var a2 = [ 1, 2, 3 ];
 var a3 = [ 1, 2, 3 ];
 var avector = _.avector.add( a1, a2, a3 );
 console.log( 'avector: ', avector );
-/* log "avector: [ 3, 6, 9 ]" */
+/* log : "avector: [ 3, 6, 9 ]" */
 console.log( 'a1:', a1 );
-/* log "a1: [ 3, 6, 9 ]" */
+/* log : "a1: [ 3, 6, 9 ]" */
 
 /* add 2 avectors and scalar */
 
@@ -22,9 +22,9 @@ var a3 =  5;
 var a4 =  7;
 var avector = _.avector.add( a1, a2, a3, a4 );
 console.log( 'avector: ', avector );
-/* log "avector:  [ 12, 12, 12 ]" */
+/* log : "avector:  [ 12, 12, 12 ]" */
 console.log( 'a1:', a1 );
-/* log "a1: [ 12, 12, 12 ]" */
+/* log : "a1: [ 12, 12, 12 ]" */
 
 /* saving add result to new avector */
 
@@ -34,9 +34,9 @@ var a3 =  5;
 var a4 =  7;
 var vector = _.avector.add( null, a1, a2, a3, a4 );
 console.log( 'avector: ', avector );
-/* log "avector:  [ 12, 12, 12 ]" */
+/* log : "avector:  [ 12, 12, 12 ]" */
 console.log( 'a1:', a1 );
-/* log "a1: [ 0, 0, 0 ]" */
+/* log : "a1: [ 0, 0, 0 ]" */
 
 /* using vector wrapper and single avector as container */
 
@@ -53,28 +53,28 @@ var v2 = _.vectorAdapter.fromLongLrange( a, v2Offset, v2Length );
 _.avector.add( v1, v2 );
 
 console.log( 'v1: ', v1 );
-/* log
+/* log :
 "v1:  VectorAdapterFromLongShrinked {
   _vectorBuffer: [ 1, 2, 3, 1, 2, 2 ],
   length: 3,
   offset: 0
 }" */
 console.log( 'v2: ', v2 );
-/* log
+/* log :
 "v2:  VectorAdapterFromLongShrinked {
   _vectorBuffer: [ 1, 2, 3, 1, 2, 2 ],
   length: 3,
   offset: 3
 }" */
 console.log( 'a: ', a );
-/* log "a:  [ 1, 2, 3, 1, 2, 2 ]" */
+/* log : "a:  [ 1, 2, 3, 1, 2, 2 ]" */
 
 /* vector wrapper from avector */
 
 var avector = [ 1, 2, 3 ];
 var vector = _.vectorAdapter.from( avector );
 console.log( vector )
-/* log "VectorAdapterFromLong { _vectorBuffer: [ 1, 2, 3 ] }" */
+/* log : "VectorAdapterFromLong { _vectorBuffer: [ 1, 2, 3 ] }" */
 
 /* setting and getting data from container through vector wrapper */
 
@@ -82,4 +82,4 @@ var avector = [ 1, 2, 3 ];
 var vector = _.vectorAdapter.from( avector );
 vector.eSet( 0, 5 );
 console.log( vector.eGet( 0 ) );
-/* log 5 */
+/* log : 5 */

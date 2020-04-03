@@ -10,9 +10,9 @@
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
 console.log( 'v1.length: ', v1.length )
-/* log "v1.length:  3" */
+/* log : "v1.length:  3" */
 console.log( 'a1.length: ', a1.length )
-/* log "a1.length:  3" */
+/* log : "a1.length:  3" */
 ```
 
 Довжина вектора `v1` рівна кількості елементів у контейнері `a1`.
@@ -25,7 +25,7 @@ console.log( 'a1.length: ', a1.length )
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
 console.log( 'v1.eGet( 2 ): ', v1.eGet( 2 ) );
-/* log "v1.eGet( 2 ):  3" */
+/* log : "v1.eGet( 2 ):  3" */
 ```
 
 ### Запис даних
@@ -37,7 +37,7 @@ var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
 v1.eSet( 0, 5 );
 console.log( 'v1.toStr(): ',  v1.toStr() );
-/* log "v1.toStr():  5.000 2.000 3.000" */
+/* log : "v1.toStr():  5.000 2.000 3.000" */
 ```
 
 ### Метод `toStr`
@@ -48,5 +48,5 @@ console.log( 'v1.toStr(): ',  v1.toStr() );
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
 console.log( 'v1.toStr(): ',  v1.toStr() );
-/* log "v1.toStr():  1.000 2.000 3.000" */
+/* log : "v1.toStr():  1.000 2.000 3.000" */
 ```
