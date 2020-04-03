@@ -51,10 +51,10 @@ var vector2 = [ 4, 5, 6 ];
 
 _.avector.add( vector1, vector2 );
 
-console.log( vector1 );
-/* log : [ 5, 7, 9 ] */
-console.log( vector2 );
-/* log : [ 4, 5, 6 ] */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 [ 5, 7, 9 ] */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 : [ 4, 5, 6 ] */
 ```
 
 Вектор `vector1` використовується одночасно і як контейнер для зберігання результату і як один із аргументів математичної функції.
@@ -69,23 +69,22 @@ var array2 = [ 4, 5, 6 ];
 var vector1 = _.vectorAdapter.from( array1 );
 var vector2 = _.vectorAdapter.from( array2 );
 
-console.log( vector1.toStr() );
-/* log : "1.000, 2.000, 3.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 1.000, 2.000, 3.000 */
+console.log( 'vector2 : ', vector2.toStr() );
+/* log : vector2 : 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( vector1.toStr() );
-/* log : "5.000, 7.000, 9.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 5.000, 7.000, 9.000 */
+console.log( 'vector2 : ', vector2.toStr() );
+/* log : vector2 : 4.000, 5.000, 6.000 */
 
-console.log( array1 );
-/* log : [ 5, 7, 9 ] */
-console.log( array2 );
-/* log : [ 4, 5, 6 ] */
-
+console.log( 'array1 : ', array1 );
+/* log : array1 : [ 5, 7, 9 ] */
+console.log( 'array2 : ', array2 );
+/* log : array2 : [ 4, 5, 6 ] */
 ```
 
 Створюється масиви `array1` та `array2`. Для них задаються прості адаптери `vector1` та `vector2`. Вектора `vecotr2` додається до вектора `vector1`. Бачимо, що змінилося не лише значення `vector1`, а й значення `array1`.
@@ -102,8 +101,8 @@ var vector1 = _.vectorAdapter.from( array );
 
 _.avector.mul( array, 2 );
 
-console.log( vector1.toStr() );
-/* log : "2.000, 4.000, 6.000" */
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 2.000, 4.000, 6.000 */
 ```
 
 Адаптер `vector1` не створює копії вектора, а є посиланням на дані оригінального масива `array`. Тому після виконання операції множення над масивом адаптер має значення в 2 рази більші від початкового.
@@ -117,7 +116,6 @@ console.log( vector1.toStr() );
 В даному прикладі показано 3 альтернативних способи використання одного й того ж інтерфейсу.
 
 ```js
-
 var array1 = [ 1, 2, 3 ];
 var adapter1 = _.vectorAdapter.from( array1 );
 
@@ -125,9 +123,8 @@ _.avector.mul( array1, 2 );
 _.vectorAdapter.mul( adapter1, 2 );
 adapter1.mul( 2 );
 
-console.log( adapter1.toStr() );
-/* log : "8.000, 16.000, 24.000" */
-
+console.log( 'adapter1 : ', adapter1.toStr() );
+/* log : adapter1 : 8.000, 16.000, 24.000 */
 ```
 
 Три послідовні операції множення вектора з використанням контейнера даних `array1`, з використанням адаптера `adapter1` і з використанням метода `adapter1.mul()` адаптера збільшують значення всіх елементів вектора в 8 разів.
@@ -137,20 +134,18 @@ console.log( adapter1.toStr() );
 Задайте значення першого аргумента як `null` ( `dst = null` ) щоб записати результат операції в новий вектор.
 
 ```js
-
 var srcVector1 = [ 1, 2, 3 ];
 var srcVector2 = [ 4, 5, 6 ];
 var dstVector = _.avector.add( null, srcVector1, srcVector2 );
 
-console.log( srcVector1 );
-/* log : [ 1, 2, 3 ] */
-console.log( srcVector2 );
-/* log : [ 4, 5, 6 ] */
-console.log( dstVector );
-/* log : [ 5, 7, 9 ] */
-console.log( dstVector === srcVector1 );
-/* log : false */
-
+console.log( 'srcVector1 : ', srcVector1 );
+/* log : srcVector1 : [ 1, 2, 3 ] */
+console.log( 'srcVector2 : ', srcVector2 );
+/* log : srcVector2 : [ 4, 5, 6 ] */
+console.log( 'dstVector : ', dstVector );
+/* log : dstVector : [ 5, 7, 9 ] */
+console.log( 'dstVector === srcVector1 : ', dstVector === srcVector1 );
+/* log : dstVector === srcVector1 : false */
 ```
 
 Так, як першим аргументом виклику `_.avector.add` є `null` то для запису результату додавання двох векторів `srcVector1` та `srcVector2` створюється новий контейнер такого ж типу `Array` як і вхідні аргументи, й в нього записується результат.
@@ -168,28 +163,27 @@ console.log( dstVector === srcVector1 );
 Скажімо є довгий типізований `Float32` буфер `buffer1` довжиною в гігабайт й другий буфер `buffer2` довжиною в мегабайт. Десь в першому буфері, з якимось зсувом, захований вектор. Увесь другий буфер інтерпретуємо, як вектор. Як здійснити множення першого вектора на другий із збереженням результату в першому буфері? Як уникнути непотрібного копіювання мегабайт даних із одного місця в інше під час використання математичних алгоритмів?
 
 ```js
-
 var buffer1 = new F32x([ 1, 2, 3, 4, 5, 6, 7 ]);
 var buffer2 = new F32x([ 4, 5, 6 ]);
 var vector1 = _.vectorAdapter.from( buffer1, 1, 3 );
 var vector2 = _.vectorAdapter.from( buffer2 );
 
-console.log( vector1.toStr() );
-/* log : "2.000, 3.000, 4.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 2.000, 3.000, 4.000 */
+console.log( 'vector2 : ', vector2.toStr() );
+/* log : vector2 : 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( vector1.toStr() );
-/* log : "6.000, 8.000, 10.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 6.000, 8.000, 10.000 */
+console.log( 'vector2 : ', vector2.toStr() );
+/* log : vector2 : 4.000, 5.000, 6.000 */
 
-console.log( vector1 );
-/* log : [ 1, 6, 8, 10, 5, 6, 7 ] */
-console.log( vector2 );
-/* log : [ 4, 5, 6 ] */
+console.log( 'buffer1 : ', buffer1 );
+/* log : buffer1 : [ 1, 6, 8, 10, 5, 6, 7 ] */
+console.log( 'buffer2 : ', buffer2 );
+/* log : buffer2 : [ 4, 5, 6 ] */
 ```
 
 При створенні адаптера `vector1` до буфера `buffer1` передаємо зсув в `1` елемент та задаємо, що вектор має довжину `3` елемента. Увесь другий буфер інтерпретуємо, як вектор. Результат операції додавання записується в вектор `vector1`. Так, як адаптер було створено із елементів 1 - 3 буфера `buffer1` то значення всіх елементів за межами цієї області ( range ) залишилися без змін.
@@ -212,28 +206,27 @@ console.log( vector2 );
 Приклад подібний до попереднього. Є довгий типізований `Float32` буфер `buffer1` довжиною в гігабайт й другий буфер `buffer2` довжиною в мегабайт. Десь в першому буфері, з якимось зсувом, захований вектор. Увесь другий буфер інтерпретуємо, як вектор. Як здійснити множення першого вектора на другий із збереженням результату в першому буфері? Але цього разу припустимо, що вектор в першому буфері не лише не починається із початку, але й не йде послідовно. Припустимо вектора `vector1` має ширину кроку 2. Тобто кожен наступний елемент вектора `vector1` знаходиться в буфері `buffer1` через один.
 
 ```js
-
 var buffer1 = new F32x([ 1, 2, 3, 4, 5, 6, 7 ]);
 var buffer2 = new F32x([ 4, 5, 6 ]);
 var vector1 = _.vectorAdapter.fromLongLrangeAndStride( buffer1, 1, 3, 2 );
 var vector2 = _.vectorAdapter.from( buffer2 );
 
-console.log( vector1.toStr() );
-/* log : "2.000, 4.000, 6.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 2.000, 4.000, 6.000 */
+console.log( 'vector2 : ', vector2.toStr() );
+/* log : vector1 : 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( vector1.toStr() );
-/* log : "6.000, 9.000, 12.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 6.000, 9.000, 12.000 */
+console.log( 'vector2 : ', vector2.toStr() );
+/* log : vector2 : 4.000, 5.000, 6.000 */
 
-console.log( vector1 );
-/* log : [ 1, 6, 3, 9, 5, 12, 7 ] */
-console.log( vector2 );
-/* log : [ 4, 5, 6 ] */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 : [ 1, 6, 3, 9, 5, 12, 7 ] */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 : [ 4, 5, 6 ] */
 ```
 
 Рутина `_.vectorAdapter.fromLongLrangeAndStride` створює адаптер `vector1` із зсувом `1` елемент, довжиною `3` елементи та шириною кроку `2` елементи. Далі додавання вектора `vector2` до вектора `vector1`.
@@ -284,22 +277,20 @@ console.log( vector2 );
 Для прикладу число можливо інтерпретувати, як вектор довільної довжини.
 
 ```js
-
 var vector1 = _.vectorAdapter.fromNumber( 1, 3 );
 var vector2 = _.vectorAdapter.from([ 4, 5, 6 ]);
 
-console.log( vector1.toStr() );
-/* log : [ 1, 1, 1 ] */
-console.log( vector2.toStr() );
-/* log : [ 4, 5, 6 ] */
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 1.000, 1.000, 1.000 */
+console.log( 'vector2 : ', vector2.toStr() );
+/* log : vector1 : 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector2, vector1 );
 
-console.log( vector1.toStr() );
-/* log : [ 1, 1, 1 ] */
-console.log( vector2.toStr() );
-/* log : [ 5, 6, 7 ] */
-
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 1.000, 1.000, 1.000 */
+console.log( 'vector2 : ', vector2.toStr() );
+/* log : vector2 : 5.000, 6.000, 7.000 */
 ```
 
 Адаптер `vector1` створюється із числа. Всі значення вектора `vector1` мають значення `1`, а його довжина `3` елементи. Додавання вектору `vector1` до вектору `vector2` має такий же ефекти які додавання скаляра `1` до вектору `vector2`.
@@ -311,16 +302,14 @@ console.log( vector2.toStr() );
 Для того щоб конвертувати адаптер в тип `Long` використайте рутину `_.avector.toLong()`. Рутина `toLong` повертає оригінал, що стоїть за адаптером якщо це можливо, інакше створює новий контейнер такого ж типу, як і оригінал із вектором у вмісті.
 
 ```js
-
 var long1 = new F32x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
 var vector1 = _.vectorAdapter.fromLongLrangeAndStride( long1, 1, 3, 2 );
 var long2 = _.avector.toLong( vector1 );
 
-console.log( long2 );
-/* log : [ 1, 3, 5 ] */
-console.log( _.strType( long2 ) );
-/* log : Float32Array */
-
+console.log( 'long2 : ', long2 );
+/* log : long2 : [ 1, 3, 5 ] */
+console.log( 'long2 type : ', _.strType( long2 ) );
+/* log : long2 type : Float32Array */
 ```
 
 ### Підсумок

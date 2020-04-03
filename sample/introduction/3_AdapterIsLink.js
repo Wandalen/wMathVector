@@ -5,5 +5,5 @@ var vector1 = _.vectorAdapter.from( array );
 
 _.avector.mul( array, 2 );
 
-console.log( vector1.toStr() );
-/* log : "2.000, 4.000, 6.000" */
+console.log( 'vector1 : ', vector1.toStr() );
+/* log : vector1 : 2.000, 4.000, 6.000 */
