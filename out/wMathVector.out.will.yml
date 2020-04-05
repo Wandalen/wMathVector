@@ -2,10 +2,13 @@ format: outwillfile-2.0
 root:
   - wMathVector.out
 consistency:
-  ../.ex.will.yml: &ref_0
+  wMathVector.out.will.yml: &ref_0
+    hash: a012d40a75d1deff2f1ac179d635615e
+    size: 42817
+  ../.ex.will.yml: &ref_1
     hash: 3549b304bf52b310cad91b4056915801
     size: 2959
-  ../.im.will.yml: &ref_1
+  ../.im.will.yml: &ref_2
     hash: 4db4d94a6d3f96304865a6715e9670f1
     size: 5264
 module:
@@ -33,11 +36,11 @@ module:
         constrained with storage format.
       enabled: 1
       version: 0.4.0
-      interpreters: &ref_2
+      interpreters:
         - njs >= 8.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords: &ref_3
+      keywords:
         - wTools
         - math
         - vector
@@ -45,12 +48,12 @@ module:
         - convolution
       license: MIT
       author: Kostiantyn Wandalen <wanalen@willbe.so>
-      contributors: &ref_4
+      contributors:
         - Kostiantyn Wandalen <wanalen@willbe.so>
         - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
         - Volodymyr M. <volodymyr.migdal@gmail.com>
       npm.name: wmathvector
-      npm.scripts: &ref_5
+      npm.scripts:
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -756,6 +759,24 @@ module:
           content: prime
         inherit:
           - files.transpile
+      exported.proto.export:
+        opts:
+          reflector: 'reflector::exported.proto.export*'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
+      exported.files.proto.export:
+        opts:
+          reflector: 'reflector::exported.files.proto.export*'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
     build:
       proto.export:
         steps:
@@ -844,8 +865,9 @@ module:
           content: proto
           export: 1
     consistency:
-      ../.ex.will.yml: *ref_0
-      ../.im.will.yml: *ref_1
+      wMathVector.out.will.yml: *ref_0
+      ../.ex.will.yml: *ref_1
+      ../.im.will.yml: *ref_2
   ../:
     about:
       name: wMathVector
@@ -870,13 +892,26 @@ module:
         constrained with storage format.
       enabled: 1
       version: 0.4.0
-      interpreters: *ref_2
-      keywords: *ref_3
+      interpreters:
+        - njs >= 8.0.0
+        - chrome >= 60.0.0
+        - firefox >= 60.0.0
+      keywords:
+        - wTools
+        - math
+        - vector
+        - dot product
+        - convolution
       license: MIT
       author: Kostiantyn Wandalen <wanalen@willbe.so>
-      contributors: *ref_4
+      contributors:
+        - Kostiantyn Wandalen <wanalen@willbe.so>
+        - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
+        - Volodymyr M. <volodymyr.migdal@gmail.com>
       npm.name: wmathvector
-      npm.scripts: *ref_5
+      npm.scripts:
+        test: wtest .run proto/**
+        docgen: wdocgen .build proto
     path:
       module.willfiles:
         criterion:
@@ -1566,3 +1601,6 @@ module:
       ../.im.will.yml:
         hash: 4db4d94a6d3f96304865a6715e9670f1
         size: 5264
+      wMathVector.out.will.yml:
+        hash: a012d40a75d1deff2f1ac179d635615e
+        size: 42817
