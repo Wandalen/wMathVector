@@ -169,7 +169,7 @@ dop.special = true;
 function clone( src )
 {
   let length = src.length;
-  let dst = this.makeSimilar( src );
+  let dst = this.MakeSimilar( src );
 
   _.assert( arguments.length === 1 )
 
@@ -194,23 +194,23 @@ dop.special = true;
 //
 
 /**
- * Routine makeSimilar() makes new instance of vector {-src-} with length defined by argument {-length-}.
+ * Routine MakeSimilar() makes new instance of vector {-src-} with length defined by argument {-length-}.
  *
  * @example
- * var got = _.avector.makeSimilar( [ 1, 2, 3 ], 2 );
+ * var got = _.avector.MakeSimilar( [ 1, 2, 3 ], 2 );
  * console.log( got );
  * // log [ undefined, undefined ];
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Number } length - Length of returned vector. If {-length-} is not defined, then routine makes vector with src.length.
  * @returns { Long|VectorAdapter } - Returns instance of source vector with defined length.
- * @function makeSimilar
+ * @function MakeSimilar
  * @throws { Error } If arguments.length is less then one or more then two.
  * @throws { Error } If {-length-} is not a Number.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
  */
 
-function makeSimilar( src, length )
+function MakeSimilar( src, length )
 {
   if( length === undefined )
   length = src.length;
@@ -223,7 +223,7 @@ function makeSimilar( src, length )
   return dst;
 }
 
-dop = makeSimilar.operation = Object.create( null );
+dop = MakeSimilar.operation = Object.create( null );
 dop.input = 'vr ?s';
 dop.atomWise = false;
 dop.homogeneous = false;
@@ -943,7 +943,7 @@ dop.modifying = false;
 function gather( dst, srcs )
 {
 
-  let atomsPerElement = srcs.length;
+  let scalarsPerElement = srcs.length;
   let l = dst.length / srcs.length;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -973,7 +973,7 @@ function gather( dst, srcs )
     for( let s = 0 ; s < srcs.length ; s++ )
     {
       let v = _.numberIs( srcs[ s ] ) ? srcs[ s ] : srcs[ s ].eGet( e );
-      dst.eSet( e*atomsPerElement + s , v );
+      dst.eSet( e*scalarsPerElement + s , v );
     }
   }
 
@@ -1803,7 +1803,7 @@ dop.modifying = true;
  * The routine matrixApplyTo() applies the provided source matrix {-srcMatrix-} to destination vector {-dst-}.
  *
  * @example
- * var srcMatrix = _.Matrix.make( [ 2, 2 ] ).copy( [ 1, 2, 3, 4 ] );
+ * var srcMatrix = _.Matrix.Make( [ 2, 2 ] ).copy( [ 1, 2, 3, 4 ] );
  * var got = _.avector.matrixApplyTo( [ 1, 1 ], srcMatrix );
  * console.log( got );
  * // log [ 3, 7 ]
@@ -1845,7 +1845,7 @@ dop.modifying = true;
  * returns the instance of the vector.
  *
  * @example
- * var srcMatrix = _.Matrix.make([ 3, 3 ]).copy
+ * var srcMatrix = _.Matrix.Make([ 3, 3 ]).copy
  * ([
  *   4, 0, 1,
  *   0, 5, 2,
@@ -1888,7 +1888,7 @@ dop.modifying = true;
  * returns the instance of the vector.
  *
  * @example
- * var matrix = _.Matrix.make([ 3, 3 ]).copy
+ * var matrix = _.Matrix.Make([ 3, 3 ]).copy
  * ([
  *   4, 0, 1,
  *   0, 5, 2,
@@ -1977,10 +1977,10 @@ dop.modifying = true;
 //
 
 /**
- * Routine swapAtoms() swaps elements of vector {-v-}.
+ * Routine scalarsSwap() swaps elements of vector {-v-}.
  *
  * @example
- * var got = _.avector.swapAtoms( [ 1, 2, 3 ], 0, 2 );
+ * var got = _.avector.scalarsSwap( [ 1, 2, 3 ], 0, 2 );
  * console.log( got );
  * // log [ 3, 2, 1 ];
  *
@@ -1988,14 +1988,14 @@ dop.modifying = true;
  * @param { Number } i1 - Index of first element.
  * @param { Number } i2 - Index of second element.
  * @returns { Long|VectorAdapter } - Returns vector {-v-}.
- * @function swapAtoms
+ * @function scalarsSwap
  * @throws { Error } If arguments.length is less or more then three.
  * @throws { Error } If i1 or i2 are out of ranges of vector {-v-}.
  * @throws { Error } If i1 or i2 are not Number.
  * @memberofs "module:Tools/math/Vector.wTools.avector","module:Tools/math/Vector.wTools.vectorAdapter"
  */
 
-function swapAtoms( v, i1, i2 )
+function scalarsSwap( v, i1, i2 )
 {
 
   _.assert( arguments.length === 3 );
@@ -2011,7 +2011,7 @@ function swapAtoms( v, i1, i2 )
   return v;
 }
 
-dop = swapAtoms.operation = Object.create( null );
+dop = scalarsSwap.operation = Object.create( null );
 dop.input = 'vw s s';
 dop.atomWise = false;
 dop.homogeneous = false;
@@ -2973,9 +2973,9 @@ function _distributionRangeSummaryEnd( o )
 
 let distributionRangeSummary = meta._operationReduceToScalar_functor
 ({
-  onAtom : _distributionRangeSummaryEach,
-  onAtomsBegin : _distributionRangeSummaryBegin,
-  onAtomsEnd : _distributionRangeSummaryEnd,
+  onScalar : _distributionRangeSummaryEach,
+  onScalarsBegin : _distributionRangeSummaryBegin,
+  onScalarsEnd : _distributionRangeSummaryEnd,
   returningNumber : false,
   returningPrimitive : false,
   interruptible : false,
@@ -4215,7 +4215,7 @@ let _routinesMathematical =
   assignVector,
 
   clone,
-  makeSimilar,
+  MakeSimilar,
 
   slice,
   // slicedAdapter, /* zzz : deprecate */
@@ -4273,7 +4273,7 @@ let _routinesMathematical =
   matrixDirectionsApply,
 
   swapVectors,
-  swapAtoms,
+  scalarsSwap,
 
   formate,
 
@@ -4358,7 +4358,7 @@ let _routinesMathematical =
   // atom-wise
 
   /*
-  _onAtomAtomwise_functor,
+  _onScalarAtomwise_functor,
   _onVectorsAtomwise_functor,
   */
 

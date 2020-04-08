@@ -33,7 +33,7 @@ let dop;
 
 let inv = dop = Object.create( null );
 
-dop.onAtom = function inv( o )
+dop.onScalar = function inv( o )
 {
   o.dstElement = 1 / o.srcElement;
 }
@@ -42,7 +42,7 @@ dop.onAtom = function inv( o )
 
 let invOrOne = dop = Object.create( null );
 
-dop.onAtom = function invOrOne( o )
+dop.onScalar = function invOrOne( o )
 {
   if( o.srcElement === 0 )
   o.dstElement = 1;
@@ -54,7 +54,7 @@ dop.onAtom = function invOrOne( o )
 
 let floorOperation = dop = Object.create( null );
 
-dop.onAtom = function floor( o )
+dop.onScalar = function floor( o )
 {
   o.dstElement = _floor( o.srcElement );
 }
@@ -63,7 +63,7 @@ dop.onAtom = function floor( o )
 
 let ceilOperation = dop = Object.create( null );
 
-dop.onAtom = function ceil( o )
+dop.onScalar = function ceil( o )
 {
   o.dstElement = _ceil( o.srcElement );
 }
@@ -72,7 +72,7 @@ dop.onAtom = function ceil( o )
 
 let roundOperation = dop = Object.create( null );
 
-dop.onAtom = function round( o )
+dop.onScalar = function round( o )
 {
   debugger;
   o.dstElement = _round( o.srcElement );
@@ -82,7 +82,7 @@ dop.onAtom = function round( o )
 
 let floorToPowerOfTwo = dop = Object.create( null );
 
-dop.onAtom = function floor( o )
+dop.onScalar = function floor( o )
 {
   o.dstElement = _.math.floorToPowerOfTwo( o.srcElement );
 }
@@ -91,7 +91,7 @@ dop.onAtom = function floor( o )
 
 let ceilToPowerOfTwo = dop = Object.create( null );
 
-dop.onAtom = function ceil( o )
+dop.onScalar = function ceil( o )
 {
   o.dstElement = _.math.ceilToPowerOfTwo( o.srcElement );
 }
@@ -100,7 +100,7 @@ dop.onAtom = function ceil( o )
 
 let roundToPowerOfTwo = dop = Object.create( null );
 
-dop.onAtom = function round( o )
+dop.onScalar = function round( o )
 {
   o.dstElement = _.math.roundToPowerOfTwo( o.srcElement );
 }
@@ -111,7 +111,7 @@ dop.onAtom = function round( o )
 
 let isNumber = dop = Object.create( null );
 
-dop.onAtom = function isNumber( o )
+dop.onScalar = function isNumber( o )
 {
   o.dstElement = _.numberIs( o.srcElement );
 }
@@ -120,7 +120,7 @@ dop.onAtom = function isNumber( o )
 
 let isZero = dop = Object.create( null );
 
-dop.onAtom = function isZero( o )
+dop.onScalar = function isZero( o )
 {
   o.dstElement = o.srcElement === 0;
 }
@@ -129,7 +129,7 @@ dop.onAtom = function isZero( o )
 
 let isFinite = dop = Object.create( null );
 
-dop.onAtom = function isFinite( o )
+dop.onScalar = function isFinite( o )
 {
   o.dstElement = _.numberIsFinite( o.srcElement );
 }
@@ -138,7 +138,7 @@ dop.onAtom = function isFinite( o )
 
 let isInfinite = dop = Object.create( null );
 
-dop.onAtom = function isInfinite( o )
+dop.onScalar = function isInfinite( o )
 {
   o.dstElement = _.numberIsInfinite( o.srcElement );
 }
@@ -147,7 +147,7 @@ dop.onAtom = function isInfinite( o )
 
 let isNan = dop = Object.create( null );
 
-dop.onAtom = function isNan( o )
+dop.onScalar = function isNan( o )
 {
   o.dstElement = isNaN( o.srcElement );
 }
@@ -156,7 +156,7 @@ dop.onAtom = function isNan( o )
 
 let isInt = dop = Object.create( null );
 
-dop.onAtom = function isInt( o )
+dop.onScalar = function isInt( o )
 {
   o.dstElement = _.intIs( o.srcElement );
 }
@@ -165,7 +165,7 @@ dop.onAtom = function isInt( o )
 
 let isString = dop = Object.create( null );
 
-dop.onAtom = function isString( o )
+dop.onScalar = function isString( o )
 {
   o.dstElement = _.strIs( o.srcElement );
 }
@@ -176,7 +176,7 @@ dop.onAtom = function isString( o )
 
 let isIdentical = dop = Object.create( null );
 
-isIdentical.onAtom = function isIdentical( o )
+isIdentical.onScalar = function isIdentical( o )
 {
   o.dstElement = o.dstElement === o.srcElement;
 }
@@ -185,7 +185,7 @@ isIdentical.onAtom = function isIdentical( o )
 
 let isNotIdentical = dop = Object.create( null );
 
-dop.onAtom = function isNotIdentical( o )
+dop.onScalar = function isNotIdentical( o )
 {
   o.dstElement = o.dstElement !== o.srcElement;
 }
@@ -194,7 +194,7 @@ dop.onAtom = function isNotIdentical( o )
 
 let isEquivalent = dop = Object.create( null );
 
-dop.onAtom = function isEquivalent( o )
+dop.onScalar = function isEquivalent( o )
 {
   o.dstElement = _.numbersAreEquivalent( o.dstElement, o.srcElement );
 }
@@ -203,7 +203,7 @@ dop.onAtom = function isEquivalent( o )
 
 // let isEquivalent = dop = Object.create( null );
 //
-// dop.onAtom = function isEquivalent( o )
+// dop.onScalar = function isEquivalent( o )
 // {
 //   _.assert( o.args.length <= 4 );
 //
@@ -222,7 +222,7 @@ dop.onAtom = function isEquivalent( o )
 
 let isNotEquivalent = dop = Object.create( null );
 
-dop.onAtom = function isNotEquivalent( o )
+dop.onScalar = function isNotEquivalent( o )
 {
   o.dstElement = !_.numbersAreEquivalent( o.dstElement, o.srcElement );
 }
@@ -231,7 +231,7 @@ dop.onAtom = function isNotEquivalent( o )
 
 let isGreater = dop = Object.create( null );
 
-dop.onAtom = function isGreater( o )
+dop.onScalar = function isGreater( o )
 {
   o.dstElement = o.dstElement > o.srcElement;
 }
@@ -240,7 +240,7 @@ dop.onAtom = function isGreater( o )
 
 let isGreaterEqual = dop = Object.create( null );
 
-dop.onAtom = function isGreaterEqual( o )
+dop.onScalar = function isGreaterEqual( o )
 {
   o.dstElement = o.dstElement >= o.srcElement;
 }
@@ -249,7 +249,7 @@ dop.onAtom = function isGreaterEqual( o )
 
 let isGreaterEqualAprox = dop = Object.create( null );
 
-dop.onAtom = function isGreaterEqualAprox( o )
+dop.onScalar = function isGreaterEqualAprox( o )
 {
   let result = o.dstElement >= o.srcElement;
   if( !result )
@@ -261,7 +261,7 @@ dop.onAtom = function isGreaterEqualAprox( o )
 
 let isGreaterAprox = dop = Object.create( null );
 
-dop.onAtom = function isGreaterAprox( o )
+dop.onScalar = function isGreaterAprox( o )
 {
   let result = o.dstElement > o.srcElement;
   if( !result )
@@ -273,7 +273,7 @@ dop.onAtom = function isGreaterAprox( o )
 
 let isLess = dop = Object.create( null );
 
-dop.onAtom = function isLess( o )
+dop.onScalar = function isLess( o )
 {
   o.dstElement = o.dstElement < o.srcElement;
 }
@@ -282,7 +282,7 @@ dop.onAtom = function isLess( o )
 
 let isLessEqual = dop = Object.create( null );
 
-dop.onAtom = function isLessEqual( o )
+dop.onScalar = function isLessEqual( o )
 {
   o.dstElement = o.dstElement <= o.srcElement;
 }
@@ -291,7 +291,7 @@ dop.onAtom = function isLessEqual( o )
 
 let isLessEqualAprox = dop = Object.create( null );
 
-dop.onAtom = function isLessEqualAprox( o )
+dop.onScalar = function isLessEqualAprox( o )
 {
   let result = o.dstElement <= o.srcElement;
   if( !result )
@@ -303,7 +303,7 @@ dop.onAtom = function isLessEqualAprox( o )
 
 let isLessAprox = dop = Object.create( null );
 
-dop.onAtom = function isLessAprox( o )
+dop.onScalar = function isLessAprox( o )
 {
   let result = o.dstElement < o.srcElement;
   if( !result )
@@ -317,12 +317,12 @@ dop.onAtom = function isLessAprox( o )
 
 let add = dop = Object.create( null );
 
-add.onAtom = function add( o )
+add.onScalar = function add( o )
 {
   o.dstElement = o.dstElement + o.srcElement;
 }
 
-add.onAtomsBegin = function addBegin( o )
+add.onScalarsBegin = function addBegin( o )
 {
   o.dstElement = 0;
 }
@@ -331,12 +331,12 @@ add.onAtomsBegin = function addBegin( o )
 
 let sub = dop = Object.create( null );
 
-sub.onAtom = function sub( o )
+sub.onScalar = function sub( o )
 {
   o.dstElement = o.dstElement - o.srcElement;
 }
 
-sub.onAtomsBegin = function subBegin( o )
+sub.onScalarsBegin = function subBegin( o )
 {
   o.dstElement = 0;
 }
@@ -345,12 +345,12 @@ sub.onAtomsBegin = function subBegin( o )
 
 let mul = dop = Object.create( null );
 
-mul.onAtom = function mul( o )
+mul.onScalar = function mul( o )
 {
   o.dstElement = o.dstElement * o.srcElement;
 }
 
-mul.onAtomsBegin = function mulBegin( o )
+mul.onScalarsBegin = function mulBegin( o )
 {
   o.dstElement = 1;
 }
@@ -359,12 +359,12 @@ mul.onAtomsBegin = function mulBegin( o )
 
 let div = dop = Object.create( null );
 
-div.onAtom = function div( o )
+div.onScalar = function div( o )
 {
   o.dstElement = o.dstElement / o.srcElement;
 }
 
-div.onAtomsBegin = function divBegin( o )
+div.onScalarsBegin = function divBegin( o )
 {
   o.dstElement = 1;
 }
@@ -373,7 +373,7 @@ div.onAtomsBegin = function divBegin( o )
 
 let assign = dop = Object.create( null );
 
-assign.onAtom = function assign( o )
+assign.onScalar = function assign( o )
 {
   o.dstElement = o.srcElement;
 }
@@ -382,12 +382,12 @@ assign.onAtom = function assign( o )
 
 let min = dop = Object.create( null );
 
-min.onAtom = function min( o )
+min.onScalar = function min( o )
 {
   o.dstElement = _min( o.dstElement , o.srcElement );
 }
 
-min.onAtomsBegin = function minBegin( o )
+min.onScalarsBegin = function minBegin( o )
 {
   o.dstElement = +Infinity;
 }
@@ -396,12 +396,12 @@ min.onAtomsBegin = function minBegin( o )
 
 let max = dop = Object.create( null );
 
-max.onAtom = function max( o )
+max.onScalar = function max( o )
 {
   o.dstElement = _max( o.dstElement , o.srcElement );
 }
 
-max.onAtomsBegin = function maxBegin( o )
+max.onScalarsBegin = function maxBegin( o )
 {
   o.dstElement = +Infinity;
 }
@@ -412,7 +412,7 @@ max.onAtomsBegin = function maxBegin( o )
 
 let addScaled = dop = Object.create( null );
 
-dop.onAtom = function addScaled( o )
+dop.onScalar = function addScaled( o )
 {
   _.assert( o.srcElements.length === 3 );
   o.dstElement = o.srcElements[ 0 ] + ( o.srcElements[ 1 ]*o.srcElements[ 2 ] );
@@ -429,7 +429,7 @@ dop.usingDstAsSrc = true;
 
 let subScaled = dop = Object.create( null );
 
-dop.onAtom = function subScaled( o )
+dop.onScalar = function subScaled( o )
 {
   o.dstElement = o.srcElements[ 0 ] - ( o.srcElements[ 1 ]*o.srcElements[ 2 ] );
 }
@@ -444,7 +444,7 @@ dop.usingDstAsSrc = true;
 
 let mulScaled = dop = Object.create( null );
 
-dop.onAtom = function mulScaled( o )
+dop.onScalar = function mulScaled( o )
 {
   o.dstElement = o.srcElements[ 0 ] * ( o.srcElements[ 1 ]*o.srcElements[ 2 ] );
 }
@@ -459,7 +459,7 @@ dop.usingDstAsSrc = true;
 
 let divScaled = dop = Object.create( null );
 
-dop.onAtom = function divScaled( o )
+dop.onScalar = function divScaled( o )
 {
   o.dstElement = o.srcElements[ 0 ] / ( o.srcElements[ 1 ]*o.srcElements[ 2 ] );
 }
@@ -474,7 +474,7 @@ dop.usingDstAsSrc = true;
 
 let clamp = dop = Object.create( null );
 
-dop.onAtom = function clamp( o )
+dop.onScalar = function clamp( o )
 {
   o.dstElement = _min( _max( o.srcElements[ 0 ] , o.srcElements[ 1 ] ), o.srcElements[ 2 ] );
 }
@@ -492,7 +492,7 @@ dop.usingDstAsSrc = true;
 
 let randomInRange = dop = Object.create( null );
 
-dop.onAtom = function randomInRange( o )
+dop.onScalar = function randomInRange( o )
 {
   o.dstElement = o.srcElements[ 1 ] + Math.random()*( o.srcElements[ 2 ]-o.srcElements[ 1 ] );
 }
@@ -509,7 +509,7 @@ dop.usingDstAsSrc = true;
 
 let mix = dop = Object.create( null );
 
-dop.onAtom = function mix( o )
+dop.onScalar = function mix( o )
 {
   _.assert( o.srcElements.length === 3 );
   o.dstElement = ( o.srcElements[ 0 ] )*( 1-o.srcElements[ 2 ] ) + ( o.srcElements[ 1 ] )*( o.srcElements[ 2 ] );
@@ -529,18 +529,18 @@ dop.usingDstAsSrc = true;
 
 let polynomApply = dop = Object.create( null );
 
-dop.onAtom = function polynomApply( o )
+dop.onScalar = function polynomApply( o )
 {
   let x = o.args[ 1 ];
   o.result += o.element * _pow( x, o.key );
 }
 
-dop.onAtomsBegin = function( o )
+dop.onScalarsBegin = function( o )
 {
   o.result = 0;
 }
 
-dop.onAtomsEnd = function( o )
+dop.onScalarsEnd = function( o )
 {
 }
 
@@ -551,20 +551,20 @@ dop.takingVectorsOnly = false;
 
 let mean = dop = Object.create( null );
 
-dop.onAtom = function mean( o )
+dop.onScalar = function mean( o )
 {
   o.result.total += o.element;
   o.result.nelement += 1;
 }
 
-dop.onAtomsBegin = function( o )
+dop.onScalarsBegin = function( o )
 {
   o.result = dop = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
 }
 
-dop.onAtomsEnd = function( o )
+dop.onScalarsEnd = function( o )
 {
   if( o.result.nelement )
   o.result = o.result.total / o.result.nelement;
@@ -579,20 +579,20 @@ dop.output = 's';
 
 let moment = dop = Object.create( null );
 
-dop.onAtom = function moment( o )
+dop.onScalar = function moment( o )
 {
   o.result.total += _pow( o.element, o.args[ 1 ] );
   o.result.nelement += 1;
 }
 
-dop.onAtomsBegin = function( o )
+dop.onScalarsBegin = function( o )
 {
   o.result = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
 }
 
-dop.onAtomsEnd = function( o )
+dop.onScalarsEnd = function( o )
 {
   if( o.result.nelement )
   o.result = o.result.total / o.result.nelement;
@@ -606,7 +606,7 @@ dop.input = 'vr s';
 
 let _momentCentral = dop = Object.create( null );
 
-dop.onAtom = function _momentCentral( o )
+dop.onScalar = function _momentCentral( o )
 {
   let degree = o.args[ 1 ];
   let mean = o.args[ 2 ];
@@ -614,7 +614,7 @@ dop.onAtom = function _momentCentral( o )
   o.result.nelement += 1;
 }
 
-dop.onAtomsBegin = function( o )
+dop.onScalarsBegin = function( o )
 {
   let degree = o.args[ 1 ];
   let mean = o.args[ 2 ];
@@ -625,7 +625,7 @@ dop.onAtomsBegin = function( o )
   o.result.nelement = 0;
 }
 
-dop.onAtomsEnd = function( o )
+dop.onScalarsEnd = function( o )
 {
   if( o.result.nelement )
   o.result = o.result.total / o.result.nelement;
@@ -639,20 +639,20 @@ dop.input = 'vr s s';
 
 let reduceToMean = dop = Object.create( null );
 
-dop.onAtom = function reduceToMean( o )
+dop.onScalar = function reduceToMean( o )
 {
   o.result.total += o.element;
   o.result.nelement += 1;
 }
 
-dop.onAtomsBegin = function( o )
+dop.onScalarsBegin = function( o )
 {
   o.result = Object.create( null );
   o.result.total = 0;
   o.result.nelement = 0;
 }
 
-dop.onAtomsEnd = function( o )
+dop.onScalarsEnd = function( o )
 {
   o.result = o.result.total / o.result.nelement;
 }
@@ -661,12 +661,12 @@ dop.onAtomsEnd = function( o )
 
 let reduceToProduct = dop = Object.create( null );
 
-dop.onAtom = function reduceToProduct( o )
+dop.onScalar = function reduceToProduct( o )
 {
   o.result *= o.element;
 }
 
-dop.onAtomsBegin = function( o )
+dop.onScalarsBegin = function( o )
 {
   o.result = 1;
 }
@@ -675,12 +675,12 @@ dop.onAtomsBegin = function( o )
 
 let reduceToSum = dop = Object.create( null );
 
-dop.onAtom = function reduceToSum( o )
+dop.onScalar = function reduceToSum( o )
 {
   o.result += o.element;
 }
 
-dop.onAtomsBegin = function( o )
+dop.onScalarsBegin = function( o )
 {
   o.result = 0;
 }
@@ -689,13 +689,13 @@ dop.onAtomsBegin = function( o )
 
 let reduceToAbsSum = dop = Object.create( null );
 
-dop.onAtom = function reduceToAbsSum( o )
+dop.onScalar = function reduceToAbsSum( o )
 {
   debugger;
   o.result += abs( o.element );
 }
 
-dop.onAtomsBegin = function( o )
+dop.onScalarsBegin = function( o )
 {
   o.result = 0;
 }
@@ -704,12 +704,12 @@ dop.onAtomsBegin = function( o )
 
 let reduceToMagSqr = dop = Object.create( null );
 
-dop.onAtom = function reduceToMagSqr( o )
+dop.onScalar = function reduceToMagSqr( o )
 {
   o.result += _sqr( o.element );
 }
 
-dop.onAtomsBegin = function( o )
+dop.onScalarsBegin = function( o )
 {
   o.result = 0;
 }
@@ -718,7 +718,7 @@ dop.onAtomsBegin = function( o )
 
 let reduceToMag = dop = _.mapExtend( null, reduceToMagSqr );
 
-dop.onAtomsEnd = function reduceToMag( o )
+dop.onScalarsEnd = function reduceToMag( o )
 {
   o.result = _sqrt( o.result );
 }
