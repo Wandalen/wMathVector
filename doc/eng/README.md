@@ -1,16 +1,21 @@
-<!--
-## Концепції
+## Concepts
 
 <details>
-  <summary><a href="./concept/RoutineInput.md#Масив-аргументів">
-    Масив аргументів
+  <summary><a href="./concept/Vector.md">
+    Vector
   </a></summary>
-    Це сукупність параметрів рутини, котрі сформовано в псевдомасив <code>arguments</code>.
+    An ordered set of scalars.
 </details>
--->
+
+<details>
+  <summary><a href="./concept/VectorAdapter.md">
+    Vector adapter
+  </a></summary>
+    Vector adapter is an implementation of the abstract interface, a kind of link that defines how to interpret data as the vector.
+</details>
 
 
-## Туторіали
+## Tutorials
 
 <details>
   <summary><a href="./tutorial/Introduction.md">

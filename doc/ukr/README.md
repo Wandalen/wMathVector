@@ -8,7 +8,7 @@
 </details>
 
 <details>
-  <summary><a href="./concept/Vector.md">
+  <summary><a href="./concept/VectorAdapter.md">
     Вектор адаптер
   </a></summary>
     Вектор адаптер - це реалізація абстрактного інтерфейса, різновид посилання, що задає спосіб інтерпретації даних, як вектора.
