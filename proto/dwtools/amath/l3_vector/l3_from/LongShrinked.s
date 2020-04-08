@@ -91,7 +91,8 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
  *
  * @returns { VectorAdapter } - Returns new VectorAdapter from part of source Long.
  * @function fromLongLrange
- * @memberof namespace:wTools.vectorAdapter
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function fromLongLrange( srcLong, offset, length )

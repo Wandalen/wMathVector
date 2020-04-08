@@ -41,7 +41,8 @@ let meta = _.vectorAdapter._meta;
  * @function to
  * @throws { Error } If arguments.length is not equal to one.
  * @throws { Error } If {-cls-} is not Array, _.Matrix, _.VectorAdapter.
- * @memberof "namespace:wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function to( cls )
@@ -86,7 +87,8 @@ function to( cls )
  * @returns { Number } - Returns element of vector.
  * @function eGet
  * @throws { Error } If arguments.length is not equal to one.
- * @memberof "namespace:wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function eGet( index )
@@ -113,7 +115,8 @@ function eGet( index )
  * @returns { Undefined } - Returns not a value, sets element of vector.
  * @function eSet
  * @throws { Error } If arguments.length is not equal to two.
- * @memberof "namespace:wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function eSet( index, val )
@@ -148,7 +151,8 @@ function eSet( index, val )
  * @returns { VectorAdapter } - Returns adapter filled by content of source vector.
  * @function copy
  * @throws { Error } If arguments.length is not equal to one.
- * @memberof "namespace:wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function copy( src )
@@ -289,7 +293,8 @@ function copy( src )
  * @returns { Boolean } - Returns whether the vectors are identical.
  * @function identicalWith
  * @throws { Error } If arguments.length is less then one or more then two.
- * @memberof "namespace:wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function identicalWith( src2, it )
@@ -325,7 +330,8 @@ identicalWith.modifying = false;
  * @returns { Boolean } - Returns whether the vectors are equivalent.
  * @function equivalentWith
  * @throws { Error } If arguments.length is less then one or more then two.
- * @memberof "namespace:wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function equivalentWith( src2, it )
@@ -385,7 +391,8 @@ equivalentWith.modifying = false;
  * @returns { Boolean } - Returns whether the vectors have identical length.
  * @function hasShape
  * @throws { Error } If arguments.length is less then one or more then two.
- * @memberof "namespace:wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function hasShape( src )

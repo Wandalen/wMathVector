@@ -87,7 +87,8 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
  * @function fromLong
  * @throws { Error } If arguments.length is not equal to one.
  * @throws { Error } If {-srcLong-} is not a Long, not a VectorAdapter.
- * @memberof "namespace:wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function fromLong( srcLong )
