@@ -64,7 +64,7 @@ function to( cls )
   }
   else if( _.constructorIsMatrix( cls ) )
   {
-    return _.Matrix.makeCol( this )
+    return _.Matrix.MakeCol( this )
   }
 
   _.assert( 0, 'unknown class to convert to', _.strType( cls ) );
@@ -170,11 +170,11 @@ function copy( src )
 
 // //
 //
-// function makeSimilar( length )
+// function MakeSimilar( length )
 // {
 //   let self = this;
 //   _.assert( arguments.length === 0 || arguments.length === 1 );
-//   return this.vectorAdapter.makeSimilar( self, length );
+//   return this.vectorAdapter.MakeSimilar( self, length );
 // }
 
 // //
@@ -417,7 +417,7 @@ let Proto =
   // assign,
   copy,
 
-  // makeSimilar,
+  // MakeSimilar,
 
   // slice,
   // slicedLong,
@@ -452,7 +452,7 @@ _.assert( _.routineIs( Self.prototype.magSqr ) );
 _.assert( _.routineIs( Self.prototype.toLong ) );
 _.assert( _.routineIs( Self.prototype.toStr ) );
 _.assert( _.routineIs( Self.prototype.abs ) );
-_.assert( _.routineIs( Self.prototype.makeSimilar ) );
+_.assert( _.routineIs( Self.prototype.MakeSimilar ) );
 _.assert( _.routineIs( Self.prototype.assign ) );
 _.assert( _.routineIs( Self.prototype.slice ) );
 _.assert( _.routineIs( Self.prototype.allZero ) );

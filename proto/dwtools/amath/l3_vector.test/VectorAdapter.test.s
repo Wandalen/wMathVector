@@ -6076,29 +6076,29 @@ function swapVectors( test )
   test.identical( v1, v1Expected );
   test.identical( v2, v2Expected );
 
-  test.case = 'swapAtoms vectors'; /* */
+  test.case = 'scalarsSwap vectors'; /* */
 
   var v1 = vad.from([ 1, 2, 3 ]);
   var v1Expected = vad.from([ 3, 2, 1 ]);
-  var r = vad.swapAtoms( v1, 0, 2 );
+  var r = vad.scalarsSwap( v1, 0, 2 );
 
   test.is( r === v1 );
   test.identical( v1, v1Expected );
 
-  test.case = 'swapAtoms arrays'; /* */
+  test.case = 'scalarsSwap arrays'; /* */
 
   var v1 = [ 1, 2, 3 ];
   var v1Expected = [ 3, 2, 1 ];
-  var r = avector.swapAtoms( v1, 0, 2 );
+  var r = avector.scalarsSwap( v1, 0, 2 );
 
   test.is( r === v1 );
   test.identical( v1, v1Expected );
 
-  test.case = 'swapAtoms array with single atom'; /* */
+  test.case = 'scalarsSwap array with single atom'; /* */
 
   var v1 = [ 1 ];
   var v1Expected = [ 1 ];
-  var r = avector.swapAtoms( v1, 0, 0 );
+  var r = avector.scalarsSwap( v1, 0, 0 );
 
   test.is( r === v1 );
   test.identical( v1, v1Expected );
@@ -6115,13 +6115,13 @@ function swapVectors( test )
   test.shouldThrowErrorSync( () => vad.swapVectors( vad.from([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
   test.shouldThrowErrorSync( () => vad.swapVectors( [ 1, 2, 3 ], [ 1, 2, 3 ] ) );
 
-  test.shouldThrowErrorSync( () => vad.swapAtoms() );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]) ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0 ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0, +3 ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), 0, -1 ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), '0', '1' ) );
-  test.shouldThrowErrorSync( () => vad.swapAtoms( vad.from([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => vad.scalarsSwap() );
+  test.shouldThrowErrorSync( () => vad.scalarsSwap( vad.from([ 1, 2, 3 ]) ) );
+  test.shouldThrowErrorSync( () => vad.scalarsSwap( vad.from([ 1, 2, 3 ]), 0 ) );
+  test.shouldThrowErrorSync( () => vad.scalarsSwap( vad.from([ 1, 2, 3 ]), 0, +3 ) );
+  test.shouldThrowErrorSync( () => vad.scalarsSwap( vad.from([ 1, 2, 3 ]), 0, -1 ) );
+  test.shouldThrowErrorSync( () => vad.scalarsSwap( vad.from([ 1, 2, 3 ]), '0', '1' ) );
+  test.shouldThrowErrorSync( () => vad.scalarsSwap( vad.from([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
 
 }
 
