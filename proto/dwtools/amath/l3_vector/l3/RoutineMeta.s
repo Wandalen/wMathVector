@@ -300,7 +300,6 @@ function _containerTypeDeclare()
   type.name = 'VectorAdapter';
   type._elementGet = function _elementGet( container, key )
   {
-    debugger;
     return container.eGet( key );
   }
   type._elementSet = function _elementSet( container, key, val )
@@ -399,47 +398,47 @@ Expects [ ${seria[ index ].join( ', ' )} ]`;
 
 //
 
-function _onAtomGenBegin( dop )
+function _onScalarGenBegin( dop )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   // _.assert( _.arrayIs( dop.input ) );
   _.assert( _.mapIs( dop.input ) );
-  _.assert( _.routineIs( dop.onAtom ) || _.arrayIs( dop.onAtom ) );
+  _.assert( _.routineIs( dop.onScalar ) || _.arrayIs( dop.onScalar ) );
 
 }
 
 //
 
-function _onAtomGenEnd( dop, onAtom )
+function _onScalarGenEnd( dop, onScalar )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  onAtom.own = { onAtom : dop.onAtom };
+  onScalar.own = { onScalar : dop.onScalar };
 
-  if( _.routineIs( dop.onAtom ) )
-  dop.onAtom = [ dop.onAtom ];
-  dop.onAtom.unshift( onAtom );
+  if( _.routineIs( dop.onScalar ) )
+  dop.onScalar = [ dop.onScalar ];
+  dop.onScalar.unshift( onScalar );
 
 }
 
 //
 
-function _onAtomForRoutine_functor( dop )
+function _onScalarForRoutine_functor( dop )
 {
   let meta = this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( !dop.onAtom_functor );
+  _.assert( !dop.onScalar_functor );
 
   let handleAtom = null;
-  let onAtom0 = dop.onAtom[ 0 ];
+  let onScalar0 = dop.onScalar[ 0 ];
 
-  _.assert( _.routineIs( onAtom0 ) );
-  _.assert( dop.onAtom.length === 1 );
+  _.assert( _.routineIs( onScalar0 ) );
+  _.assert( dop.onScalar.length === 1 );
 
-  meta._onAtomGenBegin( dop );
+  meta._onScalarGenBegin( dop );
 
   if( dop.input.definition === 'vw +vr' || dop.input.definition === 'vw *vr' )
   {
@@ -483,7 +482,7 @@ function _onAtomForRoutine_functor( dop )
   }
   else _.assert( 0, `Unknown kind of input ${dop.input.definition}` );
 
-  meta._onAtomGenEnd( dop, handleAtom );
+  meta._onScalarGenEnd( dop, handleAtom );
 
   return handleAtom;
 
@@ -491,7 +490,7 @@ function _onAtomForRoutine_functor( dop )
 
   function mixedDstScalarAtom( o )
   {
-    let r = onAtom0.call( this, o );
+    let r = onScalar0.call( this, o );
     _.assert( r === undefined );
     _.assert( _.numberIs( o.dstElement ) );
     if( !_.numberIs( o.dstContainer ) )
@@ -502,7 +501,7 @@ function _onAtomForRoutine_functor( dop )
 
   function mixedAtom( o )
   {
-    let r = onAtom0.call( this, o );
+    let r = onScalar0.call( this, o );
     _.assert( r === undefined );
     _.assert( _.numberIs( o.dstElement ) );
     o.dstContainer.eSet( o.key, o.dstElement );
@@ -520,7 +519,7 @@ function _onAtomForRoutine_functor( dop )
       o.srcContainerIndex = a;
       o.srcElement = src.eGet( o.key );
 
-      let r = onAtom0.call( this, o );
+      let r = onScalar0.call( this, o );
       _.assert( r === undefined );
     }
 
@@ -557,13 +556,13 @@ function _vectorizeDst( o, dop )
     {
       if( dst === null )
       {
-        o.dstContainer = this.vectorAdapter.makeSimilar( src );
+        o.dstContainer = this.vectorAdapter.MakeSimilar( src );
         o.dstContainer.assign( o.args[ 1 ] );
         dst = o.dstContainer;
       }
       else
       {
-        o.dstContainer = this.vectorAdapter.makeSimilar( src );
+        o.dstContainer = this.vectorAdapter.MakeSimilar( src );
         o.dstContainer.assign( dst );
         dst = o.dstContainer;
       }
@@ -645,7 +644,7 @@ function _vectorsCallBegin( o, dop )
   if( !dop.reducing && !dop.usingDstAsSrc )
   if( minimalCall && dstProvided )
   {
-    o.dstContainer = this.vectorAdapter.makeSimilar( o.dstContainer );
+    o.dstContainer = this.vectorAdapter.MakeSimilar( o.dstContainer );
   }
 
   /* */
@@ -748,18 +747,18 @@ function _vectorsGenBegin( dop )
 {
   let meta = this;
 
-  if( _.routineIs( dop.onAtom ) )
-  dop.onAtom = [ dop.onAtom ];
+  if( _.routineIs( dop.onScalar ) )
+  dop.onScalar = [ dop.onScalar ];
 
   let takingArguments = dop.takingArguments;
-  let onAtom = dop.onAtom[ 0 ];
+  let onScalar = dop.onScalar[ 0 ];
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( takingArguments.length === 2 );
   _.assert( dop.handleAtom === undefined );
-  _.assert( _.arrayIs( dop.onAtom ) );
-  _.assert( _.routineIs( onAtom ) );
-  _.assert( dop.onAtom.length > 1 );
+  _.assert( _.arrayIs( dop.onScalar ) );
+  _.assert( _.routineIs( onScalar ) );
+  _.assert( dop.onScalar.length > 1 );
   _.assert( dop.usingDstAsSrc !== undefined && dop.usingDstAsSrc !== null );
   _.assert( dop.usingExtraSrcs !== undefined && dop.usingExtraSrcs !== null );
 
@@ -771,17 +770,17 @@ function _vectorsGenEnd( dop, onVectors, onVectorsBegin )
 {
 
   let takingArguments = dop.takingArguments;
-  let onAtom = dop.onAtom[ 0 ];
+  let onScalar = dop.onScalar[ 0 ];
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.arrayIs( dop.onVectors ) && dop.onVectors.length === 0 );
-  _.assert( _.routineIs( onAtom ) );
-  _.assert( dop.onAtom.length > 1 );
+  _.assert( _.routineIs( onScalar ) );
+  _.assert( dop.onScalar.length > 1 );
   _.assert( _.routineIs( onVectors ) );
   _.assert( _.routineIs( onVectorsBegin ) );
   _.assert( _.routineIs( dop.generator ) );
 
-  onVectors.own = { onAtom : onAtom };
+  onVectors.own = { onScalar : onScalar };
   onVectors.operation = dop;
 
   if( !dop.onVectors )
@@ -806,7 +805,7 @@ function _onVectorsForRoutine_functor( dop )
   let onVectors = null;
   let onVectorsBegin = null;
   let onVectorsBegin0 = dop.onVectorsBegin[ 0 ];
-  let onAtom0 = dop.onAtom[ 0 ];
+  let onScalar0 = dop.onScalar[ 0 ];
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -818,7 +817,7 @@ function _onVectorsForRoutine_functor( dop )
     onVectorsBegin = vonlyVectorsBegin;
     onVectors = vonlyVectors;
 
-    onVectors.own = { onAtom : onAtom0 };
+    onVectors.own = { onScalar : onScalar0 };
     onVectors.operation = dop;
     dop.takingArguments = takingArguments;
     dop.takingVectors = takingArguments;
@@ -842,7 +841,7 @@ function _onVectorsForRoutine_functor( dop )
     onVectorsBegin = vsVectorsBegin;
     onVectors = vsVectors_functor( allowingDstScalar );
 
-    onVectors.own = { onAtom : onAtom0 };
+    onVectors.own = { onScalar : onScalar0 };
     onVectors.operation = dop;
     dop.takingArguments = [ 2, 2 ];
     if( !dop.takingVectors )
@@ -926,7 +925,7 @@ function _onVectorsForRoutine_functor( dop )
     {
       o.key = k;
       o.dstElement = dst.eGet( k );
-      onAtom0.call( this, o );
+      onScalar0.call( this, o );
     }
 
     return dst;
@@ -978,7 +977,7 @@ function _onVectorsForRoutine_functor( dop )
       {
         o.key = 0;
         o.dstElement = dst;
-        onAtom0.call( this, o );
+        onScalar0.call( this, o );
         dst = o.dstElement;
       }
       else
@@ -986,7 +985,7 @@ function _onVectorsForRoutine_functor( dop )
       {
         o.key = k;
         o.dstElement = dst.eGet( k );
-        onAtom0.call( this, o );
+        onScalar0.call( this, o );
       }
 
       return dst;
@@ -1024,14 +1023,14 @@ function _routineForOperation_functor( dop )
   _.assert( _.mapIs( dop ) );
 
   if( _.routineIs( dop ) )
-  dop = _.mapExtend( null, { onAtom : dop } );
+  dop = _.mapExtend( null, { onScalar : dop } );
   else
   dop = _.mapExtend( null, dop );
 
-  let onAtom = dop.onAtom[ 0 ];
+  let onScalar = dop.onScalar[ 0 ];
 
   if( dop.takingArguments === undefined )
-  dop.takingArguments = onAtom.takingArguments;
+  dop.takingArguments = onScalar.takingArguments;
 
   dop.generator = _routineForOperation_functor;
 
@@ -1039,8 +1038,8 @@ function _routineForOperation_functor( dop )
 
   _.assertMapHasOnly( dop, _routineForOperation_functor.defaults );
   _.assert( _.objectIs( dop.atomOperation ) );
-  _.assert( _.routineIs( onAtom ) );
-  _.assert( dop.onAtom.length === 1 );
+  _.assert( _.routineIs( onScalar ) );
+  _.assert( dop.onScalar.length === 1 );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.arrayIs( dop.input ) || _.strIs( dop.input ) || _.mapIs( dop.input ) );
   _.assert( _.strDefined( dop.name ) );
@@ -1055,24 +1054,24 @@ function _routineForOperation_functor( dop )
   /* */
 
   if( dop.homogeneous === null )
-  dop.homogeneous = onAtom.homogeneous;
+  dop.homogeneous = onScalar.homogeneous;
 
   if( dop.input === null )
-  dop.input = onAtom.input;
+  dop.input = onScalar.input;
 
   meta.operationNormalizeInput( dop );
   meta.operationNormalizeArity( dop );
 
   /* */
 
-  if( dop.onAtom_functor )
+  if( dop.onScalar_functor )
   {
-    dop.onAtom_functor.call( meta, dop );
-    delete dop.onAtom_functor;
+    dop.onScalar_functor.call( meta, dop );
+    delete dop.onScalar_functor;
   }
   else
   {
-    meta._onAtomForRoutine_functor( dop );
+    meta._onScalarForRoutine_functor( dop );
   }
 
   /* */
@@ -1105,7 +1104,7 @@ function _routineForOperation_functor( dop )
 _routineForOperation_functor.defaults =
 {
   ... OperationDescriptor1.fields,
-  onAtom_functor : null,
+  onScalar_functor : null,
   onVectors_functor : null,
 }
 
@@ -1151,7 +1150,7 @@ function _operationTakingDstSrcReturningSelfComponentWise_functor( o )
     src = dst;
 
     if( dst === null ) /* qqq : cover. ask if not clear */
-    dst = src.makeSimilar();
+    dst = src.MakeSimilar();
 
     _.assert( arguments.length <= 2 );
     _.assert( dst.length === src.length, 'src and dst must have same length' );
@@ -1373,7 +1372,7 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults =
 //
 //     _.assert( operation.atomOperation === undefined );
 //     _.assert( _.strDefined( operation.name ) );
-//     _.assert( _.routineIs( atomOperation.onAtom ) );
+//     _.assert( _.routineIs( atomOperation.onScalar ) );
 //     _.assert( !routines[ routineName ] );
 //
 //     operation.atomOperation = atomOperation;
@@ -1417,7 +1416,7 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults =
 //
 //     _.assert( operation.atomOperation === undefined );
 //     _.assert( _.strDefined( operation.name ) );
-//     _.assert( _.routineIs( atomOperation.onAtom ) );
+//     _.assert( _.routineIs( atomOperation.onScalar ) );
 //     _.assert( !routines[ routineName ] );
 //
 //     operation.atomOperation = atomOperation;
@@ -1431,7 +1430,7 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults =
 //
 //   debugger;
 //   // _.assert( _.routineIs( routines.addScalar ) ); /* xxx */
-//   // _.assert( routines.addScalar.operation.onAtom.length >= 2 );
+//   // _.assert( routines.addScalar.operation.onScalar.length >= 2 );
 //
 // }
 
@@ -1439,23 +1438,23 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults =
 // atom-wise
 // --
 
-function _onAtomAtomwise_functor( dop )
+function _onScalarAtomwise_functor( dop )
 {
   let meta = this;
-  let onAtom0 = dop.onAtom[ 0 ];
+  let onScalar0 = dop.onScalar[ 0 ];
   let onContinue = dop.onContinue[ 0 ];
   let handleAtom = null;
 
   _.assert( !dop.interruptible || _.routineIs( onContinue ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.arrayIs( dop.onContinue ) );
-  _.assert( _.routineIs( onAtom0 ) );
+  _.assert( _.routineIs( onScalar0 ) );
   _.assert( _.routineIs( onContinue ) || !onContinue );
   _.assert( _.rangeIs( dop.takingArguments ) );
   _.assert( _.rangeIs( dop.takingVectors ) );
-  _.assert( dop.onAtom.length === 1 );
+  _.assert( dop.onScalar.length === 1 );
 
-  meta._onAtomGenBegin( dop );
+  meta._onScalarGenBegin( dop );
 
   if( dop.homogeneous === false )
   {
@@ -1498,7 +1497,7 @@ function _onAtomAtomwise_functor( dop )
   }
   else _.assert( 0, 'unknown kind of input', dop.input );
 
-  meta._onAtomGenEnd( dop, handleAtom );
+  meta._onScalarGenEnd( dop, handleAtom );
 
   return handleAtom;
 
@@ -1513,7 +1512,7 @@ function _onAtomAtomwise_functor( dop )
       o.srcElements[ a ] = src.eGet( o.key );
     }
 
-    let r = onAtom0.call( this, o );
+    let r = onScalar0.call( this, o );
     _.assert( r === undefined );
     o.dstContainer.eSet( o.key, o.dstElement );
 
@@ -1526,7 +1525,7 @@ function _onAtomAtomwise_functor( dop )
 
     o.srcElement = o.srcContainers[ 0 ].eGet( o.key );
 
-    let r = onAtom0.call( this, o );
+    let r = onScalar0.call( this, o );
     _.assert( r === undefined );
 
     if( !dop.reducing )
@@ -1556,7 +1555,7 @@ function _onAtomAtomwise_functor( dop )
 
       o.srcElement = src.eGet( o.key );
 
-      let r = onAtom0.call( this, o );
+      let r = onScalar0.call( this, o );
       _.assert( r === undefined );
 
       r = onContinue.call( this, o );
@@ -1584,7 +1583,7 @@ function _onAtomAtomwise_functor( dop )
 
       o.srcElement = src.eGet( o.key );
 
-      let r = onAtom0.call( this, o );
+      let r = onScalar0.call( this, o );
       _.assert( r === undefined );
     }
 
@@ -1608,7 +1607,7 @@ function _onVectorsAtomwise_functor( dop )
   let onVectors = null;
   let onVectorsBegin = null;
   let onVectorsBegin0 = dop.onVectorsBegin[ 0 ];
-  let onAtom0 = dop.onAtom[ 0 ];
+  let onScalar0 = dop.onScalar[ 0 ];
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -1717,7 +1716,7 @@ function _onVectorsAtomwise_functor( dop )
     {
       o.key = k;
       o.dstElement = dst.eGet( k );
-      onAtom0.call( this, o );
+      onScalar0.call( this, o );
     }
 
     /* */
@@ -1762,7 +1761,7 @@ function _onVectorsAtomwise_functor( dop )
     for( let k = 0 ; k < dst.length ; k++ )
     {
       o.key = k;
-      let r = onAtom0.call( this, o );
+      let r = onScalar0.call( this, o );
       if( r === false )
       break;
     }
@@ -1783,7 +1782,7 @@ function _onVectorsAtomwise_functor( dop )
     for( let k = 0 ; k < dst.length ; k++ )
     {
       o.key = k;
-      onAtom0.call( this, o );
+      onScalar0.call( this, o );
     }
 
     return _vectorsCallEnd( o, dop );
@@ -1807,7 +1806,7 @@ function _routineHomogeneousDeclare( operation, atomOperation, routineName )
 
   _.assert( operation.atomOperation === undefined );
   _.assert( _.strDefined( operation.name ) );
-  _.assert( _.routineIs( atomOperation.onAtom ) );
+  _.assert( _.routineIs( atomOperation.onScalar ) );
   _.assert( !routines[ routineName ], 'routine', routineName, 'is already defined' );
 
   operation.atomOperation = atomOperation;
@@ -1834,7 +1833,7 @@ function _routineHomogeneousDeclare( operation, atomOperation, routineName )
   operation.input = 'vrw|s|n vr|s *vr|*s';
   operation.name = routineName;
 
-  operation.onAtom_functor = _onAtomAtomwise_functor;
+  operation.onScalar_functor = _onScalarAtomwise_functor;
   operation.onVectors_functor = _onVectorsAtomwise_functor;
 
   return routines[ routineName ] = meta._routineForOperation_functor( operation );
@@ -1905,7 +1904,7 @@ function _routinesHeterogeneousDeclare( atomOperation, routineName )
   operation.atomOperation = atomOperation;
   operation.name = routineName;
 
-  operation.onAtom_functor = _onAtomAtomwise_functor;
+  operation.onScalar_functor = _onScalarAtomwise_functor;
   operation.onVectors_functor = _onVectorsAtomwise_functor;
 
   routines[ routineName ] = meta._routineForOperation_functor( operation );
@@ -1938,7 +1937,7 @@ function _operationReduceNormalizeFunctions( operationMake, operation )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.objectIs( atomDefaults ) );
 
-  normalize( 'onAtom' );
+  normalize( 'onScalar' );
   normalize( 'onVectorsBegin' );
   normalize( 'onVectorsEnd' );
   normalize( 'onVectors' );
@@ -1978,21 +1977,21 @@ function __operationReduceToScalar_functor( operation )
 
   operation.generator = __operationReduceToScalar_functor;
 
-  if( !operation.onAtomsBegin.length )
-  operation.onAtomsBegin.push( function onVectorsBegin( o )
+  if( !operation.onScalarsBegin.length )
+  operation.onScalarsBegin.push( function onVectorsBegin( o )
   {
     debugger;
     o.result = 0;
   });
 
-  if( !operation.onAtomsEnd.length )
-  operation.onAtomsEnd.push( function onVectorsEnd( o )
+  if( !operation.onScalarsEnd.length )
+  operation.onScalarsEnd.push( function onVectorsEnd( o )
   {
   });
 
-  let onAtom0 = operation.onAtom[ 0 ];
-  let onAtomsBegin0 = operation.onAtomsBegin[ 0 ];
-  let onAtomsEnd0 = operation.onAtomsEnd[ 0 ];
+  let onScalar0 = operation.onScalar[ 0 ];
+  let onScalarsBegin0 = operation.onScalarsBegin[ 0 ];
+  let onScalarsEnd0 = operation.onScalarsEnd[ 0 ];
   let onVectorsBegin0 = operation.onVectorsBegin[ 0 ];
   let onVectorsEnd0 = operation.onVectorsEnd[ 0 ];
   let conditional = operation.conditional;
@@ -2005,12 +2004,12 @@ function __operationReduceToScalar_functor( operation )
 
   _.assert( _.objectIs( operation ) );
   _.assert( operation.onVectors.length === 0 );
-  _.assert( _.routineIs( onAtom0 ) );
-  _.assert( _.routineIs( onAtomsBegin0 ) );
-  _.assert( _.routineIs( onAtomsEnd0 ) );
-  _.assert( onAtom0.length === 1 );
-  _.assert( onAtomsBegin0.length === 1 );
-  _.assert( onAtomsEnd0.length === 1 );
+  _.assert( _.routineIs( onScalar0 ) );
+  _.assert( _.routineIs( onScalarsBegin0 ) );
+  _.assert( _.routineIs( onScalarsEnd0 ) );
+  _.assert( onScalar0.length === 1 );
+  _.assert( onScalarsBegin0.length === 1 );
+  _.assert( onScalarsEnd0.length === 1 );
 
   _.assert( !operation.onVectorsBegin.length, 'not tested' );
   _.assert( !operation.onVectorsEnd.length, 'not tested' );
@@ -2032,15 +2031,15 @@ function __operationReduceToScalar_functor( operation )
 
   /* */
 
-  let onAtom = null;
+  let onScalar = null;
 
   if( operation.interruptible )
-  onAtom = handleAtomInterruptible;
+  onScalar = handleAtomInterruptible;
   else
-  onAtom = handleAtom;
+  onScalar = handleAtom;
 
-  onAtom.defaults = atomDefaults;
-  onAtom.own = { onAtom : onAtom };
+  onScalar.defaults = atomDefaults;
+  onScalar.own = { onScalar : onScalar };
 
   /* */
 
@@ -2055,7 +2054,7 @@ function __operationReduceToScalar_functor( operation )
 
   operation.onVectorsBegin.unshift( onVectorsBegin );
   operation.onVectorsEnd.unshift( onVectorsEnd );
-  operation.onAtom.unshift( onAtom );
+  operation.onScalar.unshift( onScalar );
   operation.onVectors.unshift( routine );
 
   let operationDefaults =
@@ -2076,7 +2075,7 @@ function __operationReduceToScalar_functor( operation )
   routine.operation = operation;
   routine.own =
   {
-    onAtom,
+    onScalar,
     onVectorsBegin,
     onVectorsEnd,
   };
@@ -2092,7 +2091,7 @@ function __operationReduceToScalar_functor( operation )
     if( !o.filter.call( this, o.element, o ) )
     return;
 
-    let r = onAtom0.call( this, o );
+    let r = onScalar0.call( this, o );
 
     _.assert( r === undefined || r === false );
     _.assert( o.result !== undefined );
@@ -2109,7 +2108,7 @@ function __operationReduceToScalar_functor( operation )
     if( !o.filter.call( this, o.element, o ) )
     return;
 
-    let r = onAtom0.call( this, o );
+    let r = onScalar0.call( this, o );
 
     _.assert( r === undefined );
     _.assert( o.result !== undefined );
@@ -2121,7 +2120,7 @@ function __operationReduceToScalar_functor( operation )
   function operationReduceInterruptible()
   {
     let op = onVectorsBegin({ args : arguments });
-    onAtomsBegin0( op );
+    onScalarsBegin0( op );
 
     for( let a = 0 ; a < op.numberOfArguments ; a++ )
     {
@@ -2134,7 +2133,7 @@ function __operationReduceToScalar_functor( operation )
       {
         op.key = key;
         op.element = op.container.eGet( key );
-        let continuing = onAtom.call( this, op );
+        let continuing = onScalar.call( this, op );
         if( continuing === false )
         break;
       }
@@ -2143,7 +2142,7 @@ function __operationReduceToScalar_functor( operation )
       break;
     }
 
-    onAtomsEnd0( op );
+    onScalarsEnd0( op );
     return onVectorsEnd( op );
   }
 
@@ -2152,7 +2151,7 @@ function __operationReduceToScalar_functor( operation )
   function operationReduce()
   {
     let op = onVectorsBegin({ args : arguments });
-    onAtomsBegin0( op );
+    onScalarsBegin0( op );
 
     for( let a = 0 ; a < op.numberOfArguments ; a++ )
     {
@@ -2165,12 +2164,12 @@ function __operationReduceToScalar_functor( operation )
       {
         op.key = key;
         op.element = op.container.eGet( key );
-        onAtom.call( this, op );
+        onScalar.call( this, op );
       }
 
     }
 
-    onAtomsEnd0( op );
+    onScalarsEnd0( op );
     return onVectorsEnd( op );
   }
 
@@ -2236,7 +2235,7 @@ __operationReduceToScalar_functor.defaults =
 {
   ... OperationDescriptor1.fields,
 
-  onAtom : null,
+  onScalar : null,
   onVectorsBegin : null,
   onVectorsEnd : null,
   conditional : null,
@@ -2317,7 +2316,7 @@ function declareReducingRoutines()
 
     _.assert( operation.atomOperation === undefined );
     _.assert( _.strDefined( operation.name ) );
-    _.assert( _.routineIs( atomOperation.onAtom ) );
+    _.assert( _.routineIs( atomOperation.onScalar ) );
     _.assert( !routines[ routineName ] );
 
     operation.homogeneous = true;
@@ -2369,7 +2368,7 @@ function _operationReduceToExtremal_functor( operation )
 
   let _gened = this._operationReduceToScalar_functor
   ({
-    onAtom : function( o )
+    onScalar : function( o )
     {
 
       _.assert( o.container.length, 'not tested' );
@@ -2383,7 +2382,7 @@ function _operationReduceToExtremal_functor( operation )
       }
 
     },
-    onAtomsBegin : function( o )
+    onScalarsBegin : function( o )
     {
       o.result = Object.create( null );
       o.result.container = null;
@@ -2860,9 +2859,9 @@ let MetaExtension =
   _adapterClassDeclare,
 
   _inputVerifyArgs,
-  _onAtomGenBegin,
-  _onAtomGenEnd,
-  _onAtomForRoutine_functor,
+  _onScalarGenBegin,
+  _onScalarGenEnd,
+  _onScalarForRoutine_functor,
 
   _vectorizeDst,
   _vectorizeSrcs,
@@ -2896,7 +2895,7 @@ let MetaExtension =
 
   // atom-wise
 
-  _onAtomAtomwise_functor,
+  _onScalarAtomwise_functor,
   _onVectorsAtomwise_functor,
 
 // atom-wise, homogeneous

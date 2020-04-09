@@ -16,9 +16,9 @@ let OperationDescriptor0 = _.blueprint
   input : null,
   output : null,
 
-  onAtom : null,
-  onAtomsBegin : null,
-  onAtomsEnd : null,
+  onScalar : null,
+  onScalarsBegin : null,
+  onScalarsEnd : null,
 
   takingArguments : null,
   takingVectors : null,
@@ -34,7 +34,7 @@ let OperationDescriptor0 = _.blueprint
 
 /*
 
-"onAtom", "kind", "takingArguments", "homogeneous", "atomWise", "usingExtraSrcs", "usingDstAsSrc"
+"onScalar", "kind", "takingArguments", "homogeneous", "atomWise", "usingExtraSrcs", "usingDstAsSrc"
 
 */
 
@@ -65,10 +65,10 @@ let OperationDescriptor1 = _.blueprint
   // usingDstAsSrc : null,
   usingExtraSrcs : null,
 
-  // onAtom : null,
+  // onScalar : null,
   onContinue : null,
-  // onAtomsBegin : null,
-  // onAtomsEnd : null,
+  // onScalarsBegin : null,
+  // onScalarsEnd : null,
   onVectorsBegin : null,
   onVectorsEnd : null,
   onVectors : null,

@@ -36,20 +36,20 @@ function operationSupplement( operation, atomOperation )
   else if( !operation.onContinue )
   operation.onContinue = [];
 
-  if( _.routineIs( operation.onAtom ) )
-  operation.onAtom = [ operation.onAtom ];
-  else if( !operation.onAtom )
-  operation.onAtom = [];
+  if( _.routineIs( operation.onScalar ) )
+  operation.onScalar = [ operation.onScalar ];
+  else if( !operation.onScalar )
+  operation.onScalar = [];
 
-  if( _.routineIs( operation.onAtomsBegin ) )
-  operation.onAtomsBegin = [ operation.onAtomsBegin ];
-  else if( !operation.onAtomsBegin )
-  operation.onAtomsBegin = [];
+  if( _.routineIs( operation.onScalarsBegin ) )
+  operation.onScalarsBegin = [ operation.onScalarsBegin ];
+  else if( !operation.onScalarsBegin )
+  operation.onScalarsBegin = [];
 
-  if( _.routineIs( operation.onAtomsEnd ) )
-  operation.onAtomsEnd = [ operation.onAtomsEnd ];
-  else if( !operation.onAtomsEnd )
-  operation.onAtomsEnd = [];
+  if( _.routineIs( operation.onScalarsEnd ) )
+  operation.onScalarsEnd = [ operation.onScalarsEnd ];
+  else if( !operation.onScalarsEnd )
+  operation.onScalarsEnd = [];
 
   if( _.routineIs( operation.onVectorsBegin ) )
   operation.onVectorsBegin = [ operation.onVectorsBegin ];
@@ -71,14 +71,14 @@ function operationSupplement( operation, atomOperation )
   if( operation.onContinue === atomOperation.onContinue )
   operation.onContinue = operation.onContinue.slice();
 
-  if( operation.onAtom === atomOperation.onAtom )
-  operation.onAtom = operation.onAtom.slice();
+  if( operation.onScalar === atomOperation.onScalar )
+  operation.onScalar = operation.onScalar.slice();
 
-  if( operation.onAtomsBegin === atomOperation.onAtomsBegin )
-  operation.onAtomsBegin = operation.onAtomsBegin.slice();
+  if( operation.onScalarsBegin === atomOperation.onScalarsBegin )
+  operation.onScalarsBegin = operation.onScalarsBegin.slice();
 
-  if( operation.onAtomsEnd === atomOperation.onAtomsEnd )
-  operation.onAtomsEnd = operation.onAtomsEnd.slice();
+  if( operation.onScalarsEnd === atomOperation.onScalarsEnd )
+  operation.onScalarsEnd = operation.onScalarsEnd.slice();
 
   if( operation.onVectorsBegin === atomOperation.onVectorsBegin )
   operation.onVectorsBegin = operation.onVectorsBegin.slice();
@@ -611,9 +611,9 @@ function operationNormalize1( operation )
 {
 
   if( !operation.name )
-  operation.name = operation.onAtom.name;
+  operation.name = operation.onScalar.name;
 
-  operation.onAtom.operation = operation;
+  operation.onScalar.operation = operation;
 
   if( _.numberIs( operation.takingArguments ) )
   operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
@@ -634,9 +634,9 @@ function operationNormalize2( operation )
   _.assert( operation.onVectorsEnd === undefined );
 
   _.assert( _.mapIs( operation ) );
-  _.assert( _.routineIs( operation.onAtom ) );
+  _.assert( _.routineIs( operation.onScalar ) );
   _.assert( _.strDefined( operation.name ) );
-  _.assert( operation.onAtom.length === 1 );
+  _.assert( operation.onScalar.length === 1 );
 
   _.assert( _.boolIs( operation.usingExtraSrcs ) );
   _.assert( _.boolIs( operation.usingDstAsSrc ) );

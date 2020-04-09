@@ -5,7 +5,7 @@
 /**
  *@summary Collection of functions for vector math
   @namespaces "wTools.avector","wTools.vectorAdapter"
-  @memberof module:Tools/math/Vector
+  @module Tools/math/Vector
 */
 
 let _ = _global_.wTools;

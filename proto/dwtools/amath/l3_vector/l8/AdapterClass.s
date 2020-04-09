@@ -41,7 +41,8 @@ let meta = _.vectorAdapter._meta;
  * @function to
  * @throws { Error } If arguments.length is not equal to one.
  * @throws { Error } If {-cls-} is not Array, _.Matrix, _.VectorAdapter.
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function to( cls )
@@ -64,7 +65,7 @@ function to( cls )
   }
   else if( _.constructorIsMatrix( cls ) )
   {
-    return _.Matrix.makeCol( this )
+    return _.Matrix.MakeCol( this )
   }
 
   _.assert( 0, 'unknown class to convert to', _.strType( cls ) );
@@ -86,7 +87,8 @@ function to( cls )
  * @returns { Number } - Returns element of vector.
  * @function eGet
  * @throws { Error } If arguments.length is not equal to one.
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function eGet( index )
@@ -113,7 +115,8 @@ function eGet( index )
  * @returns { Undefined } - Returns not a value, sets element of vector.
  * @function eSet
  * @throws { Error } If arguments.length is not equal to two.
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function eSet( index, val )
@@ -148,7 +151,8 @@ function eSet( index, val )
  * @returns { VectorAdapter } - Returns adapter filled by content of source vector.
  * @function copy
  * @throws { Error } If arguments.length is not equal to one.
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function copy( src )
@@ -170,11 +174,11 @@ function copy( src )
 
 // //
 //
-// function makeSimilar( length )
+// function MakeSimilar( length )
 // {
 //   let self = this;
 //   _.assert( arguments.length === 0 || arguments.length === 1 );
-//   return this.vectorAdapter.makeSimilar( self, length );
+//   return this.vectorAdapter.MakeSimilar( self, length );
 // }
 
 // //
@@ -289,7 +293,8 @@ function copy( src )
  * @returns { Boolean } - Returns whether the vectors are identical.
  * @function identicalWith
  * @throws { Error } If arguments.length is less then one or more then two.
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function identicalWith( src2, it )
@@ -325,7 +330,8 @@ identicalWith.modifying = false;
  * @returns { Boolean } - Returns whether the vectors are equivalent.
  * @function equivalentWith
  * @throws { Error } If arguments.length is less then one or more then two.
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function equivalentWith( src2, it )
@@ -385,7 +391,8 @@ equivalentWith.modifying = false;
  * @returns { Boolean } - Returns whether the vectors have identical length.
  * @function hasShape
  * @throws { Error } If arguments.length is less then one or more then two.
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function hasShape( src )
@@ -417,7 +424,7 @@ let Proto =
   // assign,
   copy,
 
-  // makeSimilar,
+  // MakeSimilar,
 
   // slice,
   // slicedLong,
@@ -452,7 +459,7 @@ _.assert( _.routineIs( Self.prototype.magSqr ) );
 _.assert( _.routineIs( Self.prototype.toLong ) );
 _.assert( _.routineIs( Self.prototype.toStr ) );
 _.assert( _.routineIs( Self.prototype.abs ) );
-_.assert( _.routineIs( Self.prototype.makeSimilar ) );
+_.assert( _.routineIs( Self.prototype.MakeSimilar ) );
 _.assert( _.routineIs( Self.prototype.assign ) );
 _.assert( _.routineIs( Self.prototype.slice ) );
 _.assert( _.routineIs( Self.prototype.allZero ) );
