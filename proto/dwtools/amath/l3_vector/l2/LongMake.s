@@ -25,7 +25,8 @@ let _sqr = _.math.sqr;
 * console.log( 'vec.toStr(): ', vec.toStr() );
 *
 * @function make
-* @memberof module:Tools/math/Vector.wTools.avector
+* @namespace wTools.avector
+* @module Tools/math/Vector
 */
 
 function make( length )
@@ -51,7 +52,8 @@ function make( length )
 * console.log( 'vec.toStr(): ', vec.toStr() );
 *
 * @function makeFilling
-* @memberof module:Tools/math/Vector.wTools.avector
+* @namespace wTools.avector
+* @module Tools/math/Vector
 */
 
 function makeFilling( length, value )
