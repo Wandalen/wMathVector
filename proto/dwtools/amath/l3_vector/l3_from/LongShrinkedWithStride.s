@@ -93,7 +93,8 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
  *
  * @returns { VectorAdapter } - Returns new VectorAdapter.
  * @function fromLongLrangeAndStride
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function fromLongLrangeAndStride( srcLong, offset, length, stride )
@@ -149,7 +150,8 @@ function fromLongLrangeAndStride( srcLong, offset, length, stride )
  *
  * @returns { VectorAdapter } - Returns new VectorAdapter.
  * @function fromLongWithStride
- * @memberof "module:Tools/math/Vector.wTools.vectorAdapter"
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
  */
 
 function fromLongWithStride( srcLong, stride )
