@@ -300,7 +300,6 @@ function _containerTypeDeclare()
   type.name = 'VectorAdapter';
   type._elementGet = function _elementGet( container, key )
   {
-    debugger;
     return container.eGet( key );
   }
   type._elementSet = function _elementSet( container, key, val )
