@@ -108,9 +108,9 @@ function from( srcLong )
     _.assert( srcLong.dims.length === 2 );
     _.assert( srcLong.dims[ 0 ] === 1 || srcLong.dims[ 1 ] === 1 );
     if( srcLong.dims[ 0 ] === 1 )
-    return srcLong.rowVectorGet( 0 );
+    return srcLong.rowGet( 0 );
     else
-    return srcLong.colVectorGet( 0 );
+    return srcLong.colGet( 0 );
   }
   else if( _.longIs( srcLong ) )
   {
