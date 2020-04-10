@@ -1,14 +1,14 @@
 ## Concepts
 
 <details>
-  <summary><a href="./concept/Types.md#Вектор">
+  <summary><a href="./concept/Types.md#Vector">
     Vector
   </a></summary>
     An ordered set of scalars.
 </details>
 
 <details>
-  <summary><a href="./concept/Types.md#Вектор-адаптер">
+  <summary><a href="./concept/Types.md#Vector-adapter">
     Vector adapter
   </a></summary>
     Vector adapter is an implementation of the abstract interface, a kind of link that defines how to interpret data as the vector.
