@@ -6145,8 +6145,18 @@ function distributionRangeSummaryValue( test )
 
 //
 
-function entityEqual( test )
+function compare( test )
 {
+
+  test.case = 'src1:vad-lrange-stride-i32 src2:vad-i32 - identical';
+  var vad1 = _.vectorAdapter.fromLongLrangeAndStride( new I32x([ 0, 1, 2, 3, 4, 5, 6 ]), [ 1, 3 ], 2 );
+  var vad2 = _.vectorAdapter.fromLong( new I32x([ 1, 3, 5 ]) );
+  var got = _.equivalent( vad1, vad2 );
+  test.identical( got, true );
+  test.et( vad1, vad2 );
+  var got = _.identical( vad1, vad2 );
+  test.identical( got, true );
+  test.identical( vad1, vad2 );
 
   /* - */
 
@@ -6213,7 +6223,10 @@ function entityEqual( test )
   test.case = 'src1:vad-arr src2:long-arr';
   var long = [ 1, 3, 5 ];
   var vad = _.vectorAdapter.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 3 ], 2 );
+  debugger;
+  _global_.debugger = true;
   var got = _.equivalent( vad, long );
+  debugger;
   test.identical( got, true );
   test.et( vad, long );
   var got = _.identical( vad, long );
@@ -8229,7 +8242,7 @@ var Self =
     // etc
 
     distributionRangeSummaryValue,
-    entityEqual,
+    compare,
 
     // isEquivalent,
     // allEquivalent,

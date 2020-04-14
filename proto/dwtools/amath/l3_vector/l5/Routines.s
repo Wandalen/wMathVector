@@ -3457,7 +3457,7 @@ function _equalAre( it )
   return true;
 }
 
-_.routineExtend( _equalAre, _._equal );
+_.routineExtend( _equalAre, _.equaler._equal );
 
 dop = _equalAre.operation = Object.create( null );
 dop.input = '!v';
@@ -3507,7 +3507,7 @@ function equalAre( src1, src2, opts )
 
 }
 
-_.routineExtend( equalAre, _._equal );
+_.routineExtend( equalAre, _.equaler._equal );
 
 // _.assert( _.objectIs( equalAre.defaults ) );
 // _.assert( _.routineIs( equalAre.body ) );
