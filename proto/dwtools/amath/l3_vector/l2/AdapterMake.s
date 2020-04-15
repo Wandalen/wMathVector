@@ -48,7 +48,7 @@ function make( length )
 /**
 * @summary Creates vector from long of length `length` and fills it with element `value`.
 * @param {Number} length Length of long.
-* @param {} value Element for fill operation.
+* @param {*} value Element for fill operation.
 *
 * @example
 * var vec = wTools.vector.makeFilling( 3, 0 );
