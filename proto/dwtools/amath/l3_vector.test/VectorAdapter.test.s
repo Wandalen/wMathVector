@@ -6223,10 +6223,7 @@ function compare( test )
   test.case = 'src1:vad-arr src2:long-arr';
   var long = [ 1, 3, 5 ];
   var vad = _.vectorAdapter.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 3 ], 2 );
-  debugger;
-  _global_.debugger = true;
   var got = _.equivalent( vad, long );
-  debugger;
   test.identical( got, true );
   test.et( vad, long );
   var got = _.identical( vad, long );

@@ -14,7 +14,6 @@
     Vector adapter is an implementation of the abstract interface, a kind of link that defines how to interpret data as the vector.
 </details>
 
-
 ## Tutorials
 
 <details>
