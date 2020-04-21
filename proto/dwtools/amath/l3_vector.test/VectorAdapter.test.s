@@ -117,20 +117,26 @@ function constructorIsVector( test )
 function to( test )
 {
 
-  test.case = 'vector to array'; /* */
+  /* */
+
+  test.case = 'vector to array';
 
   var v = vad.from([ 1, 2, 3 ]);
   var got = v.to( [].constructor );
   var expected = [ 1, 2, 3 ];
   test.identical( got, expected );
 
-  test.case = 'vector to vector'; /* */
+  /* */
+
+  test.case = 'vector to vector';
 
   var v = vad.from([ 1, 2, 3 ]);
   var got = v.to( vad.fromLong( [] ).constructor );
   test.is( got === v );
 
-  test.case = 'bad arguments'; /* */
+  /* */
+
+  test.case = 'bad arguments';
 
   if( !Config.debug )
   return;
@@ -149,7 +155,9 @@ function to( test )
 function toLong( test )
 {
 
-  test.case = 'trivial'; /* */
+  /* */
+
+  test.case = 'trivial';
 
   var v = vad.from([ 1, 2, 3 ]);
   var got = v.toLong();
@@ -157,7 +165,9 @@ function toLong( test )
   test.identical( got, expected );
   test.is( v._vectorBuffer === got );
 
-  test.case = 'trivial with fromLongLrangeAndStride'; /* */
+  /* */
+
+  test.case = 'trivial with fromLongLrangeAndStride';
 
   var v = vad.fromLongLrangeAndStride( [ 1, 2, 3, 4, 5 ], 0, 5, 1 );
   var got = v.toLong();
@@ -165,7 +175,9 @@ function toLong( test )
   test.identical( got, expected );
   test.is( v._vectorBuffer === got );
 
-  test.case = 'with custom offset'; /* */
+  /* */
+
+  test.case = 'with custom offset';
 
   var v = vad.fromLongLrange( [ 1, 2, 3, 4, 5 ], 1 );
   var got = v.toLong();
@@ -173,7 +185,9 @@ function toLong( test )
   test.identical( got, expected );
   test.is( v._vectorBuffer !== got );
 
-  test.case = 'with custom length'; /* */
+  /* */
+
+  test.case = 'with custom length';
 
   var v = vad.fromLongLrange( [ 1, 2, 3, 4, 5 ], 0, 4 );
   var got = v.toLong();
@@ -181,7 +195,9 @@ function toLong( test )
   test.identical( got, expected );
   test.is( v._vectorBuffer !== got );
 
-  test.case = 'with fromLongLrangeAndStride'; /* */
+  /* */
+
+  test.case = 'with fromLongLrangeAndStride';
 
   var v = vad.fromLongLrangeAndStride( [ 1, 2, 3, 4, 5 ], 1, 2, 2 );
   var got = v.toLong();
@@ -6037,7 +6053,9 @@ function cross3( test )
 function swapVectors( test )
 {
 
-  test.case = 'swapVectors vectors'; /* */
+  /* */
+
+  test.case = 'swapVectors vectors';
 
   var v1 = vad.from([ 1, 2, 3 ]);
   var v2 = vad.from([ 10, 20, 30 ]);
@@ -6050,7 +6068,9 @@ function swapVectors( test )
   test.identical( v1, v1Expected );
   test.identical( v2, v2Expected );
 
-  test.case = 'swapVectors arrays'; /* */
+  /* */
+
+  test.case = 'swapVectors arrays';
 
   var v1 = [ 1, 2, 3 ];
   var v2 = [ 10, 20, 30 ];
@@ -6063,7 +6083,9 @@ function swapVectors( test )
   test.identical( v1, v1Expected );
   test.identical( v2, v2Expected );
 
-  test.case = 'swapVectors empty arrays'; /* */
+  /* */
+
+  test.case = 'swapVectors empty arrays';
 
   var v1 = [];
   var v2 = [];
@@ -6076,7 +6098,9 @@ function swapVectors( test )
   test.identical( v1, v1Expected );
   test.identical( v2, v2Expected );
 
-  test.case = 'scalarsSwap vectors'; /* */
+  /* */
+
+  test.case = 'scalarsSwap vectors';
 
   var v1 = vad.from([ 1, 2, 3 ]);
   var v1Expected = vad.from([ 3, 2, 1 ]);
@@ -6085,7 +6109,9 @@ function swapVectors( test )
   test.is( r === v1 );
   test.identical( v1, v1Expected );
 
-  test.case = 'scalarsSwap arrays'; /* */
+  /* */
+
+  test.case = 'scalarsSwap arrays';
 
   var v1 = [ 1, 2, 3 ];
   var v1Expected = [ 3, 2, 1 ];
@@ -6094,7 +6120,9 @@ function swapVectors( test )
   test.is( r === v1 );
   test.identical( v1, v1Expected );
 
-  test.case = 'scalarsSwap array with single atom'; /* */
+  /* */
+
+  test.case = 'scalarsSwap array with single atom';
 
   var v1 = [ 1 ];
   var v1Expected = [ 1 ];
@@ -6103,7 +6131,9 @@ function swapVectors( test )
   test.is( r === v1 );
   test.identical( v1, v1Expected );
 
-  test.case = 'bad arguments'; /* */
+  /* */
+
+  test.case = 'bad arguments';
 
   if( !Config.debug )
   return;
