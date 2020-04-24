@@ -67,7 +67,7 @@ function makeFilling( length, value )
   if( _.routineIs( self ) )
   self = self.prototype;
   let srcLong = new self.longDescriptor.make( length );
-  for( let i = 0 ; i < length ; i++ )
+  for( let i = 0 ; i < srcLong.length ; i++ )
   srcLong[ i ] = value;
   return self.fromLong( srcLong );
 }
