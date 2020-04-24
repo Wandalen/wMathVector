@@ -334,6 +334,22 @@ function _containerTypeDeclare()
     return false;
     return src1.constructor === src2.constructor;
   }
+  type._coerce = function _coerce( it )
+  {
+    if( it.strictContainer )
+    return false;
+    if( _.longIs( it.src ) )
+    {
+      it.srcToIterate = it.src = _.vectorAdapter.from( it.src );
+      return true;
+    }
+    else if( _.longIs( it.src2 ) )
+    {
+      it.src2 = _.vectorAdapter.from( it.src2 );
+      return true;
+    }
+    return false;
+  }
 
   return _.container.typeDeclare( type );
 }

@@ -63,8 +63,9 @@ _.assert( _.vectorAdapter.long === undefined );
 _.vectorAdapter.long = _.withDefaultLong.Fx;
 _.assert( _.objectIs( _.vectorAdapter.long ) );
 _.assert( _.routineIs( _.vectorAdapter.long.longFrom ) );
-_.assert( _.numberIs( _.accuracy ) );
-_.assert( _.numberIs( _.accuracySqr ) );
+_.assert( _.numberDefined( _.accuracy ) );
+_.assert( _.numberDefined( _.accuracySqr ) );
+_.assert( _.numberDefined( _.accuracySqrt ) );
 
 //
 
