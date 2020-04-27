@@ -64,6 +64,7 @@ function makeFilling( length, value )
 {
   let self = this;
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.numberIs( length ) );
   if( _.routineIs( self ) )
   self = self.prototype;
   let srcLong = new self.longDescriptor.make( length );
