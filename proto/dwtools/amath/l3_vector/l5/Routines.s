@@ -4285,6 +4285,92 @@ function skewness( v, mean )
 dop = skewness.operation = _.mapExtend( null , variance.operation );
 dop.input = 'vr ?s';
 
+//
+
+function contextsForTesting( o )
+{
+
+  if( _.routineIs( arguments[ 0 ] ) )
+  o = { onEach : arguments[ 0 ] }
+  o = _.routineOptions( contextsForTesting, o );
+  _.assert( _.routineIs( o.onEach ) );
+  _.assert( arguments.length === 1 );
+
+  {
+    let op = _.mapExtend( null, o );
+    op.format = 'Array';
+    op.form = 'straigt';
+    op.make = ( src ) => _.vectorAdapter.fromLong( src );
+    o.onEach( op );
+  }
+  if( o.varyingFormat )
+  {
+
+    {
+      let op = _.mapExtend( null, o );
+      op.format = 'F32x';
+      op.form = 'straigt';
+      op.make = ( src ) => _.vectorAdapter.fromLong( new F32x( src ) );
+      o.onEach( op );
+    }
+    {
+      let op = _.mapExtend( null, o );
+      op.format = 'F64x';
+      op.form = 'straigt';
+      op.make = ( src ) => _.vectorAdapter.fromLong( new F64x( src ) );
+      o.onEach( op );
+    }
+    {
+      let op = _.mapExtend( null, o );
+      op.format = 'I16x';
+      op.form = 'straigt';
+      op.make = ( src ) => _.vectorAdapter.fromLong( new I16x( src ) );
+      o.onEach( op );
+    }
+
+  }
+
+  if( !o.varyingForm )
+  return;
+
+  {
+    let op = _.mapExtend( null, o );
+    op.format = 'Array';
+    op.form = 'lrange';
+    op.make = ( src ) =>
+    {
+      let dst = _.longMakeZeroed( src, src.length + 2 );
+      for( let i = 0 ; i < src.length ; i++ )
+      dst[ i+1 ] = src[ i ];
+      return _.vectorAdapter.fromLongLrange( dst, 1, src.length )
+    };
+    o.onEach( op );
+  }
+
+  {
+    let op = _.mapExtend( null, o );
+    op.format = 'Array';
+    op.form = 'stride';
+    op.make = ( src ) =>
+    {
+      let dst = _.longMakeZeroed( src, src.length*2 + 2 );
+      for( let i = 0 ; i < src.length ; i++ )
+      dst[ i*2+1 ] = src[ i ];
+      return _.vectorAdapter.fromLongLrangeAndStride( dst, 1, src.length, 2 )
+    };
+    o.onEach( op );
+  }
+
+}
+
+contextsForTesting.defaults =
+{
+  onEach : null,
+  varyingForm : 1,
+  varyingFormat : 1,
+  withNumber : 1,
+}
+
 // --
 // routines
 // --
@@ -4749,6 +4835,8 @@ let Extension =
 {
 
   _routinesMathematical,
+
+  contextsForTesting, /* xxx : move out */
 
 }
 

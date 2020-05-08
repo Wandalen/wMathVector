@@ -218,7 +218,41 @@ function toLong( test )
 
 }
 
-//
+// --
+// operation
+// --
+
+function add( test )
+{
+
+  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  function act( a )
+  {
+
+    test.case = `${a.format} ${a.type}`;
+    var v1 = a.make([ 1, 2, 3 ]);
+    var v2 = a.make([ 2, 3, 4 ]);
+    var got = _.vectorAdapter.add( v1, v2 );
+    var exp = a.make([ 3, 5, 7 ]);
+    test.identical( got, exp );
+    test.is( got === v1 );
+
+    test.case = `${a.format} ${a.type} - F32x`;
+    var v1 = a.make([ 1, 2, 3 ]);
+    var v2 = new F32x([ 2, 3, 4 ]);
+    var got = _.vectorAdapter.add( v1, v2 );
+    var exp = a.make([ 3, 5, 7 ]);
+    test.identical( got, exp );
+    test.is( got === v1 );
+
+  }
+
+}
+
+// --
+// review
+// --
 
 function reviewSrcIsSimpleVector( test )
 {
@@ -8225,7 +8259,11 @@ var Self =
     to,
     toLong,
 
-    //
+    // operation
+
+    add,
+
+    // review
 
     reviewSrcIsSimpleVector,
     reviewSrcIsAdapterRoutineFrom,
