@@ -230,7 +230,7 @@ function add( test )
   function act( a )
   {
 
-    test.case = `${a.format} ${a.type}`;
+    test.case = `${a.format} ${a.type} - routine`;
     var v1 = a.make([ 1, 2, 3 ]);
     var v2 = a.make([ 2, 3, 4 ]);
     var got = _.vectorAdapter.add( v1, v2 );
@@ -238,12 +238,26 @@ function add( test )
     test.identical( got, exp );
     test.is( got === v1 );
 
+    test.case = `${a.format} ${a.type} - method`;
+    var v1 = a.make([ 1, 2, 3 ]);
+    var v2 = a.make([ 2, 3, 4 ]);
+    var got = v1.add( v2 );
+    var exp = a.make([ 3, 5, 7 ]);
+    test.identical( got, exp );
+    test.is( got === v1 );
+
     test.case = `${a.format} ${a.type} - F32x`;
     var v1 = a.make([ 1, 2, 3 ]);
     var v2 = new F32x([ 2, 3, 4 ]);
-    debugger;
     var got = _.vectorAdapter.add( v1, v2 );
-    debugger;
+    var exp = a.make([ 3, 5, 7 ]);
+    test.identical( got, exp );
+    test.is( got === v1 );
+
+    test.case = `${a.format} ${a.type} - F32x - method`;
+    var v1 = a.make([ 1, 2, 3 ]);
+    var v2 = new F32x([ 2, 3, 4 ]);
+    var got = v1.add( v2 );
     var exp = a.make([ 3, 5, 7 ]);
     test.identical( got, exp );
     test.is( got === v1 );

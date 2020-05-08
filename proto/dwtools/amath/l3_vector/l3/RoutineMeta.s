@@ -1846,7 +1846,7 @@ function _routineHomogeneousDeclare( operation, atomOperation, routineName )
   }
 
   if( !operation.input )
-  operation.input = 'vrw|s|n vr|s *vr|*s';
+  operation.input = 'vrw|s|n vr|s|l *vr|*s';
   operation.name = routineName;
 
   operation.onScalar_functor = _onScalarAtomwise_functor;
