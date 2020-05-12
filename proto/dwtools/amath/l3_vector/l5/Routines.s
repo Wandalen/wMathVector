@@ -4293,38 +4293,78 @@ function contextsForTesting( o )
   if( _.routineIs( arguments[ 0 ] ) )
   o = { onEach : arguments[ 0 ] }
   o = _.routineOptions( contextsForTesting, o );
-  _.assert( _.routineIs( o.onEach ) );
-  _.assert( arguments.length === 1 );
 
+  if( o.single )
+  {
+    if( o.varyingForm === null )
+    o.varyingForm = 0;
+    if( o.varyingFormat === null )
+    o.varyingFormat = 0;
+  }
+  else
+  {
+    if( o.varyingForm === null )
+    o.varyingForm = 1;
+    if( o.varyingFormat === null )
+    o.varyingFormat = 1;
+  }
+
+  if( _.strIs( o.varyingForm ) )
+  o.varyingForm = _.arrayAs( o.varyingForm );
+  if( _.strIs( o.varyingFormat ) )
+  o.varyingFormat = _.arrayAs( o.varyingFormat );
+
+  if( o.varyingForm && _.boolLike( o.varyingForm ) )
+  o.varyingForm = [ 'straight', 'lrange', 'stride' ];
+  if( o.varyingFormat && _.boolLike( o.varyingFormat ) )
+  o.varyingFormat = [ 'Array', 'F32x', 'F64x', 'I16x' ];
+
+  _.assert( _.routineIs( o.onEach ) );
+  _.assert( arguments.length === 1 ); 
+  _.assert( _.longHasAll( [ 'straight', 'lrange', 'stride' ], o.varyingForm ) );
+  _.assert( _.longHasAll( [ 'Array', 'F32x', 'F64x', 'I16x' ], o.varyingFormat ) );
+
+  if( !o.varyingForm || _.longHas( o.varyingForm, 'straight' ) )
+  if( !o.varyingFormat || _.longHas( o.varyingFormat, 'Array' ) )
   {
     let op = _.mapExtend( null, o );
     op.format = 'Array';
-    op.form = 'straigt';
-    op.make = ( src ) => _.vectorAdapter.fromLong( src );
+    op.form = 'straight';
+    op.vadMake = ( src ) => _.vectorAdapter.fromLong( src );
+    op.longMake = ( src ) => _.longMake( src );
     o.onEach( op );
   }
+
   if( o.varyingFormat )
   {
 
+    if( _.longHas( o.varyingFormat, 'F32x' ) )
     {
       let op = _.mapExtend( null, o );
       op.format = 'F32x';
-      op.form = 'straigt';
-      op.make = ( src ) => _.vectorAdapter.fromLong( new F32x( src ) );
+      op.form = 'straight';
+      op.vadMake = ( src ) => _.vectorAdapter.fromLong( new F32x( src ) );
+      op.longMake = ( src ) => new F32x( src );
       o.onEach( op );
     }
+
+    if( _.longHas( o.varyingFormat, 'F64x' ) )
     {
       let op = _.mapExtend( null, o );
       op.format = 'F64x';
-      op.form = 'straigt';
-      op.make = ( src ) => _.vectorAdapter.fromLong( new F64x( src ) );
+      op.form = 'straight';
+      op.vadMake = ( src ) => _.vectorAdapter.fromLong( new F64x( src ) );
+      op.longMake = ( src ) => new F64x( src );
       o.onEach( op );
     }
+
+    if( _.longHas( o.varyingFormat, 'I16x' ) )
     {
       let op = _.mapExtend( null, o );
       op.format = 'I16x';
-      op.form = 'straigt';
-      op.make = ( src ) => _.vectorAdapter.fromLong( new I16x( src ) );
+      op.form = 'straight';
+      op.vadMake = ( src ) => _.vectorAdapter.fromLong( new I16x( src ) );
+      op.longMake = ( src ) => new I16x( src );
       o.onEach( op );
     }
 
@@ -4333,11 +4373,13 @@ function contextsForTesting( o )
   if( !o.varyingForm )
   return;
 
+  if( _.longHas( o.varyingForm, 'lrange' ) )
   {
     let op = _.mapExtend( null, o );
     op.format = 'Array';
     op.form = 'lrange';
-    op.make = ( src ) =>
+    op.longMake = ( src ) => _.longMake( src );
+    op.vadMake = ( src ) =>
     {
       let dst = _.longMakeZeroed( src, src.length + 2 );
       for( let i = 0 ; i < src.length ; i++ )
@@ -4347,11 +4389,13 @@ function contextsForTesting( o )
     o.onEach( op );
   }
 
+  if( _.longHas( o.varyingForm, 'stride' ) )
   {
     let op = _.mapExtend( null, o );
     op.format = 'Array';
     op.form = 'stride';
-    op.make = ( src ) =>
+    op.longMake = ( src ) => _.longMake( src );
+    op.vadMake = ( src ) =>
     {
       let dst = _.longMakeZeroed( src, src.length*2 + 2 );
       for( let i = 0 ; i < src.length ; i++ )
@@ -4366,9 +4410,9 @@ function contextsForTesting( o )
 contextsForTesting.defaults =
 {
   onEach : null,
-  varyingForm : 1,
-  varyingFormat : 1,
-  withNumber : 1,
+  varyingForm : null,
+  varyingFormat : null,
+  single : 0,
 }
 
 // --

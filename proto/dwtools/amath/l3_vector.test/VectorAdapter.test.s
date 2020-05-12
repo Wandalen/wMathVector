@@ -230,41 +230,93 @@ function add( test )
   function act( a )
   {
 
-    test.case = `${a.format} ${a.type} - routine`;
-    var v1 = a.make([ 1, 2, 3 ]);
-    var v2 = a.make([ 2, 3, 4 ]);
+    test.case = `${a.format} ${a.form} - routine`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 2, 3, 4 ]);
     var got = _.vectorAdapter.add( v1, v2 );
-    var exp = a.make([ 3, 5, 7 ]);
+    var exp = a.vadMake([ 3, 5, 7 ]);
     test.identical( got, exp );
     test.is( got === v1 );
 
-    test.case = `${a.format} ${a.type} - method`;
-    var v1 = a.make([ 1, 2, 3 ]);
-    var v2 = a.make([ 2, 3, 4 ]);
+    test.case = `${a.format} ${a.form} - method`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 2, 3, 4 ]);
     var got = v1.add( v2 );
-    var exp = a.make([ 3, 5, 7 ]);
+    var exp = a.vadMake([ 3, 5, 7 ]);
     test.identical( got, exp );
     test.is( got === v1 );
 
-    test.case = `${a.format} ${a.type} - F32x`;
-    var v1 = a.make([ 1, 2, 3 ]);
+    test.case = `${a.format} ${a.form} - F32x`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
     var v2 = new F32x([ 2, 3, 4 ]);
     var got = _.vectorAdapter.add( v1, v2 );
-    var exp = a.make([ 3, 5, 7 ]);
+    var exp = a.vadMake([ 3, 5, 7 ]);
     test.identical( got, exp );
     test.is( got === v1 );
 
-    test.case = `${a.format} ${a.type} - F32x - method`;
-    var v1 = a.make([ 1, 2, 3 ]);
+    test.case = `${a.format} ${a.form} - F32x - method`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
     var v2 = new F32x([ 2, 3, 4 ]);
     var got = v1.add( v2 );
-    var exp = a.make([ 3, 5, 7 ]);
+    var exp = a.vadMake([ 3, 5, 7 ]);
     test.identical( got, exp );
     test.is( got === v1 );
 
   }
 
 }
+
+//
+
+function subScaled( test )
+{
+
+  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  function act( a )
+  {
+
+    test.case = `${a.format} ${a.form} routine`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 3, 4, 5 ]);
+    var scaler = 1 / 3;
+    var got = _.vectorAdapter.subScaled( v1, v2, scaler );
+    var exp = a.vadMake([ 0, 2 - 4/3, 3-5/3 ]);
+    test.equivalent( got, exp );
+    test.is( got === v1 );
+
+    test.case = `${a.format} ${a.form} method`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 3, 4, 5 ]);
+    var scaler = 1 / 3;
+    var got = v1.subScaled( v2, scaler );
+    var exp = a.vadMake([ 0, 2 - 4/3, 3-5/3 ]);
+    test.equivalent( got, exp );
+    test.is( got === v1 );
+
+    test.case = `${a.format} ${a.form} F32x routine`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = new F32x([ 3, 4, 5 ]);
+    var scaler = 1 / 3;
+    var got = _.vectorAdapter.subScaled( v1, v2, scaler );
+    var exp = a.vadMake([ 0, 2 - 4/3, 3-5/3 ]);
+    test.equivalent( got, exp );
+    test.is( got === v1 );
+
+    test.case = `${a.format} ${a.form} F32x method`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = new F32x([ 3, 4, 5 ]);
+    var scaler = 1 / 3;
+    var got = v1.subScaled( v2, scaler );
+    var exp = a.vadMake([ 0, 2 - 4/3, 3-5/3 ]);
+    test.equivalent( got, exp );
+    test.is( got === v1 );
+
+  }
+
+}
+
+subScaled.accuracy = _.vectorAdapter.accuracy*10;
 
 // --
 // review
@@ -6228,10 +6280,28 @@ function distributionRangeSummaryValue( test )
 function compare( test )
 {
 
+  /* */
+
+  test.case = 'src1:vad src2:int - not equivalent';
+  var vad1 = _.vectorAdapter.fromLong( new I32x([ 1, 3, 5 ]) );
+  var src2 = 1;
+  test.equivalent( src1, src2 );
+
+  var got = _.equivalent( vad1, src2 );
+  test.identical( got, true );
+  test.et( vad1, src2 );
+  var got = _.identical( vad1, src2 );
+  test.identical( got, true );
+  test.identical( vad1, src2 );
+
+  xxx /* xxx : implement and check */
+
+  /* */
+
   test.case = 'src1:vad-lrange-stride-i32 src2:vad-i32 - identical';
   var vad1 = _.vectorAdapter.fromLongLrangeAndStride( new I32x([ 0, 1, 2, 3, 4, 5, 6 ]), [ 1, 3 ], 2 );
   var vad2 = _.vectorAdapter.fromLong( new I32x([ 1, 3, 5 ]) );
-  var got = _.equivalent( vad1, vad2 );
+  var got = _.equivalent( vad1, vad2 ); /* xxx : add symetric comparison cases */
   test.identical( got, true );
   test.et( vad1, vad2 );
   var got = _.identical( vad1, vad2 );
@@ -8278,6 +8348,7 @@ var Self =
     // operation
 
     add,
+    subScaled,
 
     // review
 
@@ -8325,7 +8396,7 @@ var Self =
     distributionRangeSummaryValue,
     compare,
 
-    // isEquivalent,
+    // isEquivalent, // xxx
     // allEquivalent,
 
     allRoutineFromLong,
