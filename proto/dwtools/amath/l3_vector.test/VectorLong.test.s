@@ -7745,7 +7745,7 @@ function mix( test )
   test.case = '3 scalars and dst null';
 
   var got = _.avector.mix( null, 1, 3, 0.5 );
-  var expected = [ 2 ];
+  var expected = 2;
   test.equivalent( got, expected );
 
   test.case = 'all scalars, but last';
@@ -8503,7 +8503,7 @@ function isNotEquivalent( test )
 
 }
 
-// xxx qqq : not lost? where is similar uncommented? why commented out?
+// zzz qqq : not lost? where is similar uncommented? why commented out?
 // // //
 // //
 // // function _isEquivalent( test, r, t, Array, array )

@@ -4352,14 +4352,16 @@ function contextsForTesting( o )
   _.assert( _.longHasAll( [ 'straight', 'lrange', 'stride' ], o.varyingForm ) );
   _.assert( _.longHasAll( [ 'Array', 'F32x', 'F64x', 'I16x' ], o.varyingFormat ) );
 
-  if( !o.varyingForm || _.longHas( o.varyingForm, 'straight' ) )
-  if( !o.varyingFormat || _.longHas( o.varyingFormat, 'Array' ) )
+  let defaultFormat = o.varyingFormat[ 0 ];
+
+  if( _.longHas( o.varyingForm, 'straight' ) )
+  // if( _.longHas( o.varyingFormat, 'Array' ) )
   {
     let op = _.mapExtend( null, o );
-    op.format = 'Array';
+    op.format = defaultFormat;
     op.form = 'straight';
-    op.vadMake = ( src ) => _.vectorAdapter.fromLong( src );
-    op.longMake = ( src ) => _.longMake( src );
+    op.vadMake = ( src ) => _.vectorAdapter.fromLong( _.longMake( _global_[ defaultFormat ], src ) );
+    op.longMake = ( src ) => _.longMake( _global_[ defaultFormat ], src );
     o.onEach( op );
   }
 
@@ -4404,12 +4406,12 @@ function contextsForTesting( o )
   if( _.longHas( o.varyingForm, 'lrange' ) )
   {
     let op = _.mapExtend( null, o );
-    op.format = 'Array';
+    op.format = defaultFormat;
     op.form = 'lrange';
-    op.longMake = ( src ) => _.longMake( src );
+    op.longMake = ( src ) => _.longMake( _global_[ defaultFormat ], src );
     op.vadMake = ( src ) =>
     {
-      let dst = _.longMakeZeroed( src, src.length + 2 );
+      let dst = _.longMakeZeroed( _global_[ defaultFormat ], src.length + 2 );
       for( let i = 0 ; i < src.length ; i++ )
       dst[ i+1 ] = src[ i ];
       return _.vectorAdapter.fromLongLrange( dst, 1, src.length )
@@ -4420,12 +4422,12 @@ function contextsForTesting( o )
   if( _.longHas( o.varyingForm, 'stride' ) )
   {
     let op = _.mapExtend( null, o );
-    op.format = 'Array';
+    op.format = defaultFormat;
     op.form = 'stride';
-    op.longMake = ( src ) => _.longMake( src );
+    op.longMake = ( src ) => _.longMake( _global_[ defaultFormat ], src );
     op.vadMake = ( src ) =>
     {
-      let dst = _.longMakeZeroed( src, src.length*2 + 2 );
+      let dst = _.longMakeZeroed( _global_[ defaultFormat ], src.length*2 + 2 );
       for( let i = 0 ; i < src.length ; i++ )
       dst[ i*2+1 ] = src[ i ];
       return _.vectorAdapter.fromLongLrangeAndStride( dst, 1, src.length, 2 )

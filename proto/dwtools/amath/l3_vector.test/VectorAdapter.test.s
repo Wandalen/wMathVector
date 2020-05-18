@@ -132,7 +132,7 @@ function constructorIsVector( test )
 }
 
 // --
-// to
+// exporter
 // --
 
 function to( test )
@@ -236,19 +236,112 @@ function toLong( test )
 
 //
 
+function toStr( test )
+{
+
+  _.vectorAdapter.contextsForTesting
+  ({
+    onEach : arrayAct,
+    varyingFormat : 'Array',
+  });
+
+  _.vectorAdapter.contextsForTesting
+  ({
+    onEach : i16xAct,
+    varyingFormat : 'I16x',
+  });
+
+  function arrayAct( a )
+  {
+
+    /* */
+
+    test.case = `${a.format} ${a.form} empty`;
+    var vad1 = a.vadMake([]);
+    var exp = 'VectorAdapter.x0.Array :: ';
+    var got = vad1.toStr();
+    test.identical( got, exp );
+    var got = _.vad.toStr( vad1 );
+    test.identical( got, exp );
+    var got = _.vector.toStr( vad1 );
+    test.identical( got, exp );
+    var exp = '[]';
+    var got = _.vector.toStr( a.longMake([]) );
+    test.identical( got, exp );
+
+    /* */
+
+    test.case = `${a.format} ${a.form} non empty`;
+    var vad1 = a.vadMake([ 1, 2, 3 ]);
+    var exp = 'VectorAdapter.x3.Array :: 1.000 2.000 3.000';
+    var got = vad1.toStr();
+    test.identical( got, exp );
+    var got = _.vad.toStr( vad1 );
+    test.identical( got, exp );
+    var got = _.vector.toStr( vad1 );
+    test.identical( got, exp );
+    var exp = '[ 1, 2, 3 ]';
+    var got = _.vector.toStr( a.longMake([ 1, 2, 3 ]) );
+    test.identical( got, exp );
+
+    /* */
+
+  }
+
+  function i16xAct( a )
+  {
+
+    /* */
+
+    test.case = `${a.format} ${a.form} empty`;
+    var vad1 = a.vadMake([]);
+    var exp = 'VectorAdapter.x0.I16x :: ';
+    var got = vad1.toStr();
+    test.identical( got, exp );
+    var got = _.vad.toStr( vad1 );
+    test.identical( got, exp );
+    var got = _.vector.toStr( vad1 );
+    test.identical( got, exp );
+    var exp = '( new Int16Array([  ]) )';
+    var got = _.vector.toStr( a.longMake([]) );
+    test.identical( got, exp );
+
+    /* */
+
+    test.case = `${a.format} ${a.form} non empty`;
+    var vad1 = a.vadMake([ 1, 2, 3 ]);
+    var exp = 'VectorAdapter.x3.I16x :: 1.000 2.000 3.000';
+    var got = vad1.toStr();
+    test.identical( got, exp );
+    var got = _.vad.toStr( vad1 );
+    test.identical( got, exp );
+    var got = _.vector.toStr( vad1 );
+    test.identical( got, exp );
+    var exp = '( new Int16Array([ 1, 2, 3 ]) )';
+    var got = _.vector.toStr( a.longMake([ 1, 2, 3 ]) );
+    test.identical( got, exp );
+
+    /* */
+
+  }
+
+}
+
+//
+
 function toStrStandard( test )
 {
+
+  test.case = 'String( vad ) - empty';
+  var vad = _.vad.from([]);
+  var got = String( vad );
+  var exp = 'VectorAdapter.x0.Array :: ';
+  test.identical( got, exp );
 
   test.case = 'String( vad )';
   var vad = _.vad.from([ 1, 2, 3 ]);
   var got = String( vad );
-  var exp = '1.000 2.000 3.000';
-  test.identical( got, exp );
-
-  test.case = 'vad.toStr()';
-  var vad = _.vad.from([ 1, 2, 3 ]);
-  var got = vad.toStr();
-  var exp = '1.000 2.000 3.000';
+  var exp = 'VectorAdapter.x3.Array :: 1.000 2.000 3.000';
   test.identical( got, exp );
 
   test.case = 'Object.prototype.toString';
@@ -263,7 +356,7 @@ function toStrStandard( test )
 // compare
 // --
 
-function comparator( test )
+function entityDiff( test )
 {
 
   test.case = 'trivial';
@@ -276,11 +369,11 @@ function comparator( test )
 `
 at /2
 - src1 :
-  1.000 2.000 3.000
+  VectorAdapter.x3.Array :: 1.000 2.000 3.000
 - src2 :
-  1.000 2.000 4.000
+  VectorAdapter.x3.Array :: 1.000 2.000 4.000
 - difference :
-  1.000 2.000 *
+  VectorAdapter.x3.Array :: 1.000 2.000 *
 `
 
   console.log( diff );
@@ -8496,15 +8589,16 @@ var Self =
     longIs,
     constructorIsVector,
 
-    // to
+    // exporter
 
     to,
     toLong,
+    toStr,
     toStrStandard,
 
     // compare
 
-    comparator,
+    entityDiff,
     compare,
 
     // operation
@@ -8557,7 +8651,7 @@ var Self =
     cross3,
     swapVectors,
 
-    // isEquivalent, // xxx
+    // isEquivalent, // zzz : implement later
     // allEquivalent,
 
     allRoutineFromLong,

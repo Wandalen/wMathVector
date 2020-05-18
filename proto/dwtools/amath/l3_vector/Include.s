@@ -41,7 +41,8 @@ if( module !== 'undefined' )
 
   require( './l5/Routines.s' );
 
-  require( './l8/AdapterClass.s' );
+  require( './l8/VadSpecial.s' );
+  require( './l8/VectorSpecial.s' );
 
 }
 
