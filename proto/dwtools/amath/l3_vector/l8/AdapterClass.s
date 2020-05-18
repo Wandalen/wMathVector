@@ -349,6 +349,13 @@ equivalentWith.returningSelf = false;
 equivalentWith.returningNew = false;
 equivalentWith.modifying = false;
 
+//
+
+function _equalAre( it )
+{
+  return this.vectorAdapter._equalAre( it );
+}
+
 // //
 //
 // function sameWith( src2 )
@@ -447,6 +454,9 @@ let Proto =
 }
 
 _.mapExtend( Self.prototype, Proto );
+// _.classExtend( Self, Proto );
+
+Self.prototype[ Symbol.for( 'equalAre' ) ] = _equalAre;
 
 // --
 // declare
@@ -466,5 +476,6 @@ _.assert( _.routineIs( Self.prototype.allZero ) );
 
 _.assert( _.routineIs( _.vectorAdapter.toLong ) );
 _.assert( _.routineIs( _.vectorAdapter.toStr ) );
+_.assert( _.routineIs( _.VectorAdapter.prototype[ Symbol.for( 'equalAre' ) ] ) );
 
 })();

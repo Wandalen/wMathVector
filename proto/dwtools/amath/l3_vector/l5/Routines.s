@@ -874,14 +874,14 @@ dop.modifying = false;
  * @module Tools/math/Vector
  */
 
-
 /* zzz : redo */
 function _toStr( src, o )
 {
-  let result = '';
+  let result = this.headExport( src ) + ' :: ';
   let length = src.length;
 
-  if( !o ) o = Object.create( null );
+  if( !o )
+  o = Object.create( null );
 
   if( o.precision === undefined )
   o.precision = 4;
@@ -889,7 +889,7 @@ function _toStr( src, o )
   if( length )
   if( o.precision === 0 )
   {
-    throw _.err( 'not tested' );
+    _.assert( 0, 'not tested' );
     for( let i = 0, l = length-1 ; i < l ; i++ )
     {
       result += String( src.eGet( i ) ) + ' ';
@@ -915,7 +915,13 @@ function _toStr( src, o )
     result += e;
   }
 
+  result += '';
   return result;
+}
+
+_toStr.defaults =
+{
+  precision : 4,
 }
 
 dop = _toStr.operation = Object.create( null );
@@ -925,6 +931,28 @@ dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = 1;
 dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.modifying = false;
+
+//
+
+function headExport( src )
+{
+  let result = `VectorAdapter.x${src.length}.${_.strType( src._vectorBuffer )}`;
+  return result;
+}
+
+headExport.defaults =
+{
+  precision : 4,
+}
+
+dop = headExport.operation = Object.create( null );
+dop.input = 'vr';
+dop.atomWise = false;
+dop.homogeneous = false;
+dop.takingVectorsOnly = true;
 dop.returningSelf = false;
 dop.returningNew = false;
 dop.modifying = false;
@@ -4320,7 +4348,7 @@ function contextsForTesting( o )
   o.varyingFormat = [ 'Array', 'F32x', 'F64x', 'I16x' ];
 
   _.assert( _.routineIs( o.onEach ) );
-  _.assert( arguments.length === 1 ); 
+  _.assert( arguments.length === 1 );
   _.assert( _.longHasAll( [ 'straight', 'lrange', 'stride' ], o.varyingForm ) );
   _.assert( _.longHasAll( [ 'Array', 'F32x', 'F64x', 'I16x' ], o.varyingFormat ) );
 
@@ -4458,6 +4486,7 @@ let _routinesMathematical =
   toLong,
   toStr : _toStr,
   _toStr,
+  headExport,
 
   gather,
 
@@ -4807,6 +4836,7 @@ let _routinesMathematical =
 
   // interruptible reductor with bool result
 
+  // [ Symbol.for( 'equalAre' ) ] : _equalAre,
   _equalAre,
   equalAre,
   identicalAre,

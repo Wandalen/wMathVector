@@ -9,43 +9,13 @@
 */
 
 let _ = _global_.wTools;
-let _hasLength = _.hasLength;
-let _min = Math.min;
-let _max = Math.max;
-let _arraySlice = _.longSlice;
-let _sqrt = Math.sqrt;
-let _abs = Math.abs;
-let _sqr = _.math.sqr;
 
-_.vectorAdapter = _.vectorAdapter || Object.create( null );
-_.avector = _.avector || Object.create( null );
-
-// --
-// class
-// --
-
-function VectorAdapter()
-{
-  throw _.err( 'should not be called' )
-};
-
-VectorAdapter.prototype = Object.create( null );
-VectorAdapter.prototype._vectorBuffer = null;
-_.VectorAdapter = VectorAdapter;
+_.vectorAdapter = _.vad = _.vectorAdapter || _.vad || Object.create( null );
+_.avector = _.vector = _.avector || _.vector || Object.create( null );
 
 // --
 // declare
 // --
-
-let AdapterClassExtension =
-{
-  vectorAdapter : _.vectorAdapter,
-}
-
-_.mapExtend( _.VectorAdapter, AdapterClassExtension );
-_.mapExtend( _.VectorAdapter.prototype, AdapterClassExtension );
-
-//
 
 let AdapterExtension =
 {
