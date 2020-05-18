@@ -34,7 +34,7 @@ let OperationDescriptor0 = _.blueprint
 
 /*
 
-"onScalar", "kind", "takingArguments", "homogeneous", "atomWise", "usingExtraSrcs", "usingDstAsSrc"
+"onScalar", "kind", "takingArguments", "homogeneous", "scalarWise", "usingExtraSrcs", "usingDstAsSrc"
 
 */
 
@@ -61,7 +61,7 @@ let OperationDescriptor1 = _.blueprint
   zipping : null,
   interruptible : null,
   homogeneous : null,
-  atomWise : null,
+  scalarWise : null,
   // usingDstAsSrc : null,
   usingExtraSrcs : null,
 
@@ -76,7 +76,7 @@ let OperationDescriptor1 = _.blueprint
   kind : null,
   generator : null,
   postfix : null,
-  atomOperation : null,
+  scalarOperation : null,
 
   inputWithoutLast : null,
   inputLast : null,

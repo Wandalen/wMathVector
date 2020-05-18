@@ -23,9 +23,9 @@ _.vectorAdapter._meta.routines = _.vectorAdapter._meta.routines || Object.create
 // structure
 // --
 
-function operationSupplement( operation, atomOperation )
+function operationSupplement( operation, scalarOperation )
 {
-  operation = _.mapSupplement( operation, atomOperation );
+  operation = _.mapSupplement( operation, scalarOperation );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -68,37 +68,37 @@ function operationSupplement( operation, atomOperation )
 
   /* */
 
-  if( operation.onContinue === atomOperation.onContinue )
+  if( operation.onContinue === scalarOperation.onContinue )
   operation.onContinue = operation.onContinue.slice();
 
-  if( operation.onScalar === atomOperation.onScalar )
+  if( operation.onScalar === scalarOperation.onScalar )
   operation.onScalar = operation.onScalar.slice();
 
-  if( operation.onScalarsBegin === atomOperation.onScalarsBegin )
+  if( operation.onScalarsBegin === scalarOperation.onScalarsBegin )
   operation.onScalarsBegin = operation.onScalarsBegin.slice();
 
-  if( operation.onScalarsEnd === atomOperation.onScalarsEnd )
+  if( operation.onScalarsEnd === scalarOperation.onScalarsEnd )
   operation.onScalarsEnd = operation.onScalarsEnd.slice();
 
-  if( operation.onVectorsBegin === atomOperation.onVectorsBegin )
+  if( operation.onVectorsBegin === scalarOperation.onVectorsBegin )
   operation.onVectorsBegin = operation.onVectorsBegin.slice();
 
-  if( operation.onVectorsEnd === atomOperation.onVectorsEnd )
+  if( operation.onVectorsEnd === scalarOperation.onVectorsEnd )
   operation.onVectorsEnd = operation.onVectorsEnd.slice();
 
-  if( operation.onVectors === atomOperation.onVectors )
+  if( operation.onVectors === scalarOperation.onVectors )
   operation.onVectors = operation.onVectors.slice();
 
   /* */
 
   if( _.numberIs( operation.takingArguments ) )
   operation.takingArguments = [ operation.takingArguments, operation.takingArguments ];
-  else if( operation.takingArguments && operation.takingArguments === atomOperation.takingArguments )
+  else if( operation.takingArguments && operation.takingArguments === scalarOperation.takingArguments )
   operation.takingArguments = operation.takingArguments.slice();
 
   if( _.numberIs( operation.takingVectors ) )
   operation.takingVectors = [ operation.takingVectors, operation.takingVectors ];
-  else if( operation.takingVectors && operation.takingVectors === atomOperation.takingVectors )
+  else if( operation.takingVectors && operation.takingVectors === scalarOperation.takingVectors )
   operation.takingVectors = operation.takingVectors.slice();
 
   return operation;
@@ -653,11 +653,11 @@ function operationSinglerAdjust()
 {
   let operations = _.vectorAdapter.operations;
   let routines = _.vectorAdapter._meta.operationRoutines;
-  let atomWiseSingler = operations.atomWiseSingler = operations.atomWiseSingler || Object.create( null );
+  let scalarWiseSingler = operations.scalarWiseSingler = operations.scalarWiseSingler || Object.create( null );
 
-  for( let name in routines.atomWiseSingler )
+  for( let name in routines.scalarWiseSingler )
   {
-    let operation = routines.atomWiseSingler[ name ];
+    let operation = routines.scalarWiseSingler[ name ];
 
     this.operationNormalize1( operation );
 
@@ -666,7 +666,7 @@ function operationSinglerAdjust()
     if( operation.takingArguments === undefined )
     operation.takingArguments = [ 1, 1 ];
     operation.homogeneous = true;
-    operation.atomWise = true;
+    operation.scalarWise = true;
 
     if( operation.usingExtraSrcs === undefined )
     operation.usingExtraSrcs = false;
@@ -675,11 +675,11 @@ function operationSinglerAdjust()
 
     _.assert( _.arrayIs( operation.takingArguments ) );
     _.assert( operation.takingArguments.length === 2 );
-    _.assert( !operations.atomWiseSingler[ name ] );
+    _.assert( !operations.scalarWiseSingler[ name ] );
 
     this.operationNormalize2( operation );
 
-    operations.atomWiseSingler[ name ] = operation;
+    operations.scalarWiseSingler[ name ] = operation;
   }
 
 }
@@ -706,7 +706,7 @@ function operationsLogical1Adjust()
     operation.usingDstAsSrc = false;
 
     operation.homogeneous = true;
-    operation.atomWise = true;
+    operation.scalarWise = true;
     operation.reducing = true;
     operation.zipping = false;
     operation.interruptible = false;
@@ -742,7 +742,7 @@ function operationsLogical2Adjust()
     operation.usingDstAsSrc = false;
 
     operation.homogeneous = true;
-    operation.atomWise = true;
+    operation.scalarWise = true;
     operation.reducing = true;
     operation.zipping = true;
     operation.interruptible = false;
@@ -763,11 +763,11 @@ function operationHomogeneousAdjust()
 {
   let operations = _.vectorAdapter.operations;
   let routines = _.vectorAdapter._meta.operationRoutines;
-  let atomWiseHomogeneous = operations.atomWiseHomogeneous = operations.atomWiseHomogeneous || Object.create( null );
+  let scalarWiseHomogeneous = operations.scalarWiseHomogeneous = operations.scalarWiseHomogeneous || Object.create( null );
 
-  for( let name in routines.atomWiseHomogeneous )
+  for( let name in routines.scalarWiseHomogeneous )
   {
-    let operation = routines.atomWiseHomogeneous[ name ];
+    let operation = routines.scalarWiseHomogeneous[ name ];
 
     this.operationNormalize1( operation );
 
@@ -785,15 +785,15 @@ function operationHomogeneousAdjust()
     operation.usingDstAsSrc = true;
 
     operation.homogeneous = true;
-    operation.atomWise = true;
+    operation.scalarWise = true;
 
     _.assert( _.arrayIs( operation.takingArguments ) );
     _.assert( operation.takingArguments.length === 2 );
-    _.assert( !operations.atomWiseHomogeneous[ name ] );
+    _.assert( !operations.scalarWiseHomogeneous[ name ] );
 
     this.operationNormalize2( operation );
 
-    operations.atomWiseHomogeneous[ name ] = operation;
+    operations.scalarWiseHomogeneous[ name ] = operation;
   }
 }
 
@@ -803,11 +803,11 @@ function operationHeterogeneousAdjust()
 {
   let operations = _.vectorAdapter.operations;
   let routines = _.vectorAdapter._meta.operationRoutines;
-  let atomWiseHeterogeneous = operations.atomWiseHeterogeneous = operations.atomWiseHeterogeneous || Object.create( null );
+  let scalarWiseHeterogeneous = operations.scalarWiseHeterogeneous = operations.scalarWiseHeterogeneous || Object.create( null );
 
-  for( let name in routines.atomWiseHeterogeneous )
+  for( let name in routines.scalarWiseHeterogeneous )
   {
-    let operation = routines.atomWiseHeterogeneous[ name ];
+    let operation = routines.scalarWiseHeterogeneous[ name ];
 
     this.operationNormalize1( operation );
 
@@ -819,16 +819,16 @@ function operationHeterogeneousAdjust()
     operation.usingExtraSrcs = false;
 
     operation.homogeneous = false;
-    operation.atomWise = true;
+    operation.scalarWise = true;
 
     _.assert( _.arrayIs( operation.takingArguments ) );
     _.assert( operation.takingArguments.length === 2 );
     _.assert( !!operation.input );
-    _.assert( !operations.atomWiseHeterogeneous[ name ] );
+    _.assert( !operations.scalarWiseHeterogeneous[ name ] );
 
     this.operationNormalize2( operation );
 
-    operations.atomWiseHeterogeneous[ name ] = operation;
+    operations.scalarWiseHeterogeneous[ name ] = operation;
 
   }
 
@@ -840,17 +840,17 @@ function operationReducingAdjust()
 {
   let operations = _.vectorAdapter.operations;
   let routines = _.vectorAdapter._meta.operationRoutines;
-  let atomWiseReducing = operations.atomWiseReducing = operations.atomWiseReducing || Object.create( null );
+  let scalarWiseReducing = operations.scalarWiseReducing = operations.scalarWiseReducing || Object.create( null );
 
-  for( let name in routines.atomWiseReducing )
+  for( let name in routines.scalarWiseReducing )
   {
-    let operation = routines.atomWiseReducing[ name ];
+    let operation = routines.scalarWiseReducing[ name ];
 
     this.operationNormalize1( operation );
 
     operation.kind = 'reducing';
     operation.homogeneous = false;
-    operation.atomWise = true;
+    operation.scalarWise = true;
     operation.reducing = true;
 
     if( operation.usingExtraSrcs === undefined )
@@ -858,11 +858,11 @@ function operationReducingAdjust()
     if( operation.usingDstAsSrc === undefined )
     operation.usingDstAsSrc = false;
 
-    _.assert( !operations.atomWiseReducing[ name ] );
+    _.assert( !operations.scalarWiseReducing[ name ] );
 
     this.operationNormalize2( operation );
 
-    operations.atomWiseReducing[ name ] = operation;
+    operations.scalarWiseReducing[ name ] = operation;
   }
 
 }

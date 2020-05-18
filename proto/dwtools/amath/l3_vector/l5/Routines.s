@@ -90,7 +90,7 @@ function assign( dst )
 
 let dop = assign.operation = Object.create( null );
 dop.input = 'vw ?ar *!vr';
-dop.atomWise = true;
+dop.scalarWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, Infinity ];
 dop.takingVectors = [ 1, 2 ];
@@ -138,7 +138,7 @@ function assignVector( dst, src )
 
 dop = assignVector.operation = Object.create( null );
 dop.input = 'vw vr';
-dop.atomWise = true;
+dop.scalarWise = true;
 dop.homogeneous = true;
 dop.takingArguments = 2;
 dop.takingVectors = 2;
@@ -184,7 +184,7 @@ function clone( src )
 
 dop = clone.operation = Object.create( null );
 dop.input = 'vr';
-dop.atomWise = true;
+dop.scalarWise = true;
 dop.homogeneous = true;
 dop.takingArguments = 1;
 dop.takingVectors = 1;
@@ -229,7 +229,7 @@ function MakeSimilar( src, length )
 
 dop = MakeSimilar.operation = Object.create( null );
 dop.input = 'vr ?s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = 1;
@@ -303,7 +303,7 @@ function slice( src, first, last )
 
 dop = slice.operation = Object.create( null );
 dop.input = 'vr ?s ?s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = 1;
@@ -342,7 +342,7 @@ dop.modifying = false;
 //
 // dop = slicedLong.operation = Object.create( null );
 // dop.input = 'vr ?s ?s';
-// dop.atomWise = false;
+// dop.scalarWise = false;
 // dop.homogeneous = false;
 // dop.takingArguments = [ 1, 3 ];
 // dop.takingVectors = 1;
@@ -362,7 +362,7 @@ dop.modifying = false;
 //
 // dop = slicedAdapter.operation = Object.create( null );
 // dop.input = 'vr ?s ?s';
-// dop.atomWise = false;
+// dop.scalarWise = false;
 // dop.homogeneous = false;
 // dop.takingArguments = [ 1, 3 ];
 // dop.takingVectors = 1;
@@ -423,7 +423,7 @@ dop.modifying = false;
 //
 // dop = resizedLong.operation = Object.create( null );
 // dop.input = 'vr ?s ?s ?s';
-// dop.atomWise = false;
+// dop.scalarWise = false;
 // dop.homogeneous = false;
 // dop.takingArguments = [ 1, 4 ];
 // dop.takingVectors = 1;
@@ -443,7 +443,7 @@ dop.modifying = false;
 //
 // dop = resizedAdapter.operation = Object.create( null );
 // dop.input = 'vr ?s ?s ?s';
-// dop.atomWise = false;
+// dop.scalarWise = false;
 // dop.homogeneous = false;
 // dop.takingArguments = [ 1, 4 ];
 // dop.takingVectors = 1;
@@ -485,7 +485,7 @@ function growAdapter( src, crange, val )
 
 dop = growAdapter.operation = Object.create( null );
 dop.input = 'vr ?s ?s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = 1;
@@ -556,7 +556,7 @@ function growLong( src, crange, val )
 
 dop = growLong.operation = Object.create( null );
 dop.input = 'vr ?s ?s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = 1;
@@ -595,7 +595,7 @@ function shrinkAdapter( src, crange )
 
 dop = shrinkAdapter.operation = Object.create( null );
 dop.input = 'vr ?s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = 1;
@@ -652,7 +652,7 @@ function shrinkLong( src, crange )
 
 dop = shrinkLong.operation = Object.create( null );
 dop.input = 'vr ?s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = 1;
@@ -715,7 +715,7 @@ function review( src, crange )
 
 dop = review.operation = Object.create( null );
 dop.input = 'vr s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 1;
@@ -756,7 +756,7 @@ function bufferConstructorOf( src )
 
 dop = bufferConstructorOf.operation = Object.create( null );
 dop.input = 'vr|s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.returningSelf = false;
 dop.returningNew = false;
@@ -797,7 +797,7 @@ dop.modifying = false;
 //
 // dop = subarray.operation = Object.create( null );
 // dop.input = 'vr s ?s';
-// dop.atomWise = false;
+// dop.scalarWise = false;
 // dop.homogeneous = false;
 // dop.takingArguments = [ 2, 3 ];
 // dop.takingVectors = 1;
@@ -843,7 +843,7 @@ function toLong( src )
 dop = toLong.operation = Object.create( null );
 dop.input = 'vr';
 dop.output = 'l';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 1;
 dop.takingVectors = 1;
@@ -926,7 +926,7 @@ _toStr.defaults =
 
 dop = _toStr.operation = Object.create( null );
 dop.input = 'vr ?t';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = 1;
@@ -950,7 +950,7 @@ headExport.defaults =
 
 dop = headExport.operation = Object.create( null );
 dop.input = 'vr';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingVectorsOnly = true;
 dop.returningSelf = false;
@@ -1024,7 +1024,7 @@ function gather( dst, srcs )
 
 dop = gather.operation = Object.create( null );
 dop.input = 'vw !vw'; /* xxx : introduce (*vw) */
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 1;
@@ -1102,7 +1102,7 @@ function map( dst, src, onEach )
 
 dop = map.operation = Object.create( null );
 dop.input = 'vw|n ?vr ?s';
-dop.atomWise = true;
+dop.scalarWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = [ 1, 2 ];
@@ -1201,7 +1201,7 @@ function filter( dst, src, onEach )
 
 dop = filter.operation = Object.create( null );
 dop.input = 'vw|n ?vr ?s';
-dop.atomWise = true;
+dop.scalarWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = [ 1, 2 ];
@@ -1300,7 +1300,7 @@ function _while( dst, src, onEach )
 
 dop = _while.operation = Object.create( null );
 dop.input = 'vw|n ?vr ?s';
-dop.atomWise = true;
+dop.scalarWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 3 ];
 dop.takingVectors = [ 1, 2 ];
@@ -1310,7 +1310,7 @@ dop.returningNew = true;
 dop.modifying = true;
 
 // --
-// not atom-wise : self
+// not scalar-wise : self
 // --
 
 /**
@@ -1382,7 +1382,7 @@ function sort( dst, comparator )
 
 dop = sort.operation = Object.create( null );
 dop.input = 'vw ?s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.returningSelf = true;
 dop.returningNew = false;
@@ -1442,7 +1442,7 @@ function randomInRadius( dst, radius )
 
 dop = randomInRadius.operation = Object.create( null );
 dop.input = 'vw s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 2, 2 ];
 dop.takingVectors = [ 1, 1 ];
@@ -1500,7 +1500,7 @@ function crossWithPoints( dst, a, b, c )
 
 dop = crossWithPoints.operation = Object.create( null );
 dop.input = 'vw|n vr vr vr';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 4, 4 ];
 dop.takingVectors = [ 4, 4 ];
@@ -1533,7 +1533,7 @@ function _cross3( dst, src1, src2 )
 
 dop = _cross3.operation = Object.create( null );
 dop.input = 'vw|n vr vr';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 3;
 dop.takingVectors = 3;
@@ -1637,7 +1637,7 @@ function cross( dst )
 
 dop = cross.operation = Object.create( null );
 dop.input = 'vw|n vr *vr';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 2, Infinity ];
 dop.takingVectors = [ 2, Infinity ];
@@ -1712,7 +1712,7 @@ function quaternionApply( dst, q )
 
 dop = quaternionApply.operation = Object.create( null );
 dop.input = 'vw vr';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 2;
@@ -1773,7 +1773,7 @@ function quaternionApply2( dst, q )
 
 dop = quaternionApply2.operation = Object.create( null );
 dop.input = 'vw vr';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 2;
@@ -1795,7 +1795,7 @@ function eulerApply( v, e )
 
 dop = eulerApply.operation = Object.create( null );
 dop.input = 'vw vr';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 2;
@@ -1841,7 +1841,7 @@ function reflect( v, normal )
 
 dop = reflect.operation = Object.create( null );
 dop.input = 'vw|n vr vr';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 3;
 dop.takingVectors = 3;
@@ -1883,7 +1883,7 @@ function matrixApplyTo( dst, srcMatrix )
 
 dop = matrixApplyTo.operation = Object.create( null );
 dop.input = 'vr mw';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 1;
@@ -1927,7 +1927,7 @@ function matrixHomogenousApply( dst, srcMatrix )
 
 dop = matrixHomogenousApply.operation = Object.create( null );
 dop.input = 'vr mw';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 1;
@@ -1971,7 +1971,7 @@ function matrixDirectionsApply( v, m )
 
 dop = matrixDirectionsApply.operation = Object.create( null );
 dop.input = 'vr mw';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 1;
@@ -2022,7 +2022,7 @@ function swapVectors( v1, v2 )
 
 dop = swapVectors.operation = Object.create( null );
 dop.input = 'vw vw';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 2;
 dop.takingVectors = 2;
@@ -2071,7 +2071,7 @@ function scalarsSwap( v, i1, i2 )
 
 dop = scalarsSwap.operation = Object.create( null );
 dop.input = 'vw s s';
-dop.atomWise = false;
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = 3;
 dop.takingVectors = 1;
@@ -2144,7 +2144,7 @@ dop.reducing = false;
 dop.homogeneous = false;
 
 // --
-// atom-wise, modifying, taking single vector : self
+// scalar-wise, modifying, taking single vector : self
 // --
 
 /**
@@ -3273,7 +3273,7 @@ function all( src, onEach )
 
 dop = all.operation = Object.create( null );
 dop.input = 'vw ?s';
-dop.atomWise = true;
+dop.scalarWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = [ 1, 1 ];
@@ -3336,7 +3336,7 @@ function any( src, onEach )
 
 dop = any.operation = Object.create( null );
 dop.input = 'vw ?s';
-dop.atomWise = true;
+dop.scalarWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = [ 1, 1 ];
@@ -3399,7 +3399,7 @@ function none( src, onEach )
 
 dop = none.operation = Object.create( null );
 dop.input = 'vw ?s';
-dop.atomWise = true;
+dop.scalarWise = true;
 dop.homogeneous = false;
 dop.takingArguments = [ 1, 2 ];
 dop.takingVectors = [ 1, 1 ];
@@ -4522,7 +4522,7 @@ let _routinesMathematical =
   formate,
 
 
-  // atom-wise, modifying, taking single vector : self
+  // scalar-wise, modifying, taking single vector : self
 
   /* meta._operationTakingDstSrcReturningSelfComponentWise_functor */
 
@@ -4538,7 +4538,7 @@ let _routinesMathematical =
 
   normalize,
 
-  // atom-wise, assigning, mixed : self /* zzz qqq : deprecate */
+  // scalar-wise, assigning, mixed : self /* zzz qqq : deprecate */
 
   /* meta._operationReturningSelfTakingVariantsComponentWise_functor */
   /* meta._operationReturningSelfTakingVariantsComponentWiseAct_functor */
@@ -4554,7 +4554,7 @@ let _routinesMathematical =
   // randomInRangeAssigning : randomInRange.assigning,
   // mixAssigning : mix.assigning,
 
-  // atom-wise, copying, mixed : self /* zzz qqq : deprecate */
+  // scalar-wise, copying, mixed : self /* zzz qqq : deprecate */
 
   // addCopying : add.copying,
   // subCopying : sub.copying,
@@ -4567,7 +4567,7 @@ let _routinesMathematical =
   // randomInRangeCopying : randomInRange.copying,
   // mixCopying : mix.copying,
 
-  // atom-wise, homogeneous, taking vectors
+  // scalar-wise, homogeneous, taking vectors
   // vectors only -> self
 
   // /*
@@ -4583,7 +4583,7 @@ let _routinesMathematical =
   // minVectors : Routines.minVectors,
   // maxVectors : Routines.maxVectors,
   //
-  // // atom-wise, homogeneous, taking scalar
+  // // scalar-wise, homogeneous, taking scalar
   // // 1 vector , 1 scalar -> self
   //
   // /*
@@ -4599,7 +4599,7 @@ let _routinesMathematical =
   // minScalar : Routines.minScalar,
   // maxScalar : Routines.maxScalar,
 
-  // atom-wise
+  // scalar-wise
 
   /*
   _onScalarAtomwise_functor,
@@ -4607,7 +4607,7 @@ let _routinesMathematical =
   */
 
 
-// atom-wise, homogeneous
+// scalar-wise, homogeneous
 
   /*
   _routineHomogeneousDeclare,
@@ -4622,7 +4622,7 @@ let _routinesMathematical =
   min : Routines.min,
   max : Routines.max,
 
-// atom-wise, heterogeneous
+// scalar-wise, heterogeneous
 
   /*
   _routinesHeterogeneousDeclare,

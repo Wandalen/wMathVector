@@ -28,7 +28,7 @@ let meta = vad._meta;
 let dop;
 
 // --
-// atomWiseSingler
+// scalarWiseSingler
 // --
 
 let inv = dop = Object.create( null );
@@ -312,7 +312,7 @@ dop.onScalar = function isLessAprox( o )
 }
 
 // --
-// atomWiseHomogeneous
+// scalarWiseHomogeneous
 // --
 
 let add = dop = Object.create( null );
@@ -407,7 +407,7 @@ max.onScalarsBegin = function maxBegin( o )
 }
 
 // --
-// atomWiseHeterogeneous
+// scalarWiseHeterogeneous
 // --
 
 let addScaled = dop = Object.create( null );
@@ -524,7 +524,7 @@ dop.returningNew = true;
 dop.usingDstAsSrc = true;
 
 // --
-// atomWiseReducing
+// scalarWiseReducing
 // --
 
 let polynomApply = dop = Object.create( null );
@@ -729,7 +729,7 @@ dop.onScalarsEnd = function reduceToMag( o )
 
 /* operationSinglerAdjust, */
 
-let atomWiseSingler = //
+let scalarWiseSingler = //
 {
 
   inv,
@@ -783,7 +783,7 @@ let logical2 = //
 
 /* operationHomogeneousAdjust, */
 
-let atomWiseHomogeneous = //
+let scalarWiseHomogeneous = //
 {
 
   add,
@@ -799,7 +799,7 @@ let atomWiseHomogeneous = //
 
 /* operationHeterogeneousAdjust, */
 
-let atomWiseHeterogeneous = //
+let scalarWiseHeterogeneous = //
 {
 
   /* isEquivalent2, */
@@ -817,7 +817,7 @@ let atomWiseHeterogeneous = //
 
 /* operationReducingAdjust, */
 
-let atomWiseReducing = //
+let scalarWiseReducing = //
 {
 
   polynomApply,
@@ -840,7 +840,7 @@ let Routines = meta.operationRoutines =
 
   /* operationSinglerAdjust */
 
-  atomWiseSingler,
+  scalarWiseSingler,
 
   /* operationsLogical1Adjust, */
 
@@ -852,15 +852,15 @@ let Routines = meta.operationRoutines =
 
   /* operationHomogeneousAdjust */
 
-  atomWiseHomogeneous,
+  scalarWiseHomogeneous,
 
   /* operationHeterogeneousAdjust */
 
-  atomWiseHeterogeneous,
+  scalarWiseHeterogeneous,
 
   /* operationReducingAdjust */
 
-  atomWiseReducing,
+  scalarWiseReducing,
 
 }
 
