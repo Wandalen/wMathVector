@@ -183,8 +183,10 @@ module:
           - ../proto/dwtools/amath
           - ../proto/dwtools/amath/l3_vector
           - ../proto/dwtools/amath/l3_vector/Include.s
+          - ../proto/dwtools/amath/l3_vector/l0
+          - ../proto/dwtools/amath/l3_vector/l0/Namespaces.s
           - ../proto/dwtools/amath/l3_vector/l1
-          - ../proto/dwtools/amath/l3_vector/l1/Namespaces.s
+          - ../proto/dwtools/amath/l3_vector/l1/Vad.s
           - ../proto/dwtools/amath/l3_vector/l2
           - ../proto/dwtools/amath/l3_vector/l2/AdapterMake.s
           - ../proto/dwtools/amath/l3_vector/l2/LongMake.s
