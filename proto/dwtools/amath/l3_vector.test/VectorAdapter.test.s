@@ -390,101 +390,118 @@ function compare( test )
 
   /* */
 
+  test.case = 'src1:vad nonempty src2:vad empty - not equivalent';
+  var src1 = _.vectorAdapter.fromLong([ 1, 2, 3 ]);
+  var src2 = _.vectorAdapter.fromLong([]);
+  _global_.debugger = 1;
+  debugger;
+  test.identical( _.equivalent( src1, src2 ), false );
+  debugger;
+  test.identical( _.equivalent( src2, src1 ), false );
+  test.identical( _.identical( src1, src2 ), false );
+  test.identical( _.identical( src2, src1 ), false );
+  test.ne( src1, src2 );
+  test.ne( src2, src1 );
+  test.ni( src1, src2 );
+  test.ni( src2, src1 );
+
+  /* */
+
   test.case = 'src1:vad src2:int - not equivalent';
-  var vad1 = _.vectorAdapter.fromLong( new I32x([ 1, 3, 5 ]) );
+  var src1 = _.vectorAdapter.fromLong( new I32x([ 1, 3, 5 ]) );
   var src2 = 1;
-  test.identical( _.equivalent( vad1, src2 ), false );
-  test.identical( _.equivalent( src2, vad1 ), false );
-  test.identical( _.identical( vad1, src2 ), false );
-  test.identical( _.identical( src2, vad1 ), false );
-  test.ne( vad1, src2 );
-  test.ne( src2, vad1 );
-  test.ni( vad1, src2 );
-  test.ni( src2, vad1 );
+  test.identical( _.equivalent( src1, src2 ), false );
+  test.identical( _.equivalent( src2, src1 ), false );
+  test.identical( _.identical( src1, src2 ), false );
+  test.identical( _.identical( src2, src1 ), false );
+  test.ne( src1, src2 );
+  test.ne( src2, src1 );
+  test.ni( src1, src2 );
+  test.ni( src2, src1 );
 
   /* */
 
   test.case = 'src1:vad-lrange-stride-i32 src2:vad-i32 - identical';
-  var vad1 = _.vectorAdapter.fromLongLrangeAndStride( new I32x([ 0, 1, 2, 3, 4, 5, 6 ]), [ 1, 3 ], 2 );
-  var vad2 = _.vectorAdapter.fromLong( new I32x([ 1, 3, 5 ]) );
-  test.identical( _.equivalent( vad1, vad2 ), true );
-  test.identical( _.equivalent( vad2, vad1 ), true );
-  test.identical( _.identical( vad1, vad2 ), true );
-  test.identical( _.identical( vad2, vad1 ), true );
-  test.equivalent( vad1, vad2 );
-  test.equivalent( vad2, vad1 );
-  test.identical( vad1, vad2 );
-  test.identical( vad2, vad1 );
+  var src1 = _.vectorAdapter.fromLongLrangeAndStride( new I32x([ 0, 1, 2, 3, 4, 5, 6 ]), [ 1, 3 ], 2 );
+  var src2 = _.vectorAdapter.fromLong( new I32x([ 1, 3, 5 ]) );
+  test.identical( _.equivalent( src1, src2 ), true );
+  test.identical( _.equivalent( src2, src1 ), true );
+  test.identical( _.identical( src1, src2 ), true );
+  test.identical( _.identical( src2, src1 ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
 
   /* - */
 
   test.case = 'src1:vad-a-f32 src2:vad-a-f64 - not equivalent';
-  var vad1 = _.vectorAdapter.from( new F32x([ 1, 3, 5 ]) );
-  var vad2 = _.vectorAdapter.from( new F64x([ 1, 3, 5 ]) );
-  test.identical( _.equivalent( vad1, vad2 ), true );
-  test.identical( _.equivalent( vad2, vad1 ), true );
-  test.identical( _.identical( vad1, vad2 ), false );
-  test.identical( _.identical( vad2, vad1 ), false );
-  test.equivalent( vad1, vad2 );
-  test.equivalent( vad2, vad1 );
-  test.ni( vad1, vad2 );
-  test.ni( vad2, vad1 );
+  var src1 = _.vectorAdapter.from( new F32x([ 1, 3, 5 ]) );
+  var src2 = _.vectorAdapter.from( new F64x([ 1, 3, 5 ]) );
+  test.identical( _.equivalent( src1, src2 ), true );
+  test.identical( _.equivalent( src2, src1 ), true );
+  test.identical( _.identical( src1, src2 ), false );
+  test.identical( _.identical( src2, src1 ), false );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.ni( src1, src2 );
+  test.ni( src2, src1 );
 
   /* - */
 
   test.case = 'src1:vad-a-arr src2:vad-a-arr - identical';
-  var vad1 = _.vectorAdapter.from([ 1, 3, 5 ]);
-  var vad2 = _.vectorAdapter.from([ 1, 3, 5 ]);
-  test.identical( _.equivalent( vad1, vad2 ), true );
-  test.identical( _.equivalent( vad2, vad1 ), true );
-  test.identical( _.identical( vad1, vad2 ), true );
-  test.identical( _.identical( vad2, vad1 ), true );
-  test.equivalent( vad1, vad2 );
-  test.equivalent( vad2, vad1 );
-  test.identical( vad1, vad2 );
-  test.identical( vad2, vad1 );
+  var src1 = _.vectorAdapter.from([ 1, 3, 5 ]);
+  var src2 = _.vectorAdapter.from([ 1, 3, 5 ]);
+  test.identical( _.equivalent( src1, src2 ), true );
+  test.identical( _.equivalent( src2, src1 ), true );
+  test.identical( _.identical( src1, src2 ), true );
+  test.identical( _.identical( src2, src1 ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
 
   /* */
 
   test.case = 'src1:vad-a-arr src2:vad-a-arr - identical';
-  var vad1 = _.avector.make( [ true, true, true ] );
-  var vad2 = _.avector.make( [ true, true, true ] );
-  test.identical( _.equivalent( vad1, vad2 ), true );
-  test.identical( _.equivalent( vad2, vad1 ), true );
-  test.identical( _.identical( vad1, vad2 ), true );
-  test.identical( _.identical( vad2, vad1 ), true );
-  test.equivalent( vad1, vad2 );
-  test.equivalent( vad2, vad1 );
-  test.identical( vad1, vad2 );
-  test.identical( vad2, vad1 );
+  var src1 = _.avector.make( [ true, true, true ] );
+  var src2 = _.avector.make( [ true, true, true ] );
+  test.identical( _.equivalent( src1, src2 ), true );
+  test.identical( _.equivalent( src2, src1 ), true );
+  test.identical( _.identical( src1, src2 ), true );
+  test.identical( _.identical( src2, src1 ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
 
   /* - */
 
   test.case = 'src1:vad-a-arr src2:vad-a-arr - not equivalent';
-  var vad1 = _.vectorAdapter.from([ 1, 3, 5 ]);
-  var vad2 = _.vectorAdapter.from([ 1, 3, 6 ]);
-  test.identical( _.equivalent( vad1, vad2 ), false );
-  test.identical( _.equivalent( vad2, vad1 ), false );
-  test.identical( _.identical( vad1, vad2 ), false );
-  test.identical( _.identical( vad2, vad1 ), false );
-  test.ne( vad1, vad2 );
-  test.ne( vad2, vad1 );
-  test.ni( vad1, vad2 );
-  test.ni( vad2, vad1 );
+  var src1 = _.vectorAdapter.from([ 1, 3, 5 ]);
+  var src2 = _.vectorAdapter.from([ 1, 3, 6 ]);
+  test.identical( _.equivalent( src1, src2 ), false );
+  test.identical( _.equivalent( src2, src1 ), false );
+  test.identical( _.identical( src1, src2 ), false );
+  test.identical( _.identical( src2, src1 ), false );
+  test.ne( src1, src2 );
+  test.ne( src2, src1 );
+  test.ni( src1, src2 );
+  test.ni( src2, src1 );
 
   /* - */
 
   test.case = 'src1:vad-a-arr src2:vad-ls-arr';
-  var vad1 = _.vectorAdapter.from([ 1, 3, 5 ]);
-  var vad2 = _.vectorAdapter.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 3 ], 2 );
-  test.identical( _.equivalent( vad1, vad2 ), true );
-  test.identical( _.equivalent( vad2, vad1 ), true );
-  test.identical( _.identical( vad1, vad2 ), true );
-  test.identical( _.identical( vad2, vad1 ), true );
-  test.equivalent( vad1, vad2 );
-  test.equivalent( vad2, vad1 );
-  test.identical( vad1, vad2 );
-  test.identical( vad2, vad1 );
+  var src1 = _.vectorAdapter.from([ 1, 3, 5 ]);
+  var src2 = _.vectorAdapter.fromLongLrangeAndStride( [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 3 ], 2 );
+  test.identical( _.equivalent( src1, src2 ), true );
+  test.identical( _.equivalent( src2, src1 ), true );
+  test.identical( _.identical( src1, src2 ), true );
+  test.identical( _.identical( src2, src1 ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
 
   /* - */
 
@@ -667,6 +684,13 @@ function subScaled( test )
     var exp = a.vadMake([ 0, 2 - 4/3, 3-5/3 ]);
     test.equivalent( got, exp );
     test.is( got === v1 );
+
+    var v1 = a.vadMake([ 10, 20, 30 ]);
+    var v2 = a.vadMake([ 1, 2, 3 ]);
+    var got = _.vectorAdapter.subScaled( v1, v2, 2 );
+    test.is( got === v1 );
+    var exp = a.vadMake([ 1 ]);
+    test.equivalent( got, exp );
 
   }
 

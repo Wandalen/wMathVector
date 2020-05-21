@@ -298,19 +298,39 @@ function _containerTypeDeclare()
   let type = Object.create( null );
 
   type.name = 'VectorAdapter';
-  type._elementGet = function _elementGet( container, key )
+  type._elementGet = _elementGet;
+  type._elementSet = _elementSet;
+  type._lengthGet = _lengthGet;
+  type._is = _is;
+  type._while = _while;
+  type._identicalTypes = _identicalTypes;
+  type._coerce = _coerce;
+
+  return _.container.typeDeclare( type );
+
+  /* */
+
+  function _elementGet( container, key )
   {
     return container.eGet( key );
   }
-  type._elementSet = function _elementSet( container, key, val )
+
+  function _elementSet( container, key, val )
   {
     return container.eSet( key, val );
   }
-  type._is = function _is( src )
+
+  function _lengthGet( container )
+  {
+    return container.length;
+  }
+
+  function _is( src )
   {
     return _.vectorAdapterIs( src );
   }
-  type._while = function _while( container, onEach )
+
+  function _while( container, onEach )
   {
     let l = container.length;
     _.assert( _.routineIs( container.eGet ) );
@@ -322,7 +342,8 @@ function _containerTypeDeclare()
     }
     return true;
   }
-  type._identicalTypes = function _identicalTypes( src1, src2 )
+
+  function _identicalTypes( src1, src2 )
   {
     if( _.vectorAdapterIs( src1 ) )
     src1 = src1._vectorBuffer;
@@ -334,7 +355,8 @@ function _containerTypeDeclare()
     return false;
     return src1.constructor === src2.constructor;
   }
-  type._coerce = function _coerce( it )
+
+  function _coerce( it )
   {
     if( it.strictContainer )
     return false;
@@ -351,7 +373,6 @@ function _containerTypeDeclare()
     return false;
   }
 
-  return _.container.typeDeclare( type );
 }
 
 //
