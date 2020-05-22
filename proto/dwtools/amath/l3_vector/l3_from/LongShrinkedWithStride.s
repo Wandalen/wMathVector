@@ -30,13 +30,13 @@ function _toLong()
   let result;
   if( this.stride !== 1 || this.offset !== 0 || this.length !== this._vectorBuffer.length )
   {
-    result = this.vectorAdapter.longMake( this._vectorBuffer, this.length ); debugger
+    result = this.vectorAdapter.longMake( this._vectorBuffer, this.length );
     for( let i = 0 ; i < this.length ; i++ )
     result[ i ] = this.eGet( i );
   }
   else
   {
-    result = this._vectorBuffer; debugger;
+    result = this._vectorBuffer;
   }
   return result;
 }
