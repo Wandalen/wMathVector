@@ -4331,7 +4331,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _.longDescriptor.make([ 7, 7, 7, 7, 7 ]) );
     test.identical( got, exp );
     test.is( got !== src );
 
