@@ -293,87 +293,87 @@ function _methodsDeclare()
 
 //
 
-function _containerTypeDeclare()
-{
-  let type = Object.create( null );
-
-  type.name = 'VectorAdapter';
-  type._elementGet = _elementGet;
-  type._elementSet = _elementSet;
-  type._lengthGet = _lengthGet;
-  type._is = _is;
-  type._while = _while;
-  type._identicalTypes = _identicalTypes;
-  type._coerce = _coerce;
-
-  return _.container.typeDeclare( type );
-
-  /* */
-
-  function _elementGet( container, key )
-  {
-    return container.eGet( key );
-  }
-
-  function _elementSet( container, key, val )
-  {
-    return container.eSet( key, val );
-  }
-
-  function _lengthGet( container )
-  {
-    return container.length;
-  }
-
-  function _is( src )
-  {
-    return _.vectorAdapterIs( src );
-  }
-
-  function _while( container, onEach )
-  {
-    let l = container.length;
-    _.assert( _.routineIs( container.eGet ) );
-    for( let i = 0 ; i < l ; i++ )
-    {
-      let r = onEach( container.eGet( i ), i, container );
-      if( !r )
-      return false;
-    }
-    return true;
-  }
-
-  function _identicalTypes( src1, src2 )
-  {
-    if( _.vectorAdapterIs( src1 ) )
-    src1 = src1._vectorBuffer;
-    if( _.vectorAdapterIs( src2 ) )
-    src2 = src2._vectorBuffer;
-    if( !src1 )
-    return false;
-    if( !src2 )
-    return false;
-    return src1.constructor === src2.constructor;
-  }
-
-  function _coerce( it )
-  {
-    if( it.strictContainer )
-    return false;
-    if( _.longIs( it.src ) )
-    {
-      it.srcToIterate = it.src = _.vectorAdapter.from( it.src );
-      return true;
-    }
-    else if( _.longIs( it.src2 ) )
-    {
-      it.src2 = _.vectorAdapter.from( it.src2 );
-      return true;
-    }
-    return false;
-  }
-
-}
+// function _containerTypeDeclare()
+// {
+//   let type = Object.create( null );
+//
+//   type.name = 'VectorAdapter';
+//   type._elementGet = _elementGet;
+//   type._elementSet = _elementSet;
+//   type._lengthGet = _lengthGet;
+//   type._is = _is;
+//   type._while = _while;
+//   type._identicalTypes = _identicalTypes;
+//   type._coerce = _coerce;
+//
+//   return _.container.typeDeclare( type );
+//
+//   /* */
+//
+//   function _elementGet( container, key )
+//   {
+//     return container.eGet( key );
+//   }
+//
+//   function _elementSet( container, key, val )
+//   {
+//     return container.eSet( key, val );
+//   }
+//
+//   function _lengthGet( container )
+//   {
+//     return container.length;
+//   }
+//
+//   function _is( src )
+//   {
+//     return _.vectorAdapterIs( src );
+//   }
+//
+//   function _while( container, onEach )
+//   {
+//     let l = container.length;
+//     _.assert( _.routineIs( container.eGet ) );
+//     for( let i = 0 ; i < l ; i++ )
+//     {
+//       let r = onEach( container.eGet( i ), i, container );
+//       if( !r )
+//       return false;
+//     }
+//     return true;
+//   }
+//
+//   function _identicalTypes( src1, src2 )
+//   {
+//     if( _.vectorAdapterIs( src1 ) )
+//     src1 = src1._vectorBuffer;
+//     if( _.vectorAdapterIs( src2 ) )
+//     src2 = src2._vectorBuffer;
+//     if( !src1 )
+//     return false;
+//     if( !src2 )
+//     return false;
+//     return src1.constructor === src2.constructor;
+//   }
+//
+//   function _coerce( it )
+//   {
+//     if( it.strictContainer )
+//     return false;
+//     if( _.longIs( it.src ) )
+//     {
+//       it.srcToIterate = it.src = _.vectorAdapter.from( it.src );
+//       return true;
+//     }
+//     else if( _.longIs( it.src2 ) )
+//     {
+//       it.src2 = _.vectorAdapter.from( it.src2 );
+//       return true;
+//     }
+//     return false;
+//   }
+//
+// }
 
 //
 
@@ -381,7 +381,7 @@ function _adapterClassDeclare()
 {
   this._methodsDeclare();
   this._staticRoutinesDeclare();
-  this._containerTypeDeclare();
+  // this._containerTypeDeclare(); /* yyy */
 }
 
 //
@@ -2892,7 +2892,7 @@ let MetaExtension =
   _staticRoutineDeclare,
   _methodWrapDeclare,
   _methodsDeclare,
-  _containerTypeDeclare,
+  // _containerTypeDeclare,
   _adapterClassDeclare,
 
   _inputVerifyArgs,

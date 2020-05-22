@@ -367,7 +367,6 @@ function entityDiff( test )
   let diff = _.entityDiff( v1, v2 );
   let expected =
 `
-at /2
 - src1 :
   VectorAdapter.x3.Array :: 1.000 2.000 3.000
 - src2 :
@@ -393,10 +392,7 @@ function compare( test )
   test.case = 'src1:vad nonempty src2:vad empty - not equivalent';
   var src1 = _.vectorAdapter.fromLong([ 1, 2, 3 ]);
   var src2 = _.vectorAdapter.fromLong([]);
-  _global_.debugger = 1;
-  debugger;
   test.identical( _.equivalent( src1, src2 ), false );
-  debugger;
   test.identical( _.equivalent( src2, src1 ), false );
   test.identical( _.identical( src1, src2 ), false );
   test.identical( _.identical( src2, src1 ), false );
@@ -689,7 +685,7 @@ function subScaled( test )
     var v2 = a.vadMake([ 1, 2, 3 ]);
     var got = _.vectorAdapter.subScaled( v1, v2, 2 );
     test.is( got === v1 );
-    var exp = a.vadMake([ 1 ]);
+    var exp = a.vadMake([ 8, 16, 24 ]);
     test.equivalent( got, exp );
 
   }
@@ -6195,12 +6191,10 @@ function forOf( test )
     test.is( _.iterableIs( vector1 ) );
 
     var got = [];
-    debugger;
     for( let e of vector1 )
     {
       got.push( e );
     }
-    debugger;
     var exp = [ 10, 11, 12 ];
     test.identical( got, exp );
 
