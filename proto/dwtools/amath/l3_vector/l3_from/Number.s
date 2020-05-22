@@ -25,7 +25,7 @@ function _review( crange )
 function _toLong()
 {
   let result;
-  result = this.vectorAdapter.longMakeFilling( this._vectorBuffer[ 0 ], this.length ); debugger
+  result = this.vectorAdapter.longMakeFilling( this._vectorBuffer[ 0 ], this.length );
   return result;
 }
 

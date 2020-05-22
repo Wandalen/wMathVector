@@ -36,7 +36,7 @@ function _toLong()
   }
   else
   {
-    result = this._vectorBuffer; debugger;
+    result = this._vectorBuffer;
   }
   return result;
 }
