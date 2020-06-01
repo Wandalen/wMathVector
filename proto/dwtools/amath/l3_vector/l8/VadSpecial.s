@@ -216,8 +216,7 @@ identicalWith.modifying = false;
 function equivalentWith( src2, it )
 {
   let src1 = this;
-  _.assert( arguments.length === 1 || arguments.length === 2 ); debugger;
-  // _.assert( 0, 'not tested' );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   return this.vectorAdapter.equivalentAre( src2, src1, it );
 }
 
