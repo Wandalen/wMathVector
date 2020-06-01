@@ -88,7 +88,7 @@ function _routinePostForm( theRoutine, routineName )
     _.assert( _.boolIs( op.returningPrimitive ) );
     _.assert( op.returningNumber ? op.returningPrimitive : true );
 
-    _.assert( op.handleAtom === undefined );
+    _.assert( op.handleScalar === undefined );
     _.assert( op.handleVector === undefined );
     _.assert( op.handleVectors === undefined );
     _.assert( op.handleBegin === undefined );
@@ -155,7 +155,7 @@ function _routinePostForm( theRoutine, routineName )
     _.assert( op.returningNumber ? op.returningPrimitive : true );
     _.assert( ( !!returningOnly ) == ( differentReturns == 1 ) );
 
-    _.assert( op.handleAtom === undefined );
+    _.assert( op.handleScalar === undefined );
     _.assert( op.handleVector === undefined );
     _.assert( op.handleVectors === undefined );
     _.assert( op.handleBegin === undefined );
@@ -469,7 +469,7 @@ function _onScalarForRoutine_functor( dop )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( !dop.onScalar_functor );
 
-  let handleAtom = null;
+  let handleScalar = null;
   let onScalar0 = dop.onScalar[ 0 ];
 
   _.assert( _.routineIs( onScalar0 ) );
@@ -480,9 +480,9 @@ function _onScalarForRoutine_functor( dop )
   if( dop.input.definition === 'vw +vr' || dop.input.definition === 'vw *vr' )
   {
 
-    handleAtom = vonlyAtom
+    handleScalar = vonlyScalar
 
-    handleAtom.defaults =
+    handleScalar.defaults =
     {
       key : -1,
       args : null,
@@ -502,11 +502,11 @@ function _onScalarForRoutine_functor( dop )
     let allowingDstScalar = _.strHasAny( dop.input.args[ 0 ].definition , 's' );
 
     if( allowingDstScalar )
-    handleAtom = mixedDstScalarAtom;
+    handleScalar = mixedDstScalarScalar;
     else
-    handleAtom = mixedAtom;
+    handleScalar = mixedScalar;
 
-    handleAtom.defaults =
+    handleScalar.defaults =
     {
       key : -1,
       args : null,
@@ -519,13 +519,13 @@ function _onScalarForRoutine_functor( dop )
   }
   else _.assert( 0, `Unknown kind of input ${dop.input.definition}` );
 
-  meta._onScalarGenEnd( dop, handleAtom );
+  meta._onScalarGenEnd( dop, handleScalar );
 
-  return handleAtom;
+  return handleScalar;
 
   /* */
 
-  function mixedDstScalarAtom( o )
+  function mixedDstScalarScalar( o )
   {
     let r = onScalar0.call( this, o );
     _.assert( r === undefined );
@@ -536,7 +536,7 @@ function _onScalarForRoutine_functor( dop )
 
   /* */
 
-  function mixedAtom( o )
+  function mixedScalar( o )
   {
     let r = onScalar0.call( this, o );
     _.assert( r === undefined );
@@ -546,7 +546,7 @@ function _onScalarForRoutine_functor( dop )
 
   /* */
 
-  function vonlyAtom( o )
+  function vonlyScalar( o )
   {
 
     for( let a = 0 ; a < o.srcContainers.length ; a++ )
@@ -792,7 +792,7 @@ function _vectorsGenBegin( dop )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( takingArguments.length === 2 );
-  _.assert( dop.handleAtom === undefined );
+  _.assert( dop.handleScalar === undefined );
   _.assert( _.arrayIs( dop.onScalar ) );
   _.assert( _.routineIs( onScalar ) );
   _.assert( dop.onScalar.length > 1 );
@@ -1082,7 +1082,7 @@ function _routineForOperation_functor( dop )
   _.assert( _.strDefined( dop.name ) );
   _.assert( _.boolIs( dop.homogeneous ) || _.boolIs( dop.homogeneous ) );
 
-  _.assert( dop.handleAtom === undefined );
+  _.assert( dop.handleScalar === undefined );
   _.assert( dop.handleVector === undefined );
   _.assert( dop.handleVectors === undefined );
   _.assert( dop.handleBegin === undefined );
@@ -1129,7 +1129,7 @@ function _routineForOperation_functor( dop )
   _.assert( _.routineIs( dop.onVectors[ 0 ] ) );
   _.assert( _.arrayIs( dop.takingArguments ) );
 
-  _.assert( dop.handleAtom === undefined );
+  _.assert( dop.handleScalar === undefined );
   _.assert( dop.handleVector === undefined );
   _.assert( dop.handleVectors === undefined );
   _.assert( dop.handleBegin === undefined );
@@ -1466,7 +1466,7 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults =
 //   }
 //
 //   debugger;
-//   // _.assert( _.routineIs( routines.addScalar ) ); /* xxx */
+//   // _.assert( _.routineIs( routines.addScalar ) );
 //   // _.assert( routines.addScalar.operation.onScalar.length >= 2 );
 //
 // }
@@ -1475,12 +1475,12 @@ _operationReturningSelfTakingVariantsComponentWiseAct_functor.defaults =
 // scalar-wise
 // --
 
-function _onScalarAtomwise_functor( dop )
+function _onScalarScalarWise_functor( dop )
 {
   let meta = this;
   let onScalar0 = dop.onScalar[ 0 ];
   let onContinue = dop.onContinue[ 0 ];
-  let handleAtom = null;
+  let handleScalar = null;
 
   _.assert( !dop.interruptible || _.routineIs( onContinue ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1496,8 +1496,8 @@ function _onScalarAtomwise_functor( dop )
   if( dop.homogeneous === false )
   {
 
-    handleAtom = heteroAtom;
-    handleAtom.defaults =
+    handleScalar = heteroScalar;
+    handleScalar.defaults =
     {
       key : -1,
       args : null,
@@ -1513,13 +1513,13 @@ function _onScalarAtomwise_functor( dop )
   {
 
     if( !dop.usingExtraSrcs && !dop.usingDstAsSrc && dop.takingArguments[ 0 ] === 1 && dop.takingArguments[ 1 ] <= 2 )
-    handleAtom = homoAtomSimplest;
+    handleScalar = homoScalarSimplest;
     else if( dop.interruptible )
-    handleAtom = homoAtomInterruptible;
+    handleScalar = homoScalarInterruptible;
     else
-    handleAtom = homoAtomUninterruptible;
+    handleScalar = homoScalarUninterruptible;
 
-    handleAtom.defaults =
+    handleScalar.defaults =
     {
       dstElement : null,
       dstContainer : null,
@@ -1534,13 +1534,13 @@ function _onScalarAtomwise_functor( dop )
   }
   else _.assert( 0, 'unknown kind of input', dop.input );
 
-  meta._onScalarGenEnd( dop, handleAtom );
+  meta._onScalarGenEnd( dop, handleScalar );
 
-  return handleAtom;
+  return handleScalar;
 
   /* */
 
-  function heteroAtom( o )
+  function heteroScalar( o )
   {
 
     for( let a = 0 ; a < o.srcContainers.length ; a++ )
@@ -1557,7 +1557,7 @@ function _onScalarAtomwise_functor( dop )
 
   /* */
 
-  function homoAtomSimplest( o )
+  function homoScalarSimplest( o )
   {
 
     o.srcElement = o.srcContainers[ 0 ].eGet( o.key );
@@ -1581,7 +1581,7 @@ function _onScalarAtomwise_functor( dop )
 
   /* */
 
-  function homoAtomInterruptible( o )
+  function homoScalarInterruptible( o )
   {
 
     o.dstElement = o.srcContainers[ 0 ].eGet( o.key );
@@ -1609,7 +1609,7 @@ function _onScalarAtomwise_functor( dop )
 
   /* */
 
-  function homoAtomUninterruptible( o )
+  function homoScalarUninterruptible( o )
   {
 
     o.dstElement = o.srcContainers[ 0 ].eGet( o.key );
@@ -1634,7 +1634,7 @@ function _onScalarAtomwise_functor( dop )
 
 //
 
-function _onVectorsAtomwise_functor( dop )
+function _onVectorsScalarWise_functor( dop )
 {
   let meta = this;
 
@@ -1870,8 +1870,8 @@ function _routineHomogeneousDeclare( operation, scalarOperation, routineName )
   operation.input = 'vrw|s|n vr|s|l *vr|*s';
   operation.name = routineName;
 
-  operation.onScalar_functor = _onScalarAtomwise_functor;
-  operation.onVectors_functor = _onVectorsAtomwise_functor;
+  operation.onScalar_functor = _onScalarScalarWise_functor;
+  operation.onVectors_functor = _onVectorsScalarWise_functor;
 
   return routines[ routineName ] = meta._routineForOperation_functor( operation );
 }
@@ -1941,8 +1941,8 @@ function _routinesHeterogeneousDeclare( scalarOperation, routineName )
   operation.scalarOperation = scalarOperation;
   operation.name = routineName;
 
-  operation.onScalar_functor = _onScalarAtomwise_functor;
-  operation.onVectors_functor = _onVectorsAtomwise_functor;
+  operation.onScalar_functor = _onScalarScalarWise_functor;
+  operation.onVectors_functor = _onVectorsScalarWise_functor;
 
   routines[ routineName ] = meta._routineForOperation_functor( operation );
 
@@ -2071,9 +2071,9 @@ function __operationReduceToScalar_functor( operation )
   let onScalar = null;
 
   if( operation.interruptible )
-  onScalar = handleAtomInterruptible;
+  onScalar = handleScalarInterruptible;
   else
-  onScalar = handleAtom;
+  onScalar = handleScalar;
 
   onScalar.defaults = scalarDefaults;
   onScalar.own = { onScalar : onScalar };
@@ -2108,6 +2108,10 @@ function __operationReduceToScalar_functor( operation )
     reducing : true,
   }
 
+  // debugger;
+  // if( _.strHas( name, 'distributionRange' ) )
+  // debugger;
+
   _.mapSupplementNulls( operation, operationDefaults );
   routine.operation = operation;
   routine.own =
@@ -2121,7 +2125,7 @@ function __operationReduceToScalar_functor( operation )
 
   /* */
 
-  function handleAtomInterruptible( o )
+  function handleScalarInterruptible( o )
   {
 
     if( o.filter )
@@ -2138,7 +2142,7 @@ function __operationReduceToScalar_functor( operation )
 
   /* */
 
-  function handleAtom( o )
+  function handleScalar( o )
   {
 
     if( o.filter )
@@ -2932,8 +2936,8 @@ let MetaExtension =
 
   // scalar-wise
 
-  _onScalarAtomwise_functor,
-  _onVectorsAtomwise_functor,
+  _onScalarScalarWise_functor,
+  _onVectorsScalarWise_functor,
 
 // scalar-wise, homogeneous
 

@@ -85,7 +85,7 @@ function fromNumber( number, length )
 
   if( !numberIs )
   {
-    _.assert( number.length === length );
+    _.assert( number.length === length, () => `Inconsistant length ${number.length} <> ${length}` );
     return number;
   }
 
@@ -132,7 +132,7 @@ function fromMaybeNumber( number, length )
 
   if( _.longIs( number ) )
   {
-    _.assert( number.length === length );
+    _.assert( number.length === length, () => `Inconsistant length ${number.length} <> ${length}` );
     return this.fromLong( number );
   }
 

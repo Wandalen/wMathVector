@@ -22,7 +22,7 @@ let Routines = meta.routines;
 
 /*
 
-- split _onVectorsAtomwise_functor !!!
+- split _onVectorsScalarWise_functor !!!
 
 */
 
@@ -52,7 +52,7 @@ _.assert( _.objectIs( operations ) );
  * @module Tools/math/Vector
  */
 
-function assign( dst )
+function assign( dst ) /* qqq2 : perfect coverage is required */
 {
   let length = dst.length;
   let alength = arguments.length;
@@ -65,14 +65,17 @@ function assign( dst )
       for( let i = 0 ; i < dst.length ; i++ )
       dst.eSet( i, src );
     }
-    else if( _.hasLength( src ) )
+    else if( _.vectorIs( src ) )
     {
       src = _.vectorAdapter.fromLong( src );
-      _.assert( src.length === dst.length );
-      for( let i = 0 ; i < dst.length ; i++ )
+      // _.assert( src.length === dst.length );
+      _.assert( src.length <= dst.length );
+      for( let i = 0, l = src.length ; i < l ; i++ )
       dst.eSet( i, src.eGet( i ) );
+      for( let i = src.length, l = dst.length ; i < l ; i++ )
+      dst.eSet( i, 0 );
     }
-    else _.assert( 0, 'unknown arguments' );
+    else _.assert( 0, 'Unknown type of argument', _.strType( src ) );
     // if( _.numberIs( arguments[ 1 ] ) )
     // this.assignScalar( dst, arguments[ 1 ] );
     // else if( _.hasLength( arguments[ 1 ] ) )
@@ -524,6 +527,7 @@ function growLong( src, crange, val )
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
 
+  // debugger;
   if( val === undefined )
   val = 0;
   if( crange === undefined )
@@ -543,12 +547,13 @@ function growLong( src, crange, val )
   for( let i = 0 ; i < l2 ; i++ )
   result[ i ] = val;
 
+  _.assert( crange[ 0 ] === 0, 'not implemented' );
   let l3 = src.length-crange[ 0 ];
   for( let i = -crange[ 0 ] ; i < l3 ; i++ )
-  result[ i ] = src.eGet( i );
+  result[ i-crange[ 0 ] ] = src.eGet( i );
 
   let l4 = l;
-  for( let i = crange[ 1 ]+1 ; i < l4 ; i++ )
+  for( let i = src.length ; i < l4 ; i++ )
   result[ i ] = val;
 
   return result;
@@ -2918,118 +2923,6 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
 //
 
 /**
- * Routine _distributionRangeSummaryBegin() appends field `result` to map {-o-}.
- *
- * @example
- * var got = _.avector._distributionRangeSummaryBegin( {} );
- * console.log( got );
- * // log {
- * //       result : {
- * //                   min : { value : +Infinity, index : -1, container : null },
- * //                   max : { value : -Infinity, index : -1, container : null },
- * //                }
- * //  }
- *
- * @param { MapLike } o - Map.
- * @returns { Undefined } - Returns not a value, changes map {-o-}.
- * @function _distributionRangeSummaryBegin
- * @namespaces "wTools.avector","wTools.vectorAdapter"
- * @module Tools/math/Vector
- */
-
-function _distributionRangeSummaryBegin( o )
-{
-
-  o.result = { min : Object.create( null ), max : Object.create( null ), };
-
-  o.result.min.value = +Infinity;
-  o.result.min.index = -1;
-  o.result.min.container = null;
-  o.result.max.value = -Infinity;
-  o.result.max.index = -1;
-  o.result.max.container = null;
-
-}
-
-/**
- * Routine _distributionRangeSummaryEach() is a callback than compares current value with biggest and lowest value in map {-o-}.
- * If current value is bigger then biggest value in map {-o-}, then routine replace value in map {-o-}.
- * If current value is lower then lowest value in map {-o-}, then routine replace value in map {-o-}.
- *
- * @example
- * var got = _.avector._distributionRangeSummaryEach( o );
- * console.log( got );
- * // log {
- * //       result : {
- * //                   element : 3,
- * //                   container : [ 1, 2, 3 ],
- * //                   min : { value : 1, index : 0, container : [ 1, 2, 3 ] },
- * //                   max : { value : 3, index : 2, container : [ 1, 2, 3 ] },
- * //                }
- * //  }
- *
- * @param { MapLike } o - Map.
- * @returns { Undefined } - Returns not a value, changes map {-o-}.
- * @function _distributionRangeSummaryEach
- * @namespaces "wTools.avector","wTools.vectorAdapter"
- * @module Tools/math/Vector
- */
-
-function _distributionRangeSummaryEach( o )
-{
-
-  _.assert( o.container.length, 'not tested' );
-
-  if( o.element > o.result.max.value )
-  {
-    o.result.max.value = o.element;
-    o.result.max.index = o.key;
-    o.result.max.container = o.container;
-  }
-
-  if( o.element < o.result.min.value )
-  {
-    o.result.min.value = o.element;
-    o.result.min.index = o.key;
-    o.result.min.container = o.container;
-  }
-
-}
-
-/**
- * Routine _distributionRangeSummaryEnd() finds median of lowest and biggest value in map {-o-}.
- *
- * @example
- * var got = _.avector._distributionRangeSummaryEnd( o );
- * console.log( got );
- * // log {
- * //       result : {
- * //                   element : 3,
- * //                   container : [ 1, 2, 3 ],
- * //                   min : { value : 1, index : 0, container : [ 1, 2, 3 ] },
- * //                   max : { value : 3, index : 2, container : [ 1, 2, 3 ] },
- * //                   median : 2
- * //                }
- * //  }
- *
- * @param { MapLike } o - Map.
- * @returns { Undefined } - Returns not a value, changes map {-o-}.
- * @function _distributionRangeSummaryEnd
- * @namespaces "wTools.avector","wTools.vectorAdapter"
- * @module Tools/math/Vector
- */
-
-function _distributionRangeSummaryEnd( o )
-{
-  if( o.result.min.index === -1 )
-  {
-    o.result.min.value = NaN;
-    o.result.max.value = NaN;
-  }
-  o.result.median = ( o.result.min.value + o.result.max.value ) / 2;
-}
-
-/**
  * Routine distributionRangeSummary() finds the biggest and the lowest values in source vector {-src-} and the median between them.
  *
  * @param { MapLike } o - Map.
@@ -3053,6 +2946,51 @@ function _distributionRangeSummaryEnd( o )
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
+
+function _distributionRangeSummaryBegin( o )
+{
+
+  o.result = { min : Object.create( null ), max : Object.create( null ), };
+
+  o.result.min.value = +Infinity;
+  o.result.min.index = -1;
+  o.result.min.container = null;
+  o.result.max.value = -Infinity;
+  o.result.max.index = -1;
+  o.result.max.container = null;
+
+}
+
+function _distributionRangeSummaryEach( o )
+{
+
+  _.assert( o.container.length, 'not tested' );
+
+  if( o.element > o.result.max.value )
+  {
+    o.result.max.value = o.element;
+    o.result.max.index = o.key;
+    o.result.max.container = o.container;
+  }
+
+  if( o.element < o.result.min.value )
+  {
+    o.result.min.value = o.element;
+    o.result.min.index = o.key;
+    o.result.min.container = o.container;
+  }
+
+}
+
+function _distributionRangeSummaryEnd( o )
+{
+  if( o.result.min.index === -1 )
+  {
+    o.result.min.value = NaN;
+    o.result.max.value = NaN;
+  }
+  o.result.median = ( o.result.min.value + o.result.max.value ) / 2;
+}
 
 let distributionRangeSummary = meta._operationReduceToScalar_functor
 ({
@@ -3103,6 +3041,7 @@ dop.returningNew = false;
 dop.returningNumber = true;
 dop.returningPrimitive = true;
 dop.modifying = false;
+dop.reducing = true;
 
 //
 
@@ -3137,6 +3076,7 @@ dop.returningNew = false;
 dop.returningNumber = true;
 dop.returningPrimitive = true;
 dop.modifying = false;
+dop.reducing = true;
 
 //
 
@@ -3172,6 +3112,7 @@ dop.returningSelf = false;
 dop.returningNew = false;
 dop.returningNumber = false;
 dop.modifying = false;
+dop.reducing = true;
 
 // meta.declareHomogeneousLogical2Routines();
 
@@ -3674,6 +3615,7 @@ dop.homogeneous = true;
 
 /* aaa : good coverage required */
 /* Dmytro : covered, name of routine use not common naming pattern */
+/* qqq2 : bad coverage! */
 
 function areParallel( src1, src2, accuracy )
 {
@@ -3691,28 +3633,44 @@ function areParallel( src1, src2, accuracy )
   while( s < length )
   {
 
-    let allZero1 = src1.eGet( s ) === 0;
-    let allZero2 = src2.eGet( s ) === 0;
+    let e1 = src1.eGet( s );
+    let e2 = src2.eGet( s );
 
-    if( allZero1 ^ allZero2 )
+    let isZero1 = Math.abs( e1 ) < accuracy;
+    let isZero2 = Math.abs( e2 ) < accuracy;
+
+    if( isZero1 ^ isZero2 )
     return false;
 
-    if( allZero1 )
+    if( isZero1 )
     {
       s += 1;
       continue;
     }
 
     ratio = src1.eGet( s ) / src2.eGet( s );
-    break; /* Dmytro : enough single ratio to check any other. Also, if it comment out, then needs set s to 0 */
-    //break;
 
     s += 1;
-
+    break;
   }
 
   while( s < length )
   {
+
+    let e1 = src1.eGet( s );
+    let e2 = src2.eGet( s );
+
+    let isZero2 = Math.abs( e1 ) < accuracy;
+
+    if( isZero2 )
+    {
+      let isZero2 = Math.abs( e2 ) < accuracy;
+      if( !isZero2 )
+      return false;
+      s += 1;
+      continue;
+    }
+
     let r = src1.eGet( s ) / src2.eGet( s );
 
     if( abs( r - ratio ) > accuracy )
@@ -4467,7 +4425,7 @@ let _routinesMathematical =
 
   grow : growAdapter,
   growAdapter,
-  growLong,
+  growLong, /* qqq2 : implement good coverage, does not work properly */
 
   shrink : shrinkAdapter,
   shrinkAdapter,
@@ -4598,8 +4556,8 @@ let _routinesMathematical =
   // scalar-wise
 
   /*
-  _onScalarAtomwise_functor,
-  _onVectorsAtomwise_functor,
+  _onScalarScalarWise_functor,
+  _onVectorsScalarWise_functor,
   */
 
 

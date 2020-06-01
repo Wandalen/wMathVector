@@ -106,28 +106,28 @@ function longIs( test )
 
 //
 
-function constructorIsVector( test )
+function constructorIsVad( test )
 {
 
   test.case = 'src - vectorAdapter constructor, routine from';
   var src = _.vad.from( [ 1, 2, 3 ] );
-  test.is( _.constructorIsVector( src.constructor ) );
+  test.is( _.constructorIsVad( src.constructor ) );
 
   test.case = 'src - vectorAdapter constructor, routine fromLong';
   var src = _.vad.fromLong( [ 1, 2, 3 ] );
-  test.is( _.constructorIsVector( src.constructor ) );
+  test.is( _.constructorIsVad( src.constructor ) );
 
   test.case = 'src - vectorAdapter constructor, routine fromLongWithStride';
   var src = _.vad.fromLongWithStride( [ 1, -1, 2, -1, 3 ], 2 );
-  test.is( _.constructorIsVector( src.constructor ) );
+  test.is( _.constructorIsVad( src.constructor ) );
 
   test.case = 'src - vectorAdapter constructor, routine fromLongLrange';
   var src = _.vad.fromLongLrange( [ -1, 1, 2, 3, -1 ], 1, 3 );
-  test.is( _.constructorIsVector( src.constructor ) );
+  test.is( _.constructorIsVad( src.constructor ) );
 
   test.case = 'src - vectorAdapter constructor, routine fromLongLrangeAndStride';
   var src = _.vad.fromLongLrangeAndStride( [ -1, 1, -1, 2, -1, 3, -1 ], 1, 3, 2 );
-  test.is( _.constructorIsVector( src.constructor ) );
+  test.is( _.constructorIsVad( src.constructor ) );
 
 }
 
@@ -8605,7 +8605,7 @@ var Self =
     vectorAdapterIs,
     vectorIs,
     longIs,
-    constructorIsVector,
+    constructorIsVad,
 
     // exporter
 

@@ -59,7 +59,7 @@ function to( cls )
     result[ i ] = self.eGet( i );
     return result;
   }
-  else if( _.constructorIsVector( cls ) )
+  else if( _.constructorIsVad( cls ) )
   {
     return this;
   }
