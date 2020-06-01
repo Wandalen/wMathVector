@@ -3568,18 +3568,17 @@ dop.homogeneous = true;
 function equivalentAre( src1, src2, iterator )
 {
   // _.assert( !opts, 'not tested' );
-  debugger;
+  // debugger;
   let it = this._equalAre.pre.call( this, this.equivalentAre, arguments );
   let result = this._equalAre( it );
   return result;
-
   // let it = equivalentAre.lookContinue( identicalAre, arguments );
   // let result = this._equalAre( it );
   // return result;
   // // _entityEqualIteratorMake
 }
 
-_.routineExtend( equivalentAre, _.entityIdentical );
+_.routineExtend( equivalentAre, _.entityEquivalent );
 
 dop = equivalentAre.operation = Object.create( null );
 dop.input = 'vr vr ?!v';
@@ -4795,8 +4794,8 @@ let _routinesMathematical =
   // [ Symbol.for( 'equalAre' ) ] : _equalAre,
   _equalAre,
   equalAre,
-  identicalAre,
-  equivalentAre,
+  identicalAre, /* qqq2 : cover please */
+  equivalentAre, /* qqq2 : cover please */
 
   areParallel,
 
