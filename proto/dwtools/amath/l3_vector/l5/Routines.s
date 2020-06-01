@@ -3614,7 +3614,7 @@ dop.homogeneous = true;
 
 /* aaa : good coverage required */
 /* Dmytro : covered, name of routine use not common naming pattern */
-/* qqq2 : bad coverage! */
+/* aaa2 : bad coverage! */ /* Dmytro : extended */
 
 function areParallel( src1, src2, accuracy )
 {
@@ -4794,8 +4794,8 @@ let _routinesMathematical =
   // [ Symbol.for( 'equalAre' ) ] : _equalAre,
   _equalAre,
   equalAre,
-  identicalAre, /* qqq2 : cover please */
-  equivalentAre, /* qqq2 : cover please */
+  identicalAre, /* aaa2 : cover please */ /* Dmytro : covered */
+  equivalentAre, /* aaa2 : cover please */ /* Dmytro : covered */
 
   areParallel,
 

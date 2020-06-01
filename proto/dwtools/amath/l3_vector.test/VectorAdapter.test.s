@@ -7981,6 +7981,518 @@ function none( test )
 
 }
 
+//
+
+function equalentAreIdenticalAreEquivalentWithIdenticalWith( test )
+{
+  let e = this.accuracy || 10 ** -7;
+
+  /* - */
+
+  test.open( 'without callback' );
+
+  test.case = 'empty vectors';
+  var src1 = _.vectorAdapter.fromLong([]);
+  var src2 = _.vectorAdapter.fromLong([]);
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2 ), true );
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1 ), true );
+  test.identical( _.vectorAdapter.identicalAre( src1, src2 ), true );
+  test.identical( _.vectorAdapter.identicalAre( src2, src1 ), true );
+  test.identical( src1.equivalentWith( src2 ), true );
+  test.identical( src2.equivalentWith( src1 ), true );
+  test.identical( src1.identicalWith( src2 ), true );
+  test.identical( src2.identicalWith( src1 ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
+
+  /* */
+
+  test.case = 'vectors with single element, identical';
+  var src1 = _.vectorAdapter.fromLong([ 1 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 ]);
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2 ), true );
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1 ), true );
+  test.identical( _.vectorAdapter.identicalAre( src1, src2 ), true );
+  test.identical( _.vectorAdapter.identicalAre( src2, src1 ), true );
+  test.identical( src1.equivalentWith( src2 ), true );
+  test.identical( src2.equivalentWith( src1 ), true );
+  test.identical( src1.identicalWith( src2 ), true );
+  test.identical( src2.identicalWith( src1 ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
+
+  test.case = 'vectors with several elements, equivalent';
+  var src1 = _.vectorAdapter.fromLong([ 1 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + e/2 ]);
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2 ), true );
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1 ), true );
+  test.identical( _.vectorAdapter.identicalAre( src1, src2 ), false );
+  test.identical( _.vectorAdapter.identicalAre( src2, src1 ), false );
+  test.identical( src1.equivalentWith( src2 ), true );
+  test.identical( src2.equivalentWith( src1 ), true );
+  test.identical( src1.identicalWith( src2 ), false );
+  test.identical( src2.identicalWith( src1 ), false );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.case = 'vectors with several elements, nor identical and nor equivalent';
+  var src1 = _.vectorAdapter.fromLong([ 1 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + e*2 ]);
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2 ), false );
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1 ), false );
+  test.identical( _.vectorAdapter.identicalAre( src1, src2 ), false );
+  test.identical( _.vectorAdapter.identicalAre( src2, src1 ), false );
+  test.identical( src1.equivalentWith( src2 ), false );
+  test.identical( src2.equivalentWith( src1 ), false );
+  test.identical( src1.identicalWith( src2 ), false );
+  test.identical( src2.identicalWith( src1 ), false );
+  test.notEquivalent( src1, src2 );
+  test.notEquivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  /* */
+
+  test.case = 'vectors with several elements, identical';
+  var src1 = _.vectorAdapter.fromLong([ 1, 0, 2 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1, 0, 2 ]);
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2 ), true );
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1 ), true );
+  test.identical( _.vectorAdapter.identicalAre( src1, src2 ), true );
+  test.identical( _.vectorAdapter.identicalAre( src2, src1 ), true );
+  test.identical( src1.equivalentWith( src2 ), true );
+  test.identical( src2.equivalentWith( src1 ), true );
+  test.identical( src1.identicalWith( src2 ), true );
+  test.identical( src2.identicalWith( src1 ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
+
+  test.case = 'vectors with several elements, equivalent';
+  var src1 = _.vectorAdapter.fromLong([ 1, 0, 2 + e/2 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + e/2, 0, 2 ]);
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2 ), true );
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1 ), true );
+  test.identical( _.vectorAdapter.identicalAre( src1, src2 ), false );
+  test.identical( _.vectorAdapter.identicalAre( src2, src1 ), false );
+  test.identical( src1.equivalentWith( src2 ), true );
+  test.identical( src2.equivalentWith( src1 ), true );
+  test.identical( src1.identicalWith( src2 ), false );
+  test.identical( src2.identicalWith( src1 ), false );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.case = 'vectors with several elements, nor identical and nor equivalent';
+  var src1 = _.vectorAdapter.fromLong([ 1, 0, 2 + e/2 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1, 0 + e*2, 2 ]);
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2 ), false );
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1 ), false );
+  test.identical( _.vectorAdapter.identicalAre( src1, src2 ), false );
+  test.identical( _.vectorAdapter.identicalAre( src2, src1 ), false );
+  test.identical( src1.equivalentWith( src2 ), false );
+  test.identical( src2.equivalentWith( src1 ), false );
+  test.identical( src1.identicalWith( src2 ), false );
+  test.identical( src2.identicalWith( src1 ), false );
+  test.notEquivalent( src1, src2 );
+  test.notEquivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.close( 'without callback' );
+
+  /* - */
+
+  test.open( 'with callback' );
+
+  test.case = 'empty vectors, onNumbersAreEqual checks identical numbers';
+  var src1 = _.vectorAdapter.fromLong([]);
+  var src2 = _.vectorAdapter.fromLong([]);
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
+
+  test.case = 'empty vectors, onNumbersAreEqual should return false for equivalent numbers';
+  var src1 = _.vectorAdapter.fromLong([]);
+  var src2 = _.vectorAdapter.fromLong([]);
+  var o = { onNumbersAreEqual : ( a, b ) => a === b+e };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b+e };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b+e };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b+e };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b+e };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b+e };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b+e };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b+e };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
+
+  /* */
+
+  test.case = 'vectors with single element, identical numbers, onNumbersAreEqual checks identical numbers';
+  var src1 = _.vectorAdapter.fromLong([ 1 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
+
+  test.case = 'vectors with single element, identical numbers, onNumbersAreEqual checks equivalent numbers';
+  var src1 = _.vectorAdapter.fromLong([ 1 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
+
+  test.case = 'vectors with single element, equivalent numbers, onNumbersAreEqual checks identical numbers';
+  var src1 = _.vectorAdapter.fromLong([ 1 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + e/2 ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.equivalentWith( src2, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.equivalentWith( src1, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.identicalWith( src2, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.identicalWith( src1, o ), false );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.case = 'vectors with single element, equivalent numbers, onNumbersAreEqual checks equivalent numbers';
+  var src1 = _.vectorAdapter.fromLong([ 1 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + e/2 ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.case = 'vectors with single element, nor identical and nor equivalent numbers, onNumbersAreEqual checks numbers with non statdard accuracy';
+  var src1 = _.vectorAdapter.fromLong([ 1 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + 2*e ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.notEquivalent( src1, src2 );
+  test.notEquivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.case = 'vectors with single element, equivalent numbers, onNumbersAreEqual checks numbers with non statdard accuracy';
+  var src1 = _.vectorAdapter.fromLong([ 1 ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + e/2 ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  /* */
+
+  test.case = 'vectors with several elements, identical numbers, onNumbersAreEqual checks identical numbers';
+  var src1 = _.vectorAdapter.fromLong([ 1, 0, 2+e ]);
+  var src2 = _.vectorAdapter.fromLong([ 1, 0, 2+e ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
+
+  test.case = 'vectors with several elements, identical numbers, onNumbersAreEqual checks equivalent numbers';
+  var src1 = _.vectorAdapter.fromLong([ 1, 0, 2+e ]);
+  var src2 = _.vectorAdapter.fromLong([ 1, 0, 2+e ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.identical( src1, src2 );
+  test.identical( src2, src1 );
+
+  test.case = 'vectors with several elements, equivalent numbers, onNumbersAreEqual checks identical numbers';
+  var src1 = _.vectorAdapter.fromLong([ 1, 0, 2+e ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + e/2, 0, 2+e ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.equivalentWith( src2, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.equivalentWith( src1, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src1.identicalWith( src2, o ), false );
+  var o = { onNumbersAreEqual : ( a, b ) => a === b };
+  test.identical( src2.identicalWith( src1, o ), false );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.case = 'vectors with several elements, equivalent numbers, onNumbersAreEqual checks equivalent numbers';
+  var src1 = _.vectorAdapter.fromLong([ 1, 0, 2+e ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + e/2, 0, 2+e ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.case = 'vectors with several elements, nor identical and nor equivalent numbers, onNumbersAreEqual checks numbers with non statdard accuracy';
+  var src1 = _.vectorAdapter.fromLong([ 1, 0, 2+e ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + 2*e, 0, 2+e ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.notEquivalent( src1, src2 );
+  test.notEquivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.case = 'vectors with several elements, equivalent numbers, onNumbersAreEqual checks numbers with non statdard accuracy';
+  var src1 = _.vectorAdapter.fromLong([ 1, 0, 2+e ]);
+  var src2 = _.vectorAdapter.fromLong([ 1 + e/2, 0, 2+e ]);
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.equivalentAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.equivalentAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.identicalAre( src1, src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( _.vectorAdapter.identicalAre( src2, src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src1.equivalentWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src2.equivalentWith( src1, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src1.identicalWith( src2, o ), true );
+  var o = { onNumbersAreEqual : ( a, b ) => a - b < e*3 };
+  test.identical( src2.identicalWith( src1, o ), true );
+  test.equivalent( src1, src2 );
+  test.equivalent( src2, src1 );
+  test.notIdentical( src1, src2 );
+  test.notIdentical( src2, src1 );
+
+  test.close( 'with callback' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.equivalentAre() );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.identicalAre() );
+  var src = _.vectorAdapter.fromLong([ 1, 0, 2 ]);
+  test.shouldThrowErrorSync( () => src.equivalentWith() );
+  test.shouldThrowErrorSync( () => src.identicalWith() );
+
+  test.case = 'not enough arguments';
+  var src = _.vectorAdapter.fromLong([ 1, 0, 2 ]);
+  test.shouldThrowErrorSync( () => _.vectorAdapter.equivalentAre( src ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.identicalAre( src ) );
+
+  test.case = 'extra arguments';
+  var src = _.vectorAdapter.fromLong([ 1, 0, 2 ]);
+  test.shouldThrowErrorSync( () => _.vectorAdapter.equivalentAre( src, src, { onNumbersAreEqual : ( a, b ) => a === b }, src ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.identicalAre( src, src, { onNumbersAreEqual : ( a, b ) => a === b }, src ) );
+  test.shouldThrowErrorSync( () => src.equivalentWith( src, { onNumbersAreEqual : ( a, b ) => a === b }, src ) );
+  test.shouldThrowErrorSync( () => src.identicalWith( src, { onNumbersAreEqual : ( a, b ) => a === b }, src ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vectorAdapter.equivalentAre( null, [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.identicalAre( null, [ 1, 2 ] ) );
+  var src = _.vectorAdapter.fromLong([ 1, 0, 2 ]);
+  test.shouldThrowErrorSync( () => src.equivalentWith( undefined ) );
+  test.shouldThrowErrorSync( () => src.identicalWith( undefined ) );
+
+  test.case = 'wront type of options map';
+  var src = _.vectorAdapter.fromLong([ 1, 0, 2 ]);
+  test.shouldThrowErrorSync( () => _.vectorAdapter.equivalentAre( src, src, ( a, b ) => a === b ) );
+  test.shouldThrowErrorSync( () => _.vectorAdapter.identicalAre( src, src, new Set() ) );
+  test.shouldThrowErrorSync( () => src.equivalentWith( src, 'str' ) );
+  test.shouldThrowErrorSync( () => src.identicalWith( src, true ) );
+}
 
 //
 
@@ -8721,6 +9233,8 @@ var Self =
 
     any,
     none,
+
+    equalentAreIdenticalAreEquivalentWithIdenticalWith,
 
     areParallelDefaultAccuracy,
     areParallelNotDefaultAccuracy,
