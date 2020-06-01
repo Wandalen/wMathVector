@@ -7986,7 +7986,7 @@ function none( test )
 
 function areParallelDefaultAccuracy( test )
 {
-  let e = _.accuracy || 10 ** -7;
+  let e = 10 ** -7;
 
   /* - */
 
@@ -8299,7 +8299,7 @@ function areParallelDefaultAccuracy( test )
 
 function areParallelNotDefaultAccuracy( test )
 {
-  let e = _.accuracy || 10 ** -7;
+  let e = 10 ** -7;
 
   /* - */
 
@@ -8454,6 +8454,13 @@ function areParallelNotDefaultAccuracy( test )
   var src1 = _.vad.from( [ 0 ] );
   var src2 = _.vad.from( [ 0 + e * 10 ] );
   var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'single element vectors, not equivalent, zeros';
+  var src1 = _.vad.from( [ 0 ] );
+  var src2 = _.vad.from( [ 0 + e * 1000 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
   var exp = false;
   test.identical( got, exp );
 
@@ -8483,6 +8490,13 @@ function areParallelNotDefaultAccuracy( test )
   test.case = 'five element vectors, equivalent, zeros';
   var src1 = _.vad.from( [ 0, 0, 0 ] );
   var src2 = _.vad.from( [ 0 + e * 10, 0, 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent, zeros';
+  var src1 = _.vad.from( [ 0, 0, 0 ] );
+  var src2 = _.vad.from( [ 0 + e * 1000, 0, 0 ] );
   var got = src1.areParallel( src2, 10 ** -5 );
   var exp = false;
   test.identical( got, exp );
@@ -8534,6 +8548,13 @@ function areParallelNotDefaultAccuracy( test )
   test.case = 'five element vectors, equivalent, zeros';
   var src1 = _.vad.from( [ 0, 0, 0, 0, 0 ] );
   var src2 = _.vad.from( [ 0 + e * 10, 0, 0, 0, 0 ] );
+  var got = src1.areParallel( src2, 10 ** -5 );
+  var exp = true;
+  test.identical( got, exp );
+
+  test.case = 'five element vectors, not equivalent, zeros';
+  var src1 = _.vad.from( [ 0, 0, 0, 0, 0 ] );
+  var src2 = _.vad.from( [ 0 + e * 1000, 0, 0, 0, 0 ] );
   var got = src1.areParallel( src2, 10 ** -5 );
   var exp = false;
   test.identical( got, exp );
