@@ -3660,9 +3660,9 @@ function areParallel( src1, src2, accuracy )
     let e1 = src1.eGet( s );
     let e2 = src2.eGet( s );
 
-    let isZero2 = Math.abs( e1 ) < accuracy;
+    let isZero1 = Math.abs( e1 ) < accuracy;
 
-    if( isZero2 )
+    if( isZero1 )
     {
       let isZero2 = Math.abs( e2 ) < accuracy;
       if( !isZero2 )
