@@ -256,9 +256,9 @@ function _equalAre( it )
  * @module Tools/math/Vector
  */
 
-function hasShape( src )
+function hasShape( src ) /* xxx : move out? */
 {
-  if( _.matrixIs( src ) )
+  if( _.matrixIs && _.matrixIs( src ) )
   return src.dims.length === 2 && src.dims[ 0 ] === self.length && src.dims[ 1 ] === 1;
   return this.length === src.length;
 }

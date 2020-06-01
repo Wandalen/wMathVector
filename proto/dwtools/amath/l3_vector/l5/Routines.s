@@ -1876,7 +1876,7 @@ dop.modifying = true;
  * @module Tools/math/Vector
  */
 
-function matrixApplyTo( dst, srcMatrix )
+function matrixApplyTo( dst, srcMatrix ) /* xxx : move out? */
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.matrixIs( srcMatrix ) );
@@ -1922,7 +1922,7 @@ dop.modifying = true;
  * @module Tools/math/Vector
  */
 
-function matrixHomogenousApply( dst, srcMatrix )
+function matrixHomogenousApply( dst, srcMatrix ) /* xxx : move out? */
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.matrixIs( srcMatrix ) );
