@@ -33,99 +33,166 @@ _.assert( _.routineIs( sqrt ) );
 
 function assign( test )
 {
+  _.vectorAdapter.contextsForTesting({ onEach : act1 });
 
-  test.case = 'assign scalar';
+  function act1( a )
+  {
+    test.open( `dst - long, ${a.format}` );
 
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.assign( src, 0 );
-  var expected = [ 0, 0, 0 ];
-  test.identical( expected, got );
-  test.is( got === src );
+    test.case = 'dst - empty, without src';
+    var dst = a.longMake([]);
+    var got = _.avector.assign( dst );
+    var exp = a.longMake([]);
+    test.identical( got, exp );
+    test.is( got === dst );
 
-  test.case = 'assign scalar to null vector';
+    test.case = 'dst - several elements, src - arguments';
+    var dst = a.longMake([ 0, -1, 2 ]);
+    var got = _.avector.assign( dst, -1, -2, 0 );
+    var exp = a.longMake([ -1, -2, 0 ]);
+    test.identical( got, exp );
+    test.is( got === dst );
 
-  var src = [];
-  var got = _.avector.assign( src, 1 );
-  var expected = [];
-  test.identical( expected, got );
-  test.is( got === src );
+    /* */
 
-  test.case = 'assign avector';
+    test.case = 'dst - empty, src - number';
+    var dst = a.longMake([]);
+    var src = 5;
+    var got = _.avector.assign( dst, src );
+    var exp = a.longMake([]);
+    test.identical( got, exp );
+    test.is( got === dst );
 
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.assign( src, [ 4, 5, 6 ] );
-  var expected = [ 4, 5, 6 ];
-  test.identical( expected, got );
-  test.is( got === src );
+    test.case = 'dst - several elements, src - number';
+    var dst = a.longMake([ 0, -1, 2 ]);
+    var src = 5;
+    var got = _.avector.assign( dst, src );
+    var exp = a.longMake([ 5, 5, 5 ]);
+    test.identical( got, exp );
+    test.is( got === dst );
 
-  test.case = 'assign multiple scalars';
+    test.close( `dst - long, ${a.format}` );
 
-  var src = [ 1, 2, 3 ];
-  var got = _.avector.assign( src, 4, 5, 6 );
-  var expected = [ 4, 5, 6 ];
-  test.identical( expected, got );
-  test.is( got === src );
+    /* - */
 
-  test.case = 'null avector';
+    test.open( `dst - vectorAdapter, ${a.format} ${a.form}` );
 
-  var src = [];
-  var got = _.avector.assign( src );
-  var expected = [];
-  test.identical( expected, got );
-  test.is( got === src );
+    test.case = 'dst - empty, without src';
+    var dst = a.vadMake([]);
+    var got = _.avector.assign( dst );
+    var exp = a.longMake([]);
+    test.identical( got, exp );
+    test.is( got !== dst );
 
-  /* */
+    test.case = 'dst - several elements, src - arguments';
+    var dst = a.vadMake([ 0, -1, 2 ]);
+    var got = _.avector.assign( dst, -1, -2, 0 );
+    var exp = a.longMake([ -1, -2, 0 ]);
+    test.identical( got, exp );
+    test.is( got !== dst );
 
-  test.case = 'assign scalar by method';
+    /* */
 
-  var src = vad.fromLong([ 1, 2, 3 ]);
-  var got = src.assign( 0 );
-  var expected = vad.fromLong([ 0, 0, 0 ]);
-  test.identical( expected, got );
-  test.is( got === src );
+    test.case = 'dst - empty, src - number';
+    var dst = a.vadMake([]);
+    var src = 5;
+    var got = _.avector.assign( dst, src );
+    var exp = a.longMake([]);
+    test.identical( got, exp );
+    test.is( got !== dst );
 
-  test.case = 'assign scalar to null vector';
+    test.case = 'dst - several elements, src - number';
+    var dst = a.vadMake([ 0, -1, 2 ]);
+    var src = 5;
+    var got = _.avector.assign( dst, src );
+    var exp = a.longMake([ 5, 5, 5 ]);
+    test.identical( got, exp );
+    test.is( got !== dst );
 
-  var src = vad.fromLong([]);
-  var got = src.assign( 1 );
-  var expected = vad.fromLong([]);
-  test.identical( expected, got );
-  test.is( got === src );
+    test.close( `dst - vectorAdapter, ${a.format} ${a.form}` );
+  }
 
-  test.case = 'assign avector';
+  /* - */
 
-  var src = vad.fromLong([ 1, 2, 3 ]);
-  var got = src.assign([ 4, 5, 6 ] );
-  var expected = vad.fromLong([ 4, 5, 6 ]);
-  test.identical( expected, got );
-  test.is( got === src );
+  _.vectorAdapter.contextsForTesting({ onEach : act2 });
 
-  test.case = 'assign multiple scalars';
+  function act2( a )
+  {
+    test.open( `src - vectorAdapter, ${a.format} ${a.form}` );
 
-  var src = vad.fromLong([ 1, 2, 3 ]);
-  var got = src.assign([ 4, 5, 6 ]);
-  var expected = vad.fromLong([ 4, 5, 6 ]);
-  test.identical( expected, got );
-  test.is( got === src );
+    test.case = 'dst - empty, src - empty';
+    var dst = [];
+    var src = a.vadMake([]);
+    var got = _.avector.assign( dst, src );
+    var exp = [];
+    test.identical( got, exp );
+    test.is( got === dst );
 
-  test.case = 'null avector';
+    test.case = 'dst - several arguments, src.length === dst.length';
+    var dst = [ 0, -1, 2 ];
+    var src = a.vadMake([ 3, -2, -4 ]);
+    var got = _.avector.assign( dst, src );
+    var exp = [ 3, -2, -4 ];
+    test.identical( got, exp );
+    test.is( got === dst );
 
-  var src = vad.fromLong([]);
-  var got = src.assign();
-  var expected = vad.fromLong([]);
-  test.identical( expected, got );
-  test.is( got === src );
+    test.case = 'dst - several arguments, src.length < dst.length';
+    var dst = [ 0, -1, 2, 3, 3 ];
+    var src = a.vadMake([ 3, -2, -4 ]);
+    var got = _.avector.assign( dst, src );
+    var exp = [ 3, -2, -4, 0, 0 ];
+    test.identical( got, exp );
+    test.is( got === dst );
 
-  /* */
+    test.close( `src - vectorAdapter, ${a.format} ${a.form}` );
+
+    /* - */
+
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'dst - empty, src - empty';
+    var dst = [];
+    var src = a.longMake([]);
+    var got = _.avector.assign( dst, src );
+    var exp = [];
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - several arguments, src.length === dst.length';
+    var dst = [ 0, -1, 2 ];
+    var src = a.longMake([ 3, -2, -4 ]);
+    var got = _.avector.assign( dst, src );
+    var exp = [ 3, -2, -4 ];
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - several arguments, src.length < dst.length';
+    var dst = [ 0, -1, 2, 3, 3 ];
+    var src = a.longMake([ 3, -2, -4 ]);
+    var got = _.avector.assign( dst, src );
+    var exp = [ 3, -2, -4, 0, 0 ];
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* - */
 
   if( !Config.debug )
   return;
 
+  test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.avector.assign() );
-  test.shouldThrowErrorSync( () => _.avector.assign( [], 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], '1' ) );
-  test.shouldThrowErrorSync( () => _.avector.assign( [ 0 ], [ 1, 1 ] ) );
+
+  test.case = 'not empty dst assigns no arguments';
+  test.shouldThrowErrorSync( () => _.avector.assign([ 1, 2, 3 ]) );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.avector.assign( [ 1, 2, 3 ], 0, 0 ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.assign( [ 1, 2, 3 ], { a : 1, b : 2, c : 3 } ) );
 }
 
 //
