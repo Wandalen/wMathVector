@@ -132,6 +132,136 @@ function constructorIsVad( test )
 }
 
 // --
+// tests
+// --
+
+function assign( test )
+{
+  _.vectorAdapter.contextsForTesting({ onEach : act1 });
+
+  function act1( a )
+  {
+    test.open( `dst - vectorAdapter from ${a.format}` );
+
+    test.case = 'dst - empty, without src';
+    var dst = _.vectorAdapter.fromLong( a.longMake([]) );
+    var got = dst.assign();
+    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - several elements, src - arguments';
+    var dst = _.vectorAdapter.fromLong( a.longMake([ 0, -1, 2 ]) );
+    var got = dst.assign( -1, -2, 0 );
+    var exp = _.vectorAdapter.fromLong( a.longMake( [ -1, -2, 0 ] ) );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'dst - empty, src - number';
+    var dst = _.vectorAdapter.fromLong( a.longMake([]) );
+    var src = 5;
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - several elements, src - number';
+    var dst = _.vectorAdapter.fromLong( a.longMake([ 0, -1, 2 ]) );
+    var src = 5;
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong( a.longMake([ 5, 5, 5 ]) );
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.close( `dst - vectorAdapter from ${a.format}` );
+  }
+
+  /* - */
+
+  _.vectorAdapter.contextsForTesting({ onEach : act2 });
+
+  function act2( a )
+  {
+    test.open( `src - vectorAdapter, ${a.format} ${a.form}` );
+
+    test.case = 'dst - empty, src - empty';
+    var dst = _.vectorAdapter.fromLong([]);
+    var src = a.vadMake([]);
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong([]);
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - several arguments, src.length === dst.length';
+    var dst = _.vectorAdapter.fromLong([ 0, -1, 2 ]);
+    var src = a.vadMake([ 3, -2, -4 ]);
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong([ 3, -2, -4 ]);
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - several arguments, src.length < dst.length';
+    var dst = _.vectorAdapter.fromLong([ 0, -1, 2, 3, 3 ]);
+    var src = a.vadMake([ 3, -2, -4 ]);
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong([ 3, -2, -4, 0, 0 ]);
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.close( `src - vectorAdapter, ${a.format} ${a.form}` );
+
+    /* - */
+
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'dst - empty, src - empty';
+    var dst = _.vectorAdapter.fromLong([]);
+    var src = a.longMake([]);
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong([]);
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - several arguments, src.length === dst.length';
+    var dst = _.vectorAdapter.fromLong([ 0, -1, 2 ]);
+    var src = a.longMake([ 3, -2, -4 ]);
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong([ 3, -2, -4 ]);
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - several arguments, src.length < dst.length';
+    var dst = _.vectorAdapter.fromLong([ 0, -1, 2, 3, 3 ]);
+    var src = a.longMake([ 3, -2, -4 ]);
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong([ 3, -2, -4, 0, 0 ]);
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'not empty dst assigns no arguments';
+  var dst = _.vectorAdapter.fromLong([ 1, 2, 3 ]);
+  test.shouldThrowErrorSync( () => dst.assign() );
+
+  test.case = 'not enough arguments';
+  var dst = _.vectorAdapter.fromLong([ 1, 2, 3 ]);
+  test.shouldThrowErrorSync( () => dst.assign( 0, 0 ) );
+
+  test.case = 'wrong type of src';
+  var dst = _.vectorAdapter.fromLong([ 1, 2, 3 ]);
+  test.shouldThrowErrorSync( () => dst.assign( { a : 1, b : 2, c : 3 } ) );
+}
+
+// --
 // exporter
 // --
 
@@ -9160,6 +9290,10 @@ var Self =
     vectorIs,
     longIs,
     constructorIsVad,
+
+    //
+
+    assign,
 
     // exporter
 
