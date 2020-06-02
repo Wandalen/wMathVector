@@ -92,7 +92,7 @@ function makeFilling( length, value )
 * @module Tools/math/Vector
 */
 
-function from( srcLong )
+function from( src )
 {
 
   _.assert
@@ -101,28 +101,41 @@ function from( srcLong )
     () => `Expects either 1, 3, 4 argument, got ${arguments.length}`
   );
 
-  if( _.vectorAdapterIs( srcLong ) )
-  return srcLong;
-  else if( _.matrixIs( srcLong ) )
+  if( _.vadIs( src ) )
   {
-    _.assert( arguments.length === 1 );
-    _.assert( srcLong.dims.length === 2 );
-    _.assert( srcLong.dims[ 0 ] === 1 || srcLong.dims[ 1 ] === 1 );
-    if( srcLong.dims[ 0 ] === 1 )
-    return srcLong.rowGet( 0 );
-    else
-    return srcLong.colGet( 0 );
+    return src;
   }
-  else if( _.longIs( srcLong ) )
+  else if( _.longIs( src ) )
   {
     if( arguments.length === 1 )
-    return this.fromLong( srcLong );
+    return this.fromLong( src );
     else if( arguments.length === 3 )
     return this.fromLongLrange( ... arguments );
     else if( arguments.length === 4 )
     return this.fromLongLrangeAndStride( ... arguments );
     else _.assert( 0 );
   }
+  else if( _.objectIs( src ) && _.routineIs( src.toVad ) )
+  {
+    _.assert( arguments.length === 1 );
+    return src.toVad();
+    // _.assert( src.dims.length === 2 );
+    // _.assert( src.dims[ 0 ] === 1 || src.dims[ 1 ] === 1 );
+    // if( src.dims[ 0 ] === 1 )
+    // return src.rowGet( 0 );
+    // else
+    // return src.colGet( 0 );
+  }
+  // else if( _.matrixIs( srcLong ) )
+  // {
+  //   _.assert( arguments.length === 1 );
+  //   _.assert( srcLong.dims.length === 2 );
+  //   _.assert( srcLong.dims[ 0 ] === 1 || srcLong.dims[ 1 ] === 1 );
+  //   if( srcLong.dims[ 0 ] === 1 )
+  //   return srcLong.rowGet( 0 );
+  //   else
+  //   return srcLong.colGet( 0 );
+  // }
   else _.assert( 0, 'Cant make VectorAdapter from', _.strType( srcLong ) );
 
 }

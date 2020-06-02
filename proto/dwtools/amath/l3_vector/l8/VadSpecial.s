@@ -216,8 +216,7 @@ identicalWith.modifying = false;
 function equivalentWith( src2, it )
 {
   let src1 = this;
-  _.assert( arguments.length === 1 || arguments.length === 2 ); debugger;
-  // _.assert( 0, 'not tested' );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   return this.vectorAdapter.equivalentAre( src2, src1, it );
 }
 
@@ -256,9 +255,9 @@ function _equalAre( it )
  * @module Tools/math/Vector
  */
 
-function hasShape( src )
+function hasShape( src ) /* xxx : move out? */
 {
-  if( _.matrixIs( src ) )
+  if( _.matrixIs && _.matrixIs( src ) )
   return src.dims.length === 2 && src.dims[ 0 ] === self.length && src.dims[ 1 ] === 1;
   return this.length === src.length;
 }
