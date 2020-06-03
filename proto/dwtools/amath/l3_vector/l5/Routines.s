@@ -4429,12 +4429,12 @@ let _routinesMathematical =
 
   /* qqq : implement routine shrinkLong and cover */
   /* qqq : implement routine shrinkAdapter and cover */
-  /* qqq : implement routine growLong and cover */
-  /* qqq : implement routine growAdapter and cover */
+  /* aaa : implement routine growLong and cover */ /* Dmytro : covered */
+  /* aaa : implement routine growAdapter and cover */ /* Dmytro : covered */
 
   grow : growAdapter,
   growAdapter,
-  growLong, /* qqq2 : implement good coverage, does not work properly */
+  growLong, /* aaa2 : implement good coverage, does not work properly */ /* Dmytro : covered, routine had some bugs with indexes */
 
   shrink : shrinkAdapter,
   shrinkAdapter,
