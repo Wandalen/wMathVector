@@ -52,7 +52,7 @@ _.assert( _.objectIs( operations ) );
  * @module Tools/math/Vector
  */
 
-function assign( dst ) /* qqq2 : perfect coverage is required */
+function assign( dst ) /* aaa2 : perfect coverage is required */ /* Dmytro : covered */
 {
   let length = dst.length;
   let alength = arguments.length;
@@ -531,7 +531,8 @@ function growLong( src, crange, val )
   if( val === undefined )
   val = 0;
   if( crange === undefined )
-  crange = [ 0, src.length ];
+  crange = [ 0, src.length-1 ];
+  // crange = [ 0, src.length ]; // Dmytro : wrong range, should be an crange instead of orange, adds 1 element */
 
   if( crange[ 0 ] >= 0 )
   crange[ 0 ] = 0;
@@ -541,20 +542,29 @@ function growLong( src, crange, val )
   let l = crange[ 1 ] - crange[ 0 ] + 1;
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
 
-  /* qqq : optimize */
+  /* aaa : optimize */ /* Dmytro : used method fill instead of cycle for */
+
+  // let l2 = -crange[ 0 ];
+  // for( let i = 0 ; i < l2 ; i++ )
+  // result[ i ] = val;
+  //
+  // _.assert( crange[ 0 ] === 0, 'not implemented' );
+  // let l3 = src.length-crange[ 0 ];
+  // for( let i = -crange[ 0 ] ; i < l3 ; i++ )
+  // result[ i-crange[ 0 ] ] = src.eGet( i );
+  //
+  // let l4 = l;
+  // for( let i = src.length ; i < l4 ; i++ )
+  // result[ i ] = val;
 
   let l2 = -crange[ 0 ];
-  for( let i = 0 ; i < l2 ; i++ )
-  result[ i ] = val;
+  result.fill( val, 0, l2 )
 
-  _.assert( crange[ 0 ] === 0, 'not implemented' );
-  let l3 = src.length-crange[ 0 ];
-  for( let i = -crange[ 0 ] ; i < l3 ; i++ )
-  result[ i-crange[ 0 ] ] = src.eGet( i );
+  let l3 = src.length + l2;
+  for( let i = l2 ; i < l3 ; i++ )
+  result[ i ] = src.eGet( i-l2 );
 
-  let l4 = l;
-  for( let i = src.length ; i < l4 ; i++ )
-  result[ i ] = val;
+  result.fill( val, l3, l )
 
   return result;
 }
