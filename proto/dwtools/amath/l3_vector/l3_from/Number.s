@@ -9,7 +9,8 @@ let Parent = _.VectorAdapter;
 //
 // --
 
-let Self = function AdapterFromNumber() {};
+let Self = AdapterFromNumber;
+function AdapterFromNumber() {};
 
 //
 

@@ -9,7 +9,8 @@ let Parent = _.VectorAdapter;
 //
 // --
 
-let Self = function VectorAdapterFromLongShrinked(){};
+let Self = VectorAdapterFromLongShrinked;
+function VectorAdapterFromLongShrinked(){};
 
 //
 
