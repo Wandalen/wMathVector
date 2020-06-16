@@ -39,7 +39,7 @@ The vector can be defined by
 - a typed buffer ( BufferTyped )
 - an adapter ( VectorAdapter )
 
-To use the vector in the form of an array or a buffer, use the namespace `_.avector`. To use the vector specified by the adapter, use the namespace `_.vectorAdapter`.
+To use the vector in the form of an array or a buffer, use the namespace `_.vector`. To use the vector specified by the adapter, use the namespace `_.vectorAdapter`.
 
 ### Simple operation on vectors
 
@@ -49,7 +49,7 @@ A simple example of the operation of adding two vectors.
 var vector1 = [ 1, 2, 3 ];
 var vector2 = [ 4, 5, 6 ];
 
-_.avector.add( vector1, vector2 );
+_.vector.add( vector1, vector2 );
 
 console.log( 'vector1 : ', vector1 );
 /* log : vector1 [ 5, 7, 9 ] */
@@ -99,7 +99,7 @@ Another example with an adapter is the multiplication of a vector by a scalar.
 var array = [ 1, 2, 3 ];
 var vector1 = _.vectorAdapter.from( array );
 
-_.avector.mul( array, 2 );
+_.vector.mul( array, 2 );
 
 console.log( 'vector1 : ', vector1.toStr() );
 /* log : vector1 : 2.000, 4.000, 6.000 */
@@ -119,7 +119,7 @@ This example shows three alternative ways to use the same interface.
 var array1 = [ 1, 2, 3 ];
 var adapter1 = _.vectorAdapter.from( array1 );
 
-_.avector.mul( array1, 2 );
+_.vector.mul( array1, 2 );
 _.vectorAdapter.mul( adapter1, 2 );
 adapter1.mul( 2 );
 
@@ -136,7 +136,7 @@ Set the value of the first argument to `null` ( `dst = null` ) to write the resu
 ```js
 var srcVector1 = [ 1, 2, 3 ];
 var srcVector2 = [ 4, 5, 6 ];
-var dstVector = _.avector.add( null, srcVector1, srcVector2 );
+var dstVector = _.vector.add( null, srcVector1, srcVector2 );
 
 console.log( 'srcVector1 : ', srcVector1 );
 /* log : srcVector1 : [ 1, 2, 3 ] */
@@ -148,7 +148,7 @@ console.log( 'dstVector === srcVector1 : ', dstVector === srcVector1 );
 /* log : dstVector === srcVector1 : false */i
 ```
 
-Because the first argument of the call `_.avector.add`  is `null`, a new container is created for the result. The container gets a type of the input argument `Array`. It is used to write down the result of adding two vectors `srcVector1` and` srcVector2`.
+Because the first argument of the call `_.vector.add`  is `null`, a new container is created for the result. The container gets a type of the input argument `Array`. It is used to write down the result of adding two vectors `srcVector1` and` srcVector2`.
 
 The same convention applies to all adapters and all routines of the module `MathVector`.
 
@@ -258,7 +258,7 @@ The following types are supported:
 
 ### Mixing vector formats
 
-The routines of namespace `_.avector` can work with both adapters and standard types.
+The routines of namespace `_.vector` can work with both adapters and standard types.
 
 The routines of namespace `_.vectorAdapter` throws an error when trying to pass them a non-adapter.
 
@@ -299,12 +299,12 @@ The example should demonstrate the flexibility of the vector adapters.
 
 ### Coercing to type Long
 
-Use the routine `_.avector.toLong()` to convert the adapter to the `Long` type. The routine `toLong` returns the original behind the adapter if it's possible, otherwise creates a new container of the same type as the original that filled by the content of vector.
+Use the routine `_.vector.toLong()` to convert the adapter to the `Long` type. The routine `toLong` returns the original behind the adapter if it's possible, otherwise creates a new container of the same type as the original that filled by the content of vector.
 
 ```js
 var long1 = new F32x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
 var vector1 = _.vectorAdapter.fromLongLrangeAndStride( long1, 1, 3, 2 );
-var long2 = _.avector.toLong( vector1 );
+var long2 = _.vector.toLong( vector1 );
 
 console.log( 'long2 : ', long2 );
 /* log : long2 : [ 1, 3, 5 ] */
@@ -315,8 +315,8 @@ console.log( 'long2 type : ', _.strType( long2 ) );
 ### Summary
 
 - `null` in the first argument changes the semantics of the routine, instructing it to create a new container.
-- The module has 2 namespaces: `_.avector` and` _.vectorAdapter`.
-- The routines of namespace `_.avector` work with vectors in the form of `Long`-containers.
+- The module has 2 namespaces: `_.vector` and` _.vectorAdapter`.
+- The routines of namespace `_.vector` work with vectors in the form of `Long`-containers.
 - The routines of namespace `_.vectorAdapter` work with vectors in the form of adapters.
 - Vector adapter is an implementation of the abstract interface, a kind of link that defines how to interpret data as the vector.
 - Adapter does not own data, does not directly contain vector data, only metadata - link to data, start, length, type, etc.

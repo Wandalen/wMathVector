@@ -101,7 +101,7 @@ Example:
  * Otherwise, the source vector is copy of arguments starting from index 1.
  *
  * @example
- * var got = _.avector.assign( [ 1, 2, 3 ], 0 );
+ * var got = _.vector.assign( [ 1, 2, 3 ], 0 );
  * console.log( got );
  * // log [ 0, 0, 0 ];
  *

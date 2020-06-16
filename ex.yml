@@ -16,7 +16,7 @@ contributors :
 - name : Volodymyr M.
   email : volodymyr.migdal@gmail.com
 
-interpreter : node >= 8.0.0
+interpreter : node >= 10.0.0
 scripts :
   test : wtest .run proto/**
   make_doc : wdoc staging
