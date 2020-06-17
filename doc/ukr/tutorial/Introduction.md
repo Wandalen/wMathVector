@@ -39,7 +39,7 @@
 - через типізований буфер ( BufferTyped )
 - через адаптер ( VectorAdapter )
 
-Для використання вектора в масиві або буфері використовуйте неймспейс `_.avector`. Для використання вектора заданого адаптером використовуйте неймспейс `_.vectorAdapter`.
+Для використання вектора в масиві або буфері використовуйте неймспейс `_.vector`. Для використання вектора заданого адаптером використовуйте неймспейс `_.vectorAdapter`.
 
 ### Проста операція над векторами
 
@@ -49,7 +49,7 @@
 var vector1 = [ 1, 2, 3 ];
 var vector2 = [ 4, 5, 6 ];
 
-_.avector.add( vector1, vector2 );
+_.vector.add( vector1, vector2 );
 
 console.log( 'vector1 : ', vector1 );
 /* log : vector1 [ 5, 7, 9 ] */
@@ -99,7 +99,7 @@ console.log( 'array2 : ', array2 );
 var array = [ 1, 2, 3 ];
 var vector1 = _.vectorAdapter.from( array );
 
-_.avector.mul( array, 2 );
+_.vector.mul( array, 2 );
 
 console.log( 'vector1 : ', vector1.toStr() );
 /* log : vector1 : 2.000, 4.000, 6.000 */
@@ -119,7 +119,7 @@ console.log( 'vector1 : ', vector1.toStr() );
 var array1 = [ 1, 2, 3 ];
 var adapter1 = _.vectorAdapter.from( array1 );
 
-_.avector.mul( array1, 2 );
+_.vector.mul( array1, 2 );
 _.vectorAdapter.mul( adapter1, 2 );
 adapter1.mul( 2 );
 
@@ -136,7 +136,7 @@ console.log( 'adapter1 : ', adapter1.toStr() );
 ```js
 var srcVector1 = [ 1, 2, 3 ];
 var srcVector2 = [ 4, 5, 6 ];
-var dstVector = _.avector.add( null, srcVector1, srcVector2 );
+var dstVector = _.vector.add( null, srcVector1, srcVector2 );
 
 console.log( 'srcVector1 : ', srcVector1 );
 /* log : srcVector1 : [ 1, 2, 3 ] */
@@ -148,7 +148,7 @@ console.log( 'dstVector === srcVector1 : ', dstVector === srcVector1 );
 /* log : dstVector === srcVector1 : false */
 ```
 
-Так, як першим аргументом виклику `_.avector.add` є `null` то для запису результату додавання двох векторів `srcVector1` та `srcVector2` створюється новий контейнер такого ж типу `Array` як і вхідні аргументи, й в нього записується результат.
+Так, як першим аргументом виклику `_.vector.add` є `null` то для запису результату додавання двох векторів `srcVector1` та `srcVector2` створюється новий контейнер такого ж типу `Array` як і вхідні аргументи, й в нього записується результат.
 
 Така ж конвенція діє для всіх адаптерів та для всіх рутин модуля `MathVector`.
 
@@ -258,7 +258,7 @@ console.log( 'vector2 : ', vector2 );
 
 ### Змішування форматів векторів
 
-Рутини неймспейсу `_.avector` можуть працювати як з адаптерами так і з стандартними типами.
+Рутини неймспейсу `_.vector` можуть працювати як з адаптерами так і з стандартними типами.
 
 Рутини неймспейса `_.vectorAdapter` викидуються помилку при при спробі передати їм не адаптер.
 
@@ -299,12 +299,12 @@ console.log( 'vector2 : ', vector2.toStr() );
 
 ### Приведення до типу Long
 
-Для того щоб конвертувати адаптер в тип `Long` використайте рутину `_.avector.toLong()`. Рутина `toLong` повертає оригінал, що стоїть за адаптером якщо це можливо, інакше створює новий контейнер такого ж типу, як і оригінал із вектором у вмісті.
+Для того щоб конвертувати адаптер в тип `Long` використайте рутину `_.vector.toLong()`. Рутина `toLong` повертає оригінал, що стоїть за адаптером якщо це можливо, інакше створює новий контейнер такого ж типу, як і оригінал із вектором у вмісті.
 
 ```js
 var long1 = new F32x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
 var vector1 = _.vectorAdapter.fromLongLrangeAndStride( long1, 1, 3, 2 );
-var long2 = _.avector.toLong( vector1 );
+var long2 = _.vector.toLong( vector1 );
 
 console.log( 'long2 : ', long2 );
 /* log : long2 : [ 1, 3, 5 ] */
@@ -315,8 +315,8 @@ console.log( 'long2 type : ', _.strType( long2 ) );
 ### Підсумок
 
 - `null` в першому аргументі змінює семантику рутини, примушуючи її створити новий контейнер.
-- Модуль має 2 неймспеси: `_.avector` i `_.vectorAdapter`.
-- Рутини неймспесу `_.avector` працюють з векторами у вигляді `Long`-контейнерів.
+- Модуль має 2 неймспеси: `_.vector` i `_.vectorAdapter`.
+- Рутини неймспесу `_.vector` працюють з векторами у вигляді `Long`-контейнерів.
 - Рутини неймспесу `_.vectorAdapter` працюють із векторами в  формі адаптерів.
 - Вектор адаптер - це абстракція, різновид посилання, що задає спосіб інтерпретації даних, як вектора.
 - Адаптери не володіють даними, не містять безпосередньо даних вектора, а лише метадані - лінк на дані, початок вектору, довжину, тип, тощо.

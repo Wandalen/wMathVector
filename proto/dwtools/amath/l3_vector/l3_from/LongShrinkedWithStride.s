@@ -9,7 +9,8 @@ let Parent = _.VectorAdapter;
 //
 // --
 
-let Self = function VectorAdapterFromLongShrinkedWithStrideNumberShrinkView(){};
+let Self = VectorAdapterFromLongShrinkedWithStrideNumberShrinkView;
+function VectorAdapterFromLongShrinkedWithStrideNumberShrinkView(){};
 
 //
 

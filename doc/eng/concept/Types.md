@@ -12,7 +12,7 @@ The vector can be defined by
 - a typed buffer ( BufferTyped )
 - an adapter ( VectorAdapter )
 
-To use the vector in the form of an array or a buffer, use the namespace `_.avector`. To use the vector specified by the adapter, use the namespace `_.vectorAdapter`.
+To use the vector in the form of an array or a buffer, use the namespace `_.vector`. To use the vector specified by the adapter, use the namespace `_.vectorAdapter`.
 
 # Vector adapter
 

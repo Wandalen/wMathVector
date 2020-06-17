@@ -8,7 +8,8 @@ let _ = _global_.wTools;
 // class
 // --
 
-let Self = function VectorAdapter()
+let Self = VectorAdapter;
+function VectorAdapter()
 {
   throw _.err( 'should not be called' )
 };
