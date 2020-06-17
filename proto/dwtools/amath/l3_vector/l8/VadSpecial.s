@@ -180,7 +180,7 @@ function identicalWith( src2, it )
 {
   let src1 = this;
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( 0, 'not tested' );
+  // _.assert( 0, 'not tested' );
   return this.vectorAdapter.identicalAre( src2, src1, it );
 }
 
@@ -282,8 +282,8 @@ let Extension =
   eSet,
 
   copy,
-  identicalWith, /* qqq2 : cover please */
-  equivalentWith, /* qqq2 : cover please */
+  identicalWith, /* aaa2 : cover please */ /* Dmytro : covered */
+  equivalentWith, /* aaa2 : cover please */ /* Dmytro : covered */
 
   hasShape,
 

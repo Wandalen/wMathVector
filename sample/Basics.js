@@ -8,9 +8,9 @@ var _ = wTools;
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
 console.log( 'v1: ', v1 );
-/* log : "v1: VectorAdapterFromLong { _vectorBuffer: [ 1, 2, 3 ] }" */
-console.log( 'v1.toStr(): ', v1.toStr() );
-/* log : "v1 to string: 1.000, 2.000, 3.000" */
+/* log : "v1:  VectorAdapter.x3.Array :: 1.000 2.000 3.000" */
+console.log( 'v1: ', v1 );
+/* log : "v1:  VectorAdapter.x3.Array :: 1.000 2.000 3.000" */
 
 //
 
@@ -33,16 +33,16 @@ console.log( 'v1.eGet( 2 ): ', v1.eGet( 2 ) );
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
 v1.eSet( 0, 5 );
-console.log( 'v1.toStr(): ',  v1.toStr() );
-/* log : "v1.toStr():  5.000 2.000 3.000" */
+console.log( 'v1: ',  v1 );
+/* log : "v1:  VectorAdapter.x3.Array :: 5.000 2.000 3.000" */
 
 //
 
 var a1 = [ -1, -1, -1 ];
 var v1 = _.vectorAdapter.from( a1 )
 _.vectorAdapter.abs( v1 );
-console.log( 'v1.toStr(): ',  v1.toStr() );
-/* log : "v1.toStr():  1.000 1.000 1.000" */
+console.log( 'v1: ',  v1 );
+/* log : "v1:  VectorAdapter.x3.Array :: 1.000 1.000 1.000" */
 console.log( 'a1: ', a1 );
 /* log : "a1:  [ 1, 1, 1 ]" */
 
@@ -53,8 +53,8 @@ var a2 = [ 1, 1, 1 ];
 var v1 = _.vectorAdapter.from( a1 );
 var v2 = _.vectorAdapter.from( a2 );
 var result = _.vectorAdapter.add( v1, v2 );
-console.log( 'result.toStr(): ', result.toStr() );
-/* log : "result.toStr():  2.000 2.000 2.000" */
+console.log( 'result: ', result );
+/* log : "result:  VectorAdapter.x3.Array :: 2.000 2.000 2.000" */
 
 //
 
@@ -65,8 +65,8 @@ var v1 = _.vectorAdapter.from( a1 );
 var v2 = _.vectorAdapter.from( a2 );
 var v3 = _.vectorAdapter.from( a3 );
 var result = _.vectorAdapter.add( v1, v2, v3 );
-console.log( 'result.toStr(): ', result.toStr() );
-/* log : "result.toStr():  3.000 3.000 3.000" */
+console.log( 'result: ', result );
+/* log : "result:  VectorAdapter.x3.Array :: 3.000 3.000 3.000" */
 
 //
 
@@ -75,8 +75,8 @@ var a2 = [ 1, 1, 1 ];
 var v1 = _.vectorAdapter.from( a1 );
 var v2 = _.vectorAdapter.from( a2 );
 _.vectorAdapter.add( v2, v1 );
-console.log( 'v2.toStr(): ', v2.toStr() );
-/* log : "v2.toStr():  2.000 2.000 2.000" */
+console.log( 'v2: ', v2 );
+/* log : "v2:  VectorAdapter.x3.Array :: 2.000 2.000 2.000" */
 
 //
 
@@ -85,20 +85,20 @@ var a2 = [ 1, 1, 1 ];
 var v1 = _.vectorAdapter.from( a1 );
 var v2 = _.vectorAdapter.from( a2 );
 var result = _.vectorAdapter.add( null, v1, v2 );
-console.log( 'result: ', result.toStr() );
-/* log : "result.toStr():  2.000 2.000 2.000" */
-console.log( 'v1.toStr(): ', v1.toStr() );
-/* log : "v1.toStr():  1.000 1.000 1.000" */
-console.log( 'v2.toStr(): ', v2.toStr() );
-/* log : "v2.toStr():  1.000 1.000 1.000" */
+console.log( 'result: ', result );
+/* log : "result:  2.000 2.000 2.000" */
+console.log( 'v1: ', v1 );
+/* log : "v1:  VectorAdapter.x3.Array :: 1.000 1.000 1.000" */
+console.log( 'v2: ', v2 );
+/* log : "v2:  VectorAdapter.x3.Array :: 1.000 1.000 1.000" */
 
 //
 
 var a1 = [ 1, 1 ];
 var v1 = _.vectorAdapter.from( a1 );
 _.vectorAdapter.add( v1, 3 );
-console.log( 'v1.toStr(): ', v1.toStr() );
-/* log : "v1.toStr():  4.000 4.000" */
+console.log( 'v1: ', v1 );
+/* log : "v1:  VectorAdapter.x2.Array :: 4.000 4.000" */
 
 //
 
@@ -120,26 +120,31 @@ try
 }
 catch( err )
 {
-  console.log( "ERROR message \n",err );
+  console.log( "ERROR message :\n", err, '\n end of ERROR message.' );
 }
 /* log error message :
- = Message of error#2
-    Assertion fails
+ERROR message :
+  = Message of error#2
+    Inconsistant length 3 <> 2
 
  = Beautified calls stack
-    at Object.fromNumber (/home/user/wMathVector/proto/dwtools/amath/l3_vector/l3_from/Number.s:87:7)
-    at Object.fromMaybeNumber (/home/user/wMathVector/proto/dwtools/amath/l3_vector/l3_from/Number.s:137:21)
-    at Object._vectorizeSrcs (/home/user/wMathVector/proto/dwtools/amath/l3_vector/l3/RoutineMeta.s:615:46)
-    at Object._vectorsCallBegin (/home/user/wMathVector/proto/dwtools/amath/l3_vector/l3/RoutineMeta.s:654:8)
-    at Object.homogenousUninterruptibleVectors [as add] (/home/user/wMathVector/proto/dwtools/amath/l3_vector/l3/RoutineMeta.s:1780:10)
-    at Object.<anonymous> (/home/user/wMathVector/sample/Basics.js:119:19)
-    at Module._compile (internal/modules/cjs/loader.js:959:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:995:10)
-    at Module.load (internal/modules/cjs/loader.js:815:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:727:14)
-    at Function.Module.runMain (internal/modules/cjs/loader.js:1047:10)
-    at internal/main/run_main_module.js:17:11
+    at Object.fromNumber (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3_from/Number.s:89:7)
+    at Object.fromMaybeNumber (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3_from/Number.s:140:21)
+    at Object._vectorizeSrcs (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3/RoutineMeta.s:651:46)
+    at Object._vectorsCallBegin (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3/RoutineMeta.s:690:8)
+    at Object.homogenousUninterruptibleVectors [as add] (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3/RoutineMeta.s:1816:10)
+    at Object.<anonymous> (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/sample/Basics.js:119:19)
+    at Module._compile (internal/modules/cjs/loader.js:1138:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1158:10)
+    at Module.load (internal/modules/cjs/loader.js:986:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:879:14)
+    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:71:12)
+    at internal/main/run_main_module.js:17:47
 
  = Throws stack
-    thrown at Object.fromNumber @ /home/user/wMathVector/proto/dwtools/amath/l3_vector/l3_from/Number.s:87:7
+    thrown at Object.fromNumber @ /home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3_from/Number.s:89:7
+
+
+ end of ERROR message.
+
 */
