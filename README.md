@@ -99,7 +99,7 @@ Another example with an adapter is the multiplication of a vector by a scalar.
 var array = [ 1, 2, 3 ];
 var vector1 = _.vectorAdapter.from( array );
 
-_.avector.mul( array, 2 );
+_.vector.mul( array, 2 );
 
 console.log( 'vector1 : ', vector1 );
 /* log : vector1 :  VectorAdapter.x3.Array :: 2.000, 4.000, 6.000 */
@@ -119,7 +119,7 @@ This example shows three alternative ways to use the same interface.
 var array1 = [ 1, 2, 3 ];
 var adapter1 = _.vectorAdapter.from( array1 );
 
-_.avector.mul( array1, 2 );
+_.vector.mul( array1, 2 );
 _.vectorAdapter.mul( adapter1, 2 );
 adapter1.mul( 2 );
 
@@ -136,7 +136,7 @@ Set the value of the first argument to `null` ( `dst = null` ) to write the resu
 ```js
 var srcVector1 = [ 1, 2, 3 ];
 var srcVector2 = [ 4, 5, 6 ];
-var dstVector = _.avector.add( null, srcVector1, srcVector2 );
+var dstVector = _.vector.add( null, srcVector1, srcVector2 );
 
 console.log( srcVector1 );
 /* log : [ 1, 2, 3 ] */
