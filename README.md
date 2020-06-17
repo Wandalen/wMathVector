@@ -69,23 +69,22 @@ var array2 = [ 4, 5, 6 ];
 var vector1 = _.vectorAdapter.from( array1 );
 var vector2 = _.vectorAdapter.from( array2 );
 
-console.log( vector1.toStr() );
-/* log : "1.000, 2.000, 3.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.Array :: 1.000 2.000 3.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.Array :: 4.000 5.000 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( vector1.toStr() );
-/* log : "5.000, 7.000, 9.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.Array :: 5.000 7.000 9.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.Array :: 4.000 5.000 6.000 */
 
-console.log( array1 );
-/* log : [ 5, 7, 9 ] */
-console.log( array2 );
-/* log : [ 4, 5, 6 ] */
-
+console.log( 'array1 : ', array1 );
+/* log : array1 : [ 5, 7, 9 ] */
+console.log( 'array2 : ', array2 );
+/* log : array2 : [ 4, 5, 6 ] */
 ```
 
 The sample creates arrays `array1` and `array2`. For them, simple adapters `vector1` and `vector2` are specified. Vectors `vector2` is added to vector `vector2`. As you can see, not only the value of `vector1` but also the value of `array1` has changed.
@@ -100,10 +99,10 @@ Another example with an adapter is the multiplication of a vector by a scalar.
 var array = [ 1, 2, 3 ];
 var vector1 = _.vectorAdapter.from( array );
 
-_.vector.mul( array, 2 );
+_.avector.mul( array, 2 );
 
-console.log( vector1.toStr() );
-/* log : "2.000, 4.000, 6.000" */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.Array :: 2.000, 4.000, 6.000 */
 ```
 
 The adapter `vector1` does not make a copy of the vector but is a link to the data of the original array `array`. After multiplying the array, the adapter has a value of 2 times greater than the original.
@@ -117,17 +116,15 @@ Another technical metaphor is interpretation. The adapter does not own the data,
 This example shows three alternative ways to use the same interface.
 
 ```js
-
 var array1 = [ 1, 2, 3 ];
 var adapter1 = _.vectorAdapter.from( array1 );
 
-_.vector.mul( array1, 2 );
+_.avector.mul( array1, 2 );
 _.vectorAdapter.mul( adapter1, 2 );
 adapter1.mul( 2 );
 
-console.log( adapter1.toStr() );
-/* log : "8.000, 16.000, 24.000" */
-
+console.log( 'adapter1 : ', adapter1 );
+/* log : adapter1 :  VectorAdapter.x3.Array :: 8.000, 16.000, 24.000 */
 ```
 
 Three consecutive multiplication of a vector using the data container `array1`, using the adapter `adapter1` and using the adapter method `adapter1.mul()` increase the value of all vector elements, making them eight times greater.
@@ -137,10 +134,9 @@ Three consecutive multiplication of a vector using the data container `array1`, 
 Set the value of the first argument to `null` ( `dst = null` ) to write the result of the operation to the new vector.
 
 ```js
-
 var srcVector1 = [ 1, 2, 3 ];
 var srcVector2 = [ 4, 5, 6 ];
-var dstVector = _.vector.add( null, srcVector1, srcVector2 );
+var dstVector = _.avector.add( null, srcVector1, srcVector2 );
 
 console.log( srcVector1 );
 /* log : [ 1, 2, 3 ] */
@@ -150,7 +146,6 @@ console.log( dstVector );
 /* log : [ 5, 7, 9 ] */
 console.log( dstVector === srcVector1 );
 /* log : false */
-
 ```
 
 Because the first argument of the call `_.vector.add`  is `null`, a new container is created for the result. The container gets a type of the input argument `Array`. It is used to write down the result of adding two vectors `srcVector1` and` srcVector2`.
@@ -168,29 +163,27 @@ Another strength of using vector adapters is an application [zero-copy principle
 Let's say there is a large typed `Float32` buffer `buffer1` in one-gigabyte size and a second buffer `buffer2` one-megabyte length. Somewhere in the first buffer, with some offset, a vector is hidden. We interpret the entire second buffer as a vector. How to multiply the first vector by the second and save the result in the first buffer? How to avoid useless moving of megabytes of bytes from one place to another during the process of applying math algorithms?
 
 ```js
-
 var buffer1 = new F32x([ 1, 2, 3, 4, 5, 6, 7 ]);
 var buffer2 = new F32x([ 4, 5, 6 ]);
 var vector1 = _.vectorAdapter.from( buffer1, 1, 3 );
 var vector2 = _.vectorAdapter.from( buffer2 );
 
-console.log( vector1.toStr() );
-/* log : "2.000, 3.000, 4.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 2.000, 3.000, 4.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( vector1.toStr() );
-/* log : "6.000, 8.000, 10.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 6.000, 8.000, 10.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
-console.log( vector1 );
-/* log : [ 1, 6, 8, 10, 5, 6, 7 ] */
-console.log( vector2 );
-/* log : [ 4, 5, 6 ] */
-
+console.log( 'buffer1 : ', buffer1 );
+/* log : buffer1 : [ 1, 6, 8, 10, 5, 6, 7 ] */
+console.log( 'buffer2 : ', buffer2 );
+/* log : buffer2 : [ 4, 5, 6 ] */
 ```
 
 When creating the adapter `vector1` from the buffer` buffer1`, we pass the offset `1` element and specify that the vector has length `3` elements. The entire second buffer is interpreted as a vector. The result of the add operation is written to the vector `vector1`. Since the adapter was created from elements 1 - 3 of the buffer `buffer1`, values of all elements outside this range remained unchanged.
@@ -213,28 +206,27 @@ You can achieve the same effect by setting [offset](https://developer.mozilla.or
 This example is similar to the previous one. There is a large typed `Float32` buffer `buffer1` in one-gigabyte size and a second buffer `buffer2` one-megabyte length. Somewhere in the first buffer, with some offset, a vector is hidden. We interpret the entire second buffer as a vector. How to multiply the first vector by the second and save the result in the first buffer? But this time, suppose that the vector in the first buffer not only does not start from the beginning but does not go in sequence. Suppose a vector `vector1` has stride `2`. The next element of the vector is next, but one element in the buffer.
 
 ```js
-
 var buffer1 = new F32x([ 1, 2, 3, 4, 5, 6, 7 ]);
 var buffer2 = new F32x([ 4, 5, 6 ]);
 var vector1 = _.vectorAdapter.fromLongLrangeAndStride( buffer1, 1, 3, 2 );
 var vector2 = _.vectorAdapter.from( buffer2 );
 
-console.log( vector1.toStr() );
-/* log : "2.000, 4.000, 6.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 2.000, 4.000, 6.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( vector1.toStr() );
-/* log : "6.000, 9.000, 12.000" */
-console.log( vector2.toStr() );
-/* log : "4.000, 5.000, 6.000" */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 6.000, 9.000, 12.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
-console.log( vector1 );
-/* log : [ 1, 6, 3, 9, 5, 12, 7 ] */
-console.log( vector2 );
-/* log : [ 4, 5, 6 ] */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 : [ 1, 6, 3, 9, 5, 12, 7 ] */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 : [ 4, 5, 6 ] */
 ```
 
 The routine `_.vectorAdapter.fromLongLrangeAndStride` creates an adapter `vector1` with an offset of `1` element, `3` elements length and stride `2` elements. Then adding vector `vector2` to vector `vector1`.
@@ -285,22 +277,20 @@ The format in which the vector is specified is hidden behind the abstract interf
 For example, the number can be interpreted as a vector of arbitrary length.
 
 ```js
-
 var vector1 = _.vectorAdapter.fromNumber( 1, 3 );
 var vector2 = _.vectorAdapter.from([ 4, 5, 6 ]);
 
-console.log( vector1.toStr() );
-/* log : [ 1, 1, 1 ] */
-console.log( vector2.toStr() );
-/* log : [ 4, 5, 6 ] */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 1.000, 1.000, 1.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector1 :  VectorAdapter.x3.Array :: 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector2, vector1 );
 
-console.log( vector1.toStr() );
-/* log : [ 1, 1, 1 ] */
-console.log( vector2.toStr() );
-/* log : [ 5, 6, 7 ] */
-
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 1.000, 1.000, 1.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.Array :: 5.000, 6.000, 7.000 */
 ```
 
 The adapter `vector1` is created from a number. All values of vector `vector1` have values `1`, and its length is `3` elements. Adding vector `vector1` to vector` vector2` has the same effects as adding scalar `1` to vector `vector2`.
