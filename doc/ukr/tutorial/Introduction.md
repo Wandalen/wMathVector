@@ -103,17 +103,17 @@ var array2 = [ 4, 5, 6 ];
 var vector1 = _.vectorAdapter.from( array1 );
 var vector2 = _.vectorAdapter.from( array2 );
 
-console.log( 'vector1 : ', vector1.toStr() );
-/* log : vector1 : 1.000, 2.000, 3.000 */
-console.log( 'vector2 : ', vector2.toStr() );
-/* log : vector2 : 4.000, 5.000, 6.000 */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.Array :: 1.000 2.000 3.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.Array :: 4.000 5.000 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( 'vector1 : ', vector1.toStr() );
-/* log : vector1 : 5.000, 7.000, 9.000 */
-console.log( 'vector2 : ', vector2.toStr() );
-/* log : vector2 : 4.000, 5.000, 6.000 */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.Array :: 5.000 7.000 9.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.Array :: 4.000 5.000 6.000 */
 
 console.log( 'array1 : ', array1 );
 /* log : array1 : [ 5, 7, 9 ] */
@@ -135,8 +135,8 @@ var vector1 = _.vectorAdapter.from( array );
 
 _.vector.mul( array, 2 );
 
-console.log( 'vector1 : ', vector1.toStr() );
-/* log : vector1 : 2.000, 4.000, 6.000 */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.Array :: 2.000, 4.000, 6.000 */
 ```
 
 Адаптер `vector1` не створює копії вектора, а є посиланням на дані оригінального масива `array`. Тому після виконання операції множення над масивом адаптер має значення в 2 рази більші від початкового.
@@ -157,8 +157,8 @@ _.vector.mul( array1, 2 );
 _.vectorAdapter.mul( adapter1, 2 );
 adapter1.mul( 2 );
 
-console.log( 'adapter1 : ', adapter1.toStr() );
-/* log : adapter1 : 8.000, 16.000, 24.000 */
+console.log( 'adapter1 : ', adapter1 );
+/* log : adapter1 :  VectorAdapter.x3.Array :: 8.000, 16.000, 24.000 */
 ```
 
 Три послідовні операції множення вектора з використанням контейнера даних `array1`, з використанням адаптера `adapter1` і з використанням метода `adapter1.mul()` адаптера збільшують значення всіх елементів вектора в 8 разів.
@@ -202,17 +202,17 @@ var buffer2 = new F32x([ 4, 5, 6 ]);
 var vector1 = _.vectorAdapter.from( buffer1, 1, 3 );
 var vector2 = _.vectorAdapter.from( buffer2 );
 
-console.log( 'vector1 : ', vector1.toStr() );
-/* log : vector1 : 2.000, 3.000, 4.000 */
-console.log( 'vector2 : ', vector2.toStr() );
-/* log : vector2 : 4.000, 5.000, 6.000 */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 2.000, 3.000, 4.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( 'vector1 : ', vector1.toStr() );
-/* log : vector1 : 6.000, 8.000, 10.000 */
-console.log( 'vector2 : ', vector2.toStr() );
-/* log : vector2 : 4.000, 5.000, 6.000 */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 6.000, 8.000, 10.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
 console.log( 'buffer1 : ', buffer1 );
 /* log : buffer1 : [ 1, 6, 8, 10, 5, 6, 7 ] */
@@ -245,17 +245,17 @@ var buffer2 = new F32x([ 4, 5, 6 ]);
 var vector1 = _.vectorAdapter.fromLongLrangeAndStride( buffer1, 1, 3, 2 );
 var vector2 = _.vectorAdapter.from( buffer2 );
 
-console.log( 'vector1 : ', vector1.toStr() );
-/* log : vector1 : 2.000, 4.000, 6.000 */
-console.log( 'vector2 : ', vector2.toStr() );
-/* log : vector1 : 4.000, 5.000, 6.000 */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 2.000, 4.000, 6.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( 'vector1 : ', vector1.toStr() );
-/* log : vector1 : 6.000, 9.000, 12.000 */
-console.log( 'vector2 : ', vector2.toStr() );
-/* log : vector2 : 4.000, 5.000, 6.000 */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 6.000, 9.000, 12.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
 console.log( 'vector1 : ', vector1 );
 /* log : vector1 : [ 1, 6, 3, 9, 5, 12, 7 ] */
@@ -314,17 +314,17 @@ console.log( 'vector2 : ', vector2 );
 var vector1 = _.vectorAdapter.fromNumber( 1, 3 );
 var vector2 = _.vectorAdapter.from([ 4, 5, 6 ]);
 
-console.log( 'vector1 : ', vector1.toStr() );
-/* log : vector1 : 1.000, 1.000, 1.000 */
-console.log( 'vector2 : ', vector2.toStr() );
-/* log : vector1 : 4.000, 5.000, 6.000 */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 1.000, 1.000, 1.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector1 :  VectorAdapter.x3.Array :: 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector2, vector1 );
 
-console.log( 'vector1 : ', vector1.toStr() );
-/* log : vector1 : 1.000, 1.000, 1.000 */
-console.log( 'vector2 : ', vector2.toStr() );
-/* log : vector2 : 5.000, 6.000, 7.000 */
+console.log( 'vector1 : ', vector1 );
+/* log : vector1 :  VectorAdapter.x3.F32x :: 1.000, 1.000, 1.000 */
+console.log( 'vector2 : ', vector2 );
+/* log : vector2 :  VectorAdapter.x3.Array :: 5.000, 6.000, 7.000 */
 ```
 
 Адаптер `vector1` створюється із числа. Всі значення вектора `vector1` мають значення `1`, а його довжина `3` елементи. Додавання вектору `vector1` до вектору `vector2` має такий же ефекти які додавання скаляра `1` до вектору `vector2`.

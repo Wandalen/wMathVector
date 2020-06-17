@@ -34,10 +34,10 @@ var v1 = _.vectorAdapter.fromLongLrange( a, 1, 4 );
 var v2 = _.vectorAdapter.fromLongLrange( a, 7, 4 );
 v1.add( v2 );
 console.log( 'add 2 vectors made from single array' );
-console.log( 'v1', v1.toStr() );
-/* log : "v1 2.000 4.000 8.000 13.00" */
-console.log( 'v2', v2.toStr() );
-/* log : "v2 1.000 2.000 3.000 4.000" */
+console.log( 'v1', v1 );
+/* log : "v1 VectorAdapter.x4.Array :: 2.000 4.000 8.000 13.00" */
+console.log( 'v2', v2 );
+/* log : "v2 VectorAdapter.x4.Array :: 1.000 2.000 3.000 4.000" */
 console.log( 'a', a );
 /* log : "a [ 0, 2, 4, 8, 13, 0, 0, 1, 2, 3, 4, 0 ]" */
 

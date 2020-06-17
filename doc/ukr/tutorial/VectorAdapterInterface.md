@@ -36,8 +36,8 @@ console.log( 'v1.eGet( 2 ): ', v1.eGet( 2 ) );
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
 v1.eSet( 0, 5 );
-console.log( 'v1.toStr(): ',  v1.toStr() );
-/* log : "v1.toStr():  5.000 2.000 3.000" */
+console.log( 'v1: ',  v1 );
+/* log : "v1:  5.000 2.000 3.000" */
 ```
 
 ### Метод `toStr`
@@ -47,6 +47,6 @@ console.log( 'v1.toStr(): ',  v1.toStr() );
 ```js
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
-console.log( 'v1.toStr(): ',  v1.toStr() );
-/* log : "v1.toStr():  1.000 2.000 3.000" */
+console.log( 'v1: ',  v1 );
+/* log : "v1:  1.000 2.000 3.000" */
 ```
