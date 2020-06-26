@@ -1,10 +1,10 @@
 # Introduction
 
-This article makes overview of the concept of a vector and its formats.
+This article makes overview of the concept of a vector and its forms.
 
 ### Why?
 
-Math algorithms should be independent of the data type or format of the vector. This module revolves around the principle.
+Math algorithms should be independent of the data type or form of the vector. This module revolves around the principle.
 
 Features of this implementation of vector mathematics are:
 
@@ -13,7 +13,7 @@ Features of this implementation of vector mathematics are:
 - **Simplicity**: a regular array or typed buffer could be interpreted as a vector, no need to use special classes.
 - **Usability**: the readability and conciseness of the code which uses the module are as important for us as the performance of the module.
 - **Flexibility**: it's highly flexible, thanks to the ability to specify a vector with the help of an adapter. You can write and use your own implementation of a vector adapter.
-- **Applicability**: it implements the same interface for different data types and formats of specifying. The code written for the adapter looks the same as the code written for the array.
+- **Applicability**: it implements the same interface for different data types and forms of specifying. The code written for the adapter looks the same as the code written for the array.
 - **Reliability**: the module has good test coverage.
 - **Accessibility**: the module has documentation.
 - **Functional programming principles**: the module uses the principles of functional programming.
@@ -31,7 +31,7 @@ The vector in this module means an ordered set of scalars. The vector is not an 
 
 Vector adapter is an implementation of the abstract interface, a kind of link that defines how to interpret data as the vector. The interface of the adapter has many implementations.
 
-### Formats of vector specifying
+### Forms of vector specifying
 
 The vector can be defined by
 
@@ -73,7 +73,7 @@ console.log( '' )
 
 ```
 
-Check `arrayIs()` is true only for `array`. Check `longIs()` is true only for `array` and `buffer`. But check `vectorIs()` is true for all formats of vector.
+Check `arrayIs()` is true only for `array`. Check `longIs()` is true only for `array` and `buffer`. But check `vectorIs()` is true for all forms of vector.
 
 ### Simple operation on vectors
 
@@ -95,7 +95,7 @@ Vector `vector1` is used simultaneously as a container to store the result and a
 
 ### The adapter is an abstraction
 
-The vector can also be specified with the help of an adapter. An adapter is a special object to make algorithms more abstract and to use the same code for very different formats of vector specifying.
+The vector can also be specified with the help of an adapter. An adapter is a special object to make algorithms more abstract and to use the same code for very different forms of vector specifying.
 
 ```js
 var array1 = [ 1, 2, 3 ];
@@ -290,7 +290,7 @@ The following types are supported:
 - `I64x` ( `BigInt64Array` );
 - `U64x` ( `BigUint64Array` ).
 
-### Mixing vector formats
+### Mixing vector forms
 
 The routines of namespace `_.vector` can work with both adapters and standard types.
 
@@ -304,7 +304,7 @@ The adapter interface implements the minimum set of methods and fields required 
 - The method `eSet( i, e )` ( from "element set" ) is intended to set the value of i-th element.
 - The field `length` is a length of the vector in elements.
 
-### An example of a complex format to specify a vector
+### An example of a complex format
 
 The format in which the vector is specified is hidden behind the abstract interface so it can have any complexity, and its implementation details are irrelevant for the algorithms of the module `MathVector`.
 
