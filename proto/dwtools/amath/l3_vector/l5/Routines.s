@@ -1692,10 +1692,10 @@ function quaternionApply( dst, q )
   let y = dst.eGet( 1 );
   let z = dst.eGet( 2 );
 
-  let qx = q.eGet( 0 );
-  let qy = q.eGet( 1 );
-  let qz = q.eGet( 2 );
-  let qw = q.eGet( 3 );
+  let qx = q.eGet( 1 );
+  let qy = q.eGet( 2 );
+  let qz = q.eGet( 3 );
+  let qw = q.eGet( 0 );
 
   /* */
 
