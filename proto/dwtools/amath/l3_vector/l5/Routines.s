@@ -1892,7 +1892,7 @@ function matrixApplyTo( dst, srcMatrix ) /* xxx : move out? */
   _.assert( _.matrixIs( srcMatrix ) );
   debugger;
   // return _.space.mul( dst, [ srcMatrix, dst ] ); /* Dmytro : old namespace */
-  return _.Matrix.mul( dst, [ srcMatrix, dst ] );
+  return _.Matrix.Mul( dst, [ srcMatrix, dst ] );
 }
 
 dop = matrixApplyTo.operation = Object.create( null );
