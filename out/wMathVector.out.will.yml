@@ -135,7 +135,7 @@ module:
       entry.proto.no.tests:
         criterion:
           tests: no.tests
-        path: ../proto/dwtools/amath/l3_vector/Include.s
+        path: ../proto/wtools/amath/l3_vector/Include.s
       entry.proto.only.tests:
         criterion:
           tests: only.tests
@@ -145,13 +145,13 @@ module:
           debug: debug
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Include.s'
+        path: '{path::out.*=1}/source/wtools/amath/l3_vector/Include.s'
       entry.out.raw.debug.release:
         criterion:
           debug: release
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Include.s'
+        path: '{path::out.*=1}/source/wtools/amath/l3_vector/Include.s'
       entry.out.compiled.debug.debug:
         criterion:
           debug: debug
@@ -178,41 +178,41 @@ module:
         path:
           - ../proto
           - ../proto/Integration.test.s
-          - ../proto/dwtools
-          - ../proto/dwtools/Tools.s
-          - ../proto/dwtools/abase
-          - ../proto/dwtools/amath
-          - ../proto/dwtools/amath/l3_vector
-          - ../proto/dwtools/amath/l3_vector/Include.s
-          - ../proto/dwtools/amath/l3_vector/l0
-          - ../proto/dwtools/amath/l3_vector/l0/Namespaces.s
-          - ../proto/dwtools/amath/l3_vector/l1
-          - ../proto/dwtools/amath/l3_vector/l1/Vad.s
-          - ../proto/dwtools/amath/l3_vector/l2
-          - ../proto/dwtools/amath/l3_vector/l2/AdapterMake.s
-          - ../proto/dwtools/amath/l3_vector/l2/LongMake.s
-          - ../proto/dwtools/amath/l3_vector/l2/OperationDescriptor.s
-          - ../proto/dwtools/amath/l3_vector/l3
-          - ../proto/dwtools/amath/l3_vector/l3/LongMeta.s
-          - ../proto/dwtools/amath/l3_vector/l3/OperationMeta.s
-          - ../proto/dwtools/amath/l3_vector/l3/RoutineMeta.s
-          - ../proto/dwtools/amath/l3_vector/l3_from
-          - ../proto/dwtools/amath/l3_vector/l3_from/Long.s
-          - ../proto/dwtools/amath/l3_vector/l3_from/LongShrinked.s
-          - ../proto/dwtools/amath/l3_vector/l3_from/LongShrinkedWithStride.s
-          - ../proto/dwtools/amath/l3_vector/l3_from/Number.s
-          - ../proto/dwtools/amath/l3_vector/l4
-          - ../proto/dwtools/amath/l3_vector/l4/Operations.s
-          - ../proto/dwtools/amath/l3_vector/l5
-          - ../proto/dwtools/amath/l3_vector/l5/Routines.s
-          - ../proto/dwtools/amath/l3_vector/l8
-          - ../proto/dwtools/amath/l3_vector/l8/VadSpecial.s
-          - ../proto/dwtools/amath/l3_vector/l8/VectorSpecial.s
-          - ../proto/dwtools/amath/l3_vector.test
-          - ../proto/dwtools/amath/l3_vector.test/VectorAdapter.test.s
-          - ../proto/dwtools/amath/l3_vector.test/VectorLong.test.s
-          - ../proto/dwtools/amid
-          - ../proto/dwtools/atop
+          - ../proto/wtools
+          - ../proto/wtools/Tools.s
+          - ../proto/wtools/abase
+          - ../proto/wtools/amath
+          - ../proto/wtools/amath/l3_vector
+          - ../proto/wtools/amath/l3_vector/Include.s
+          - ../proto/wtools/amath/l3_vector/l0
+          - ../proto/wtools/amath/l3_vector/l0/Namespaces.s
+          - ../proto/wtools/amath/l3_vector/l1
+          - ../proto/wtools/amath/l3_vector/l1/Vad.s
+          - ../proto/wtools/amath/l3_vector/l2
+          - ../proto/wtools/amath/l3_vector/l2/AdapterMake.s
+          - ../proto/wtools/amath/l3_vector/l2/LongMake.s
+          - ../proto/wtools/amath/l3_vector/l2/OperationDescriptor.s
+          - ../proto/wtools/amath/l3_vector/l3
+          - ../proto/wtools/amath/l3_vector/l3/LongMeta.s
+          - ../proto/wtools/amath/l3_vector/l3/OperationMeta.s
+          - ../proto/wtools/amath/l3_vector/l3/RoutineMeta.s
+          - ../proto/wtools/amath/l3_vector/l3_from
+          - ../proto/wtools/amath/l3_vector/l3_from/Long.s
+          - ../proto/wtools/amath/l3_vector/l3_from/LongShrinked.s
+          - ../proto/wtools/amath/l3_vector/l3_from/LongShrinkedWithStride.s
+          - ../proto/wtools/amath/l3_vector/l3_from/Number.s
+          - ../proto/wtools/amath/l3_vector/l4
+          - ../proto/wtools/amath/l3_vector/l4/Operations.s
+          - ../proto/wtools/amath/l3_vector/l5
+          - ../proto/wtools/amath/l3_vector/l5/Routines.s
+          - ../proto/wtools/amath/l3_vector/l8
+          - ../proto/wtools/amath/l3_vector/l8/VadSpecial.s
+          - ../proto/wtools/amath/l3_vector/l8/VectorSpecial.s
+          - ../proto/wtools/amath/l3_vector.test
+          - ../proto/wtools/amath/l3_vector.test/VectorAdapter.test.s
+          - ../proto/wtools/amath/l3_vector.test/VectorLong.test.s
+          - ../proto/wtools/amid
+          - ../proto/wtools/atop
     submodule:
       wTools:
         path: 'npm:///wTools'
@@ -987,7 +987,7 @@ module:
       entry.proto.no.tests:
         criterion:
           tests: no.tests
-        path: proto/dwtools/amath/l3_vector/Include.s
+        path: proto/wtools/amath/l3_vector/Include.s
       entry.proto.only.tests:
         criterion:
           tests: only.tests
@@ -997,13 +997,13 @@ module:
           debug: debug
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Include.s'
+        path: '{path::out.*=1}/source/wtools/amath/l3_vector/Include.s'
       entry.out.raw.debug.release:
         criterion:
           debug: release
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/amath/l3_vector/Include.s'
+        path: '{path::out.*=1}/source/wtools/amath/l3_vector/Include.s'
       entry.out.compiled.debug.debug:
         criterion:
           debug: debug

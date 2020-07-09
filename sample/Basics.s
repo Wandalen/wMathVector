@@ -128,11 +128,11 @@ ERROR message :
     Inconsistant length 3 <> 2
 
  = Beautified calls stack
-    at Object.fromNumber (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3_from/Number.s:89:7)
-    at Object.fromMaybeNumber (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3_from/Number.s:140:21)
-    at Object._vectorizeSrcs (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3/RoutineMeta.s:651:46)
-    at Object._vectorsCallBegin (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3/RoutineMeta.s:690:8)
-    at Object.homogenousUninterruptibleVectors [as add] (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3/RoutineMeta.s:1816:10)
+    at Object.fromNumber (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/wtools/amath/l3_vector/l3_from/Number.s:89:7)
+    at Object.fromMaybeNumber (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/wtools/amath/l3_vector/l3_from/Number.s:140:21)
+    at Object._vectorizeSrcs (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/wtools/amath/l3_vector/l3/RoutineMeta.s:651:46)
+    at Object._vectorsCallBegin (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/wtools/amath/l3_vector/l3/RoutineMeta.s:690:8)
+    at Object.homogenousUninterruptibleVectors [as add] (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/wtools/amath/l3_vector/l3/RoutineMeta.s:1816:10)
     at Object.<anonymous> (/home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/sample/Basics.js:119:19)
     at Module._compile (internal/modules/cjs/loader.js:1138:30)
     at Object.Module._extensions..js (internal/modules/cjs/loader.js:1158:10)
@@ -142,7 +142,7 @@ ERROR message :
     at internal/main/run_main_module.js:17:47
 
  = Throws stack
-    thrown at Object.fromNumber @ /home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/dwtools/amath/l3_vector/l3_from/Number.s:89:7
+    thrown at Object.fromNumber @ /home/dmytry/Documents/IntellectualServiceMysnyk/wMathVector/proto/wtools/amath/l3_vector/l3_from/Number.s:89:7
 
 
  end of ERROR message.

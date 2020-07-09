@@ -12,7 +12,7 @@ path :
 files :
   wMathVector :
     basePath : './staging'
-    filePath : './dwtools/amath/cvector'
+    filePath : './wtools/amath/cvector'
 
 build :
 
