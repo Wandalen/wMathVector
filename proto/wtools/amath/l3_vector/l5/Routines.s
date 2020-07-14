@@ -67,7 +67,7 @@ function assign( dst ) /* aaa2 : perfect coverage is required */ /* Dmytro : cov
     }
     else if( _.vectorIs( src ) )
     {
-      src = _.vectorAdapter.fromLong( src );
+      src = this.fromLong( src );
       // _.assert( src.length === dst.length );
       _.assert( src.length <= dst.length );
       for( let i = 0, l = src.length ; i < l ; i++ )
@@ -79,12 +79,12 @@ function assign( dst ) /* aaa2 : perfect coverage is required */ /* Dmytro : cov
     // if( _.numberIs( arguments[ 1 ] ) )
     // this.assignScalar( dst, arguments[ 1 ] );
     // else if( _.hasLength( arguments[ 1 ] ) )
-    // this.assignVector( dst, _.vectorAdapter.fromLong( arguments[ 1 ] ) );
+    // this.assignVector( dst, this.fromLong( arguments[ 1 ] ) );
     // else _.assert( 0, 'unknown arguments' );
   }
   else if( alength === 1 + length )
   {
-    this.assign.call( this, dst, _.vectorAdapter.fromLong( _arraySlice( arguments, 1, alength ) ) );
+    this.assign.call( this, dst, this.fromLong( _arraySlice( arguments, 1, alength ) ) );
   }
   else _.assert( 0, 'assign :', 'unknown arguments' );
 
@@ -225,7 +225,7 @@ function MakeSimilar( src, length )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( length ) );
 
-  let dst = _.vectorAdapter.fromLong( new src._vectorBuffer.constructor( length ) );
+  let dst = this.fromLong( new src._vectorBuffer.constructor( length ) );
 
   return dst;
 }
@@ -716,11 +716,11 @@ function review( src, crange )
 
   // if( src.stride !== 1 )
   // {
-  //   result = _.vectorAdapter.fromLongLrangeAndStride( src._vectorBuffer , src.offset + first*src.stride , last-first , src.stride );
+  //   result = this.fromLongLrangeAndStride( src._vectorBuffer , src.offset + first*src.stride , last-first , src.stride );
   // }
   // else
   // {
-  //   result = _.vectorAdapter.fromLongLrange( src._vectorBuffer , src.offset + first , last-first );
+  //   result = this.fromLongLrange( src._vectorBuffer , src.offset + first , last-first );
   // }
 
   let result = src._review( crange );
@@ -800,11 +800,11 @@ dop.modifying = false;
 //
 //   if( src.stride !== 1 )
 //   {
-//     result = _.vectorAdapter.fromLongLrangeAndStride( src._vectorBuffer , src.offset + first*src.stride , last-first , src.stride );
+//     result = this.fromLongLrangeAndStride( src._vectorBuffer , src.offset + first*src.stride , last-first , src.stride );
 //   }
 //   else
 //   {
-//     result = _.vectorAdapter.fromLongLrange( src._vectorBuffer , src.offset + first , last-first );
+//     result = this.fromLongLrange( src._vectorBuffer , src.offset + first , last-first );
 //   }
 //
 //   return result;
@@ -827,7 +827,7 @@ dop.modifying = false;
  * Routine toLong() returns Long maiden from vector {-src-}.
  *
  * @example
- * var src = _.vectorAdapter.fromLong( [ 1, 2, 3 ] );
+ * var src = this.fromLong( [ 1, 2, 3 ] );
  * var got = src.toLong();
  * console.log( got );
  * // log [ 1, 2, 3 ];
@@ -874,7 +874,7 @@ dop.modifying = false;
  * Routine _toStr() makes string from data in source vector {-src-}.
  *
  * @example
- * var src = _.vectorAdapter.fromLong( [ 1, 2, 3 ] );
+ * var src = this.fromLong( [ 1, 2, 3 ] );
  * var got = src.toStr();
  * console.log( got );
  * // log "1.000, 2.000, 3.000";
@@ -980,7 +980,7 @@ dop.modifying = false;
  * an Integer. The length of element of {-srcs-} should be less then the ratio.
  *
  * @example
- * var src = _.vectorAdapter.fromLong( [ 0, 0, 0, 0 ] );
+ * var src = this.fromLong( [ 0, 0, 0, 0 ] );
  * var got = _.avector.gather( src, [ [ 1, 4 ], [ 2, 8 ] ] );
  * console.log( got );
  * // log [ 1, 2, 4, 8 ]
@@ -1019,7 +1019,7 @@ function gather( dst, srcs )
     if( _.numberIs( src ) )
     continue;
     if( _.longIs( src ) )
-    src = srcs[ s ] = _.vectorAdapter.fromLong( src );
+    src = srcs[ s ] = this.fromLong( src );
     _.assert( src.length === l );
   }
 
@@ -1496,11 +1496,11 @@ dop.modifying = true;
 function crossWithPoints( dst, a, b, c )
 {
   _.assert( arguments.length === 4 );
-  _.assert( a.length === 3 && b.length === 3 && c.length === 3, 'implemented only for 3D' );
+  _.assert( a.length === 3 && b.length === 3 && c.length === 3, 'Implemented only for 3D' );
 
   //_.assert( 0, 'not tested' );
   dst = dst || this.make( 3 );
-  // dst = dst || this.long.longMake( 3 );
+  // dst = dst || this.longType.longMake( 3 );
 
   let ax = a.eGet( 0 )-c.eGet( 0 ), ay = a.eGet( 1 )-c.eGet( 1 ), az = a.eGet( 2 )-c.eGet( 2 );
   let bx = b.eGet( 0 )-c.eGet( 0 ), by = b.eGet( 1 )-c.eGet( 1 ), bz = b.eGet( 2 )-c.eGet( 2 );
@@ -1536,7 +1536,7 @@ function _cross3( dst, src1, src2 )
   let src2y = src2.eGet( 1 );
   let src2z = src2.eGet( 2 );
 
-  dst = dst || this.make( 3 );
+  // dst = dst || this.make( 3 );
 
   dst.eSet( 0, src1y * src2z - src1z * src2y );
   dst.eSet( 1, src1z * src2x - src1x * src2z );
@@ -1581,20 +1581,19 @@ dop.modifying = true;
  * @module Tools/math/Vector
  */
 
-/* aaa : cover */
-/* Dmytro : covered */
-
 function cross3( dst, src1, src2 )
 {
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( dst.length === 3, 'implemented only for 3D' );
-  _.assert( src1.length === 3, 'implemented only for 3D' );
-  _.assert( src2.length === 3, 'implemented only for 3D' );
+  _.assert( dst.length === 3, 'Implemented only for 3D' );
+  _.assert( src1.length === 3, 'Implemented only for 3D' );
+  _.assert( src2.length === 3, 'Implemented only for 3D' );
 
-  dst = _.vectorAdapter.from( dst );
-  src1 = _.vectorAdapter.from( src1 );
-  src2 = _.vectorAdapter.from( src2 );
+  dst = dst || this.make( 3 );
+
+  dst = this.from( dst );
+  src1 = this.from( src1 );
+  src2 = this.from( src2 );
 
   return this._cross3( dst, src1, src2 );
 }
@@ -1627,22 +1626,27 @@ dop = cross3.operation = _.mapExtend( null, _cross3.operation );
 
 function cross( dst )
 {
+  let first = 1;
 
-  let firstSrc = 1;
-  if( dst === null )
+  if( arguments.length === 2 )
   {
-    dst = _.vectorAdapter.from( arguments[ 1 ].slice() );
-    firstSrc = 2;
+    first = 1;
+    dst = arguments[ 0 ].clone();
+  }
+  else if( dst === null )
+  {
+    dst = arguments[ 1 ].clone();
+    first = 2;
     _.assert( arguments.length >= 3, 'Expects at least three arguments' );
   }
 
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
-  _.assert( dst.length === 3, 'implemented only for 3D' );
+  _.assert( dst.length === 3, 'Implemented only for 3D' );
 
-  for( let a = firstSrc ; a < arguments.length ; a++ )
+  for( let a = first ; a < arguments.length ; a++ )
   {
     let src = arguments[ a ];
-    _.assert( src.length === 3, 'implemented only for 3D' );
+    _.assert( src.length === 3, 'Implemented only for 3D' );
     this._cross3( dst, dst, src );
   }
 
@@ -1650,11 +1654,11 @@ function cross( dst )
 }
 
 dop = cross.operation = Object.create( null );
-dop.input = 'vw|n vr *vr';
+dop.input = '?vw|?n vr *vr';
 dop.scalarWise = false;
 dop.homogeneous = false;
-dop.takingArguments = [ 2, Infinity ];
-dop.takingVectors = [ 2, Infinity ];
+dop.takingArguments = [ 1, Infinity ];
+dop.takingVectors = [ 1, Infinity ];
 dop.takingVectorsOnly = true;
 dop.returningSelf = true;
 dop.returningNew = true;
@@ -1824,7 +1828,7 @@ dop.modifying = true;
  * Routine reflect() makes vector multiplication of vector {-normal-} and algebraic sum of multiplication vector {-v-} and vector {-normal-}.
  *
  * @example
- * var got = _.avector.reflect( _.vectorAdapter.fromLong( [ 3, 2, 1 ] ), _.vectorAdapter.fromLong( [ 1, 2, 3 ] ) );
+ * var got = _.avector.reflect( this.fromLong( [ 3, 2, 1 ] ), this.fromLong( [ 1, 2, 3 ] ) );
  * console.log( got );
  * // log [ 20, 40, 60 ];
  *
@@ -2135,7 +2139,7 @@ function formate( dst, srcs )
     }
     else
     {
-      src = _.vectorAdapter.from( src );
+      src = this.from( src );
       _.assert( src.length === l );
       for( let i = 0 ; i < l ; i++ )
       dst.eSet( i*ape+a , src.eGet( i ) );
@@ -3366,15 +3370,15 @@ dop.modifying = false;
 // --
 
 /**
- * Routine _equalAre() checks that two vectors {-it.src-} and {-it.src2-} are equivalent.
+ * Routine _equalAre() checks that two vectors {-it.srcEffective-} and {-it.srcEffective2-} are equivalent.
  *
  * @example
- * var got = _.avector._equalAre( { src : [ 1, -4, 2 ], src1 : [ 1, -4.0000001, 2 ], strictTyping : 1, containing : 1 } );
+ * var got = _.avector._equalAre( { src : [ 1, -4, 2 ], src1 : [ 1, -4.0000001, 2 ], strictTyping : 1, containing : 'all' } );
  * console.log( got );
  * // log true
  *
  * @param { Map } it - Options map.
- * @returns { Boolean|BoolLike } - If vectors {-it.src-} and {-it.src2-} are equivalent, returns true. Otherwise, returns false.
+ * @returns { Boolean|BoolLike } - If vectors {-it.srcEffective-} and {-it.srcEffective2-} are equivalent, returns true. Otherwise, returns false.
  * @function _equalAre
  * @throws { Error } If arguments.length is less or more then one.
  * @throws { Error } If {-it.strictTyping-} is undefined.
@@ -3386,7 +3390,7 @@ dop.modifying = false;
 
 function _equalAre( it )
 {
-  let length = it.src2.length;
+  let length = it.srcEffective2.length;
 
   _.assert( arguments.length === 1 );
   _.assert( it.strictTyping !== undefined );
@@ -3394,33 +3398,33 @@ function _equalAre( it )
 
   it.continue = false;
 
-  if( !( it.src.length >= 0 ) )
+  if( !( it.srcEffective.length >= 0 ) )
   return false;
 
-  if( !( it.src2.length >= 0 ) )
+  if( !( it.srcEffective2.length >= 0 ) )
   return false;
 
   if( !it.strictContainer )
   {
-    if( !_.vectorAdapterIs( it.src ) && _.longIs( it.src ) )
-    it.src = this.fromLong( it.src );
-    if( !_.vectorAdapterIs( it.src2 ) && _.longIs( it.src2 ) )
-    it.src2 = this.fromLong( it.src2 );
+    if( !_.vectorAdapterIs( it.srcEffective ) && _.longIs( it.srcEffective ) )
+    it.srcEffective = this.fromLong( it.srcEffective );
+    if( !_.vectorAdapterIs( it.srcEffective2 ) && _.longIs( it.srcEffective2 ) )
+    it.srcEffective2 = this.fromLong( it.srcEffective2 );
   }
   else
   {
-    if( !_.vectorAdapterIs( it.src ) )
+    if( !_.vectorAdapterIs( it.srcEffective ) )
     return false;
-    if( !_.vectorAdapterIs( it.src2 ) )
+    if( !_.vectorAdapterIs( it.srcEffective2 ) )
     return false;
   }
 
   if( it.strictTyping )
-  if( it.src._vectorBuffer.constructor !== it.src2._vectorBuffer.constructor )
+  if( it.srcEffective._vectorBuffer.constructor !== it.srcEffective2._vectorBuffer.constructor )
   return false;
 
   if( !it.containing )
-  if( it.src.length !== length )
+  if( it.srcEffective.length !== length )
   return false;
 
   if( !length )
@@ -3428,7 +3432,7 @@ function _equalAre( it )
 
   for( let i = 0 ; i < length ; i++ )
   {
-    if( !it.onNumbersAreEqual( it.src.eGet( i ), it.src2.eGet( i ) ) )
+    if( !it.onNumbersAreEqual( it.srcEffective.eGet( i ), it.srcEffective2.eGet( i ) ) )
     return false;
   }
 
@@ -3454,7 +3458,7 @@ dop.homogeneous = true;
  * Routine equalAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
  *
  * @example
- * var got = _.avector.equalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 1 } );
+ * var got = _.avector.equalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 'all' } );
  * console.log( got );
  * // log true
  *
@@ -3474,6 +3478,13 @@ function equalAre( src1, src2, opts )
 {
 
   let it = this._equalAre.pre.call( this, this.equalAre, arguments );
+
+  _.assert( it.srcEffective === null );
+  _.assert( it.srcEffective2 === null );
+
+  it.srcEffective = it.src;
+  it.srcEffective2 = it.src2;
+
   let result = this._equalAre( it );
   return result;
 
@@ -3508,7 +3519,7 @@ dop.homogeneous = true;
  * Routine identicalAre() checks that two vectors {-src1-} and {-src2-} are identical.
  *
  * @example
- * var got = _.avector.identicalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 1 } );
+ * var got = _.avector.identicalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 'all' } );
  * console.log( got );
  * // log false
  *
@@ -3529,6 +3540,13 @@ function identicalAre( src1, src2, iterator )
   // _.assert( !opts, 'not tested' );
   debugger;
   let it = this._equalAre.pre.call( this, this.identicalAre, arguments );
+
+  _.assert( it.srcEffective === null );
+  _.assert( it.srcEffective2 === null );
+
+  it.srcEffective = it.src;
+  it.srcEffective2 = it.src2;
+
   let result = this._equalAre( it );
   return result;
 
@@ -3558,7 +3576,7 @@ dop.homogeneous = true;
  * Routine equivalentAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
  *
  * @example
- * var got = _.avector.equivalentAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 1 } );
+ * var got = _.avector.equivalentAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 'all' } );
  * console.log( got );
  * // log true
  *
@@ -3580,6 +3598,13 @@ function equivalentAre( src1, src2, iterator )
   // _.assert( !opts, 'not tested' );
   // debugger;
   let it = this._equalAre.pre.call( this, this.equivalentAre, arguments );
+
+  _.assert( it.srcEffective === null );
+  _.assert( it.srcEffective2 === null );
+
+  it.srcEffective = it.src;
+  it.srcEffective2 = it.src2;
+
   let result = this._equalAre( it );
   return result;
   // let it = equivalentAre.lookContinue( identicalAre, arguments );
@@ -4323,7 +4348,7 @@ function contextsForTesting( o )
     let op = _.mapExtend( null, o );
     op.format = defaultFormat;
     op.form = 'straight';
-    op.vadMake = ( src ) => _.vectorAdapter.fromLong( _.longMake( _global_[ defaultFormat ], src ) );
+    op.vadMake = ( src ) => this.fromLong( _.longMake( _global_[ defaultFormat ], src ) );
     op.longMake = ( src ) => _.longMake( _global_[ defaultFormat ], src );
     o.onEach( op );
   }
@@ -4336,7 +4361,7 @@ function contextsForTesting( o )
       let op = _.mapExtend( null, o );
       op.format = 'F32x';
       op.form = 'straight';
-      op.vadMake = ( src ) => _.vectorAdapter.fromLong( new F32x( src ) );
+      op.vadMake = ( src ) => this.fromLong( new F32x( src ) );
       op.longMake = ( src ) => new F32x( src );
       o.onEach( op );
     }
@@ -4346,7 +4371,7 @@ function contextsForTesting( o )
       let op = _.mapExtend( null, o );
       op.format = 'F64x';
       op.form = 'straight';
-      op.vadMake = ( src ) => _.vectorAdapter.fromLong( new F64x( src ) );
+      op.vadMake = ( src ) => this.fromLong( new F64x( src ) );
       op.longMake = ( src ) => new F64x( src );
       o.onEach( op );
     }
@@ -4356,7 +4381,7 @@ function contextsForTesting( o )
       let op = _.mapExtend( null, o );
       op.format = 'I16x';
       op.form = 'straight';
-      op.vadMake = ( src ) => _.vectorAdapter.fromLong( new I16x( src ) );
+      op.vadMake = ( src ) => this.fromLong( new I16x( src ) );
       op.longMake = ( src ) => new I16x( src );
       o.onEach( op );
     }
@@ -4377,7 +4402,7 @@ function contextsForTesting( o )
       let dst = _.longMakeZeroed( _global_[ defaultFormat ], src.length + 2 );
       for( let i = 0 ; i < src.length ; i++ )
       dst[ i+1 ] = src[ i ];
-      return _.vectorAdapter.fromLongLrange( dst, 1, src.length )
+      return this.fromLongLrange( dst, 1, src.length )
     };
     o.onEach( op );
   }
@@ -4393,7 +4418,7 @@ function contextsForTesting( o )
       let dst = _.longMakeZeroed( _global_[ defaultFormat ], src.length*2 + 2 );
       for( let i = 0 ; i < src.length ; i++ )
       dst[ i*2+1 ] = src[ i ];
-      return _.vectorAdapter.fromLongLrangeAndStride( dst, 1, src.length, 2 )
+      return this.fromLongLrangeAndStride( dst, 1, src.length, 2 )
     };
     o.onEach( op );
   }
@@ -4888,10 +4913,10 @@ _.vectorAdapter._meta._routinesLongWrap_functor();
 
 //
 
-_.assert( _.mapOwnKey( _.avector, 'withDefaultLong' ) );
-_.assert( _.objectIs( _.avector.withDefaultLong ) );
-_.assert( _.objectIs( _.avector.withDefaultLong.Array ) );
-_.assert( _.objectIs( _.avector.withDefaultLong.F32x ) );
+_.assert( _.mapOwnKey( _.avector, 'withDefaultLongType' ) );
+_.assert( _.objectIs( _.avector.withDefaultLongType ) );
+_.assert( _.objectIs( _.avector.withDefaultLongType.Array ) );
+_.assert( _.objectIs( _.avector.withDefaultLongType.F32x ) );
 _.assert( Object.getPrototypeOf( _.avector ) === wTools );
 _.assert( _.objectIs( _.vectorAdapter._routinesMathematical ) );
 _.assert( !_.avector.isValid );

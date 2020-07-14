@@ -17,7 +17,7 @@ if( typeof module !== 'undefined' )
 //
 
 var Parent = wTester;
-var _ = _global_.wTools.withDefaultLong.Fx;
+var _ = _global_.wTools.withDefaultLongType.Fx;
 // var Space = _.Matrix;
 // var vad = _.vectorAdapter;
 // var vec = _.vectorAdapter.fromLong;
@@ -1751,7 +1751,10 @@ function compare( test )
   var src2 = _.vectorAdapter.from( new F64x([ 1, 3, 5 ]) );
   test.identical( _.equivalent( src1, src2 ), true );
   test.identical( _.equivalent( src2, src1 ), true );
+  debugger;
+  _global_.debugger = 1;
   test.identical( _.identical( src1, src2 ), false );
+  debugger;
   test.identical( _.identical( src2, src1 ), false );
   test.equivalent( src1, src2 );
   test.equivalent( src2, src1 );

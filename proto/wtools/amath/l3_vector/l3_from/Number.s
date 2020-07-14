@@ -91,12 +91,12 @@ function fromNumber( number, length )
   }
 
   let result = new Self();
-  result._vectorBuffer = this.long.longMake( 1 );
+  result._vectorBuffer = this.longType.longMake( 1 );
   result._vectorBuffer[ 0 ] = number;
 
   // if( result._vectorBuffer[ 0 ] !== number )
   // {
-  //   result._vectorBuffer = this.withDefaultLong.F64x.longMake( 1 )
+  //   result._vectorBuffer = this.withDefaultLongType.F64x.longMake( 1 )
   //   result._vectorBuffer[ 0 ] = number;
   // }
 
