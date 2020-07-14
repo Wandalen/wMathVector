@@ -617,7 +617,7 @@ function _vectorizeDst( o, dop )
     if( dst === null )
     {
       if( dop.returningBoolean )
-      dst = o.dstContainer = this.vectorAdapter.withDefaultLongType.Array.makeFilling( 1 , false );
+      dst = o.dstContainer = this.vectorAdapter.withDefaultLong.Array.makeFilling( 1 , false );
       else
       dst = o.dstContainer = this.vectorAdapter.makeFilling( 1 , 0 );
       o.dstContainer.assign( o.args[ 1 ] );
@@ -625,7 +625,7 @@ function _vectorizeDst( o, dop )
     else
     {
       if( dop.returningBoolean )
-      dst = o.dstContainer = this.vectorAdapter.withDefaultLongType.Array.makeFilling( 1 , dst );
+      dst = o.dstContainer = this.vectorAdapter.withDefaultLong.Array.makeFilling( 1 , dst );
       else
       dst = o.dstContainer = this.vectorAdapter.makeFilling( 1 , dst );
     }

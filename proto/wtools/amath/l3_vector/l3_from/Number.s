@@ -96,7 +96,7 @@ function fromNumber( number, length )
 
   // if( result._vectorBuffer[ 0 ] !== number )
   // {
-  //   result._vectorBuffer = this.withDefaultLongType.F64x.longMake( 1 )
+  //   result._vectorBuffer = this.withDefaultLong.F64x.longMake( 1 )
   //   result._vectorBuffer[ 0 ] = number;
   // }
 

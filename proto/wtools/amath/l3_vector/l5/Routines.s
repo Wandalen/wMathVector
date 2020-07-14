@@ -4913,10 +4913,10 @@ _.vectorAdapter._meta._routinesLongWrap_functor();
 
 //
 
-_.assert( _.mapOwnKey( _.avector, 'withDefaultLongType' ) );
-_.assert( _.objectIs( _.avector.withDefaultLongType ) );
-_.assert( _.objectIs( _.avector.withDefaultLongType.Array ) );
-_.assert( _.objectIs( _.avector.withDefaultLongType.F32x ) );
+_.assert( _.mapOwnKey( _.avector, 'withDefaultLong' ) );
+_.assert( _.objectIs( _.avector.withDefaultLong ) );
+_.assert( _.objectIs( _.avector.withDefaultLong.Array ) );
+_.assert( _.objectIs( _.avector.withDefaultLong.F32x ) );
 _.assert( Object.getPrototypeOf( _.avector ) === wTools );
 _.assert( _.objectIs( _.vectorAdapter._routinesMathematical ) );
 _.assert( !_.avector.isValid );
