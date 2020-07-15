@@ -351,5 +351,5 @@ console.log( _.strType( long2 ) );
 
 ```
 npm install
-node sample/Sample.js
+node sample/Sample.s
 ```
