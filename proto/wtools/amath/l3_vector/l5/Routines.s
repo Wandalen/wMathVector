@@ -1824,7 +1824,7 @@ dop.modifying = true;
 //
 
 /**
- * Routine reflect() calculate the reflection direction for an incident vector
+ * Routine reflect() calculate the reflection direction for an incident {-src-} vector
  *
  * @example
  * let src = this.fromLong( [ -1, -2, -3 ] )
@@ -1850,7 +1850,7 @@ dop.modifying = true;
  * @returns { Long|VectorAdapter } - Returns reflection direction for an incident vector.
  * @function reflect
  * @throws { Error } If arguments.length is not equal two or three.
- * @throws { Error } If src and normal not vectors.
+ * @throws { Error } If {-src-} and {-normal-} are not vectors.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
@@ -1867,14 +1867,14 @@ function reflect( dst, src, normal )
   if( dst === null )
   dst = src.clone();
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.vectorAdapterIs( normal ) );
 
   // throw _.err( 'not tested' ); /* qqq : cover */
 
-  let result = this.sub( dst.assign( src ), this.mul( null, normal, 2*this.dot( src, normal ) ) );
+  let result = this.sub( dst.assign( src ), this.mul( null, normal, 2 * this.dot( src, normal ) ) );
 
   return result;
 }
@@ -1885,7 +1885,55 @@ dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 2, 3 ];
 dop.takingVectors = [ 2, 3 ];
-dop.takingVectorsOnly = true;
+dop.takingVectorsOnly = true; // ?
+dop.returningSelf = true;
+dop.returningNew = true;
+dop.modifying = true;
+
+//
+
+
+function refract () // dst, src, normal, eta
+{
+  let dst, src, normal, eta
+  if( arguments.length === 4 )
+  {
+    eta = arguments[ 3 ];
+    normal = arguments[ 2 ];
+    src = arguments[ 1 ];
+    dst = arguments[ 0 ] || src.clone();
+  }
+  else if( arguments.length === 3 )
+  {
+    eta = arguments[ 2 ];
+    normal = arguments[ 1 ];
+    src = arguments[ 0 ];
+    dst = src.clone();
+  }
+
+  _.assert( arguments.length === 3 || arguments.length === 4, 'Expects exactly three or four arguments' );
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.vectorAdapterIs( src ) );
+  _.assert( _.vectorAdapterIs( normal ) );
+  _.assert( _.numberIs( eta ) );
+
+  let dotIN = this.dot( src, normal );
+  let k = 1 - eta * eta * ( 1 - dotIN * dotIN );
+  if( k < 0 )
+  result = this.assign( dst, 0 );
+  else
+  result = this.sub( this.mul( dst.assign( src ), eta ), this.mul( null, normal, eta * dotIN + sqrt( k ) ) ); // _sqrt?
+
+  return result;
+}
+
+dop = refract.operation = Object.create( null );
+dop.input = '?vw|?n vr vr s';
+dop.scalarWise = false; // ?
+dop.homogeneous = false;
+dop.takingArguments = [ 3, 4 ];
+dop.takingVectors = [ 2, 3 ];
+dop.takingVectorsOnly = false;
 dop.returningSelf = true;
 dop.returningNew = true;
 dop.modifying = true;
@@ -4521,6 +4569,7 @@ let _routinesMathematical =
   eulerApply,
 
   reflect,
+  refract,
 
   matrixApplyTo,
   matrixHomogenousApply,
