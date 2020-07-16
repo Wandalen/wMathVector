@@ -1847,10 +1847,12 @@ function reflect( dst, src, normal )
   if( arguments.length === 2 )
   {
     normal = src;
-    src = dst;
+    src = dst.clone();
   }
 
+  if( dst === null )
   dst = src.clone();
+
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two arguments' );
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.vectorAdapterIs( src ) );

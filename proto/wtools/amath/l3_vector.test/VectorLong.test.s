@@ -6484,8 +6484,9 @@ function reflect( test )
   var got = _.vector.reflect( src, normal );
 
   test.identical( got, exp );
-  test.identical( src, [ 1, 1, -1 ] );
+  test.identical( src, exp );
   test.identical( normal, [ 0, 0, 1 ] );
+  test.is( got === src )
 
   /* */
 
@@ -6497,8 +6498,9 @@ function reflect( test )
   var got = _.vector.reflect( src, normal );
 
   test.identical( got, exp );
-  test.identical( src, [ 0, 0, 0 ] );
+  test.identical( src, exp );
   test.identical( normal, [ 0, 0, 1 ] );
+  test.is( got === src )
 
   /* */
 
@@ -6510,7 +6512,8 @@ function reflect( test )
   var got = _.vector.reflect( src, normal );
 
   test.equivalent( got, exp );
-  test.identical( src, [ -1, -2, -3 ] );
+  test.equivalent( src, exp );
+  test.is( got === src )
   test.identical( normal, _.vector.normalize( [ 1, 1, 1 ] ) );
 
   /* */
@@ -6525,6 +6528,7 @@ function reflect( test )
   test.identical( got, exp );
   test.identical( src, [ 1, 1, -1 ] );
   test.identical( normal, [ 0, 0, 1 ] );
+  test.is( got !== src )
 
   /* */
 
@@ -6537,9 +6541,10 @@ function reflect( test )
   var got = _.vector.reflect( dst, src, normal );
 
   test.identical( got, exp );
-  test.identical( dst, exp );
   test.identical( src, [ 1, 1, -1 ] );
   test.identical( normal, [ 0, 0, 1 ] );
+  test.is( got === dst )
+  test.is( got !== src )
 
 }
 
