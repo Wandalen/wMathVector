@@ -1824,19 +1824,20 @@ dop.modifying = true;
 //
 
 /**
- * Routine reflect() makes vector multiplication of vector {-normal-} and algebraic sum of multiplication vector {-v-} and vector {-normal-}.
+ * Routine reflect() calculate the reflection direction for an incident vector
  *
  * @example
- * var got = _.avector.reflect( this.fromLong( [ 3, 2, 1 ] ), this.fromLong( [ 1, 2, 3 ] ) );
+ * var got = _.avector.reflect( this.fromLong( [ -1, -2, -3 ] ), _.vector.normalize( [ 1, 1, 1 ] ) );
  * console.log( got );
- * // log [ 20, 40, 60 ];
+ * // log [ 3, 2, 1 ];
  *
- * @param { Long|VectorAdapter } v - Vector.
- * @param { Long|VectorAdapter } normal - Vector.
- * @returns { Long|VectorAdapter } - Returns copy of vector {-normal-} multiplied on algebraic sum of multiplication vector {-v-} and vector {-normal-}.
+ * @param { Long|VectorAdapter|Null } dst - container for result.
+ * @param { Long|VectorAdapter } src - incident vector.
+ * @param { Long|VectorAdapter } normal - normal vector.
+ * @returns { Long|VectorAdapter } - Returns reflection direction for an incident vector.
  * @function reflect
- * @throws { Error } If arguments.length is less or more then two.
- * @throws { Error } If v.length and normal.length are different.
+ * @throws { Error } If arguments.length is not equal two or three.
+ * @throws { Error } If src and normal not vectors.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
