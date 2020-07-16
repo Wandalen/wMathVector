@@ -1773,7 +1773,6 @@ function quaternionApply2( dst, q )
 {
 
   _.assert( dst.length === 3 && q.length === 4, 'quaternionApply :', 'Expects vector and quaternion as arguments' );
-  // throw _.err( 'not tested' );
   let qvector = this.fromLongLrange( dst, 0, 3 );
 
   let cross1 = this.cross( qvector, dst );
@@ -1842,30 +1841,40 @@ dop.modifying = true;
  * @module Tools/math/Vector
  */
 
-function reflect( v, normal )
+function reflect( dst, src, normal )
 {
 
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.vectorAdapterIs( v ) );
+  if( arguments.length === 2 )
+  {
+    dst = null;
+    src = arguments[ 0 ];
+    normal = arguments[ 1 ];
+  }
+
+  if( dst === null )
+  dst = src.clone();
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two arguments' );
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.vectorAdapterIs( normal ) );
 
-  debugger;
-  throw _.err( 'not tested' );
+  throw _.err( 'not tested' ); /* qqq : cover */
 
-  let result = this.mul( normal.clone() , 2*this.dot( v, normal ) );
+  let result = this.mul( dst.assign( normal ), 2*this.dot( src, normal ) );
 
   return result;
 }
 
 dop = reflect.operation = Object.create( null );
-dop.input = 'vw|n vr vr';
+dop.input = '?vw|?n vr vr';
 dop.scalarWise = false;
 dop.homogeneous = false;
-dop.takingArguments = 3;
-dop.takingVectors = 3;
+dop.takingArguments = [ 2, 3 ];
+dop.takingVectors = [ 2, 3 ];
 dop.takingVectorsOnly = true;
 dop.returningSelf = true;
-dop.returningNew = false;
+dop.returningNew = true;
 dop.modifying = true;
 
 //

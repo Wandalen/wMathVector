@@ -18,11 +18,6 @@ if( typeof module !== 'undefined' )
 
 var Parent = wTester;
 var _ = _global_.wTools.withDefaultLong.Fx;
-// var Space = _.Matrix;
-// var vad = _.vectorAdapter;
-// var vec = _.vectorAdapter.fromLong;
-// var avector = _.avector;
-// var sqrt = _.math.sqrt;
 
 // --
 // is
@@ -8323,15 +8318,12 @@ function allRoutineFromLong( test )
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( undefined, ( e, k ) => k ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( 'wrong', ( e, k ) => k ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( [ 0, 1, 2, 3 ], ( e, k ) => k ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ) )); /* aaa : add such test case */ /* Dmytro : implemented */
 
   test.case = 'wrong type of onEach';
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), NaN ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 'wrong' ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), 2 ));
   test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), _.vectorAdapter.from( [ 2, 3, 4 ] ) ));
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), null )); /* aaa : add such test case */ /* Dmytro : implemented */
-  // test.shouldThrowErrorSync( () => _.vectorAdapter.all( _.vectorAdapter.from( [ 2, 3, 4 ] ), undefined )); /* aaa : add such test case */ /* Dmytro : implemented */
 }
 
 //

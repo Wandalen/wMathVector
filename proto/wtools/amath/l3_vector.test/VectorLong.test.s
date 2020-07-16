@@ -4,14 +4,10 @@
 
 if( typeof module !== 'undefined' )
 {
-
   let _ = require( '../../../wtools/Tools.s' );
-
   _.include( 'wTesting' );
   _.include( 'wStringer' );
-
   require( '../l3_vector/Include.s' );
-
 }
 
 //
@@ -22,8 +18,6 @@ var vad = _.vectorAdapter;
 var vec = _.vectorAdapter.fromLong;
 var avector = _.avector;
 var sqrt = _.math.sqrt;
-
-var Parent = wTester;
 
 _.assert( _.routineIs( sqrt ) );
 
@@ -10228,9 +10222,6 @@ function isGreaterAprox( test )
 
 //
 
-/* aaa : ask how to improve */
-/* Dmytro : improved, moved routines in right position */
-
 function isZero( test )
 {
   test.open( 'Array constructor' );
@@ -15312,16 +15303,12 @@ momentCentral.timeOut = 15000;
 
 //
 
-function distributionSummaryExperiment( test )
+function experiment( test )
 {
 
-  var summary = _.avector.distributionSummary([ 1, 2, 3, 4, 9 ]);
-  logger.log( 'summary', summary );
-
-  test.identical( 1, 1 );
 }
 
-distributionSummaryExperiment.experimental = 1;
+experiment.experimental = 1;
 
 // // //
 // //
@@ -15819,12 +15806,6 @@ var Self =
   tests :
   {
 
-    /* aaa : move out routines which should be in VectorAdapter.test.s. ask how */
-    /* Dmytro : all routines with vectorAdapter moved to VectorAdapter.test.s */
-
-    /* aaa : sort routines order*/
-    /* Dmytro : sorted */
-
     assign,
 
     growLong,
@@ -15932,7 +15913,7 @@ var Self =
     allLessEqualAprox,
     allLessAprox,
 
-    allZero, /* aaa : group all* routines */ /* Dmytro : grouped */
+    allZero,
     allFinite,
     allInt,
 
@@ -15949,7 +15930,7 @@ var Self =
     anyLessEqualAprox,
     anyLessAprox,
 
-    anyZero, /* aaa : group any* routines */ /* Dmytro : grouped */
+    anyZero,
     anyNan,
 
     //
@@ -15965,7 +15946,7 @@ var Self =
     noneLessAprox,
     noneLessEqualAprox,
 
-    noneZero, /* aaa : group none* routines */ /* Dmytro : grouped */
+    noneZero,
 
     //
 
@@ -15991,7 +15972,10 @@ var Self =
     median,
     momentCentral,
 
-    distributionSummaryExperiment,
+    // experiment
+
+    experiment,
+
 
     // deprecated
 
