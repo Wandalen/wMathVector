@@ -1846,14 +1846,11 @@ function reflect( dst, src, normal )
 
   if( arguments.length === 2 )
   {
-    dst = null;
-    src = arguments[ 0 ];
-    normal = arguments[ 1 ];
+    normal = src;
+    src = dst;
   }
 
-  if( dst === null )
   dst = src.clone();
-
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two arguments' );
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.vectorAdapterIs( src ) );
@@ -1861,7 +1858,7 @@ function reflect( dst, src, normal )
 
   // throw _.err( 'not tested' ); /* qqq : cover */
 
-  let result = this.mul( dst.assign( normal ), 2*this.dot( src, normal ) );
+  let result = this.sub( dst.assign( src ), this.mul( null, normal, 2*this.dot( src, normal ) ) );
 
   return result;
 }

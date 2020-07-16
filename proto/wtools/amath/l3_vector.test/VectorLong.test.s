@@ -6476,17 +6476,72 @@ cross.timeOut = 15000;
 function reflect( test )
 {
 
-  test.case = 'basic';
-  var expected = [ 1, 1, 1 ];
-  var dst = null;
-  var src = [ 1, 0, 0 ];
-  var normal = [ 0, 1, 0 ];
+  test.case = 'trivial';
+
+  var exp = [ 1, 1, 1 ];
+  var src = [ 1, 1, -1 ];
+  var normal = [ 0, 0, 1 ];
   var got = _.vector.reflect( src, normal );
-  test.equivalent( got, expected );
+
+  test.identical( got, exp );
+  test.identical( src, [ 1, 1, -1 ] );
+  test.identical( normal, [ 0, 0, 1 ] );
+
+  /* */
+
+  test.case = 'zero';
+
+  var exp = [ 0, 0, 0 ];
+  var src = [ 0, 0, 0 ];
+  var normal = [ 0, 0, 1 ];
+  var got = _.vector.reflect( src, normal );
+
+  test.identical( got, exp );
+  test.identical( src, [ 0, 0, 0 ] );
+  test.identical( normal, [ 0, 0, 1 ] );
+
+  /* */
+
+  test.case = 'trivial2';
+
+  var exp = [ 3, 2, 1 ];
+  var src = [ -1, -2, -3 ];
+  var normal = _.vector.normalize( [ 1, 1, 1 ] );
+  var got = _.vector.reflect( src, normal );
+
+  test.equivalent( got, exp );
+  test.identical( src, [ -1, -2, -3 ] );
+  test.identical( normal, _.vector.normalize( [ 1, 1, 1 ] ) );
+
+  /* */
+
+  test.case = 'trivial, new dst';
+
+  var exp = [ 1, 1, 1 ];
+  var src = [ 1, 1, -1 ];
+  var normal = [ 0, 0, 1 ];
+  var got = _.vector.reflect( null, src, normal );
+
+  test.identical( got, exp );
+  test.identical( src, [ 1, 1, -1 ] );
+  test.identical( normal, [ 0, 0, 1 ] );
+
+  /* */
+
+  test.case = 'trivial, first argument is dst';
+
+  var exp = [ 1, 1, 1 ];
+  var dst = [ 10, 10, -10 ];
+  var src = [ 1, 1, -1 ];
+  var normal = [ 0, 0, 1 ];
+  var got = _.vector.reflect( dst, src, normal );
+
+  test.identical( got, exp );
+  test.identical( dst, exp );
+  test.identical( src, [ 1, 1, -1 ] );
+  test.identical( normal, [ 0, 0, 1 ] );
 
 }
-
-//
 
 function abs( test )
 {
