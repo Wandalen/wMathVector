@@ -21,8 +21,8 @@ let _sqr = _.math.sqr;
 *
 * @example
 * var vec = wTools.vector.make( 3 );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
+* console.log( 'vec:', vec );
+* console.log( 'vec.toStr():', vec.toStr() );
 *
 * @function make
 * @namespace wTools.avector
@@ -48,8 +48,8 @@ function make( length )
 *
 * @example
 * var vec = wTools.vector.makeFilling( 3, 0 );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
+* console.log( 'vec:', vec );
+* console.log( 'vec.toStr():', vec.toStr() );
 *
 * @function makeFilling
 * @namespace wTools.avector

@@ -13,7 +13,7 @@
   "license" : "MIT",
   "main" : "proto/wtools/amath/l3_vector/Include.s",
   "files" : [ "proto/wtools/amath/l3_vector", "proto/wtools/Tools.s", "out" ],
-  "scripts" : { "test" : "wtest .run 'proto/**' rapidity:-3", "docgen" : "wdocgen proto" },
+  "scripts" : { "test" : "wtest .run 'proto/**' rapidity:-1", "docgen" : "wdocgen proto" },
   "repository" :
   {
     "type" : "git",
@@ -30,6 +30,6 @@
     "wmathscalar" : "",
     "wequaler" : ""
   },
-  "devDependencies" : { "wstringer" : "", "wTesting" : "", "wmathvector" : "file:." },
+  "devDependencies" : { "wstringer" : "", "wTesting" : "", "eslint" : "7.1.0", "wmathvector" : "file:." },
   "keywords" : [ "wTools", "math", "vector", "dot product", "convolution" ]
 }

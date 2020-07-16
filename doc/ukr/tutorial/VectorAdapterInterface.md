@@ -9,9 +9,9 @@
 ```js
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
-console.log( 'v1.length: ', v1.length )
+console.log( 'v1.length:', v1.length )
 /* log : "v1.length:  3" */
-console.log( 'a1.length: ', a1.length )
+console.log( 'a1.length:', a1.length )
 /* log : "a1.length:  3" */
 ```
 
@@ -24,7 +24,7 @@ console.log( 'a1.length: ', a1.length )
 ```js
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
-console.log( 'v1.eGet( 2 ): ', v1.eGet( 2 ) );
+console.log( 'v1.eGet( 2 ):', v1.eGet( 2 ) );
 /* log : "v1.eGet( 2 ):  3" */
 ```
 
@@ -36,7 +36,7 @@ console.log( 'v1.eGet( 2 ): ', v1.eGet( 2 ) );
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
 v1.eSet( 0, 5 );
-console.log( 'v1: ',  v1 );
+console.log( 'v1:',  v1 );
 /* log : "v1:  5.000 2.000 3.000" */
 ```
 
@@ -47,6 +47,6 @@ console.log( 'v1: ',  v1 );
 ```js
 var a1 = [ 1, 2, 3 ];
 var v1 = _.vectorAdapter.from( a1 );
-console.log( 'v1: ',  v1 );
+console.log( 'v1:',  v1 );
 /* log : "v1:  1.000 2.000 3.000" */
 ```

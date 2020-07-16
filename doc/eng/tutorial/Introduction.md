@@ -85,9 +85,9 @@ var vector2 = [ 4, 5, 6 ];
 
 _.vector.add( vector1, vector2 );
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 [ 5, 7, 9 ] */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector2 : [ 4, 5, 6 ] */
 ```
 
@@ -103,21 +103,21 @@ var array2 = [ 4, 5, 6 ];
 var vector1 = _.vectorAdapter.from( array1 );
 var vector2 = _.vectorAdapter.from( array2 );
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 :  VectorAdapter.x3.Array :: 1.000 2.000 3.000 */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector2 :  VectorAdapter.x3.Array :: 4.000 5.000 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 :  VectorAdapter.x3.Array :: 5.000 7.000 9.000 */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector2 :  VectorAdapter.x3.Array :: 4.000 5.000 6.000 */
 
-console.log( 'array1 : ', array1 );
+console.log( 'array1 :', array1 );
 /* log : array1 : [ 5, 7, 9 ] */
-console.log( 'array2 : ', array2 );
+console.log( 'array2 :', array2 );
 /* log : array2 : [ 4, 5, 6 ] */
 ```
 
@@ -135,7 +135,7 @@ var vector1 = _.vectorAdapter.from( array );
 
 _.vector.mul( array, 2 );
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 :  VectorAdapter.x3.Array :: 2.000, 4.000, 6.000 */
 ```
 
@@ -157,7 +157,7 @@ _.vector.mul( array1, 2 );
 _.vectorAdapter.mul( adapter1, 2 );
 adapter1.mul( 2 );
 
-console.log( 'adapter1 : ', adapter1 );
+console.log( 'adapter1 :', adapter1 );
 /* log : adapter1 :  VectorAdapter.x3.Array :: 8.000, 16.000, 24.000 */
 ```
 
@@ -172,13 +172,13 @@ var srcVector1 = [ 1, 2, 3 ];
 var srcVector2 = [ 4, 5, 6 ];
 var dstVector = _.vector.add( null, srcVector1, srcVector2 );
 
-console.log( 'srcVector1 : ', srcVector1 );
+console.log( 'srcVector1 :', srcVector1 );
 /* log : srcVector1 : [ 1, 2, 3 ] */
-console.log( 'srcVector2 : ', srcVector2 );
+console.log( 'srcVector2 :', srcVector2 );
 /* log : srcVector2 : [ 4, 5, 6 ] */
-console.log( 'dstVector : ', dstVector );
+console.log( 'dstVector :', dstVector );
 /* log : dstVector : [ 5, 7, 9 ] */
-console.log( 'dstVector === srcVector1 : ', dstVector === srcVector1 );
+console.log( 'dstVector === srcVector1 :', dstVector === srcVector1 );
 /* log : dstVector === srcVector1 : false */
 ```
 
@@ -202,21 +202,21 @@ var buffer2 = new F32x([ 4, 5, 6 ]);
 var vector1 = _.vectorAdapter.from( buffer1, 1, 3 );
 var vector2 = _.vectorAdapter.from( buffer2 );
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 :  VectorAdapter.x3.F32x :: 2.000, 3.000, 4.000 */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector2 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 :  VectorAdapter.x3.F32x :: 6.000, 8.000, 10.000 */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector2 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
-console.log( 'buffer1 : ', buffer1 );
+console.log( 'buffer1 :', buffer1 );
 /* log : buffer1 : [ 1, 6, 8, 10, 5, 6, 7 ] */
-console.log( 'buffer2 : ', buffer2 );
+console.log( 'buffer2 :', buffer2 );
 /* log : buffer2 : [ 4, 5, 6 ] */
 ```
 
@@ -245,21 +245,21 @@ var buffer2 = new F32x([ 4, 5, 6 ]);
 var vector1 = _.vectorAdapter.fromLongLrangeAndStride( buffer1, 1, 3, 2 );
 var vector2 = _.vectorAdapter.from( buffer2 );
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 :  VectorAdapter.x3.F32x :: 2.000, 4.000, 6.000 */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector1 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector1, vector2 );
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 :  VectorAdapter.x3.F32x :: 6.000, 9.000, 12.000 */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector2 :  VectorAdapter.x3.F32x :: 4.000, 5.000, 6.000 */
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 : [ 1, 6, 3, 9, 5, 12, 7 ] */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector2 : [ 4, 5, 6 ] */
 ```
 
@@ -314,16 +314,16 @@ For example, the number can be interpreted as a vector of arbitrary length.
 var vector1 = _.vectorAdapter.fromNumber( 1, 3 );
 var vector2 = _.vectorAdapter.from([ 4, 5, 6 ]);
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 :  VectorAdapter.x3.F32x :: 1.000, 1.000, 1.000 */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector1 :  VectorAdapter.x3.Array :: 4.000, 5.000, 6.000 */
 
 _.vectorAdapter.add( vector2, vector1 );
 
-console.log( 'vector1 : ', vector1 );
+console.log( 'vector1 :', vector1 );
 /* log : vector1 :  VectorAdapter.x3.F32x :: 1.000, 1.000, 1.000 */
-console.log( 'vector2 : ', vector2 );
+console.log( 'vector2 :', vector2 );
 /* log : vector2 :  VectorAdapter.x3.Array :: 5.000, 6.000, 7.000 */
 ```
 
@@ -340,9 +340,9 @@ var long1 = new F32x([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
 var vector1 = _.vectorAdapter.fromLongLrangeAndStride( long1, 1, 3, 2 );
 var long2 = _.vector.toLong( vector1 );
 
-console.log( 'long2 : ', long2 );
+console.log( 'long2 :', long2 );
 /* log : long2 : [ 1, 3, 5 ] */
-console.log( 'long2 type : ', _.strType( long2 ) );
+console.log( 'long2 type :', _.strType( long2 ) );
 /* log : long2 type : Float32Array */
 ```
 

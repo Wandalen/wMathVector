@@ -25,8 +25,8 @@ let avector = _.avector;
 *
 * @example
 * var vec = wTools.vector.make( 3 );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
+* console.log( 'vec:', vec );
+* console.log( 'vec.toStr():', vec.toStr() );
 *
 * @function make
 * @namespace wTools.vectorAdapter
@@ -52,8 +52,8 @@ function make( length )
 *
 * @example
 * var vec = wTools.vector.makeFilling( 3, 0 );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
+* console.log( 'vec:', vec );
+* console.log( 'vec.toStr():', vec.toStr() );
 *
 * @function makeFilling
 * @namespace wTools.vectorAdapter
@@ -84,8 +84,8 @@ function makeFilling( length, value )
 * @example
 * var srcLong = [ 1, 2, 3 ];
 * var vec = wTools.vector.from( srcLong );
-* console.log( 'vec: ', vec );
-* console.log( 'vec.toStr(): ', vec.toStr() );
+* console.log( 'vec:', vec );
+* console.log( 'vec.toStr():', vec.toStr() );
 *
 * @function from
 * @namespace wTools.vectorAdapter

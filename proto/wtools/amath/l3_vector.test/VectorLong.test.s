@@ -6243,74 +6243,73 @@ function cross( test )
 
   /* */
 
-  // test.case = 'trivial, make new';
-  // var a = [ 1, 2, 3 ];
-  // var b = [ 4, 5, 6 ];
-  // var exp = [ -3, +6, -3 ];
-  // var got = _.avector.cross( null, a, b );
-  // test.identical( got, exp );
-  // test.is( got !== a );
-  //
-  // /* */
-  //
-  // test.case = 'zero, make new';
-  // var a = [ 0, 0, 0 ];
-  // var b = [ 0, 0, 0 ];
-  // var exp = [ 0, 0, 0 ];
-  // var got = _.avector.cross( null, a, b );
-  // test.identical( got, exp );
-  // test.is( got !== a );
-  //
-  // /* */
-  //
-  // test.case = 'same, make new';
-  // var a = [ 1, 1, 1 ];
-  // var b = [ 1, 1, 1 ];
-  // var exp = [ 0, 0, 0 ];
-  // var got = _.avector.cross( null, a, b );
-  // test.identical( got, exp );
-  // test.is( got !== a );
-  //
-  // /* */
-  //
-  // test.case = 'perpendicular1, make new';
-  // var a = [ 1, 0, 0 ];
-  // var b = [ 0, 0, 1 ];
-  // var exp = [ 0, -1, 0 ];
-  // var got = _.avector.cross( null, a, b );
-  // test.identical( got, exp );
-  // test.is( got !== a );
-  //
-  // /* */
-  //
-  // test.case = 'perpendicular2, make new';
-  // var a = [ 0, 0, 1 ];
-  // var b = [ 1, 0, 0 ];
-  // var exp = [ 0, +1, 0 ];
-  // var got = _.avector.cross( null, a, b );
-  // test.identical( got, exp );
-  // test.is( got !== a );
-  //
-  // /* */
-  //
-  // test.case = 'perpendicular3, make new';
-  // var a = [ 1, 0, 0 ];
-  // var b = [ 0, 1, 0 ];
-  // var exp = [ 0, 0, +1 ];
-  // var got = _.avector.cross( null, a, b );
-  // test.identical( got, exp );
-  // test.is( got !== a );
-  //
-  // /* */
-  //
-  // test.case = 'perpendicular4, make new';
-  // var a = [ 0, 1, 0 ];
-  // var b = [ 1, 0, 0 ];
-  // var exp = [ 0, 0, -1 ];
-  // var got = _.avector.cross( null, a, b );
-  // test.identical( got, exp );
-  // test.is( got !== a );
-  // xxx
+  test.case = 'trivial, make new';
+  var a = [ 1, 2, 3 ];
+  var b = [ 4, 5, 6 ];
+  var exp = [ -3, +6, -3 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, exp );
+  test.is( got !== a );
+
+  /* */
+
+  test.case = 'zero, make new';
+  var a = [ 0, 0, 0 ];
+  var b = [ 0, 0, 0 ];
+  var exp = [ 0, 0, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, exp );
+  test.is( got !== a );
+
+  /* */
+
+  test.case = 'same, make new';
+  var a = [ 1, 1, 1 ];
+  var b = [ 1, 1, 1 ];
+  var exp = [ 0, 0, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, exp );
+  test.is( got !== a );
+
+  /* */
+
+  test.case = 'perpendicular1, make new';
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 0, 1 ];
+  var exp = [ 0, -1, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, exp );
+  test.is( got !== a );
+
+  /* */
+
+  test.case = 'perpendicular2, make new';
+  var a = [ 0, 0, 1 ];
+  var b = [ 1, 0, 0 ];
+  var exp = [ 0, +1, 0 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, exp );
+  test.is( got !== a );
+
+  /* */
+
+  test.case = 'perpendicular3, make new';
+  var a = [ 1, 0, 0 ];
+  var b = [ 0, 1, 0 ];
+  var exp = [ 0, 0, +1 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, exp );
+  test.is( got !== a );
+
+  /* */
+
+  test.case = 'perpendicular4, make new';
+  var a = [ 0, 1, 0 ];
+  var b = [ 1, 0, 0 ];
+  var exp = [ 0, 0, -1 ];
+  var got = _.avector.cross( null, a, b );
+  test.identical( got, exp );
+  test.is( got !== a );
 
   /* */
 

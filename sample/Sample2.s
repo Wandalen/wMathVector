@@ -9,7 +9,7 @@ var a1 = [ 1, 2, 3 ];
 var a2 = [ 1, 2, 3 ];
 var a3 = [ 1, 2, 3 ];
 var avector = _.avector.add( a1, a2, a3 );
-console.log( 'avector: ', avector );
+console.log( 'avector:', avector );
 /* log : "avector: [ 3, 6, 9 ]" */
 console.log( 'a1:', a1 );
 /* log : "a1: [ 3, 6, 9 ]" */
@@ -21,7 +21,7 @@ var a2 = [ 0, 0, 0 ];
 var a3 =  5;
 var a4 =  7;
 var avector = _.avector.add( a1, a2, a3, a4 );
-console.log( 'avector: ', avector );
+console.log( 'avector:', avector );
 /* log : "avector:  [ 12, 12, 12 ]" */
 console.log( 'a1:', a1 );
 /* log : "a1: [ 12, 12, 12 ]" */
@@ -33,7 +33,7 @@ var a2 = [ 0, 0, 0 ];
 var a3 =  5;
 var a4 =  7;
 var vector = _.avector.add( null, a1, a2, a3, a4 );
-console.log( 'avector: ', avector );
+console.log( 'avector:', avector );
 /* log : "avector:  [ 12, 12, 12 ]" */
 console.log( 'a1:', a1 );
 /* log : "a1: [ 0, 0, 0 ]" */
@@ -52,22 +52,23 @@ var v2 = _.vectorAdapter.fromLongLrange( a, v2Offset, v2Length );
 
 _.avector.add( v1, v2 );
 
-console.log( 'v1: ', v1 );
+console.log( 'v1:', v1 );
 /* log :
 "v1:  VectorAdapterFromLongShrinked {
   _vectorBuffer: [ 1, 2, 3, 1, 2, 2 ],
   length: 3,
   offset: 0
 }" */
-console.log( 'v2: ', v2 );
+console.log( 'v2:', v2 );
 /* log :
 "v2:  VectorAdapterFromLongShrinked {
   _vectorBuffer: [ 1, 2, 3, 1, 2, 2 ],
   length: 3,
   offset: 3
 }" */
-console.log( 'a: ', a );
+console.log( 'a:', a );
 /* log : "a:  [ 1, 2, 3, 1, 2, 2 ]" */
+/* qqq : review all samples and update actual output */
 
 /* vector wrapper from avector */
 
