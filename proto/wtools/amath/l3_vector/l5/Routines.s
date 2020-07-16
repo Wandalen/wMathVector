@@ -1859,7 +1859,7 @@ function reflect( dst, src, normal )
   _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.vectorAdapterIs( normal ) );
 
-  throw _.err( 'not tested' ); /* qqq : cover */
+  // throw _.err( 'not tested' ); /* qqq : cover */
 
   let result = this.mul( dst.assign( normal ), 2*this.dot( src, normal ) );
 

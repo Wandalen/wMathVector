@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 
 //
 
-var _ = _global_.wTools.withDefaultLong.Fx;
+let _ = _global_.wTools.withDefaultLong.Fx;
 var Space = _.Matrix;
 var vad = _.vectorAdapter;
 var vec = _.vectorAdapter.fromLong;
@@ -6470,6 +6470,21 @@ function cross( test )
 }
 
 cross.timeOut = 15000;
+
+//
+
+function reflect( test )
+{
+
+  test.case = 'basic';
+  var expected = [ 1, 1, 1 ];
+  var dst = null;
+  var src = [ 1, 0, 0 ];
+  var normal = [ 0, 1, 0 ];
+  var got = _.vector.reflect( src, normal );
+  test.equivalent( got, expected );
+
+}
 
 //
 
@@ -14972,7 +14987,7 @@ function dot( test )
 
   test.case = 'orthogonal anrarrays';
   var exp = 0;
-  var got = _.avector.dot( or1, or2 );
+  var got = _.vector.dot( or1, or2 );
   test.identical( got, exp )
 
   /* */
@@ -15774,7 +15789,7 @@ experiment.experimental = 1;
 // proto
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.Math.Vector.Long',
@@ -15849,6 +15864,8 @@ var Self =
 
     cross3,
     cross,
+
+    reflect,
 
     abs,
 

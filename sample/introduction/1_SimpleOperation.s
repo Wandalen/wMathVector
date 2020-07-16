@@ -1,4 +1,4 @@
-var _ = require( 'wmathvector' );
+let _ = require( 'wmathvector' );
 
 var vector1 = [ 1, 2, 3 ];
 var vector2 = [ 4, 5, 6 ];

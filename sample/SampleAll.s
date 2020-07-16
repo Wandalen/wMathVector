@@ -1,7 +1,7 @@
 if( typeof module !== 'undefined' )
 require( 'wmathvector' );
 
-var _ = wTools;
+let _ = wTools;
 
 function onEvaluate( src )
 {

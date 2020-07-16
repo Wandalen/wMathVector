@@ -1,4 +1,4 @@
-var _ = require( 'wmathvector' );
+let _ = require( 'wmathvector' );
 
 var buffer1 = new F32x([ 1, 2, 3, 4, 5, 6, 7 ]);
 var buffer2 = new F32x([ 4, 5, 6 ]);

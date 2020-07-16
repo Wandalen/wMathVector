@@ -170,7 +170,7 @@ eslint.rapidity = -2;
 // declare
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Integration',

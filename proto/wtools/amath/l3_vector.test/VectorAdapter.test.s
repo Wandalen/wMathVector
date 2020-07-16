@@ -16,8 +16,8 @@ if( typeof module !== 'undefined' )
 
 //
 
-var Parent = wTester;
-var _ = _global_.wTools.withDefaultLong.Fx;
+let Parent = wTester;
+let _ = _global_.wTools.withDefaultLong.Fx;
 
 // --
 // is
@@ -10451,7 +10451,7 @@ function areParallelNotDefaultAccuracy( test )
 // proto
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.Math.Vector.Adapter',

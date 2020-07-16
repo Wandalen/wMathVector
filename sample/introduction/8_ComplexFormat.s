@@ -1,4 +1,4 @@
-var _ = require( 'wmathvector' );
+let _ = require( 'wmathvector' );
 
 var vector1 = _.vectorAdapter.fromNumber( 1, 3 );
 var vector2 = _.vectorAdapter.from([ 4, 5, 6 ]);

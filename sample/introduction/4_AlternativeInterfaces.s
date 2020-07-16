@@ -1,4 +1,4 @@
-var _ = require( 'wmathvector' );
+let _ = require( 'wmathvector' );
 
 var array1 = [ 1, 2, 3 ];
 var adapter1 = _.vectorAdapter.from( array1 );
