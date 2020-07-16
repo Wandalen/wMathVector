@@ -1827,9 +1827,22 @@ dop.modifying = true;
  * Routine reflect() calculate the reflection direction for an incident vector
  *
  * @example
- * var got = _.avector.reflect( this.fromLong( [ -1, -2, -3 ] ), _.vector.normalize( [ 1, 1, 1 ] ) );
+ * let src = this.fromLong( [ -1, -2, -3 ] )
+ * let got = _.avector.reflect( src, _.vector.normalize( [ 1, 1, 1 ] ) );
  * console.log( got );
  * // log [ 3, 2, 1 ];
+ * console.log( src );
+ * // log [ 3, 2, 1 ];
+ *
+ * let dst = this.fromLong( [ 0, 0, 0 ] )
+ * let src = this.fromLong( [ -1, -2, -3 ] )
+ * let got = _.avector.reflect( dst, src, _.vector.normalize( [ 1, 1, 1 ] ) );
+ * console.log( got );
+ * // log [ 3, 2, 1 ];
+ * console.log( dst );
+ * // log [ 3, 2, 1 ];
+ * console.log( src );
+ * // log [ -1, -2, -3 ];
  *
  * @param { Long|VectorAdapter|Null } dst - container for result.
  * @param { Long|VectorAdapter } src - incident vector.
