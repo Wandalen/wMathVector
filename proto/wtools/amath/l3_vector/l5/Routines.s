@@ -558,7 +558,7 @@ function growLong( src, crange, val )
   // result[ i ] = val;
 
   let l2 = -crange[ 0 ];
-  result.fill( val, 0, l2 )
+  result.fill( val, 0, l2 ); /* qqq : does it work for any kind of buffer? check please. extend test */
 
   let l3 = src.length + l2;
   for( let i = l2 ; i < l3 ; i++ )
