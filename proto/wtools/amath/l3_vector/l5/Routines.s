@@ -1824,8 +1824,9 @@ dop.modifying = true;
 //
 
 /**
- * Routine reflect() calculate the reflection direction for an incident {-src-} vector.
- *
+ * Routine reflect() calculate the reflection direction for an incident vector {-src-} and surface normal {-normal-}.
+ * Reflection calculated as I - 2.0 * dot(N, I) * N where I {-src-} and N {-normal-}
+ * Expected {-normal-} in normalized form.
  * @example
  * let src = this.fromLong( [ -1, -2, -3 ] )
  * let got = _.avector.reflect( src, _.vector.normalize( [ 1, 1, 1 ] ) );
@@ -1851,6 +1852,8 @@ dop.modifying = true;
  * @function reflect
  * @throws { Error } If arguments.length is not equal two or three.
  * @throws { Error } If {-src-} and {-normal-} are not vectors.
+ * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} and {-src-} are different length.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
@@ -1894,8 +1897,47 @@ dop.modifying = true;
 
 //
 
+/**
+ * Routine refract() calculate the refraction direction for an incident {-src-} vector, surface normal {-normal-}, and ratio of indices of refraction {-eta-}.
+ * Expected {-eta-} as ratio between medium with incident {-src-} vector and medium of reflected vector.
+ * For example, {-eta-} for vector passing from air to glass will be 1 / 1.6, in opposite direction is 1.6/1.
+ * Expected incident {-src-} vector and surface normal {-normal-} in normalized form.
+ * If there is total internal reflection returned zero vector.
+ *
+ * @example
+ * let src = _.vector.normalize( [ 0, 1, -1 ] )
+ * let got = _.avector.refract( src, [ 0, 0, 1 ], 1/1.6 );
+ * console.log( got );
+ * // log [ 0, 0.44194173824159216, -0.8970437647041472 ];
+ * console.log( src );
+ * // log [ 0, 0.44194173824159216, -0.8970437647041472 ];
+ *
+ * let dst = this.fromLong( [ 0, 0, 0 ] )
+ * let src = _.vector.normalize( [ 0, 1, -1 ] )
+ * let got = _.avector.refract( src, [ 0, 0, 1 ], 1/1.6 );
+ * console.log( got );
+ * // log [ 0, 0.44194173824159216, -0.8970437647041472 ];
+ * console.log( dst );
+ * // log [ 0, 0.44194173824159216, -0.8970437647041472 ];
+ * console.log( src );
+ * // log [ 0, 0.7071067811865475, -0.7071067811865475 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Container for result.
+ * @param { Long|VectorAdapter } src - Incident vector. Should be normalized.
+ * @param { Long|VectorAdapter } normal - Normal vector. Should be normalized.
+ * @param { Number } eta - Ratio of indices of refraction. Numerator is index of medium with incident vector.
+ * @returns { Long|VectorAdapter } - Returns refraction direction for an incident vector.
+ * @function refract
+ * @throws { Error } If arguments.length is not equal three or four.
+ * @throws { Error } If {-src-} and {-normal-} are not vectors.
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-eta-} is not number.
+ * @throws { Error } If {-dst-} and {-src-} are different length.
+ * @namespaces "wTools.avector","wTools.vectorAdapter"
+ * @module Tools/math/Vector
+ */
 
-function refract () // dst, src, normal, eta
+function refract() // dst, src, normal, eta
 {
   let dst, src, normal, eta;
   if( arguments.length === 4 )
