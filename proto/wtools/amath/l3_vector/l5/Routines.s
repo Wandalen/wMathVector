@@ -1846,7 +1846,7 @@ dop.modifying = true;
  *
  * @param { Long|VectorAdapter|Null } dst - container for result.
  * @param { Long|VectorAdapter } src - incident vector.
- * @param { Long|VectorAdapter } normal - normal vector.
+ * @param { Long|VectorAdapter } normal - normal vector. Should be normalized.
  * @returns { Long|VectorAdapter } - Returns reflection direction for an incident vector.
  * @function reflect
  * @throws { Error } If arguments.length is not equal two or three.
@@ -1863,9 +1863,10 @@ function reflect( dst, src, normal )
     normal = src;
     src = dst.clone();
   }
-
-  if( dst === null )
+  else if( dst === null )
   dst = src.clone();
+  else if( arguments.length === 3 )
+  dst.assign( src )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
   _.assert( _.vectorAdapterIs( dst ) );
@@ -1874,7 +1875,7 @@ function reflect( dst, src, normal )
 
   // throw _.err( 'not tested' ); /* qqq : cover */
 
-  let result = this.sub( dst.assign( src ), this.mul( null, normal, 2 * this.dot( src, normal ) ) );
+  let result = this.sub( dst, this.mul( null, normal, 2 * this.dot( src, normal ) ) );
 
   return result;
 }
@@ -1895,7 +1896,7 @@ dop.modifying = true;
 
 function refract () // dst, src, normal, eta
 {
-  let dst, src, normal, eta
+  let dst, src, normal, eta;
   if( arguments.length === 4 )
   {
     eta = arguments[ 3 ];
@@ -1907,22 +1908,24 @@ function refract () // dst, src, normal, eta
   {
     eta = arguments[ 2 ];
     normal = arguments[ 1 ];
-    src = arguments[ 0 ];
-    dst = src.clone();
+    dst = arguments[ 0 ];
+    src = dst.clone();
   }
 
   _.assert( arguments.length === 3 || arguments.length === 4, 'Expects exactly three or four arguments' );
+  _.assert( dst.length === src.length );
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.vectorAdapterIs( normal ) );
   _.assert( _.numberIs( eta ) );
 
-  let dotIN = this.dot( src, normal );
-  let k = 1 - eta * eta * ( 1 - dotIN * dotIN );
+  const cosi = this.dot( src, normal );
+  const k = 1 - eta * eta * ( 1 - cosi * cosi );
+  let result;
   if( k < 0 )
   result = this.assign( dst, 0 );
   else
-  result = this.sub( this.mul( dst.assign( src ), eta ), this.mul( null, normal, eta * dotIN + sqrt( k ) ) ); // _sqrt?
+  result = this.sub( this.mul( dst.assign( src ), eta ), this.mul( null, normal, eta * cosi + sqrt( k ) ) ); // _sqrt?
 
   return result;
 }
