@@ -1824,7 +1824,7 @@ dop.modifying = true;
 //
 
 /**
- * Routine reflect() calculate the reflection direction for an incident {-src-} vector
+ * Routine reflect() calculate the reflection direction for an incident {-src-} vector.
  *
  * @example
  * let src = this.fromLong( [ -1, -2, -3 ] )
@@ -1844,9 +1844,9 @@ dop.modifying = true;
  * console.log( src );
  * // log [ -1, -2, -3 ];
  *
- * @param { Long|VectorAdapter|Null } dst - container for result.
- * @param { Long|VectorAdapter } src - incident vector.
- * @param { Long|VectorAdapter } normal - normal vector. Should be normalized.
+ * @param { Long|VectorAdapter|Null } dst - Container for result.
+ * @param { Long|VectorAdapter } src - Incident vector.
+ * @param { Long|VectorAdapter } normal - Normal vector. Should be normalized.
  * @returns { Long|VectorAdapter } - Returns reflection direction for an incident vector.
  * @function reflect
  * @throws { Error } If arguments.length is not equal two or three.
@@ -1860,8 +1860,8 @@ function reflect( dst, src, normal )
 
   if( arguments.length === 2 )
   {
-    normal = src;
-    src = dst.clone();
+    normal = arguments[ 1 ];
+    src = arguments[ 0 ];
   }
   else if( dst === null )
   dst = src.clone();
@@ -1887,7 +1887,7 @@ dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 2, 3 ];
 dop.takingVectors = [ 2, 3 ];
-dop.takingVectorsOnly = true; // ?
+dop.takingVectorsOnly = true;
 dop.returningSelf = true;
 dop.returningNew = true;
 dop.modifying = true;
@@ -1920,13 +1920,19 @@ function refract () // dst, src, normal, eta
   _.assert( _.vectorAdapterIs( normal ) );
   _.assert( _.numberIs( eta ) );
 
+  // Compute squared sin of transmitted angle using Snell's law
   const cosi = this.dot( src, normal );
-  const k = 1 - eta * eta * ( 1 - cosi * cosi );
+  const sin2t = eta * eta * ( 1 - cosi * cosi );
+
   let result;
-  if( k < 0 )
+  // handle total internal reflection
+  if( sin2t >= 1 )
   result = this.assign( dst, 0 );
   else
-  result = this.sub( this.mul( dst.assign( src ), eta ), this.mul( null, normal, eta * cosi + sqrt( k ) ) ); // _sqrt?
+  {
+    const cost = sqrt( 1 - sin2t )
+    result = this.sub( this.mul( dst.assign( src ), eta ), this.mul( null, normal, eta * cosi + cost ) );
+  }
 
   return result;
 }

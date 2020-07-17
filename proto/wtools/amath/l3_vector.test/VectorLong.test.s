@@ -6477,40 +6477,10 @@ function reflect( test )
 {
 
   test.case = 'trivial';
-
-  var exp = [ 1, 1, 1 ];
-  var src = [ 1, 1, -1 ];
-  var normal = [ 0, 0, 1 ];
-  var got = _.vector.reflect( src, normal );
-
-  test.identical( got, exp );
-  test.identical( src, exp );
-  test.identical( normal, [ 0, 0, 1 ] );
-  test.is( got === src );
-
-  /* */
-
-  test.case = 'zero';
-
-  var exp = [ 0, 0, 0 ];
-  var src = [ 0, 0, 0 ];
-  var normal = [ 0, 0, 1 ];
-  var got = _.vector.reflect( src, normal );
-
-  test.identical( got, exp );
-  test.identical( src, exp );
-  test.identical( normal, [ 0, 0, 1 ] );
-  test.is( got === src );
-
-  /* */
-
-  test.case = 'trivial2';
-
   var exp = [ 3, 2, 1 ];
   var src = [ -1, -2, -3 ];
   var normal = _.vector.normalize( [ 1, 1, 1 ] );
   var got = _.vector.reflect( src, normal );
-
   test.equivalent( got, exp );
   test.equivalent( src, exp );
   test.is( got === src );
@@ -6518,13 +6488,11 @@ function reflect( test )
 
   /* */
 
-  test.case = 'trivial3';
-
+  test.case = 'inverse to previous';
   var exp = [ -1, -2, -3 ];
   var src = [ 3, 2, 1 ];
   var normal = _.vector.normalize( [ 1, 1, 1 ] );
   var got = _.vector.reflect( src, normal );
-
   test.equivalent( got, exp );
   test.equivalent( src, exp );
   test.is( got === src );
@@ -6532,13 +6500,35 @@ function reflect( test )
 
   /* */
 
-  test.case = 'trivial, new dst';
+  test.case = 'negative normal';
+  var exp = [ -1, -2, -3 ];
+  var src = [ 3, 2, 1 ];
+  var normal = _.vector.normalize( [ -1, -1, -1 ] );
+  var got = _.vector.reflect( src, normal );
+  test.equivalent( got, exp );
+  test.equivalent( src, exp );
+  test.is( got === src );
+  test.identical( normal, _.vector.normalize( [ -1, -1, -1 ] ) );
 
+  /* */
+
+  test.case = 'zero';
+  var exp = [ 0, 0, 0 ];
+  var src = [ 0, 0, 0 ];
+  var normal = [ 0, 0, 1 ];
+  var got = _.vector.reflect( src, normal );
+  test.identical( got, exp );
+  test.identical( src, exp );
+  test.identical( normal, [ 0, 0, 1 ] );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'trivial, new dst';
   var exp = [ 1, 1, 1 ];
   var src = [ 1, 1, -1 ];
   var normal = [ 0, 0, 1 ];
   var got = _.vector.reflect( null, src, normal );
-
   test.identical( got, exp );
   test.identical( src, [ 1, 1, -1 ] );
   test.identical( normal, [ 0, 0, 1 ] );
@@ -6547,18 +6537,30 @@ function reflect( test )
   /* */
 
   test.case = 'trivial, first argument is dst';
-
   var exp = [ 1, 1, 1 ];
   var dst = [ 10, 10, -10 ];
   var src = [ 1, 1, -1 ];
   var normal = [ 0, 0, 1 ];
   var got = _.vector.reflect( dst, src, normal );
-
   test.identical( got, exp );
   test.identical( src, [ 1, 1, -1 ] );
   test.identical( normal, [ 0, 0, 1 ] );
   test.is( got === dst );
   test.is( got !== src );
+
+  /* */
+
+  test.case = 'bad arguments';
+  test.shouldThrowErrorSync( () => _.vector.reflect( [ 1, 1, -1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.reflect( [ 1, 1, -1 ], [ 1, 1, -1 ], [ 0, 0, 1 ], [ 1, 1, -1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.reflect( [ 1, 1, -1, 2 ], [ 1, 1, -1 ], [ 0, 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.reflect( [ 1, 1, -1 ], null ) );
+  test.shouldThrowErrorSync( () => _.vector.reflect( null, [ 0, 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.reflect( [ 1, 1, -1 ], 5 ) );
+  test.shouldThrowErrorSync( () => _.vector.reflect( 5, [ 0, 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.reflect( [ 10, 10, -10 ], [ 1, 1, -1 ], null ) );
+  test.shouldThrowErrorSync( () => _.vector.reflect( [ 10, 10, -10 ], null, [ 0, 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.reflect( 5, [ 1, 1, -1 ], [ 0, 0, 1 ] ) );
 
 }
 
@@ -6568,13 +6570,11 @@ function refract( test )
 {
   // Correctness of the tests may be check by Snell's law: sin(exp^normal) = sin(src^normal)*eta
 
-  test.case = 'trivial, from air to glass, direction - from top left to bottom right';
-
+  test.case = 'from air to glass, direction - from top left to bottom right';
   var exp = [ 0, 0.44194173824159216, -0.8970437647041472 ];
   var src = _.vector.normalize( [ 0, 1, -1 ] );
   var normal = [ 0, 0, 1 ];
   var got = _.vector.refract( src, normal, 1/1.6 );
-
   test.equivalent( got, exp );
   test.equivalent( src, exp );
   test.identical( normal, [ 0, 0, 1 ] );
@@ -6582,13 +6582,11 @@ function refract( test )
 
   /* */
 
-  test.case = 'trivial, from air to glass, direction - from bottom left to top right';
-
+  test.case = 'from air to glass, direction - from bottom left to top right';
   var exp = [ 0, 0.44194173824159216, 0.8970437647041472 ];
   var src = _.vector.normalize( [ 0, 1, 1 ] );
   var normal = [ 0, 0, -1 ];
   var got = _.vector.refract( src, normal, 1/1.6 );
-
   test.equivalent( got, exp );
   test.equivalent( src, exp );
   test.identical( normal, [ 0, 0, -1 ] );
@@ -6597,12 +6595,10 @@ function refract( test )
   /* */
 
   test.case = 'incident vector (src) perpendicular to normal, from air to glass';
-
   var exp = [ -0.2836556317807938, -0.11661735558552855, -0.9518087365618547 ];
   var src = _.vector.normalize( [ 1, 2, -3 ] );
   var normal = _.vector.normalize( [ 1, 1, 1 ] );
   var got = _.vector.refract( src, normal, 1/1.6 );
-
   test.equivalent( got, exp );
   test.equivalent( src, exp );
   test.identical( normal, _.vector.normalize( [ 1, 1, 1 ] ) );
@@ -6611,12 +6607,10 @@ function refract( test )
   /* */
 
   test.case = 'incident vector (src) same as normal, from air to glass';
-
   var exp = _.vector.normalize( [ -1, -1, -1 ] );
   var src = _.vector.normalize( [ 1, 1, 1 ] );
   var normal = _.vector.normalize( [ 1, 1, 1 ] );
   var got = _.vector.refract( src, normal, 1/1.6 );
-
   test.equivalent( got, exp );
   test.equivalent( src, exp );
   test.identical( normal, _.vector.normalize( [ 1, 1, 1 ] ) );
@@ -6625,12 +6619,10 @@ function refract( test )
   /* */
 
   test.case = 'incident vector (src) same as normal, from glass to air';
-
   var exp = _.vector.normalize( [ -1, -1, -1 ] );
   var src = _.vector.normalize( [ 1, 1, 1 ] );
   var normal = _.vector.normalize( [ 1, 1, 1 ] );
   var got = _.vector.refract( src, normal, 1.6 );
-
   test.equivalent( got, exp );
   test.equivalent( src, exp );
   test.identical( normal, _.vector.normalize( [ 1, 1, 1 ] ) );
@@ -6639,12 +6631,10 @@ function refract( test )
   /* */
 
   test.case = 'almost critical angle (refract vector is perpendicular to normal), from glass to air';
-
   var exp = [ 0, 0.99970714, -0.02420040 ];
   var src = _.vector.normalize( [ 0, 0.625, -0.781 ] );
   var normal = [ 0, 0, 1 ];
   var got = _.vector.refract( src, normal, 1.6 );
-
   test.equivalent( got, exp );
   test.equivalent( src, exp );
   test.identical( normal, [ 0, 0, 1 ] );
@@ -6653,12 +6643,10 @@ function refract( test )
   /* */
 
   test.case = 'total internal reflection, no refraction, from glass to air';
-
   var exp = [ 0, 0, 0 ];
   var src = _.vector.normalize( [ 0, 1, -1 ] );
   var normal = [ 0, 0, 1 ];
   var got = _.vector.refract( src, normal, 1.6 );
-
   test.equivalent( got, exp );
   test.equivalent( src, exp );
   test.is( got === src )
@@ -6666,13 +6654,11 @@ function refract( test )
 
   /* */
 
-  test.case = 'trivial, new dst';
-
+  test.case = 'new dst';
   var exp = [ 0, 0.44194173824159216, -0.8970437647041472 ];
   var src = _.vector.normalize( [ 0, 1, -1 ] );
   var normal = [ 0, 0, 1 ];
   var got = _.vector.refract( null, src, normal, 1/1.6 );
-
   test.equivalent( got, exp );
   test.equivalent( src, _.vector.normalize( [ 0, 1, -1 ] ) );
   test.identical( normal, [ 0, 0, 1 ] );
@@ -6680,14 +6666,12 @@ function refract( test )
 
   /* */
 
-  test.case = 'trivial, new dst';
-
+  test.case = 'first argument is dst, but second is not';
   var exp = [ 0, 0.44194173824159216, -0.8970437647041472 ];
   var dst = [ 10, 10, -10 ];
   var src = _.vector.normalize( [ 0, 1, -1 ] );
   var normal = [ 0, 0, 1 ];
   var got = _.vector.refract( dst, src, normal, 1/1.6 );
-
   test.equivalent( got, exp );
   test.equivalent( src, _.vector.normalize( [ 0, 1, -1 ] ) );
   test.identical( normal, [ 0, 0, 1 ] );
