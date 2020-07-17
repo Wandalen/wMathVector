@@ -1869,6 +1869,7 @@ function reflect( dst, src, normal )
   dst.assign( src )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
+  _.assert( dst.length === src.length );
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.vectorAdapterIs( normal ) );
