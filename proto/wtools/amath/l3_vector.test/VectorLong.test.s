@@ -6566,7 +6566,7 @@ function reflect( test )
 
 //
 
-function refract( test )
+  function refract( test )
 {
   // Correctness of the tests may be check by Snell's law: sin(exp^normal) = sin(src^normal)*eta
 
@@ -6677,6 +6677,21 @@ function refract( test )
   test.identical( normal, [ 0, 0, 1 ] );
   test.is( got === dst )
   test.is( got !== src )
+
+  /* */
+
+  test.case = 'bad arguments';
+  test.shouldThrowErrorSync( () => _.vector.refract( [ 1, 1, -1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( [ 1, 1, -1 ], [ 0, 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( [ 1, 1, -1 ], [ 1, 1, -1 ], [ 0, 0, 1 ], 2, [ 1, 1, -1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( null, [ 0, 0, 1 ], 2 ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( [ 1, 1, -1 ], null, 2 ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( [ 1, 1, -1 ], [ 0, 0, 1 ], null ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( [ 1, 1, -1 ], null, [ 0, 0, 1 ], 2 ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( [ 1, 1, -1 ], [ 1, 1, -1 ], null, 2 ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( [ 1, 1, -1 ], [ 1, 1, -1 ], [ 0, 0, 1 ], [ 0, 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( 5, [ 1, 1, -1 ], [ 0, 0, 1 ], 2 ) );
+  test.shouldThrowErrorSync( () => _.vector.refract( [ 1, 1, -1, 2 ], [ 1, 1, -1 ], [ 0, 0, 1 ], 2 ) );
 
 }
 

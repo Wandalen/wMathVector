@@ -1972,7 +1972,7 @@ function refract() // dst, src, normal, eta
   result = this.assign( dst, 0 );
   else
   {
-    const cost = sqrt( 1 - sin2t )
+    const cost = sqrt( 1 - sin2t );
     result = this.sub( this.mul( dst.assign( src ), eta ), this.mul( null, normal, eta * cosi + cost ) );
   }
 
