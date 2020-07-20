@@ -6707,6 +6707,8 @@ function ceilToPowerOfTwo( test )
   test.identical( got, exp );
   test.is( got === src );
 
+  /* */
+
   test.case = 'first argument is dst';
   var exp = [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ];
   var dst = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
