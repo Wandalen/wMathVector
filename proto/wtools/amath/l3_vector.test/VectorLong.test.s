@@ -6697,16 +6697,39 @@ function reflect( test )
 
 //
 
+function ceilToPowerOfTwo( test )
+{
+
+  test.case = 'trivial';
+  var exp = [ 1, 2, 4, 8 ];
+  var src = [ 1, 2, 3, 5 ];
+  var got = _.avector.ceilToPowerOfTwo( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'first argument is dst';
+  var exp = [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ];
+  var dst = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+  var src = [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ];
+  var got = _.avector.ceilToPowerOfTwo( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] );
+  test.is( got === dst);
+
+}
+
+//
+
 function abs( test )
 {
-  test.case = 'trivial';
 
+  test.case = 'trivial';
   var exp = [ 1, 2, 3 ];
   var dst = [ -1, -2, -3 ];
   var got = _.avector.abs( dst );
-
   test.identical( got, exp );
   test.is( dst === got );
+
 }
 
 //
@@ -16076,6 +16099,9 @@ let Self =
 
     reflect,
     refract,
+
+    ceilToPowerOfTwo,
+
     abs,
 
     //
