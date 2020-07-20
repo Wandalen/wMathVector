@@ -1824,19 +1824,36 @@ dop.modifying = true;
 //
 
 /**
- * Routine reflect() makes vector multiplication of vector {-normal-} and algebraic sum of multiplication vector {-v-} and vector {-normal-}.
- *
+ * Routine reflect() calculate the reflection direction for an incident vector {-src-} and surface normal {-normal-}.
+ * Reflection calculated as I - 2.0 * dot(N, I) * N where I {-src-} and N {-normal-}
+ * Expected {-normal-} in normalized form.
  * @example
- * var got = _.avector.reflect( this.fromLong( [ 3, 2, 1 ] ), this.fromLong( [ 1, 2, 3 ] ) );
+ * let src = this.fromLong( [ -1, -2, -3 ] )
+ * let got = _.avector.reflect( src, _.vector.normalize( [ 1, 1, 1 ] ) );
  * console.log( got );
- * // log [ 20, 40, 60 ];
+ * // log [ 3, 2, 1 ];
+ * console.log( src );
+ * // log [ 3, 2, 1 ];
  *
- * @param { Long|VectorAdapter } v - Vector.
- * @param { Long|VectorAdapter } normal - Vector.
- * @returns { Long|VectorAdapter } - Returns copy of vector {-normal-} multiplied on algebraic sum of multiplication vector {-v-} and vector {-normal-}.
+ * let dst = this.fromLong( [ 0, 0, 0 ] )
+ * let src = this.fromLong( [ -1, -2, -3 ] )
+ * let got = _.avector.reflect( dst, src, _.vector.normalize( [ 1, 1, 1 ] ) );
+ * console.log( got );
+ * // log [ 3, 2, 1 ];
+ * console.log( dst );
+ * // log [ 3, 2, 1 ];
+ * console.log( src );
+ * // log [ -1, -2, -3 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Container for result.
+ * @param { Long|VectorAdapter } src - Incident vector.
+ * @param { Long|VectorAdapter } normal - Normal vector. Should be normalized.
+ * @returns { Long|VectorAdapter } - Returns reflection direction for an incident vector.
  * @function reflect
- * @throws { Error } If arguments.length is less or more then two.
- * @throws { Error } If v.length and normal.length are different.
+ * @throws { Error } If arguments.length is not equal two or three.
+ * @throws { Error } If {-src-} and {-normal-} are not vectors.
+ * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} and {-src-} are different length.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
@@ -1846,15 +1863,13 @@ function reflect( dst, src, normal )
 
   if( arguments.length === 2 )
   {
-    dst = null;
-    src = arguments[ 0 ];
     normal = arguments[ 1 ];
+    src = arguments[ 0 ];
   }
-
   if( dst === null )
-  dst = src.clone();
+  dst = this.MakeSimilar( src );
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
   _.assert( dst.length === src.length );
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.vectorAdapterIs( src ) );
@@ -1862,9 +1877,18 @@ function reflect( dst, src, normal )
 
   // throw _.err( 'not tested' ); /* qqq : cover */
 
-  let result = this.mul( dst.assign( normal ), 2*this.dot( src, normal ) );
+  let result = this.sub( null, src, this.mul( null, normal, 2 * this.dot( src, normal ) ) );
+  if( arguments.length === 2 )
+  {
+    src.assign( result );
+    return src;
+  }
+  else if ( arguments.length === 3 )
+  {
+    dst.assign( result );
+    return dst;
+  }
 
-  return result;
 }
 
 dop = reflect.operation = Object.create( null );
@@ -1874,6 +1898,118 @@ dop.homogeneous = false;
 dop.takingArguments = [ 2, 3 ];
 dop.takingVectors = [ 2, 3 ];
 dop.takingVectorsOnly = true;
+dop.returningSelf = true;
+dop.returningNew = true;
+dop.modifying = true;
+
+//
+
+/**
+ * Routine refract() calculate the refraction direction for an incident {-src-} vector, surface normal {-normal-}, and ratio of indices of refraction {-eta-}.
+ * Expected {-eta-} as ratio between medium with incident {-src-} vector and medium of reflected vector.
+ * For example, {-eta-} for vector passing from air to glass will be 1 / 1.6, in opposite direction is 1.6/1.
+ * Expected incident {-src-} vector and surface normal {-normal-} in normalized form.
+ * If there is total internal reflection returned zero vector.
+ *
+ * @example
+ * let src = _.vector.normalize( [ 0, 1, -1 ] )
+ * let got = _.avector.refract( src, [ 0, 0, 1 ], 1/1.6 );
+ * console.log( got );
+ * // log [ 0, 0.44194173824159216, -0.8970437647041472 ];
+ * console.log( src );
+ * // log [ 0, 0.44194173824159216, -0.8970437647041472 ];
+ *
+ * let dst = this.fromLong( [ 0, 0, 0 ] )
+ * let src = _.vector.normalize( [ 0, 1, -1 ] )
+ * let got = _.avector.refract( src, [ 0, 0, 1 ], 1/1.6 );
+ * console.log( got );
+ * // log [ 0, 0.44194173824159216, -0.8970437647041472 ];
+ * console.log( dst );
+ * // log [ 0, 0.44194173824159216, -0.8970437647041472 ];
+ * console.log( src );
+ * // log [ 0, 0.7071067811865475, -0.7071067811865475 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Container for result.
+ * @param { Long|VectorAdapter } src - Incident vector. Should be normalized.
+ * @param { Long|VectorAdapter } normal - Normal vector. Should be normalized.
+ * @param { Number } eta - Ratio of indices of refraction. Numerator is index of medium with incident vector.
+ * @returns { Long|VectorAdapter } - Returns refraction direction for an incident vector.
+ * @function refract
+ * @throws { Error } If arguments.length is not equal three or four.
+ * @throws { Error } If {-src-} and {-normal-} are not vectors.
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-eta-} is not number.
+ * @throws { Error } If {-dst-} and {-src-} are different length.
+ * @namespaces "wTools.avector","wTools.vectorAdapter"
+ * @module Tools/math/Vector
+ */
+
+function refract() // dst, src, normal, eta
+{
+  let dst, src, normal, eta;
+  if( arguments.length === 4 )
+  {
+    eta = arguments[ 3 ];
+    normal = arguments[ 2 ];
+    src = arguments[ 1 ];
+    dst = arguments[ 0 ];
+  }
+  else if( arguments.length === 3 )
+  {
+    eta = arguments[ 2 ];
+    normal = arguments[ 1 ];
+    src = arguments[ 0 ];
+    dst = arguments[ 0 ];
+  }
+  if( dst === null )
+  {
+    dst = this.MakeSimilar( src );
+  }
+
+  _.assert( arguments.length === 3 || arguments.length === 4, 'Expects exactly three or four arguments' );
+  _.assert( dst.length === src.length );
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.vectorAdapterIs( src ) );
+  _.assert( _.vectorAdapterIs( normal ) );
+  _.assert( _.numberIs( eta ) );
+
+  // Compute squared sin of transmitted angle using Snell's law
+  const cosi = this.dot( src, normal );
+  const sin2t = eta * eta * ( 1 - cosi * cosi );
+
+  let result;
+  // handle total internal reflection
+  if( sin2t >= 1 )
+  {
+    result = this.MakeSimilar( src );
+    this.assign( result, 0 );
+  }
+  else
+  {
+    const cost = sqrt( 1 - sin2t );
+    result = this.sub( null, this.mul( null, src, eta ), this.mul( null, normal, eta * cosi + cost ) );
+  }
+
+  if( arguments.length === 3 )
+  {
+    src.assign( result );
+    return src;
+  }
+  else if ( arguments.length === 4 )
+  {
+    dst.assign( result );
+    return dst;
+  }
+
+}
+
+dop = refract.operation = Object.create( null );
+dop.input = '?vw|?n vr vr s';
+dop.scalarWise = false; // ?
+dop.homogeneous = false;
+dop.takingArguments = [ 3, 4 ];
+dop.takingVectors = [ 2, 3 ];
+dop.takingVectorsOnly = false;
 dop.returningSelf = true;
 dop.returningNew = true;
 dop.modifying = true;
@@ -4509,6 +4645,7 @@ let _routinesMathematical =
   eulerApply,
 
   reflect,
+  refract,
 
   matrixApplyTo,
   matrixHomogenousApply,
