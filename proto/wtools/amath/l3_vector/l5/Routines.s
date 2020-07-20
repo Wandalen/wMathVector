@@ -1866,10 +1866,8 @@ function reflect( dst, src, normal )
     normal = arguments[ 1 ];
     src = arguments[ 0 ];
   }
-  else if( dst === null )
-  dst = src.clone();
-  else if( arguments.length === 3 )
-  dst.assign( src )
+  if( dst === null )
+  dst = this.MakeSimilar( src );
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
   _.assert( dst.length === src.length );
@@ -1879,9 +1877,18 @@ function reflect( dst, src, normal )
 
   // throw _.err( 'not tested' ); /* qqq : cover */
 
-  let result = this.sub( dst, this.mul( null, normal, 2 * this.dot( src, normal ) ) );
+  let result = this.sub( null, src, this.mul( null, normal, 2 * this.dot( src, normal ) ) );
+  if( arguments.length === 2 )
+  {
+    src.assign( result );
+    return src;
+  }
+  else if ( arguments.length === 3 )
+  {
+    dst.assign( result );
+    return dst;
+  }
 
-  return result;
 }
 
 dop = reflect.operation = Object.create( null );
