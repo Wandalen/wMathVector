@@ -1952,14 +1952,18 @@ function refract() // dst, src, normal, eta
     eta = arguments[ 3 ];
     normal = arguments[ 2 ];
     src = arguments[ 1 ];
-    dst = arguments[ 0 ] || src.clone();
+    dst = arguments[ 0 ];
   }
   else if( arguments.length === 3 )
   {
     eta = arguments[ 2 ];
     normal = arguments[ 1 ];
+    src = arguments[ 0 ];
     dst = arguments[ 0 ];
-    src = dst.clone();
+  }
+  if( dst === null )
+  {
+    dst = this.MakeSimilar( src );
   }
 
   _.assert( arguments.length === 3 || arguments.length === 4, 'Expects exactly three or four arguments' );
@@ -1976,14 +1980,27 @@ function refract() // dst, src, normal, eta
   let result;
   // handle total internal reflection
   if( sin2t >= 1 )
-  result = this.assign( dst, 0 );
+  {
+    result = this.MakeSimilar( src );
+    this.assign( result, 0 );
+  }
   else
   {
     const cost = sqrt( 1 - sin2t );
-    result = this.sub( this.mul( dst.assign( src ), eta ), this.mul( null, normal, eta * cosi + cost ) );
+    result = this.sub( null, this.mul( null, src, eta ), this.mul( null, normal, eta * cosi + cost ) );
   }
 
-  return result;
+  if( arguments.length === 3 )
+  {
+    src.assign( result );
+    return src;
+  }
+  else if ( arguments.length === 4 )
+  {
+    dst.assign( result );
+    return dst;
+  }
+
 }
 
 dop = refract.operation = Object.create( null );
