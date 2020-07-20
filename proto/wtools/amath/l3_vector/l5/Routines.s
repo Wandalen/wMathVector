@@ -646,23 +646,39 @@ function shrinkLong( src, crange )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
+  // if( crange === undefined )
+  // crange = [ 0, src.length ];
+  // if( crange[ 0 ] < 0 )
+  // crange[ 0 ] = 0;
+  // if( crange[ 1 ] > src.length-1 )
+  // crange[ 1 ] = src.length-1;
+
+  // Andrey: Corrected range - end must not be included. Add new check - if start > end, end became same as start
   if( crange === undefined )
   crange = [ 0, src.length ];
   if( crange[ 0 ] < 0 )
   crange[ 0 ] = 0;
-  if( crange[ 1 ] > src.length-1 )
-  crange[ 1 ] = src.length-1;
+  if( crange[ 1 ] > src.length )
+  crange[ 1 ] = src.length;
+  if( crange[ 0 ] > crange[ 1 ] )
+  crange[ 1 ] = crange[ 0 ];
 
-  let l = crange[ 1 ] - crange[ 0 ] + 1;
+  // let l = crange[ 1 ] - crange[ 0 ] + 1;
+  let l = crange[ 1 ] - crange[ 0 ];
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
 
   /* qqq : optimize */
 
-  let l2 = crange[ 1 ];
-  for( let i = crange[ 0 ] ; i <= l2 ; i++ )
-  result[ i ] = src.eGet( i );
+  // let l2 = crange[ 1 ];
+  // for( let i = crange[ 0 ] ; i <= l2 ; i++ )
+  // result[ i ] = src.eGet( i );
+
+  let l2 = crange[ 0 ];
+  for( let i = 0 ; i < l ; i++ )
+  result[ i ] = src.eGet( i + l2 );
 
   return result;
+
 }
 
 dop = shrinkLong.operation = Object.create( null );
