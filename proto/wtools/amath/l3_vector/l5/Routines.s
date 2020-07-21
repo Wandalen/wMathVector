@@ -646,34 +646,125 @@ function shrinkLong( src, crange )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  // if( crange === undefined )
-  // crange = [ 0, src.length ];
-  // if( crange[ 0 ] < 0 )
-  // crange[ 0 ] = 0;
-  // if( crange[ 1 ] > src.length-1 )
-  // crange[ 1 ] = src.length-1;
-
-  // Andrey: Corrected range - end must not be included. Add new check - if start > end, end became same as start
   if( crange === undefined )
   crange = [ 0, src.length ];
   if( crange[ 0 ] < 0 )
   crange[ 0 ] = 0;
-  if( crange[ 1 ] > src.length )
-  crange[ 1 ] = src.length;
-  if( crange[ 0 ] > crange[ 1 ] )
-  crange[ 1 ] = crange[ 0 ];
+  if( crange[ 1 ] > src.length-1 )
+  crange[ 1 ] = src.length-1;
 
-  // let l = crange[ 1 ] - crange[ 0 ] + 1;
-  let l = crange[ 1 ] - crange[ 0 ];
+  let l = crange[ 1 ] - crange[ 0 ] + 1;
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
 
   /* qqq : optimize */
 
-  // let l2 = crange[ 1 ];
-  // for( let i = crange[ 0 ] ; i <= l2 ; i++ )
-  // result[ i ] = src.eGet( i );
+  let l2 = crange[ 1 ];
+  for( let i = crange[ 0 ] ; i <= l2 ; i++ )
+  result[ i ] = src.eGet( i );
 
-  let l2 = crange[ 0 ];
+  return result;
+}
+
+dop = shrinkLong.operation = Object.create( null );
+dop.input = 'vr ?s';
+dop.scalarWise = false;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = 1;
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = true;
+dop.modifying = false;
+
+//
+
+/**
+ * Routine shrinkAdapter() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * End of range not included. If provided range is outside of actual it will be adjusted.
+ *
+ * @example
+ * var got = _.vectorAdapter.shrinkAdapter( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * console.log( got );
+ * // log "2.000, 3.000"
+ * var got = _.vectorAdapter.shrinkAdapter( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
+ * console.log( got );
+ * // log "4.000, 5.000"
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } orange - Defines ranges for copying.
+ * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
+ * @function shrinkAdapter
+ * @throws { Error } If arguments.length is not equal one or two.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-orange-} is not a Range.
+ * @namespaces "wTools.avector","wTools.vectorAdapter"
+ * @module Tools/math/Vector
+ */
+
+  function shrinkAdapter_( src, crange )
+  {
+    let result = this.shrinkLong_.apply( this, arguments );
+    return this.fromLong( result );
+  }
+
+  dop = shrinkAdapter_.operation = Object.create( null );
+  dop.input = 'vr ?s';
+  dop.scalarWise = false;
+  dop.homogeneous = false;
+  dop.takingArguments = [ 1, 2 ];
+  dop.takingVectors = 1;
+  dop.takingVectorsOnly = false;
+  dop.returningSelf = false;
+  dop.returningNew = false;
+  dop.returningLong = true;
+  dop.modifying = false;
+
+//
+
+/**
+ * Routine shrinkLong() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * End of range not included. If provided range is outside of actual it will be adjusted.
+ *
+ * @example
+ * var got = _.avector.shrinkLong( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * console.log( got );
+ * // log [ 2, 3 ]
+ * var got = _.avector.shrinkLong( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
+ * console.log( got );
+ * // log [ 4, 5 ]
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } orange - Defines ranges for copying.
+ * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
+ * @function shrinkLong
+ * @throws { Error } If arguments.length is not equal one or two.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-orange-} is not a Range.
+ * @namespaces "wTools.avector","wTools.vectorAdapter"
+ * @module Tools/math/Vector
+ */
+
+function shrinkLong_( src, orange )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( orange === undefined )
+  orange = [ 0, src.length ];
+  if( orange[ 0 ] < 0 )
+  orange[ 0 ] = 0;
+  if( orange[ 1 ] > src.length )
+  orange[ 1 ] = src.length;
+  if( orange[ 0 ] > orange[ 1 ] )
+  orange[ 1 ] = orange[ 0 ];
+
+  let l = orange[ 1 ] - orange[ 0 ];
+  let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
+
+  /* qqq : optimize */
+
+  let l2 = orange[ 0 ];
   for( let i = 0 ; i < l ; i++ )
   result[ i ] = src.eGet( i + l2 );
 
@@ -681,7 +772,7 @@ function shrinkLong( src, crange )
 
 }
 
-dop = shrinkLong.operation = Object.create( null );
+dop = shrinkLong_.operation = Object.create( null );
 dop.input = 'vr ?s';
 dop.scalarWise = false;
 dop.homogeneous = false;
@@ -4626,6 +4717,8 @@ let _routinesMathematical =
   shrink : shrinkAdapter,
   shrinkAdapter,
   shrinkLong,
+  shrinkAdapter_,
+  shrinkLong_,
 
   // resizedAdapter, /* zzz : deprecate */
   // resizedLong, /* zzz : deprecate */
