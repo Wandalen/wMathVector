@@ -6705,13 +6705,6 @@ function ceilToPowerOfTwo( test )
   {
     test.open( `src - long, ${a.format}` );
 
-    test.case = 'trivial';
-    var exp = a.longMake( [ 1, 2, 4, 8 ] );
-    var src = a.longMake( [ 1, 2, 3, 5 ] );
-    var got = _.avector.ceilToPowerOfTwo( src );
-    test.identical( got, exp );
-    test.is( got === src );
-
     test.case = 'empty';
     var exp = a.longMake( [] );
     var src = a.longMake( [] );
@@ -6719,7 +6712,19 @@ function ceilToPowerOfTwo( test )
     test.identical( got, exp );
     test.is( got === src );
 
-    /* */
+    test.case = 'src is dst';
+    var exp = a.longMake( [ 1, 2, 4, 8 ] );
+    var src = a.longMake( [ 1, 2, 3, 5 ] );
+    var got = _.avector.ceilToPowerOfTwo( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'new dst';
+    var exp = a.longMake( [ 1, 2, 4, 8 ] );
+    var src = a.longMake( [ 1, 2, 3, 5 ] );
+    var got = _.avector.ceilToPowerOfTwo( null, src );
+    test.identical( got, exp );
+    test.is( got !== src );
 
     test.case = 'first argument is dst';
     var exp = a.longMake( [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ] );
@@ -6741,19 +6746,26 @@ function ceilToPowerOfTwo( test )
   {
     test.open( `src - vectorAdapter, ${a.format} ${a.form}` );
 
-    test.case = 'trivial';
-    var exp = a.longMake( [ 1, 2, 4, 8 ] );
-    var src = a.vadMake( [ 1, 2, 3, 5 ] );
-    var got = _.avector.ceilToPowerOfTwo( src );
-    test.identical( got, exp );
-
     test.case = 'empty';
-    var exp = a.longMake( [] );
+    var exp = a.vadMake( [] );
     var src = a.vadMake( [] );
-    var got = _.avector.ceilToPowerOfTwo( src );
+    var got = _.vad.ceilToPowerOfTwo( src );
     test.identical( got, exp );
+    test.is( got === src );
 
-    /* */
+    test.case = 'src is dst';
+    var exp = a.vadMake( [ 1, 2, 4, 8 ] );
+    var src = a.vadMake( [ 1, 2, 3, 5 ] );
+    var got = _.vad.ceilToPowerOfTwo( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'new dst';
+    var exp = a.vadMake( [ 1, 2, 4, 8 ] );
+    var src = a.vadMake( [ 1, 2, 3, 5 ] );
+    var got = _.vad.ceilToPowerOfTwo( null, src );
+    test.identical( got, exp );
+    test.is( got !== src );
 
     test.case = 'first argument is dst';
     var exp = a.vadMake( [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ] );
@@ -6796,7 +6808,6 @@ function ceilToPowerOfTwo( test )
   /* */
 
   test.case = 'wrong type of dst';
-  test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( null, [ 3, 4, 5 ] ) );
   test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( 5, [ 3, 4, 5 ] ) );
 
   test.case = 'wrong type of src';
