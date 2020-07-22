@@ -592,7 +592,7 @@ dop.modifying = false;
  * // log "2.000, 3.000, 4.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines ranges for copying.
+ * @param { Range } crange - Defines range for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
  * @function shrinkAdapter
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -631,7 +631,7 @@ dop.modifying = false;
  * // log [ 2, 3, 4 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines ranges for copying.
+ * @param { Range } crange - Defines range for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
  * @function shrinkLong
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -692,7 +692,7 @@ dop.modifying = false;
  * // log "4.000, 5.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } orange - Defines ranges for copying.
+ * @param { Range } orange - Defines range for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
  * @function shrinkAdapter
  * @throws { Error } If arguments.length is not equal one or two.
@@ -702,23 +702,23 @@ dop.modifying = false;
  * @module Tools/math/Vector
  */
 
-  function shrinkAdapter_( src, crange )
-  {
-    let result = this.shrinkLong_.apply( this, arguments );
-    return this.fromLong( result );
-  }
+function shrinkAdapter_( src, orange )
+{
+  let result = this.shrinkLong_.apply( this, arguments );
+  return this.fromLong( result );
+}
 
-  dop = shrinkAdapter_.operation = Object.create( null );
-  dop.input = 'vr ?s';
-  dop.scalarWise = false;
-  dop.homogeneous = false;
-  dop.takingArguments = [ 1, 2 ];
-  dop.takingVectors = 1;
-  dop.takingVectorsOnly = false;
-  dop.returningSelf = false;
-  dop.returningNew = false;
-  dop.returningLong = true;
-  dop.modifying = false;
+dop = shrinkAdapter_.operation = Object.create( null );
+dop.input = 'vr ?s';
+dop.scalarWise = false;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = 1;
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = true;
+dop.modifying = false;
 
 //
 
@@ -735,7 +735,7 @@ dop.modifying = false;
  * // log [ 4, 5 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } orange - Defines ranges for copying.
+ * @param { Range } orange - Defines range for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
  * @function shrinkLong
  * @throws { Error } If arguments.length is not equal one or two.
@@ -1990,7 +1990,7 @@ function reflect( dst, src, normal )
     src.assign( result );
     return src;
   }
-  else if ( arguments.length === 3 )
+  else if( arguments.length === 3 )
   {
     dst.assign( result );
     return dst;
@@ -2102,7 +2102,7 @@ function refract() // dst, src, normal, eta
     src.assign( result );
     return src;
   }
-  else if ( arguments.length === 4 )
+  else if( arguments.length === 4 )
   {
     dst.assign( result );
     return dst;
@@ -2112,7 +2112,7 @@ function refract() // dst, src, normal, eta
 
 dop = refract.operation = Object.create( null );
 dop.input = '?vw|?n vr vr s';
-dop.scalarWise = false; // ?
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 2, 3 ];
