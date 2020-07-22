@@ -6712,26 +6712,22 @@ function ceilToPowerOfTwo( test )
     test.identical( got, exp );
     test.is( got === src );
 
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.ceilToPowerOfTwo( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
     /* */
 
     test.case = 'first argument is dst';
-    var dst = a.longMake( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
     var exp = a.longMake( [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ] );
-    var src = [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ];
+    var dst = a.longMake( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] );
     var got = _.avector.ceilToPowerOfTwo( dst, src );
     test.identical( got, exp );
-    test.identical( src, [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] );
-    test.is( got === dst );
-
-    /* */
-
-    test.case = 'real value as elements in src';
-    var dst = a.longMake( [ 0, 0, 0, 0 ] );
-    var exp = a.longMake( [ 0, 1024, 2, 4 ] );
-    var src = [ 0, 1000.1001, 1.4142, 3 ];
-    var got = _.avector.ceilToPowerOfTwo( dst, src );
-    test.identical( got, exp );
-    test.identical( src, [ 0, 1000.1001, 1.4142, 3 ] );
+    test.identical( src, a.longMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] ) );
     test.is( got === dst );
 
     test.close( `src - long, ${a.format}` );
@@ -6751,28 +6747,46 @@ function ceilToPowerOfTwo( test )
     var got = _.avector.ceilToPowerOfTwo( src );
     test.identical( got, exp );
 
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.avector.ceilToPowerOfTwo( src );
+    test.identical( got, exp );
+
     /* */
 
     test.case = 'first argument is dst';
-    var dst = a.vadMake( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
     var exp = a.vadMake( [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ] );
+    var dst = a.vadMake( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
     var src = a.vadMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] );
     var got = _.vad.ceilToPowerOfTwo( dst, src );
     test.identical( got, exp );
     test.identical( src, a.vadMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] ) );
-
-    /* */
-
-    test.case = 'real value as elements in src';
-    var dst = a.vadMake( [ 0, 0, 0, 0 ] );
-    var exp = a.vadMake( [ 4, 1024, 2, 4 ] );
-    var src = a.vadMake( [ 3.1415, 1000.1001, 1.4142, 3 ] );
-    var got = _.vad.ceilToPowerOfTwo( dst, src );
-    test.identical( got, exp );
-    test.identical( src, a.vadMake( [ 3.1415, 1000.1001, 1.4142, 3 ] ) );
+    test.is( got === dst );
 
     test.close( `src - vectorAdapter, ${a.format} ${a.form}` );
   }
+
+  /* - */
+
+  test.case = 'src - Array, real value as elements in src';
+  var exp = [ 0, 1024, 2, 4 ];
+  var dst = [ 0, 0, 0, 0 ];
+  var src = [ 0, 1000.1001, 1.4142, 3 ];
+  var got = _.avector.ceilToPowerOfTwo( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 0, 1000.1001, 1.4142, 3 ] );
+  test.is( got === dst );
+
+
+  test.case = 'src - vectorAdapter, real value as elements in src';
+  var exp = _.vad.from( [ 4, 1024, 2, 4 ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0 ] );
+  var src = _.vad.from( [ 3.1415, 1000.1001, 1.4142, 3 ] );
+  var got = _.vad.ceilToPowerOfTwo( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 3.1415, 1000.1001, 1.4142, 3 ] ) );
+  test.is( got === dst );
 
   /* - */
 
@@ -6781,10 +6795,14 @@ function ceilToPowerOfTwo( test )
 
   /* */
 
-  test.case = 'bad arguments';
+  test.case = 'wrong type of dst';
   test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( null, [ 3, 4, 5 ] ) );
   test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
   test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
 
   test.case = 'negative elements in src';
