@@ -6735,12 +6735,12 @@ function inv( test )
   /* */
 
   test.case = 'first argument is dst';
-  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11 ];
-  var dst = [ 0, 0, 0, 0, 1/10, 0 ];
-  var src = [ 1, 2, -3, 5, 1/10, 1/11 ];
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11, Infinity ];
+  var dst = [ 0, 0, 0, 0, 1/10, 0, 0 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11, 0 ];
   var got = _.avector.inv( dst, src );
   test.identical( got, exp );
-  test.identical( src, [ 1, 2, -3, 5, 1/10, 1/11 ] );
+  test.identical( src, [ 1, 2, -3, 5, 1/10, 1/11, 0 ] );
   test.is( got === dst );
 
   /* - */
@@ -6758,6 +6758,72 @@ function inv( test )
 
   test.case = 'the lengths of dst and src are not equal';
   test.shouldThrowErrorSync( () => _.avector.inv( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
+}
+
+//
+
+function invOrOne( test )
+{
+
+  test.case = 'empty';
+  var exp = [];
+  var src = [];
+  var got = _.avector.invOrOne( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'zero';
+  var exp = [ 1, 1, 1 ];
+  var src = [ 0, 0, 0 ];
+  var got = _.avector.invOrOne( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11 ];
+  var got = _.avector.invOrOne( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11 ];
+  var got = _.avector.invOrOne( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11, 1 ];
+  var dst = [ 0, 0, 0, 0, 1/10, 0, 0 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11, 0 ];
+  var got = _.avector.invOrOne( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 1, 2, -3, 5, 1/10, 1/11, 0 ] );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.invOrOne( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.invOrOne( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.invOrOne( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
 
 }
 
@@ -16219,6 +16285,7 @@ let Self =
     refract,
 
     inv,
+    invOrOne,
 
     ceilToPowerOfTwo,
 
