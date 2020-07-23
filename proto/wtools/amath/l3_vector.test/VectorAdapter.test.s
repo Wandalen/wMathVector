@@ -8273,6 +8273,65 @@ function floor( test )
 
 //
 
+function ceil( test )
+{
+
+  test.case = 'empty';
+  var exp = _.vad.from( [] );
+  var src = _.vad.from( [] );
+  var got = _.vad.ceil( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = _.vad.from( [ 1, 2, 3, 1, 2, 4, -1, -3, -0 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  var got = _.vad.ceil( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = _.vad.from( [ 1, 2, 3, 1, 2, 4, -1, -3, -0 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  var got = _.vad.ceil( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = _.vad.from( [ 1, 2, 3, 1, 2, 4, -1, -3, -0 ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  var got = _.vad.ceil( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] ) );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.ceil( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.ceil( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.ceil( _.vad.from( [ 0, 0, 0, 5 ] ), _.vad.from( [ 3, 4, 5 ] ) ) );
+
+}
+
+//
+
 function ceilToPowerOfTwo( test )
 {
   _.vectorAdapter.contextsForTesting( { onEach : act } );
@@ -10873,6 +10932,7 @@ let Self =
     abs,
 
     floor,
+    ceil,
 
     ceilToPowerOfTwo,
 
