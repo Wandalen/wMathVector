@@ -1827,6 +1827,7 @@ dop.modifying = true;
  * Routine reflect() calculate the reflection direction for an incident vector {-src-} and surface normal {-normal-}.
  * Reflection calculated as I - 2.0 * dot(N, I) * N where I {-src-} and N {-normal-}
  * Expected {-normal-} in normalized form.
+ *
  * @example
  * let src = this.fromLong( [ -1, -2, -3 ] )
  * let got = _.avector.reflect( src, _.vector.normalize( [ 1, 1, 1 ] ) );
@@ -1883,7 +1884,7 @@ function reflect( dst, src, normal )
     src.assign( result );
     return src;
   }
-  else if ( arguments.length === 3 )
+  else if( arguments.length === 3 )
   {
     dst.assign( result );
     return dst;
@@ -1995,7 +1996,7 @@ function refract() // dst, src, normal, eta
     src.assign( result );
     return src;
   }
-  else if ( arguments.length === 4 )
+  else if( arguments.length === 4 )
   {
     dst.assign( result );
     return dst;
@@ -2481,22 +2482,42 @@ let roundRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 
 /**
  * Routine ceilToPowerOfTwo() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to closes value power of two.
- * If only one vector is provided, it will be {-src-} and {-dst-} at the same time.
  *
  * @example
- * var got = _.avector.ceilToPowerOfTwo( [ 1, 2, 4 ], [ 3, 5, 13 ] );
+ * let got = _.avector.ceilToPowerOfTwo( [ 3, 5, 13 ] );
  * console.log( got );
  * // log [ 4, 8, 16 ];
  *
- * var got = _.avector.ceilToPowerOfTwo( [ 3, 5, 13 ] );
+ * let src = [ 3, 5, 13 ]
+ * let got = _.avector.ceilToPowerOfTwo( src );
  * console.log( got );
  * // log [ 4, 8, 16 ];
+ * console.log( src );
+ * // log [ 4, 8, 16 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
- * @param { Long|VectorAdapter|Null } src - Source vector.
+ * let src = [ 3, 5, 13 ]
+ * let got = _.avector.ceilToPowerOfTwo( null, src );
+ * console.log( got );
+ * // log [ 4, 8, 16 ];
+ * console.log( src );
+ * // log [ 3, 5, 13 ];
+
+ * let dst = [ 0, 0, 0 ]
+ * let src = [ 3, 5, 13 ]
+ * let got = _.avector.ceilToPowerOfTwo( dst, src );
+ * console.log( got );
+ * // log [ 4, 8, 16 ];
+ * console.log( dst );
+ * // log [ 4, 8, 16 ];
+ * console.log( src );
+ * // log [ 3, 5, 13 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
+ * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function ceilToPowerOfTwo
- * @throws { Error } If {-dst-} is not vector.
+ * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
