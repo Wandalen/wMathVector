@@ -6890,6 +6890,65 @@ function abs( test )
 
 //
 
+function floor( test )
+{
+
+  test.case = 'empty';
+  var exp = [];
+  var src = [];
+  var got = _.avector.floor( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = [ 1, 2, 3, 0, 1, 3, -2, -4, -1 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ];
+  var got = _.avector.floor( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = [ 1, 2, 3, 0, 1, 3, -2, -4, -1 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ];
+  var got = _.avector.floor( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = [ 1, 2, 3, 0, 1, 3, -2, -4, -1 ];
+  var dst = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ];
+  var got = _.avector.floor( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.floor( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.floor( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.floor( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
+}
+
+//
+
 function ceilToPowerOfTwo( test )
 {
   _.vectorAdapter.contextsForTesting( { onEach : act } );
@@ -16333,6 +16392,8 @@ let Self =
 
     inv,
     invOrOne,
+
+    floor,
 
     ceilToPowerOfTwo,
 
