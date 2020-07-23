@@ -8021,6 +8021,72 @@ swapVectors.timeOut = 15000;
 
 //
 
+function inv( test )
+{
+
+  test.case = 'empty';
+  var exp = _.vad.from( [] );
+  var src = _.vad.from( [] );
+  var got = _.vad.inv( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'zero';
+  var exp = _.vad.from( [ Infinity, Infinity, Infinity ] );
+  var src = _.vad.from( [ 0, 0, 0 ] );
+  var got = _.vad.inv( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = _.vad.from( [ 1, 1/2, -1/3, 1/5, 10, 11 ] );
+  var src = _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11 ] );
+  var got = _.vad.inv( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = _.vad.from( [ 1, 1/2, -1/3, 1/5, 10, 11 ] );
+  var src = _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11 ] );
+  var got = _.vad.inv( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = _.vad.from( [ 1, 1/2, -1/3, 1/5, 10, 11 ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0, 1/10, 0 ] );
+  var src = _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11 ] );
+  var got = _.vad.inv( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11 ] ) );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.inv( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.inv( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.inv( _.vad.from( [ 0, 0, 0, 5 ] ), _.vad.from( [ 3, 4, 5 ] ) ) );
+
+}
+
+//
+
 function ceilToPowerOfTwo( test )
 {
   _.vectorAdapter.contextsForTesting( { onEach : act } );
@@ -10614,6 +10680,8 @@ let Self =
     sort,
     cross3,
     swapVectors,
+
+    inv,
 
     ceilToPowerOfTwo,
 
