@@ -2369,9 +2369,33 @@ let inv = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * Routine invOrOne() replaces elements of vector {-dst-} by inverted values of vector {-src-}. If {-src-} element is 0, then element with its index sets to 1.
  *
  * @example
- * var got = _.avector.invOrOne( [ 1, 2, 4 ], [ 0.25, 0, 1 ] );
+ * let got = _.avector.invOrOne( [ 0.25, 0.5, 1, 0 ] );
  * console.log( got );
- * // log [ 4, 1, 1 ];
+ * // log [ 4, 2, 1, 1 ];
+ *
+ * let src = [ 0.25, 0.5, 1 ]
+ * let got = _.avector.invOrOne( src );
+ * console.log( got );
+ * // log [ 4, 2, 1 ];
+ * console.log( src );
+ * // log [ 4, 2, 1 ];
+ *
+ * let src = [ 0.25, 0.5, 1 ]
+ * let got = _.avector.invOrOne( null, src );
+ * console.log( got );
+ * // log [ 4, 2, 1 ];
+ * console.log( src );
+ * // log [ 0.25, 0.5, 1 ];
+
+ * let dst = [ 0, 0, 0 ]
+ * let src = [ 0.25, 0.5, 1 ]
+ * let got = _.avector.invOrOne( dst, src );
+ * console.log( got );
+ * // log [ 4, 2, 1 ];
+ * console.log( dst );
+ * // log [ 4, 2, 1 ];
+ * console.log( src );
+ * // log [ 0.25, 0.5, 1 ];
  *
  * @param { Long|VectorAdapter } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
