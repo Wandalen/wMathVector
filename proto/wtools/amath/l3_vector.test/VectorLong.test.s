@@ -6740,47 +6740,6 @@ function ceilToPowerOfTwo( test )
 
   /* - */
 
-  _.vectorAdapter.contextsForTesting( { onEach : act2 } );
-
-  function act2( a )
-  {
-    test.open( `src - vectorAdapter, ${a.format} ${a.form}` );
-
-    test.case = 'empty';
-    var exp = a.vadMake( [] );
-    var src = a.vadMake( [] );
-    var got = _.vad.ceilToPowerOfTwo( src );
-    test.identical( got, exp );
-    test.is( got === src );
-
-    test.case = 'src is dst';
-    var exp = a.vadMake( [ 1, 2, 4, 8 ] );
-    var src = a.vadMake( [ 1, 2, 3, 5 ] );
-    var got = _.vad.ceilToPowerOfTwo( src );
-    test.identical( got, exp );
-    test.is( got === src );
-
-    test.case = 'new dst';
-    var exp = a.vadMake( [ 1, 2, 4, 8 ] );
-    var src = a.vadMake( [ 1, 2, 3, 5 ] );
-    var got = _.vad.ceilToPowerOfTwo( null, src );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'first argument is dst';
-    var exp = a.vadMake( [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ] );
-    var dst = a.vadMake( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
-    var src = a.vadMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] );
-    var got = _.vad.ceilToPowerOfTwo( dst, src );
-    test.identical( got, exp );
-    test.identical( src, a.vadMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] ) );
-    test.is( got === dst );
-
-    test.close( `src - vectorAdapter, ${a.format} ${a.form}` );
-  }
-
-  /* - */
-
   test.case = 'src - Array, real value as elements in src';
   var exp = [ 0, 1024, 2, 4 ];
   var dst = [ 0, 0, 0, 0 ];
@@ -6788,16 +6747,6 @@ function ceilToPowerOfTwo( test )
   var got = _.avector.ceilToPowerOfTwo( dst, src );
   test.identical( got, exp );
   test.identical( src, [ 0, 1000.1001, 1.4142, 3 ] );
-  test.is( got === dst );
-
-
-  test.case = 'src - vectorAdapter, real value as elements in src';
-  var exp = _.vad.from( [ 4, 1024, 2, 4 ] );
-  var dst = _.vad.from( [ 0, 0, 0, 0 ] );
-  var src = _.vad.from( [ 3.1415, 1000.1001, 1.4142, 3 ] );
-  var got = _.vad.ceilToPowerOfTwo( dst, src );
-  test.identical( got, exp );
-  test.identical( src, _.vad.from( [ 3.1415, 1000.1001, 1.4142, 3 ] ) );
   test.is( got === dst );
 
   /* - */
