@@ -315,6 +315,25 @@ dop.onScalar = function isLessAprox( o )
 // scalarWiseHomogeneous
 // --
 
+let experiment1 = dop = Object.create( null );
+
+experiment1.onScalar = function experiment1( o )
+{
+  o.dstElement = Math.pow( o.srcElement, 2 );
+}
+
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = [ 1, 2 ];
+
+debugger;
+
+// experiemnt.onScalarsBegin = function experiemntBegin( o )
+// {
+//   o.dstElement = 0;
+// }
+
+//
+
 let add = dop = Object.create( null );
 
 add.onScalar = function add( o )
@@ -786,6 +805,7 @@ let logical2 = //
 let scalarWiseHomogeneous = //
 {
 
+  experiment1,
   add,
   sub,
   mul,

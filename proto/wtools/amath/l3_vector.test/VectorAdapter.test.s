@@ -1904,6 +1904,27 @@ function compare( test )
 // operation
 // --
 
+function experiment1( test )
+{
+
+  test.case = 'basic';
+  var dst = null;
+  var src = _.vad.from([ 1, 2, 3 ]);
+  var got = _.vad.experiment1( dst, src );
+  var exp = [ 1, 4, 9 ];
+  debugger;
+  test.identical( got, exp );
+
+  // debugger;
+  // _.vad.experiment1( null, _.vad.from([ 1, 2, 3 ]), _.vad.from([ 3, 4, 5 ]) );
+
+  test.case = 'throwing';
+  test.shouldThrowErrorSync( () => _.vad.experiment1( null, _.vad.from([ 1, 2, 3 ]), _.vad.from([ 3, 4, 5 ]) ) );
+
+}
+
+//
+
 function add( test )
 {
 
@@ -10492,6 +10513,7 @@ let Self =
 
     // operation
 
+    experiment1,
     add,
     subScaled,
 
