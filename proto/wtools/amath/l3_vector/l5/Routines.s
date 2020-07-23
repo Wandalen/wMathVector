@@ -2476,17 +2476,46 @@ let absRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //
 
 /**
- * Routine floorRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to smaller values.
+ * Routine floor() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to smaller values.
  *
  * @example
- * var got = _.avector.floorRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
+ * var got = _.avector.floor( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7, -1.4 ] );
  * console.log( got );
- * // log [ 1, 2, 1 ];
+ * // log [ 1, 2, 1, -2 ];
+ * let got = _.avector.floor( [ 1.25, 2.5, 1.7, -1.4 ] );
+ * console.log( got );
+ * // log [ 1, 2, 1, -2 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.floor( src );
+ * console.log( got );
+ * // log [ 1, 2, 1, -2 ];
+ * console.log( src );
+ * // log [ 1, 2, 1, -2 ];
+ *
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.floor( null, src );
+ * console.log( got );
+ * // log [ 1, 2, 1, -2 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+
+ * let dst = [ 0, 0, 0, 0 ]
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.floor( dst, src );
+ * console.log( got );
+ * // log [ 1, 2, 1, -2 ];
+ * console.log( dst );
+ * // log [ 1, 2, 1, -2 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function floorRoutine
+ * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
