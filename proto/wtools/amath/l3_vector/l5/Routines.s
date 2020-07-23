@@ -2533,17 +2533,46 @@ let floorRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //
 
 /**
- * Routine ceilRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to bigger values.
+ * Routine ceil() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to bigger values.
  *
  * @example
- * var got = _.avector.ceilRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
+ * var got = _.avector.ceil( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7, -1.4 ] );
  * console.log( got );
- * // log [ 2, 3, 2 ];
+ * // log [ 2, 3, 2, -1 ];
+ * let got = _.avector.ceil( [ 1.25, 2.5, 1.7, -1.4 ] );
+ * console.log( got );
+ * // log [ 2, 3, 2, -1 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.ceil( src );
+ * console.log( got );
+ * // log [ 2, 3, 2, -1 ];
+ * console.log( src );
+ * // log [ 2, 3, 2, -1 ];
+ *
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.ceil( null, src );
+ * console.log( got );
+ * // log [ 2, 3, 2, -1 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+
+ * let dst = [ 0, 0, 0, 0 ]
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.ceil( dst, src );
+ * console.log( got );
+ * // log [ 2, 3, 2, -1 ];
+ * console.log( dst );
+ * // log [ 2, 3, 2, -1 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function ceilRoutine
+ * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
