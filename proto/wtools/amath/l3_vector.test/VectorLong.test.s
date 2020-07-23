@@ -7065,6 +7065,8 @@ function round( test )
 
 }
 
+//
+
 function ceilToPowerOfTwo( test )
 {
   _.vectorAdapter.contextsForTesting( { onEach : act } );
@@ -7135,6 +7137,88 @@ function ceilToPowerOfTwo( test )
 
   test.case = 'negative elements in src';
   test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( [ 1, 1, 1 ], [ 1, -1, -10 ] ) );
+
+}
+
+//
+
+function normalize( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'unit';
+    var exp = a.longMake( [ 0, 1, 0 ] );
+    var src = a.longMake( [ 0, 1, 0 ] );
+    var got = _.avector.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1/sqrt( 3 ), -1/sqrt( 3 ), 1/sqrt( 3 ) ] );
+    var src = a.longMake( [ 1, -1, 1 ] );
+    var got = _.avector.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src is dst';
+    var exp = a.longMake( [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ] );
+    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var got = _.avector.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'new dst';
+    var exp = a.longMake( [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ] );
+    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var got = _.avector.normalize( null, src );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'first argument is dst';
+    var exp = a.longMake( [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ] );
+    var dst = a.longMake( [ 0, 0, 0, 0 ] );
+    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var got = _.avector.normalize( dst, src );
+    test.identical( got, exp );
+    test.identical( src, a.longMake( [ 1, -2, 3, -5 ] ) );
+    test.is( got === dst );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.normalize( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.normalize( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.normalize( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
 
 }
 
@@ -16509,13 +16593,15 @@ let Self =
     inv,
     invOrOne,
 
+    abs,
+
     floor,
     ceil,
     round,
 
     ceilToPowerOfTwo,
 
-    abs,
+    normalize,
 
     //
 
