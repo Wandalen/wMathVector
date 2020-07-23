@@ -769,8 +769,8 @@ function operationHomogeneousAdjust()
   {
     let operation = routines.scalarWiseHomogeneous[ name ];
 
-    if( name === 'experiment1' )
-    debugger;
+    // if( name === 'experiment1' )
+    // debugger;
 
     this.operationNormalize1( operation );
 
