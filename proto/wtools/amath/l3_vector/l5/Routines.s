@@ -2706,14 +2706,40 @@ let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_fun
  * Routine normalize() replaces elements of vector {-dst-} by elements of vector {-src-} that multiplied on square root of sum of squares of {-src-} elements.
  *
  * @example
- * var got = _.avector.normalize( [ 1, 2, 4 ], [ 1, 1, 1 ] );
+ * let got = _.avector.inv( [ 1, 1, 1 ] );
  * console.log( got );
  * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 1, 1, 1 ]
+ * let got = _.avector.inv( src );
+ * console.log( got );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ * console.log( src );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ *
+ * let src = [ 1, 1, 1 ]
+ * let got = _.avector.inv( null, src );
+ * console.log( got );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ * console.log( src );
+ * // log [ 1, 1, 1 ];
+
+ * let dst = [ 0, 0, 0 ]
+ * let src = [ 1, 1, 1 ]
+ * let got = _.avector.inv( dst, src );
+ * console.log( got );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ * console.log( dst );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ * console.log( src );
+ * // log [ 1, 1, 1 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function normalize
+ * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -4860,9 +4886,9 @@ let _routinesMathematical =
   inv,
   invOrOne,
 
+  abs : absRoutine,
   floor : floorRoutine,
   ceil : ceilRoutine,
-  abs : absRoutine,
   round : roundRoutine,
 
   ceilToPowerOfTwo,
