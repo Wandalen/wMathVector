@@ -2397,10 +2397,12 @@ let inv = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * console.log( src );
  * // log [ 0.25, 0.5, 1 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function invOrOne
+ * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2423,14 +2425,40 @@ let invOrOne = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * Routine absRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} with absolute values.
  *
  * @example
- * var got = _.avector.absRoutine( [ 1, 2, 4 ], [ -2, 3, -1 ] );
+ * let got = _.avector.absRoutine( [ -2, 3, -1, 0 ] );
  * console.log( got );
- * // log [ 2, 3, 1 ];
+ * // log [ 2, 3, 1, 0 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ -2, 3, -1, 0 ]
+ * let got = _.avector.absRoutine( src );
+ * console.log( got );
+ * // log [ 2, 3, 1, 0 ];
+ * console.log( src );
+ * // log [ 2, 3, 1, 0 ];
+ *
+ * let src = [ -2, 3, -1, 0 ]
+ * let got = _.avector.absRoutine( null, src );
+ * console.log( got );
+ * // log [ 2, 3, 1, 0 ];
+ * console.log( src );
+ * // log [ -2, 3, -1, 0 ];
+
+ * let dst = [ 0, 0, 0, 0 ]
+ * let src = [ -2, 3, -1, 0 ]
+ * let got = _.avector.absRoutine( dst, src );
+ * console.log( got );
+ * // log [ 2, 3, 1, 0 ];
+ * console.log( dst );
+ * // log [ 2, 3, 1, 0 ];
+ * console.log( src );
+ * // log [ -2, 3, -1, 0 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function absRoutine
+ * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
