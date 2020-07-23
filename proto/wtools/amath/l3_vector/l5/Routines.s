@@ -2589,17 +2589,46 @@ let ceilRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //
 
 /**
- * Routine roundRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} with rounded values.
+ * Routine round() replaces elements of vector {-dst-} by elements of vector {-src-} with rounded values.
  *
  * @example
- * var got = _.avector.roundRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
+ * var got = _.avector.round( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7, -1.4 ] );
  * console.log( got );
- * // log [ 1, 3, 2 ];
+ * // log [ 1, 3, 1, -1 ];
+ * let got = _.avector.round( [ 1.25, 2.5, 1.7, -1.4 ] );
+ * console.log( got );
+ * // log [ 1, 3, 1, -1 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.round( src );
+ * console.log( got );
+ * // log [ 1, 3, 1, -1 ];
+ * console.log( src );
+ * // log [ 1, 3, 1, -1 ];
+ *
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.round( null, src );
+ * console.log( got );
+ * // log [ 1, 3, 1, -1 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+
+ * let dst = [ 0, 0, 0, 0 ]
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.round( dst, src );
+ * console.log( got );
+ * // log [ 1, 3, 1, -1 ];
+ * console.log( dst );
+ * // log [ 1, 3, 1, -1 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function roundRoutine
+ * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
