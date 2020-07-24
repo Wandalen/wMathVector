@@ -2706,19 +2706,19 @@ let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_fun
  * Routine normalize() replaces elements of vector {-dst-} by elements of vector {-src-} that multiplied on square root of sum of squares of {-src-} elements.
  *
  * @example
- * let got = _.avector.inv( [ 1, 1, 1 ] );
+ * let got = _.avector.normalize( [ 1, 1, 1 ] );
  * console.log( got );
  * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
  *
  * let src = [ 1, 1, 1 ]
- * let got = _.avector.inv( src );
+ * let got = _.avector.normalize( src );
  * console.log( got );
  * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
  * console.log( src );
  * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
  *
  * let src = [ 1, 1, 1 ]
- * let got = _.avector.inv( null, src );
+ * let got = _.avector.normalize( null, src );
  * console.log( got );
  * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
  * console.log( src );
@@ -2726,7 +2726,7 @@ let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_fun
 
  * let dst = [ 0, 0, 0 ]
  * let src = [ 1, 1, 1 ]
- * let got = _.avector.inv( dst, src );
+ * let got = _.avector.normalize( dst, src );
  * console.log( got );
  * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
  * console.log( dst );
