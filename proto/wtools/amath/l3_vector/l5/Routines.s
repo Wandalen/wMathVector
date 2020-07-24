@@ -1853,7 +1853,7 @@ dop.modifying = true;
  * @function reflect
  * @throws { Error } If arguments.length is not equal two or three.
  * @throws { Error } If {-src-} and {-normal-} are not vectors.
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-dst-} and {-src-} are different length.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2348,7 +2348,7 @@ dop.homogeneous = false;
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function inv
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
@@ -2401,7 +2401,7 @@ let inv = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function invOrOne
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
@@ -2457,7 +2457,7 @@ let invOrOne = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function absRoutine
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
@@ -2514,7 +2514,7 @@ let absRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function floorRoutine
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
@@ -2571,7 +2571,7 @@ let floorRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function ceilRoutine
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
@@ -2627,7 +2627,7 @@ let ceilRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function roundRoutine
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
@@ -2685,7 +2685,7 @@ let roundRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function ceilToPowerOfTwo
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
@@ -2738,7 +2738,7 @@ let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_fun
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function normalize
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
