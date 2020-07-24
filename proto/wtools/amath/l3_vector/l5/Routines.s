@@ -526,6 +526,7 @@ function growLong( src, crange, val )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.vectorAdapterIs( src ) );
 
   // debugger;
   if( val === undefined )
@@ -533,6 +534,9 @@ function growLong( src, crange, val )
   if( crange === undefined )
   crange = [ 0, src.length-1 ];
   // crange = [ 0, src.length ]; // Dmytro : wrong range, should be an crange instead of orange, adds 1 element */
+
+  _.assert( _.rangeIs( crange ) );
+  _.assert( _.numberIs( val ) );
 
   if( crange[ 0 ] >= 0 )
   crange[ 0 ] = 0;
@@ -749,6 +753,7 @@ function shrinkLong_( src, orange )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.vectorAdapterIs( src ) );
 
   if( orange === undefined )
   orange = [ 0, src.length ];
@@ -758,6 +763,8 @@ function shrinkLong_( src, orange )
   orange[ 1 ] = src.length;
   if( orange[ 0 ] > orange[ 1 ] )
   orange[ 1 ] = orange[ 0 ];
+
+  _.assert( _.rangeIs( orange ) );
 
   let l = orange[ 1 ] - orange[ 0 ];
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
