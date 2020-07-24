@@ -8023,20 +8023,35 @@ swapVectors.timeOut = 15000;
 
 function inv( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = _.vad.from( [] );
-  var src = _.vad.from( [] );
-  var got = _.vad.inv( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
 
-  test.case = 'zero';
-  var exp = _.vad.from( [ Infinity, Infinity, Infinity ] );
-  var src = _.vad.from( [ 0, 0, 0 ] );
-  var got = _.vad.inv( src );
-  test.identical( got, exp );
-  test.is( got === src );
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ Infinity, Infinity, Infinity ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
 
   /* */
 
@@ -8089,20 +8104,35 @@ function inv( test )
 
 function invOrOne( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = _.vad.from( [] );
-  var src = _.vad.from( [] );
-  var got = _.vad.invOrOne( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
 
-  test.case = 'zero';
-  var exp = _.vad.from( [ 1, 1, 1 ] );
-  var src = _.vad.from( [ 0, 0, 0 ] );
-  var got = _.vad.invOrOne( src );
-  test.identical( got, exp );
-  test.is( got === src );
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
 
   /* */
 
@@ -8216,13 +8246,35 @@ function abs( test )
 
 function floor( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = _.vad.from( [] );
-  var src = _.vad.from( [] );
-  var got = _.vad.floor( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ 0, 0, 0 ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
 
   /* */
 
@@ -8275,13 +8327,36 @@ function floor( test )
 
 function ceil( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = _.vad.from( [] );
-  var src = _.vad.from( [] );
-  var got = _.vad.ceil( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ 0, 0, 0 ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
 
   /* */
 
@@ -8334,13 +8409,35 @@ function ceil( test )
 
 function round( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = _.vad.from( [] );
-  var src = _.vad.from( [] );
-  var got = _.vad.round( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ 0, 0, 0 ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
 
   /* */
 
@@ -8420,38 +8517,40 @@ function normalize( test )
     test.identical( got, exp );
     test.is( got === src );
 
-    test.case = 'ones';
-    var exp = a.vadMake( [ 1/_.math.sqrt( 3 ), -1/_.math.sqrt( 3 ), 1/_.math.sqrt( 3 ) ] );
-    var src = a.vadMake( [ 1, -1, 1 ] );
-    var got = _.vad.normalize( src );
-    test.identical( got, exp );
-    test.is( got === src );
-
-    test.case = 'src is dst';
-    var exp = a.vadMake( [ 1/_.math.sqrt( 39 ), -2/_.math.sqrt( 39 ), 3/_.math.sqrt( 39 ), -5/_.math.sqrt( 39 ) ] );
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = _.vad.normalize( src );
-    test.identical( got, exp );
-    test.is( got === src );
-
-    test.case = 'new dst';
-    var exp = a.vadMake( [ 1/_.math.sqrt( 39 ), -2/_.math.sqrt( 39 ), 3/_.math.sqrt( 39 ), -5/_.math.sqrt( 39 ) ] );
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = _.vad.normalize( null, src );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'first argument is dst';
-    var exp = a.vadMake( [ 1/_.math.sqrt( 39 ), -2/_.math.sqrt( 39 ), 3/_.math.sqrt( 39 ), -5/_.math.sqrt( 39 ) ] );
-    var dst = a.vadMake( [ 0, 0, 0, 0 ] );
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = _.vad.normalize( dst, src );
-    test.identical( got, exp );
-    test.identical( src, a.vadMake( [ 1, -2, 3, -5 ] ) );
-    test.is( got === dst );
-
     test.close( `src - long, ${a.format}` );
   }
+
+  /* */
+
+  test.case = 'ones';
+  var exp = _.vad.from( [ 1/_.math.sqrt( 3 ), -1/_.math.sqrt( 3 ), 1/_.math.sqrt( 3 ) ] );
+  var src = _.vad.from( [ 1, -1, 1 ] );
+  var got = _.vad.normalize( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src is dst';
+  var exp = _.vad.from( [ 1/_.math.sqrt( 39 ), -2/_.math.sqrt( 39 ), 3/_.math.sqrt( 39 ), -5/_.math.sqrt( 39 ) ] );
+  var src = _.vad.from( [ 1, -2, 3, -5 ] );
+  var got = _.vad.normalize( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'new dst';
+  var exp = _.vad.from( [ 1/_.math.sqrt( 39 ), -2/_.math.sqrt( 39 ), 3/_.math.sqrt( 39 ), -5/_.math.sqrt( 39 ) ] );
+  var src = _.vad.from( [ 1, -2, 3, -5 ] );
+  var got = _.vad.normalize( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'first argument is dst';
+  var exp = _.vad.from( [ 1/_.math.sqrt( 39 ), -2/_.math.sqrt( 39 ), 3/_.math.sqrt( 39 ), -5/_.math.sqrt( 39 ) ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0 ] );
+  var src = _.vad.from( [ 1, -2, 3, -5 ] );
+  var got = _.vad.normalize( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 1, -2, 3, -5 ] ) );
+  test.is( got === dst );
 
   /* - */
 

@@ -6699,20 +6699,35 @@ function refract( test )
 
 function inv( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = [];
-  var src = [];
-  var got = _.avector.inv( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
 
-  test.case = 'zero';
-  var exp = [ Infinity, Infinity, Infinity ];
-  var src = [ 0, 0, 0 ];
-  var got = _.avector.inv( src );
-  test.identical( got, exp );
-  test.is( got === src );
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ Infinity, Infinity, Infinity ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
 
   /* */
 
@@ -6765,20 +6780,35 @@ function inv( test )
 
 function invOrOne( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = [];
-  var src = [];
-  var got = _.avector.invOrOne( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
 
-  test.case = 'zero';
-  var exp = [ 1, 1, 1 ];
-  var src = [ 0, 0, 0 ];
-  var got = _.avector.invOrOne( src );
-  test.identical( got, exp );
-  test.is( got === src );
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
 
   /* */
 
@@ -6892,13 +6922,35 @@ function abs( test )
 
 function floor( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = [];
-  var src = [];
-  var got = _.avector.floor( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
 
   /* */
 
@@ -6951,13 +7003,35 @@ function floor( test )
 
 function ceil( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = [];
-  var src = [];
-  var got = _.avector.ceil( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
 
   /* */
 
@@ -7010,13 +7084,35 @@ function ceil( test )
 
 function round( test )
 {
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  test.case = 'empty';
-  var exp = [];
-  var src = [];
-  var got = _.avector.round( src );
-  test.identical( got, exp );
-  test.is( got === src );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
 
   /* */
 
@@ -7171,38 +7267,40 @@ function normalize( test )
     test.identical( got, exp );
     test.is( got === src );
 
-    test.case = 'ones';
-    var exp = a.longMake( [ 1/sqrt( 3 ), -1/sqrt( 3 ), 1/sqrt( 3 ) ] );
-    var src = a.longMake( [ 1, -1, 1 ] );
-    var got = _.avector.normalize( src );
-    test.identical( got, exp );
-    test.is( got === src );
-
-    test.case = 'src is dst';
-    var exp = a.longMake( [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ] );
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
-    var got = _.avector.normalize( src );
-    test.identical( got, exp );
-    test.is( got === src );
-
-    test.case = 'new dst';
-    var exp = a.longMake( [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ] );
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
-    var got = _.avector.normalize( null, src );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'first argument is dst';
-    var exp = a.longMake( [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ] );
-    var dst = a.longMake( [ 0, 0, 0, 0 ] );
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
-    var got = _.avector.normalize( dst, src );
-    test.identical( got, exp );
-    test.identical( src, a.longMake( [ 1, -2, 3, -5 ] ) );
-    test.is( got === dst );
-
     test.close( `src - long, ${a.format}` );
   }
+
+  /* */
+
+  test.case = 'ones';
+  var exp = [ 1/sqrt( 3 ), -1/sqrt( 3 ), 1/sqrt( 3 ) ];
+  var src = [ 1, -1, 1 ];
+  var got = _.avector.normalize( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src is dst';
+  var exp = [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ];
+  var src = [ 1, -2, 3, -5 ];
+  var got = _.avector.normalize( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'new dst';
+  var exp = [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ];
+  var src = [ 1, -2, 3, -5 ];
+  var got = _.avector.normalize( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'first argument is dst';
+  var exp = [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ];
+  var dst = [ 0, 0, 0, 0 ];
+  var src = [ 1, -2, 3, -5 ];
+  var got = _.avector.normalize( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 1, -2, 3, -5 ] );
+  test.is( got === dst );
 
   /* - */
 
