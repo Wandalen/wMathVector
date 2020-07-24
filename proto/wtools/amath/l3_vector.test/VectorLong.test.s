@@ -16003,6 +16003,7 @@ let Self =
 
   name : 'Tools.Math.Vector.Long',
   silencing : 1,
+  routineTimeOut : 30000,
 
   context :
   {

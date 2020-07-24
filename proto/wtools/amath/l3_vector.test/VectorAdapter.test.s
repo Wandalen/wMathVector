@@ -847,8 +847,6 @@ function growAdapter( test )
 
 }
 
-growAdapter.timeOut = 10000;
-
 //
 
 function growLong( test )
@@ -1438,8 +1436,6 @@ function growLong( test )
   var src = _.vectorAdapter.fromLong([ 1, 2, 3 ])
   test.shouldThrowErrorSync( () => src.growLong( [ 1, 4 ], 2, 3 ) );
 }
-
-growLong.timeOut = 10000;
 
 // --
 // exporter
@@ -7600,8 +7596,6 @@ function sort( test )
 
 }
 
-sort.timeOut = 15000;
-
 //
 
 function cross3( test )
@@ -8038,8 +8032,6 @@ function swapVectors( test )
   test.shouldThrowErrorSync( () => _.vad.scalarsSwap( _.vad.from([ 1, 2, 3 ]), [ 0 ], [ 1 ] ) );
 
 }
-
-swapVectors.timeOut = 15000;
 
 //
 
@@ -10478,6 +10470,7 @@ let Self =
 
   name : 'Tools.Math.Vector.Adapter',
   silencing : 1,
+  routineTimeOut : 30000,
 
   context :
   {
