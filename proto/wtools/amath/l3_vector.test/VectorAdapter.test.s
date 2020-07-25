@@ -8035,6 +8035,632 @@ function swapVectors( test )
 
 //
 
+function inv( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ Infinity, Infinity, Infinity ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = _.vad.from( [ 1, 1/2, -1/3, 1/5, 10, 11 ] );
+  var src = _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11 ] );
+  var got = _.vad.inv( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = _.vad.from( [ 1, 1/2, -1/3, 1/5, 10, 11 ] );
+  var src = _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11 ] );
+  var got = _.vad.inv( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = _.vad.from( [ 1, 1/2, -1/3, 1/5, 10, 11, Infinity ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0, 1/10, 0, 0 ] );
+  var src = _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11, 0 ] );
+  var got = _.vad.inv( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11, 0 ] ) );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.inv( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.inv( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.inv( _.vad.from( [ 0, 0, 0, 5 ] ), _.vad.from( [ 3, 4, 5 ] ) ) );
+
+}
+
+//
+
+function invOrOne( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = _.vad.from( [ 1, 1/2, -1/3, 1/5, 10, 11 ] );
+  var src = _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11 ] );
+  var got = _.vad.invOrOne( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = _.vad.from( [ 1, 1/2, -1/3, 1/5, 10, 11 ] );
+  var src = _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11 ] );
+  var got = _.vad.invOrOne( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = _.vad.from( [ 1, 1/2, -1/3, 1/5, 10, 11, 1 ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0, 1/10, 0, 0 ] );
+  var src = _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11, 0 ] );
+  var got = _.vad.invOrOne( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 1, 2, -3, 5, 1/10, 1/11, 0 ] ) );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.invOrOne( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.invOrOne( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.invOrOne( _.vad.from( [ 0, 0, 0, 5 ] ), _.vad.from( [ 3, 4, 5 ] ) ) );
+
+}
+
+//
+
+function abs( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.abs( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src is dst';
+    var exp = a.vadMake( [ 1, 2, 3, 5, 3.1415, 1.4142 ] );
+    var src = a.vadMake( [ 1, -2, 3, -5, -3.1415, 1.4142 ] );
+    var got = _.vad.abs( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'new dst';
+    var exp = a.vadMake( [ 1, 2, 3, 5, 3.1415, 1.4142 ] );
+    var src = a.vadMake( [ 1, -2, 3, -5, -3.1415, 1.4142 ] );
+    var got = _.vad.abs( null, src );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'first argument is dst';
+    var exp = a.vadMake( [ 0, 1, 2, 3, 5, 100 ] );
+    var dst = a.vadMake( [ 5, 0, 0, 0, 0, 0 ] );
+    var src = a.vadMake( [ 0, -1, 2, -3, 5, -100 ] );
+    var got = _.vad.abs( dst, src );
+    test.identical( got, exp );
+    test.identical( src, a.vadMake( [ 0, -1, 2, -3, 5, -100 ] ) );
+    test.is( got === dst );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.abs( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.abs( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.abs( _.vad.from( [ 0, 0, 0, 5 ] ), [ 3, 4, 5 ] ) );
+
+}
+
+//
+
+function floor( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ 0, 0, 0 ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = _.vad.from( [ 1, 2, 3, 0, 1, 3, -2, -4, -1 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  var got = _.vad.floor( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = _.vad.from( [ 1, 2, 3, 0, 1, 3, -2, -4, -1 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  var got = _.vad.floor( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = _.vad.from( [ 1, 2, 3, 0, 1, 3, -2, -4, -1 ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  var got = _.vad.floor( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] ) );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.floor( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.floor( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.floor( _.vad.from( [ 0, 0, 0, 5 ] ), _.vad.from( [ 3, 4, 5 ] ) ) );
+
+}
+
+//
+
+function ceil( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ 0, 0, 0 ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = _.vad.from( [ 1, 2, 3, 1, 2, 4, -1, -3, -0 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  var got = _.vad.ceil( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = _.vad.from( [ 1, 2, 3, 1, 2, 4, -1, -3, -0 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  var got = _.vad.ceil( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = _.vad.from( [ 1, 2, 3, 1, 2, 4, -1, -3, -0 ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  var got = _.vad.ceil( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] ) );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.ceil( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.ceil( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.ceil( _.vad.from( [ 0, 0, 0, 5 ] ), _.vad.from( [ 3, 4, 5 ] ) ) );
+
+}
+
+//
+
+function round( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ 0, 0, 0 ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.vadMake( [ 1, 1, 1 ] );
+    var src = a.vadMake( [ 1, 1, 1 ] );
+    var got = _.vad.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = _.vad.from( [ 1, 2, 3, 0, 1, 3, -1, -3, -0, 3, 3 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1, 2.5, 2.6 ] );
+  var got = _.vad.round( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = _.vad.from( [ 1, 2, 3, 0, 1, 3, -1, -3, -0, 3, 3 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1, 2.5, 2.6 ] );
+  var got = _.vad.round( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = _.vad.from( [ 1, 2, 3, 0, 1, 3, -1, -3, -0, 3, 3 ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+  var src = _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1, 2.5, 2.6 ] );
+  var got = _.vad.round( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1, 2.5, 2.6 ] ) );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.round( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.round( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.round( _.vad.from( [ 0, 0, 0, 5 ] ), _.vad.from( [ 3, 4, 5 ] ) ) );
+
+}
+
+//
+
+function normalize( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.vadMake( [ 0, 0, 0 ] );
+    var src = a.vadMake( [ 0, 0, 0 ] );
+    var got = _.vad.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'unit';
+    var exp = a.vadMake( [ 0, 1, 0 ] );
+    var src = a.vadMake( [ 0, 1, 0 ] );
+    var got = _.vad.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'ones';
+  var exp = _.vad.from( [ 1/_.math.sqrt( 3 ), -1/_.math.sqrt( 3 ), 1/_.math.sqrt( 3 ) ] );
+  var src = _.vad.from( [ 1, -1, 1 ] );
+  var got = _.vad.normalize( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src is dst';
+  var exp = _.vad.from( [ 1/_.math.sqrt( 39 ), -2/_.math.sqrt( 39 ), 3/_.math.sqrt( 39 ), -5/_.math.sqrt( 39 ) ] );
+  var src = _.vad.from( [ 1, -2, 3, -5 ] );
+  var got = _.vad.normalize( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'new dst';
+  var exp = _.vad.from( [ 1/_.math.sqrt( 39 ), -2/_.math.sqrt( 39 ), 3/_.math.sqrt( 39 ), -5/_.math.sqrt( 39 ) ] );
+  var src = _.vad.from( [ 1, -2, 3, -5 ] );
+  var got = _.vad.normalize( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'first argument is dst';
+  var exp = _.vad.from( [ 1/_.math.sqrt( 39 ), -2/_.math.sqrt( 39 ), 3/_.math.sqrt( 39 ), -5/_.math.sqrt( 39 ) ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0 ] );
+  var src = _.vad.from( [ 1, -2, 3, -5 ] );
+  var got = _.vad.normalize( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 1, -2, 3, -5 ] ) );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.normalize( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.normalize( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.normalize( _.vad.from( [ 0, 0, 0, 5 ] ), _.vad.from( [ 3, 4, 5 ] ) ) );
+
+}
+
+//
+
+function ceilToPowerOfTwo( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - vectorAdapter, ${a.format} ${a.form}` );
+
+    test.case = 'empty';
+    var exp = a.vadMake( [] );
+    var src = a.vadMake( [] );
+    var got = _.vad.ceilToPowerOfTwo( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src is dst';
+    var exp = a.vadMake( [ 1, 2, 4, 8 ] );
+    var src = a.vadMake( [ 1, 2, 3, 5 ] );
+    var got = _.vad.ceilToPowerOfTwo( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'new dst';
+    var exp = a.vadMake( [ 1, 2, 4, 8 ] );
+    var src = a.vadMake( [ 1, 2, 3, 5 ] );
+    var got = _.vad.ceilToPowerOfTwo( null, src );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'first argument is dst';
+    var exp = a.vadMake( [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ] );
+    var dst = a.vadMake( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+    var src = a.vadMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] );
+    var got = _.vad.ceilToPowerOfTwo( dst, src );
+    test.identical( got, exp );
+    test.identical( src, a.vadMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] ) );
+    test.is( got === dst );
+
+    test.close( `src - vectorAdapter, ${a.format} ${a.form}` );
+  }
+
+  /* - */
+
+  test.case = 'src - vectorAdapter, real value as elements in src';
+  var exp = _.vad.from( [ 4, 1024, 2, 4 ] );
+  var dst = _.vad.from( [ 0, 0, 0, 0 ] );
+  var src = _.vad.from( [ 3.1415, 1000.1001, 1.4142, 3 ] );
+  var got = _.vad.ceilToPowerOfTwo( dst, src );
+  test.identical( got, exp );
+  test.identical( src, _.vad.from( [ 3.1415, 1000.1001, 1.4142, 3 ] ) );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.vad.ceilToPowerOfTwo( 5, _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.ceilToPowerOfTwo( _.vad.from( [ 3, 4, 5 ] ), 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.vad.ceilToPowerOfTwo( _.vad.from( [ 0, 0, 0, 5 ] ), _.vad.from( [ 3, 4, 5 ] ) ) );
+
+  test.case = 'negative elements in src';
+  test.shouldThrowErrorSync( () => _.vad.ceilToPowerOfTwo( [ 1, 1, 1 ], [ 1, -1, -10 ] ) );
+
+}
+
+//
+
 function isEquivalent( test )
 {
 
@@ -10555,6 +11181,19 @@ let Self =
     sort,
     cross3,
     swapVectors,
+
+    inv,
+    invOrOne,
+
+    abs,
+
+    floor,
+    ceil,
+    round,
+
+    ceilToPowerOfTwo,
+
+    normalize,
 
     // isEquivalent, // zzz : implement later
     // allEquivalent,
