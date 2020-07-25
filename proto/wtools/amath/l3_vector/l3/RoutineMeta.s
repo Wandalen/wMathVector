@@ -1172,7 +1172,7 @@ function _operationTakingDstSrcReturningSelfComponentWise_functor( o )
   dop.takingVectors = [ 1, 2 ];
   dop.takingVectorsOnly = true;
   dop.returningSelf = true;
-  dop.returningNew = false;
+  dop.returningNew = true;
   dop.returningLong = false;
   dop.modifying = true;
   dop.input = 'vw|n ?vr';
@@ -1182,18 +1182,20 @@ function _operationTakingDstSrcReturningSelfComponentWise_functor( o )
   function _operationTakingDstSrcReturningSelfComponentWise( dst, src )
   {
 
-    let length = dst.length;
     if( !src )
     src = dst;
 
     if( dst === null ) /* qqq : cover. ask if not clear */
     dst = src.MakeSimilar();
 
-    _.assert( arguments.length <= 2 );
+    _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( dst.length === src.length, 'src and dst must have same length' );
+    _.assert( _.vectorAdapterIs( dst ) );
+    _.assert( _.vectorAdapterIs( src ) );
 
     onVectorsBegin0.call( this, dst, src );
 
+    let length = dst.length;
     for( let i = 0 ; i < length ; i++ )
     onEach.call( this, dst, src, i );
 

@@ -6566,7 +6566,7 @@ function reflect( test )
 
 //
 
-  function refract( test )
+function refract( test )
 {
   // Correctness of the tests may be check by Snell's law: sin(exp^normal) = sin(src^normal)*eta
 
@@ -6697,16 +6697,627 @@ function reflect( test )
 
 //
 
+function inv( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ Infinity, Infinity, Infinity ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.inv( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11 ];
+  var got = _.avector.inv( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11 ];
+  var got = _.avector.inv( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11, Infinity ];
+  var dst = [ 0, 0, 0, 0, 1/10, 0, 0 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11, 0 ];
+  var got = _.avector.inv( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 1, 2, -3, 5, 1/10, 1/11, 0 ] );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.inv( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.inv( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.inv( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
+}
+
+//
+
+function invOrOne( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.invOrOne( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11 ];
+  var got = _.avector.invOrOne( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11 ];
+  var got = _.avector.invOrOne( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = [ 1, 1/2, -1/3, 1/5, 10, 11, 1 ];
+  var dst = [ 0, 0, 0, 0, 1/10, 0, 0 ];
+  var src = [ 1, 2, -3, 5, 1/10, 1/11, 0 ];
+  var got = _.avector.invOrOne( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 1, 2, -3, 5, 1/10, 1/11, 0 ] );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.invOrOne( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.invOrOne( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.invOrOne( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
+}
+
+//
+
 function abs( test )
 {
-  test.case = 'trivial';
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
-  var exp = [ 1, 2, 3 ];
-  var dst = [ -1, -2, -3 ];
-  var got = _.avector.abs( dst );
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
 
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.abs( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src is dst';
+    var exp = a.longMake( [ 1, 2, 3, 5, 3.1415, 1.4142 ] );
+    var src = a.longMake( [ 1, -2, 3, -5, -3.1415, 1.4142 ] );
+    var got = _.avector.abs( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'new dst';
+    var exp = a.longMake( [ 1, 2, 3, 5, 3.1415, 1.4142 ] );
+    var src = a.longMake( [ 1, -2, 3, -5, -3.1415, 1.4142 ] );
+    var got = _.avector.abs( null, src );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'first argument is dst';
+    var exp = a.longMake( [ 0, 1, 2, 3, 5, 100 ] );
+    var dst = a.longMake( [ 5, 0, 0, 0, 0, 0 ] );
+    var src = a.longMake( [ 0, -1, 2, -3, 5, -100 ] );
+    var got = _.avector.abs( dst, src );
+    test.identical( got, exp );
+    test.identical( src, a.longMake( [ 0, -1, 2, -3, 5, -100 ] ) );
+    test.is( got === dst );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.abs( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.abs( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.abs( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
+}
+
+//
+
+function floor( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.floor( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = [ 1, 2, 3, 0, 1, 3, -2, -4, -1 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ];
+  var got = _.avector.floor( src );
   test.identical( got, exp );
-  test.is( dst === got );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = [ 1, 2, 3, 0, 1, 3, -2, -4, -1 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ];
+  var got = _.avector.floor( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = [ 1, 2, 3, 0, 1, 3, -2, -4, -1 ];
+  var dst = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ];
+  var got = _.avector.floor( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.floor( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.floor( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.floor( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
+}
+
+//
+
+function ceil( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.ceil( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = [ 1, 2, 3, 1, 2, 4, -1, -3, -0 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ];
+  var got = _.avector.ceil( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = [ 1, 2, 3, 1, 2, 4, -1, -3, -0 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ];
+  var got = _.avector.ceil( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = [ 1, 2, 3, 1, 2, 4, -1, -3, -0 ];
+  var dst = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ];
+  var got = _.avector.ceil( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1 ] );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.ceil( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.ceil( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.ceil( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
+}
+
+//
+
+function round( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'ones';
+    var exp = a.longMake( [ 1, 1, 1 ] );
+    var src = a.longMake( [ 1, 1, 1 ] );
+    var got = _.avector.round( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'src is dst';
+  var exp = [ 1, 2, 3, 0, 1, 3, -1, -3, -0, 3, 3 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1, 2.5, 2.6 ];
+  var got = _.avector.round( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'new dst';
+  var exp = [ 1, 2, 3, 0, 1, 3, -1, -3, -0, 3, 3 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1, 2.5, 2.6 ];
+  var got = _.avector.round( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'first argument is dst';
+  var exp = [ 1, 2, 3, 0, 1, 3, -1, -3, -0, 3, 3 ];
+  var dst = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+  var src = [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1, 2.5, 2.6 ];
+  var got = _.avector.round( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 1, 2, 3, 0.1, 1.4142, 3.1415, -1.4142, -3.1415, -0.1, 2.5, 2.6 ] );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.round( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.round( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.round( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
+}
+
+//
+
+function ceilToPowerOfTwo( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.ceilToPowerOfTwo( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src is dst';
+    var exp = a.longMake( [ 1, 2, 4, 8 ] );
+    var src = a.longMake( [ 1, 2, 3, 5 ] );
+    var got = _.avector.ceilToPowerOfTwo( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'new dst';
+    var exp = a.longMake( [ 1, 2, 4, 8 ] );
+    var src = a.longMake( [ 1, 2, 3, 5 ] );
+    var got = _.avector.ceilToPowerOfTwo( null, src );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'first argument is dst';
+    var exp = a.longMake( [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ] );
+    var dst = a.longMake( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] );
+    var got = _.avector.ceilToPowerOfTwo( dst, src );
+    test.identical( got, exp );
+    test.identical( src, a.longMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] ) );
+    test.is( got === dst );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* - */
+
+  test.case = 'src - Array, real value as elements in src';
+  var exp = [ 0, 1024, 2, 4 ];
+  var dst = [ 0, 0, 0, 0 ];
+  var src = [ 0, 1000.1001, 1.4142, 3 ];
+  var got = _.avector.ceilToPowerOfTwo( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 0, 1000.1001, 1.4142, 3 ] );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
+  test.case = 'negative elements in src';
+  test.shouldThrowErrorSync( () => _.avector.ceilToPowerOfTwo( [ 1, 1, 1 ], [ 1, -1, -10 ] ) );
+
+}
+
+//
+
+function normalize( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
+
+  function act( a )
+  {
+    test.open( `src - long, ${a.format}` );
+
+    test.case = 'empty';
+    var exp = a.longMake( [] );
+    var src = a.longMake( [] );
+    var got = _.avector.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'zero';
+    var exp = a.longMake( [ 0, 0, 0 ] );
+    var src = a.longMake( [ 0, 0, 0 ] );
+    var got = _.avector.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'unit';
+    var exp = a.longMake( [ 0, 1, 0 ] );
+    var src = a.longMake( [ 0, 1, 0 ] );
+    var got = _.avector.normalize( src );
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.close( `src - long, ${a.format}` );
+  }
+
+  /* */
+
+  test.case = 'ones';
+  var exp = [ 1/sqrt( 3 ), -1/sqrt( 3 ), 1/sqrt( 3 ) ];
+  var src = [ 1, -1, 1 ];
+  var got = _.avector.normalize( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src is dst';
+  var exp = [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ];
+  var src = [ 1, -2, 3, -5 ];
+  var got = _.avector.normalize( src );
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'new dst';
+  var exp = [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ];
+  var src = [ 1, -2, 3, -5 ];
+  var got = _.avector.normalize( null, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'first argument is dst';
+  var exp = [ 1/sqrt( 39 ), -2/sqrt( 39 ), 3/sqrt( 39 ), -5/sqrt( 39 ) ];
+  var dst = [ 0, 0, 0, 0 ];
+  var src = [ 1, -2, 3, -5 ];
+  var got = _.avector.normalize( dst, src );
+  test.identical( got, exp );
+  test.identical( src, [ 1, -2, 3, -5 ] );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.avector.normalize( 5, [ 3, 4, 5 ] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.avector.normalize( [ 3, 4, 5 ], 5 ) );
+
+  test.case = 'the lengths of dst and src are not equal';
+  test.shouldThrowErrorSync( () => _.avector.normalize( [ 0, 0, 0, 5 ], [ 3, 4, 5 ] ) );
+
 }
 
 //
@@ -16077,7 +16688,19 @@ let Self =
 
     reflect,
     refract,
+
+    inv,
+    invOrOne,
+
     abs,
+
+    floor,
+    ceil,
+    round,
+
+    ceilToPowerOfTwo,
+
+    normalize,
 
     //
 
