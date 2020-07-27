@@ -589,8 +589,6 @@ function growLong( test )
 
 }
 
-growLong.timeOut = 10000;
-
 //
 
 function shrinkAdapter_( test )
