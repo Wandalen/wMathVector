@@ -260,7 +260,7 @@ function assign( test )
 
 function growAdapter( test )
 {
-  _.vectorAdapter.contextsForTesting({ onEach : act });
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
   function act( a )
   {
@@ -603,7 +603,7 @@ function shrinkAdapter_( test )
   {
     test.open( `different type of vectorAdapter, ${ a.format }, src - empty` );
 
-    test.case = 'without orange';
+    test.case = 'without crange';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src );
     var exp = a.vadMake( [] );
@@ -612,63 +612,63 @@ function shrinkAdapter_( test )
 
     /* - */
 
-    test.case = 'orange - [ 0, 0 ]';
+    test.case = 'crange - [ 0, 0 ]';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src, [ 0, 0 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 0, 2 ]';
+    test.case = 'crange - [ 0, 2 ]';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src, [ 0, 2 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 0, -2 ]';
+    test.case = 'crange - [ 0, -2 ]';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src, [ 0, -2 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 2, 2 ]';
+    test.case = 'crange - [ 2, 2 ]';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src, [ 2, 2 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 2, 4 ]';
+    test.case = 'crange - [ 2, 4 ]';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src, [ 2, 4 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 2, -2 ]';
+    test.case = 'crange - [ 2, -2 ]';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src, [ 2, -2 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ -2, -2 ]';
+    test.case = 'crange - [ -2, -2 ]';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src, [ -2, -2 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ -2, 0 ]';
+    test.case = 'crange - [ -2, 0 ]';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src, [ -2, 0 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ -2, -4 ]';
+    test.case = 'crange - [ -2, -4 ]';
     var src = a.vadMake( [] );
     var got = _.vad.shrinkAdapter_( src, [ -2, -4 ] );
     var exp = a.vadMake( [] );
@@ -681,175 +681,182 @@ function shrinkAdapter_( test )
 
     test.open( `different type of vectorAdapter, ${ a.format }, src - filled vector` );
 
-    test.case = 'without orange';
+    test.case = 'without crange';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src );
     var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ -4, -4 ]';
+    test.case = 'crange - [ -4, -4 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ -4, -4 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ -4, -2 ]';
+    test.case = 'crange - [ -4, -2 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ -4, -2 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ -4, 0 ]';
+    test.case = 'crange - [ -4, -1 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.vad.shrinkAdapter_( src, [ -4, 0 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, -2 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ -4, 2 ]';
+    test.case = 'crange - [ -4, 0 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.vad.shrinkAdapter_( src, [ -4, 2 ] );
-    var exp = a.vadMake( [ 1, -2 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, 0 ] );
+    var exp = a.vadMake( [ 1 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ -4, 5 ]';
+    test.case = 'crange - [ -4, 2 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.vad.shrinkAdapter_( src, [ -4, 5 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, 2 ] );
+    var exp = a.vadMake( [ 1, -2, 3 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'crange - [ -4, 4 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, 4 ] );
     var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ -4, 7 ]';
+    test.case = 'crange - [ -4, 7 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ -4, 7 ] );
     var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 0, 0 ]';
+    test.case = 'crange - [ 0, 0 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 0, 0 ] );
-    var exp = a.vadMake( [] );
+    var exp = a.vadMake( [ 1 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 0, 2 ]';
+    test.case = 'crange - [ 0, 2 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 0, 2 ] );
-    var exp = a.vadMake( [ 1, -2 ] );
+    var exp = a.vadMake( [ 1, -2, 3 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 0, 5 ]';
+    test.case = 'crange - [ 0, 4 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.vad.shrinkAdapter_( src, [ 0, 5 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 0, 4 ] );
     var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 0, 7 ]';
+    test.case = 'crange - [ 0, 7 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 0, 7 ] );
     var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 2, 2 ]';
+    test.case = 'crange - [ 2, 2 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 2, 2 ] );
-    var exp = a.vadMake( [] );
+    var exp = a.vadMake( [ 3 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 2, 4 ]';
+    test.case = 'crange - [ 2, 3 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.vad.shrinkAdapter_( src, [ 2, 4 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, 3 ] );
     var exp = a.vadMake( [ 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 2, 5 ]';
+    test.case = 'crange - [ 2, 4 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.vad.shrinkAdapter_( src, [ 2, 5 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, 4 ] );
     var exp = a.vadMake( [ 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 2, 7 ]';
+    test.case = 'crange - [ 2, 7 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 2, 7 ] );
     var exp = a.vadMake( [ 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 5, 5 ]';
+    test.case = 'crange - [ 4, 4 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.vad.shrinkAdapter_( src, [ 5, 5 ] );
-    var exp = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ 4, 4 ] );
+    var exp = a.vadMake( [ 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 5, 7 ]';
+    test.case = 'crange - [ 5, 7 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 5, 7 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 7, 7 ]';
+    test.case = 'crange - [ 7, 7 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 7, 7 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 7, 9 ]';
+    test.case = 'crange - [ 7, 9 ]';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 7, 9 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 9, 7 ], wrong range direction';
+    test.case = 'crange - [ 9, 7 ], wrong range direction';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 9, 7 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 9, 4 ], wrong range direction';
+    test.case = 'crange - [ 9, 4 ], wrong range direction';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 9, 4 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 9, 0 ], wrong range direction';
+    test.case = 'crange - [ 9, 0 ], wrong range direction';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 9, 0 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 9, -4 ], wrong range direction';
+    test.case = 'crange - [ 9, -4 ], wrong range direction';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 9, -4 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 2, 0 ], wrong range direction';
+    test.case = 'crange - [ 2, 0 ], wrong range direction';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 2, 0 ] );
     var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'orange - [ 2, -4 ], wrong range direction';
+    test.case = 'crange - [ 2, -4 ], wrong range direction';
     var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     var got = _.vad.shrinkAdapter_( src, [ 2, -4 ] );
     var exp = a.vadMake( [] );
@@ -883,7 +890,7 @@ function shrinkLong_( test )
   test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ]';
   var src = _.vad.fromLong( [ 1, -2, 3, -5, 8 ] );
   var got = _.avector.shrinkLong_( src, [ 2, 4 ] );
-  var exp = [ 3, -5 ];
+  var exp = [ 3, -5, 8 ];
   test.identical( got, exp );
   test.is( got !== src );
 

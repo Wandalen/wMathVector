@@ -685,28 +685,28 @@ dop.modifying = false;
 
 /**
  * Routine shrinkAdapter() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
- * End of range not included. If provided range is outside of actual it will be adjusted.
+ * End of range included. If provided range is outside of actual it will be adjusted.
  *
  * @example
  * var got = _.vectorAdapter.shrinkAdapter( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got );
- * // log "2.000, 3.000"
+ * // log "2.000, 3.000, 4.000"
  * var got = _.vectorAdapter.shrinkAdapter( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
  * console.log( got );
  * // log "4.000, 5.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } orange - Defines range for copying.
+ * @param { Range } crange - Defines range for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
  * @function shrinkAdapter
  * @throws { Error } If arguments.length is not equal one or two.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
- * @throws { Error } If {-orange-} is not a Range.
+ * @throws { Error } If {-crange-} is not a Range.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
 
-function shrinkAdapter_( src, orange )
+function shrinkAdapter_( src, crange )
 {
   let result = this.shrinkLong_.apply( this, arguments );
   return this.fromLong( result );
@@ -728,50 +728,54 @@ dop.modifying = false;
 
 /**
  * Routine shrinkLong() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
- * End of range not included. If provided range is outside of actual it will be adjusted.
+ * End of range included. If provided range is outside of actual it will be adjusted.
  *
  * @example
  * var got = _.avector.shrinkLong( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got );
- * // log [ 2, 3 ]
+ * // log [ 2, 3, 4 ]
  * var got = _.avector.shrinkLong( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
  * console.log( got );
  * // log [ 4, 5 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } orange - Defines range for copying.
+ * @param { Range } crange - Defines range for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
  * @function shrinkLong
  * @throws { Error } If arguments.length is not equal one or two.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
- * @throws { Error } If {-orange-} is not a Range.
+ * @throws { Error } If {-crange-} is not a Range.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
 
-function shrinkLong_( src, orange )
+function shrinkLong_( src, crange )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.vectorAdapterIs( src ) );
 
-  if( orange === undefined )
-  orange = [ 0, src.length ];
-  if( orange[ 0 ] < 0 )
-  orange[ 0 ] = 0;
-  if( orange[ 1 ] > src.length )
-  orange[ 1 ] = src.length;
-  if( orange[ 0 ] > orange[ 1 ] )
-  orange[ 1 ] = orange[ 0 ];
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
 
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( crange ) );
 
-  let l = orange[ 1 ] - orange[ 0 ];
+  if( crange[ 0 ] < 0 )
+  crange[ 0 ] = 0;
+  if( crange[ 1 ] > src.length - 1 )
+  crange[ 1 ] = src.length - 1;
+  if( crange[ 0 ] > crange[ 1 ] || src.length === 0 )
+  {
+    crange[ 1 ] = -1;
+    crange[ 0 ] = 0;
+  }
+
+  let l = crange[ 1 ] - crange[ 0 ] + 1;
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
 
   /* qqq : optimize */
 
-  let l2 = orange[ 0 ];
+  let l2 = crange[ 0 ];
   for( let i = 0 ; i < l ; i++ )
   result[ i ] = src.eGet( i + l2 );
 
