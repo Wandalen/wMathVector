@@ -25,6 +25,346 @@ _.assert( _.routineIs( sqrt ) );
 // test
 // --
 
+function fromLongLrange ( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  function testRun( makeLong )
+  {
+
+    test.case = 'trivial';
+    var src = new makeLong( [ 1, 2, 3 ] );
+    var got = _.vad.fromLongLrange( src );
+    var expected = [ 1, 2, 3 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    /* */
+
+    test.open( 'from empty array' );
+
+    test.case = 'offset is undefined, length is undefined';
+    var src = new makeLong( [] );
+    var got = _.vad.fromLongLrange( src );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length is undefined';
+    var src = new makeLong( [] );
+    var got = _.vad.fromLongLrange( src, 0 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length = 0';
+    var src = new makeLong( [] );
+    var got = _.vad.fromLongLrange( src, 0, 0 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.close( 'from empty array' );
+
+    /* */
+
+    test.open( 'from filled array' );
+
+    test.case = 'offset is undefined, length is undefined';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src );
+    var expected = [ 1, 2, 3, -4, -5, -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length is undefined';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 0 );
+    var expected = [ 1, 2, 3, -4, -5, -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length = 0';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 0, 0 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length = 1';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 0, 1 );
+    var expected = [ 1 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length = 6';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 0, 6 );
+    var expected = [ 1, 2, 3, -4, -5, -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length is undefined';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 1 );
+    var expected = [ 2, 3, -4, -5, -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length = 0';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 1, 0 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length = 1';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 1, 1 );
+    var expected = [ 2 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length = 5';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 1, 5 );
+    var expected = [ 2, 3, -4, -5, -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 2, length = 2';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 2, 2 );
+    var expected = [ 3, -4 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 5, length is undefined';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 5 );
+    var expected = [ -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 5, length = 0';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 5, 0 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 5, length = 1';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 5, 1 );
+    var expected = [ -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 6, length = 0';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, 6, 0 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.close( 'from filled array' );
+
+    /* */
+
+    test.case = 'from empty array, offset and length passed as range, offset = 0, length = 0';
+    var src = new makeLong( [] );
+    var got = _.vad.fromLongLrange( src, [ 0, 0 ] );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    /* */
+
+    test.open( 'from filled array, offset and length passed as range' );
+
+    test.case = 'offset = 0, length = 0';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 0, 0 ] );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length = 1';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 0, 1 ] );
+    var expected = [ 1 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length = 6';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 0, 6 ] );
+    var expected = [ 1, 2, 3, -4, -5, -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length = 0';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 1, 0 ] );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length = 1';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 1, 1 ] );
+    var expected = [ 2 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length = 5';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 1, 5 ] );
+    var expected = [ 2, 3, -4, -5, -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 2, length = 2';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 2, 2 ] );
+    var expected = [ 3, -4 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 5, length = 0';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 5, 0 ] );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 5, length = 1';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 5, 1 ] );
+    var expected = [ -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 6, length = 0';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLongLrange( src, [ 6, 0 ] );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.close( 'from filled array, offset and length passed as range' );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange() );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( null, 0, 1 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( 5, 0, 1 ) );
+
+  test.case = 'wrong type of offset|range';
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2 ], [ 1, 2, 3 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2 ], false, 1 ) );
+
+  test.case = 'wrong type of length';
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2 ], [ 0, 1 ], [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2 ], 0, false ) );
+
+  test.case = 'negative offset';
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], -1, 1 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], [ -1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], [ -1, 2 ], 1 ) );
+
+  test.case = 'negative length';
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 1, -1 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], [ 1, -2 ] ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], [ 1, -2 ], 1 ) );
+
+  test.case = 'offset+length > srcLong.length';
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 0, 5 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 1, 4 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 1, 5 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 2, 3 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 3, 2 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 4, 1 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 5, 0 ) );
+}
+
 function assign( test )
 {
   _.vectorAdapter.contextsForTesting({ onEach : act1 });
@@ -16029,6 +16369,7 @@ let Self =
 
   tests :
   {
+    fromLongLrange,
 
     assign,
 
