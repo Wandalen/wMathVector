@@ -684,21 +684,21 @@ dop.modifying = false;
 //
 
 /**
- * Routine shrinkAdapter() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * Routine shrinkAdapter_() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
  * End of range included. If provided range is outside of actual it will be adjusted.
  *
  * @example
- * var got = _.vectorAdapter.shrinkAdapter( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * var got = _.vectorAdapter.shrinkAdapter_( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got );
  * // log "2.000, 3.000, 4.000"
- * var got = _.vectorAdapter.shrinkAdapter( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
+ * var got = _.vectorAdapter.shrinkAdapter_( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
  * console.log( got );
  * // log "4.000, 5.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Range } crange - Defines range for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
- * @function shrinkAdapter
+ * @function shrinkAdapter_
  * @throws { Error } If arguments.length is not equal one or two.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-crange-} is not a Range.
@@ -727,21 +727,21 @@ dop.modifying = false;
 //
 
 /**
- * Routine shrinkLong() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * Routine shrinkLong_() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
  * End of range included. If provided range is outside of actual it will be adjusted.
  *
  * @example
- * var got = _.avector.shrinkLong( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * var got = _.avector.shrinkLong_( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got );
  * // log [ 2, 3, 4 ]
- * var got = _.avector.shrinkLong( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
+ * var got = _.avector.shrinkLong_( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
  * console.log( got );
  * // log [ 4, 5 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Range } crange - Defines range for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
- * @function shrinkLong
+ * @function shrinkLong_
  * @throws { Error } If arguments.length is not equal one or two.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-crange-} is not a Range.
