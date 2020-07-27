@@ -1945,6 +1945,7 @@ dop.modifying = true;
  * Routine reflect() calculate the reflection direction for an incident vector {-src-} and surface normal {-normal-}.
  * Reflection calculated as I - 2.0 * dot(N, I) * N where I {-src-} and N {-normal-}
  * Expected {-normal-} in normalized form.
+ *
  * @example
  * let src = this.fromLong( [ -1, -2, -3 ] )
  * let got = _.avector.reflect( src, _.vector.normalize( [ 1, 1, 1 ] ) );
@@ -1970,7 +1971,7 @@ dop.modifying = true;
  * @function reflect
  * @throws { Error } If arguments.length is not equal two or three.
  * @throws { Error } If {-src-} and {-normal-} are not vectors.
- * @throws { Error } If {-dst-} not null or not vector.
+ * @throws { Error } If {-dst-} is not null or not vector.
  * @throws { Error } If {-dst-} and {-src-} are different length.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2433,14 +2434,40 @@ dop.homogeneous = false;
  * Routine inv() replaces elements of vector {-dst-} by inverted values of vector {-src-}.
  *
  * @example
- * var got = _.avector.inv( [ 1, 2, 4 ], [ 0.25, 0.5, 1 ] );
+ * let got = _.avector.inv( [ 0.25, 0.5, 1, 0 ] );
+ * console.log( got );
+ * // log [ 4, 2, 1, Infinity ];
+ *
+ * let src = [ 0.25, 0.5, 1 ]
+ * let got = _.avector.inv( src );
  * console.log( got );
  * // log [ 4, 2, 1 ];
+ * console.log( src );
+ * // log [ 4, 2, 1 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 0.25, 0.5, 1 ]
+ * let got = _.avector.inv( null, src );
+ * console.log( got );
+ * // log [ 4, 2, 1 ];
+ * console.log( src );
+ * // log [ 0.25, 0.5, 1 ];
+
+ * let dst = [ 0, 0, 0 ]
+ * let src = [ 0.25, 0.5, 1 ]
+ * let got = _.avector.inv( dst, src );
+ * console.log( got );
+ * // log [ 4, 2, 1 ];
+ * console.log( dst );
+ * // log [ 4, 2, 1 ];
+ * console.log( src );
+ * // log [ 0.25, 0.5, 1 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function inv
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2460,14 +2487,40 @@ let inv = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * Routine invOrOne() replaces elements of vector {-dst-} by inverted values of vector {-src-}. If {-src-} element is 0, then element with its index sets to 1.
  *
  * @example
- * var got = _.avector.invOrOne( [ 1, 2, 4 ], [ 0.25, 0, 1 ] );
+ * let got = _.avector.invOrOne( [ 0.25, 0.5, 1, 0 ] );
  * console.log( got );
- * // log [ 4, 1, 1 ];
+ * // log [ 4, 2, 1, 1 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 0.25, 0.5, 1 ]
+ * let got = _.avector.invOrOne( src );
+ * console.log( got );
+ * // log [ 4, 2, 1 ];
+ * console.log( src );
+ * // log [ 4, 2, 1 ];
+ *
+ * let src = [ 0.25, 0.5, 1 ]
+ * let got = _.avector.invOrOne( null, src );
+ * console.log( got );
+ * // log [ 4, 2, 1 ];
+ * console.log( src );
+ * // log [ 0.25, 0.5, 1 ];
+
+ * let dst = [ 0, 0, 0 ]
+ * let src = [ 0.25, 0.5, 1 ]
+ * let got = _.avector.invOrOne( dst, src );
+ * console.log( got );
+ * // log [ 4, 2, 1 ];
+ * console.log( dst );
+ * // log [ 4, 2, 1 ];
+ * console.log( src );
+ * // log [ 0.25, 0.5, 1 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function invOrOne
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2490,14 +2543,40 @@ let invOrOne = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * Routine absRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} with absolute values.
  *
  * @example
- * var got = _.avector.absRoutine( [ 1, 2, 4 ], [ -2, 3, -1 ] );
+ * let got = _.avector.absRoutine( [ -2, 3, -1, 0 ] );
  * console.log( got );
- * // log [ 2, 3, 1 ];
+ * // log [ 2, 3, 1, 0 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ -2, 3, -1, 0 ]
+ * let got = _.avector.absRoutine( src );
+ * console.log( got );
+ * // log [ 2, 3, 1, 0 ];
+ * console.log( src );
+ * // log [ 2, 3, 1, 0 ];
+ *
+ * let src = [ -2, 3, -1, 0 ]
+ * let got = _.avector.absRoutine( null, src );
+ * console.log( got );
+ * // log [ 2, 3, 1, 0 ];
+ * console.log( src );
+ * // log [ -2, 3, -1, 0 ];
+
+ * let dst = [ 0, 0, 0, 0 ]
+ * let src = [ -2, 3, -1, 0 ]
+ * let got = _.avector.absRoutine( dst, src );
+ * console.log( got );
+ * // log [ 2, 3, 1, 0 ];
+ * console.log( dst );
+ * // log [ 2, 3, 1, 0 ];
+ * console.log( src );
+ * // log [ -2, 3, -1, 0 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function absRoutine
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2515,17 +2594,46 @@ let absRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //
 
 /**
- * Routine floorRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to smaller values.
+ * Routine floor() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to smaller values.
  *
  * @example
- * var got = _.avector.floorRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
+ * var got = _.avector.floor( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7, -1.4 ] );
  * console.log( got );
- * // log [ 1, 2, 1 ];
+ * // log [ 1, 2, 1, -2 ];
+ * let got = _.avector.floor( [ 1.25, 2.5, 1.7, -1.4 ] );
+ * console.log( got );
+ * // log [ 1, 2, 1, -2 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.floor( src );
+ * console.log( got );
+ * // log [ 1, 2, 1, -2 ];
+ * console.log( src );
+ * // log [ 1, 2, 1, -2 ];
+ *
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.floor( null, src );
+ * console.log( got );
+ * // log [ 1, 2, 1, -2 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+
+ * let dst = [ 0, 0, 0, 0 ]
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.floor( dst, src );
+ * console.log( got );
+ * // log [ 1, 2, 1, -2 ];
+ * console.log( dst );
+ * // log [ 1, 2, 1, -2 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function floorRoutine
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2543,17 +2651,46 @@ let floorRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //
 
 /**
- * Routine ceilRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to bigger values.
+ * Routine ceil() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to bigger values.
  *
  * @example
- * var got = _.avector.ceilRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
+ * var got = _.avector.ceil( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7, -1.4 ] );
  * console.log( got );
- * // log [ 2, 3, 2 ];
+ * // log [ 2, 3, 2, -1 ];
+ * let got = _.avector.ceil( [ 1.25, 2.5, 1.7, -1.4 ] );
+ * console.log( got );
+ * // log [ 2, 3, 2, -1 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.ceil( src );
+ * console.log( got );
+ * // log [ 2, 3, 2, -1 ];
+ * console.log( src );
+ * // log [ 2, 3, 2, -1 ];
+ *
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.ceil( null, src );
+ * console.log( got );
+ * // log [ 2, 3, 2, -1 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+
+ * let dst = [ 0, 0, 0, 0 ]
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.ceil( dst, src );
+ * console.log( got );
+ * // log [ 2, 3, 2, -1 ];
+ * console.log( dst );
+ * // log [ 2, 3, 2, -1 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function ceilRoutine
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2570,17 +2707,46 @@ let ceilRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 //
 
 /**
- * Routine roundRoutine() replaces elements of vector {-dst-} by elements of vector {-src-} with rounded values.
+ * Routine round() replaces elements of vector {-dst-} by elements of vector {-src-} with rounded values.
  *
  * @example
- * var got = _.avector.roundRoutine( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7 ] );
+ * var got = _.avector.round( [ 1, 2, 4 ], [ 1.25, 2.5, 1.7, -1.4 ] );
  * console.log( got );
- * // log [ 1, 3, 2 ];
+ * // log [ 1, 3, 1, -1 ];
+ * let got = _.avector.round( [ 1.25, 2.5, 1.7, -1.4 ] );
+ * console.log( got );
+ * // log [ 1, 3, 1, -1 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.round( src );
+ * console.log( got );
+ * // log [ 1, 3, 1, -1 ];
+ * console.log( src );
+ * // log [ 1, 3, 1, -1 ];
+ *
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.round( null, src );
+ * console.log( got );
+ * // log [ 1, 3, 1, -1 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+
+ * let dst = [ 0, 0, 0, 0 ]
+ * let src = [ 1.25, 2.5, 1.7, -1.4 ]
+ * let got = _.avector.round( dst, src );
+ * console.log( got );
+ * // log [ 1, 3, 1, -1 ];
+ * console.log( dst );
+ * // log [ 1, 3, 1, -1 ];
+ * console.log( src );
+ * // log [ 1.25, 2.5, 1.7, -1.4 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function roundRoutine
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2601,14 +2767,44 @@ let roundRoutine = meta._operationTakingDstSrcReturningSelfComponentWise_functor
  * Routine ceilToPowerOfTwo() replaces elements of vector {-dst-} by elements of vector {-src-} that rounded to closes value power of two.
  *
  * @example
- * var got = _.avector.ceilToPowerOfTwo( [ 1, 2, 4 ], [ 3, 5, 13 ] );
+ * let got = _.avector.ceilToPowerOfTwo( [ 3, 5, 13 ] );
+ * console.log( got );
+ * // log [ 4, 8, 16 ];
+ * @example
+ * let got = _.avector.ceilToPowerOfTwo( [ 3, 5, 13 ] );
  * console.log( got );
  * // log [ 4, 8, 16 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 3, 5, 13 ]
+ * let got = _.avector.ceilToPowerOfTwo( src );
+ * console.log( got );
+ * // log [ 4, 8, 16 ];
+ * console.log( src );
+ * // log [ 4, 8, 16 ];
+ *
+ * let src = [ 3, 5, 13 ]
+ * let got = _.avector.ceilToPowerOfTwo( null, src );
+ * console.log( got );
+ * // log [ 4, 8, 16 ];
+ * console.log( src );
+ * // log [ 3, 5, 13 ];
+
+ * let dst = [ 0, 0, 0 ]
+ * let src = [ 3, 5, 13 ]
+ * let got = _.avector.ceilToPowerOfTwo( dst, src );
+ * console.log( got );
+ * // log [ 4, 8, 16 ];
+ * console.log( dst );
+ * // log [ 4, 8, 16 ];
+ * console.log( src );
+ * // log [ 3, 5, 13 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function ceilToPowerOfTwo
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -2628,14 +2824,40 @@ let ceilToPowerOfTwo = meta._operationTakingDstSrcReturningSelfComponentWise_fun
  * Routine normalize() replaces elements of vector {-dst-} by elements of vector {-src-} that multiplied on square root of sum of squares of {-src-} elements.
  *
  * @example
- * var got = _.avector.normalize( [ 1, 2, 4 ], [ 1, 1, 1 ] );
+ * let got = _.avector.normalize( [ 1, 1, 1 ] );
  * console.log( got );
  * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
  *
- * @param { Long|VectorAdapter } dst - Destination vector.
+ * let src = [ 1, 1, 1 ]
+ * let got = _.avector.normalize( src );
+ * console.log( got );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ * console.log( src );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ *
+ * let src = [ 1, 1, 1 ]
+ * let got = _.avector.normalize( null, src );
+ * console.log( got );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ * console.log( src );
+ * // log [ 1, 1, 1 ];
+
+ * let dst = [ 0, 0, 0 ]
+ * let src = [ 1, 1, 1 ]
+ * let got = _.avector.normalize( dst, src );
+ * console.log( got );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ * console.log( dst );
+ * // log [ 0.5773502691896258, 0.5773502691896258, 0.5773502691896258 ];
+ * console.log( src );
+ * // log [ 1, 1, 1 ];
+ *
+ * @param { Long|VectorAdapter|Null } dst - Destination vector.
  * @param { Long|VectorAdapter } src - Source vector.
  * @returns { Long|VectorAdapter } - Returns destination vector with replaced elements.
  * @function normalize
+ * @throws { Error } If {-dst-} is not null or not vector.
+ * @throws { Error } If {-src-} is not vector.
  * @throws { Error } If dst.length and src.length are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
@@ -4784,9 +5006,9 @@ let _routinesMathematical =
   inv,
   invOrOne,
 
+  abs : absRoutine,
   floor : floorRoutine,
   ceil : ceilRoutine,
-  abs : absRoutine,
   round : roundRoutine,
 
   ceilToPowerOfTwo,
@@ -4868,6 +5090,8 @@ let _routinesMathematical =
   _routineHomogeneousDeclare,
   routinesHomogeneousDeclare,
   */
+
+  // experiment1 : Routines.experiment1,
 
   add : Routines.add,
   sub : Routines.sub,
