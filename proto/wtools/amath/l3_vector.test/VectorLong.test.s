@@ -1148,6 +1148,144 @@ function fromLongLrangeAndStride ( test )
 
 //
 
+function fromLongWithStride ( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  function testRun( makeLong )
+  {
+
+    test.case = 'one-element array, stride = 1';
+    var src = new makeLong( [ 1 ] );
+    var got = _.vad.fromLongWithStride( src, 1 );
+    var expected = [ 1 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    /* */
+
+    test.case = 'two-element array, stride = 1';
+    var src = new makeLong( [ 1, 2 ] );
+    var got = _.vad.fromLongWithStride( src, 1 );
+    var expected = [ 1, 2 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'two-element array, stride = 2';
+    var src = new makeLong( [ 1, 2 ] );
+    var got = _.vad.fromLongWithStride( src, 2 );
+    var expected = [ 1 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    /* */
+
+    test.case = 'filled array, stride = 1';
+    var src = new makeLong( [ 0, 1, 2, 3, -4, -5, -6, 7, 8, 9, -10, -11 ] );
+    var got = _.vad.fromLongWithStride( src, 1 );
+    var expected = [ 0, 1, 2, 3, -4, -5, -6, 7, 8, 9, -10, -11 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'filled array, stride = 2';
+    var src = new makeLong( [ 0, 1, 2, 3, -4, -5, -6, 7, 8, 9, -10, -11 ] );
+    var got = _.vad.fromLongWithStride( src, 2 );
+    var expected = [ 0, 2, -4, -6, 8, -10 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'filled array, stride = 3';
+    var src = new makeLong( [ 0, 1, 2, 3, -4, -5, -6, 7, 8, 9, -10, -11 ] );
+    var got = _.vad.fromLongWithStride( src, 3 );
+    var expected = [ 0, 3, -6, 9 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'filled array, stride = 6';
+    var src = new makeLong( [ 0, 1, 2, 3, -4, -5, -6, 7, 8, 9, -10, -11 ] );
+    var got = _.vad.fromLongWithStride( src, 6 );
+    var expected = [ 0, -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'filled array, stride = 11';
+    var src = new makeLong( [ 0, 1, 2, 3, -4, -5, -6, 7, 8, 9, -10, -11 ] );
+    var got = _.vad.fromLongWithStride( src, 11 );
+    var expected = [ 0, -11 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'filled array, stride = 18';
+    var src = new makeLong( [ 0, 1, 2, 3, -4, -5, -6, 7, 8, 9, -10, -11 ] );
+    var got = _.vad.fromLongWithStride( src, 18 );
+    var expected = [ 0 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  /* */
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride() );
+
+  test.case = 'wrong arguments.length';
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride( [ 1, 2, 3 ], 1, 1 ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride( null, 1 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride( 5, 1 ) );
+
+  test.case = 'wrong type of stride';
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride( [ 1, 2 ], [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride( [ 1, 2 ], null ) );
+
+  test.case = 'negative stride';
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride( [ 1, 2, 3, 4 ], -1 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride( [ 1, 2, 3, 4 ], -2 ) );
+
+  test.case = 'zero stride';
+  test.shouldThrowErrorSync( () => _.vad.fromLongWithStride( [ 1, 2, 3, 4 ], 0 ) );
+
+}
+
+//
+
 function assign( test )
 {
   _.vectorAdapter.contextsForTesting({ onEach : act1 });
@@ -17156,6 +17294,7 @@ let Self =
     fromLong,
     fromLongLrange,
     fromLongLrangeAndStride,
+    fromLongWithStride,
 
     assign,
 
