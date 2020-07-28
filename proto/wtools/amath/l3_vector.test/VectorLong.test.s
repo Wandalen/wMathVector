@@ -486,6 +486,24 @@ function fromLongLrangeAndStride ( test )
 
     test.case = 'offset = 0, length = 1, stride = 1';
     var src = new makeLong( [ 1, 2 ] );
+    var got = _.vad.fromLongLrangeAndStride( src, 0, 0, 1 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length = 1, stride = 2';
+    var src = new makeLong( [ 1, 2 ] );
+    var got = _.vad.fromLongLrangeAndStride( src, 0, 0, 2 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+      test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 0, length = 1, stride = 1';
+    var src = new makeLong( [ 1, 2 ] );
     var got = _.vad.fromLongLrangeAndStride( src, 0, 1, 1 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -526,6 +544,33 @@ function fromLongLrangeAndStride ( test )
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
     test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length = 0, stride = 1';
+    var src = new makeLong( [ 1, 2 ] );
+    var got = _.vad.fromLongLrangeAndStride( src, 1, 0, 1 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length = 0, stride = 2';
+    var src = new makeLong( [ 1, 2 ] );
+    var got = _.vad.fromLongLrangeAndStride( src, 1, 0, 2 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    test.case = 'offset = 1, length = 0, stride = -2';
+    var src = new makeLong( [ 1, 2 ] );
+    var got = _.vad.fromLongLrangeAndStride( src, 1, 0, 2 );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+      test.identical( got.eGet( i ), expected[ i ] );
     test.identical( got.length, expected.length );
     test.is( got._vectorBuffer === src );
 
@@ -1090,14 +1135,14 @@ function fromLongLrangeAndStride ( test )
   test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [ 1, 2, 3, 4 ], [ 1, -2 ], 1 ) );
 
   test.case = 'offset + ( length - 1 ) * stride >= 0';
-  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [1, 2, 3], 0, 2, -1 ) );
-  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [1, 2, 3], 1, 2, -2 ) );
-  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [1, 2, 3], 2, 3, -2 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [ 1, 2, 3 ], 0, 2, -1 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [ 1, 2, 3 ], 1, 2, -2 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [ 1, 2, 3 ], 2, 3, -2 ) );
 
   test.case = 'offset + ( length - 1 ) * stride < srcLong.length';
-  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [1, 2, 3], 0, 2, 3 ) );
-  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [1, 2, 3], 0, 3, 2 ) );
-  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [1, 2, 3], 1, 2, 2 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [ 1, 2, 3 ], 0, 2, 3 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [ 1, 2, 3 ], 0, 3, 2 ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLongLrangeAndStride( [ 1, 2, 3 ], 1, 2, 2 ) );
 
 }
 
@@ -1150,6 +1195,7 @@ function assign( test )
     test.open( `dst - vectorAdapter, ${a.format} ${a.form}` );
 
     test.case = 'dst - empty, without src';
+    debugger
     var dst = a.vadMake([]);
     var got = _.avector.assign( dst );
     var exp = a.longMake([]);

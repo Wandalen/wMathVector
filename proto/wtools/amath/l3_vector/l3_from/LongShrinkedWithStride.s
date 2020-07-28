@@ -124,7 +124,7 @@ function fromLongLrangeAndStride( srcLong, offset, length, stride )
 
   _.assert( offset >= 0 );
   _.assert( length >= 0 );
-  _.assert( offset + ( length - 1 ) * stride >= 0 );
+  _.assert( offset + ( length - 1 ) * stride >= 0 || length === 0 );
   // _.assert( length <= srcLong.length-offset || length === 0 );
   _.assert( offset+(length-1)*stride < srcLong.length );
 
