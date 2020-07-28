@@ -25,6 +25,61 @@ _.assert( _.routineIs( sqrt ) );
 // test
 // --
 
+function fromLong ( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    I32x
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( `long - ${ list[ i ].name }` );
+    testRun( list[ i ] );
+    test.close( `long - ${ list[ i ].name }` );
+  }
+
+  function testRun( makeLong )
+  {
+
+    test.case = 'from empty array';
+    var src = new makeLong( [] );
+    var got = _.vad.fromLong( src );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+    /* */
+
+    test.case = 'from filled array';
+    var src = new makeLong( [ 1, 2, 3, -4, -5, -6 ] );
+    var got = _.vad.fromLong( src );
+    var expected = [ 1, 2, 3, -4, -5, -6 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.is( got._vectorBuffer === src );
+
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vad.fromLong() );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.fromLong( false ) );
+  test.shouldThrowErrorSync( () => _.vad.fromLong( 5 ) );
+}
+
+//
+
 function fromLongLrange ( test )
 {
   var list =
@@ -364,6 +419,8 @@ function fromLongLrange ( test )
   test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 4, 1 ) );
   test.shouldThrowErrorSync( () => _.vad.fromLongLrange( [ 1, 2, 3, 4 ], 5, 0 ) );
 }
+
+//
 
 function assign( test )
 {
@@ -16369,7 +16426,9 @@ let Self =
 
   tests :
   {
+    fromLong,
     fromLongLrange,
+    fromLongLrangeAndStride,
 
     assign,
 

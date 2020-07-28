@@ -23,6 +23,33 @@ let _ = _global_.wTools.withDefaultLong.Fx;
 // from
 // --
 
+function fromLong ( test )
+{
+
+  test.case = 'from empty array';
+  var src = _.vad.make( 0 );
+  var got = _.vad.fromLong( src );
+  test.identical( got.length, 0 );
+  test.is( got._vectorBuffer === src._vectorBuffer );
+
+  /* */
+
+  test.case = 'from filled array';
+  var longSrc = [ 1, 2, 3, -4, -5, -6 ];
+  var src = _.vad.make( longSrc.length );
+  for( let i = 0 ; i < longSrc.length ; i++ )
+  src.eSet( i, longSrc[ i ] );
+  var got = _.vad.fromLong( src );
+  var expected = [ 1, 2, 3, -4, -5, -6 ];
+  for( let i = 0 ; i < expected.length ; i++ )
+  test.identical( got.eGet( i ), expected[ i ] );
+  test.identical( got.length, expected.length );
+  test.is( got._vectorBuffer === src._vectorBuffer );
+
+}
+
+//
+
 function fromLongLrange ( test )
 {
 
@@ -10842,6 +10869,7 @@ let Self =
   {
     // from
 
+    fromLong,
     fromLongLrange,
 
     // is
