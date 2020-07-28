@@ -82,7 +82,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
  * Routine fromLongLrange() creates vector from part of source Long `srcLong`. Offset and length may be passed as arguments or as range array as second argument.
  *
  * @param { Long|VectorAdapter } srcLong - Source Long or vector.
- * @param { Number|Range } offset - Offset in source Long or range with offset and length
+ * @param { Number|Range } offset - Offset in source Long or range with offset and length.
  * @param { Number } length - Length of new vector.
  *
  * @example
@@ -98,7 +98,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
  *
  * @returns { VectorAdapter } - Returns new VectorAdapter from part of source Long.
  * @function fromLongLrange
- * @throws { Error } If arguments.length is not equal two or three.
+ * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-offset-} < 0.
  * @throws { Error } If {-length-} < 0.
  * @throws { Error } If {-offset-} + {-length-} > {-srcLong-}.length.

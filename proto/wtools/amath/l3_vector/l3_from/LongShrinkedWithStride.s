@@ -82,7 +82,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
  * vector are selected with a defined stride.
  *
  * @param { Long|VectorAdapter } srcLong - Source vector.
- * @param { Number } offset - Offset to sub array in source array `srcLong`.
+ * @param { Number|Range } offset - Offset to sub array in source array `srcLong` or range with offset and length.
  * @param { Number } length - Length of new vector.
  * @param { Number } stride - The stride to select elements of new vector.
  *
@@ -92,8 +92,18 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
  * console.log( got.toStr() );
  * // log "2.000, 4.000, 6.000"
  *
+ * var srcLong = [ 1, 2, 3, 4, 5, 6, 7 ];
+ * var got = _.vector.fromLongLrangeAndStride( srcLong, 5, 2, -2 );
+ * console.log( got.toStr() );
+ * // log "6.000, 4.000"
+ *
  * @returns { VectorAdapter } - Returns new VectorAdapter.
  * @function fromLongLrangeAndStride
+ * @throws { Error } If arguments.length is not equal three or four.
+ * @throws { Error } If {-offset-} < 0.
+ * @throws { Error } If {-length-} < 0.
+ * @throws { Error } If {-offset-} + ( {-length-} - 1 ) * {-stride-} >= 0.
+ * @throws { Error } If {-offset-} + ( {-length-} - 1 ) * {-stride-} < {-srcLong-}.length.
  * @namespace wTools.vectorAdapter
  * @module Tools/math/Vector
  */
@@ -101,7 +111,7 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 function fromLongLrangeAndStride( srcLong, offset, length, stride )
 {
 
-  if( _.rangeIs( arguments[ 1 ] ) ) /* qqq : make sure it is covered */
+  if( _.rangeIs( arguments[ 1 ] ) ) /* qqq : make sure it is covered */ /* Andrey: cover */
   {
     [ offset, length ] = arguments[ 1 ];
     stride = arguments[ 2 ];
@@ -113,6 +123,8 @@ function fromLongLrangeAndStride( srcLong, offset, length, stride )
   }
 
   _.assert( offset >= 0 );
+  _.assert( length >= 0 );
+  _.assert( offset + ( length - 1 ) * stride >= 0 );
   // _.assert( length <= srcLong.length-offset || length === 0 );
   _.assert( offset+(length-1)*stride < srcLong.length );
 
