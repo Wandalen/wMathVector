@@ -582,7 +582,7 @@ function growLong( test )
 
   test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], with val';
   var src = _.vad.fromLong( [ 1, -2, 3, -5 ] );
-  var got = _.avector.growLong( src, [ -2, 4 ], 7 );
+  var got = _.vad.growLong( src, [ -2, 4 ], 7 );
   var exp = [ 7, 7, 1, -2, 3, -5, 7 ];
   test.identical( got, exp );
   test.is( got !== src );
@@ -885,7 +885,7 @@ function shrinkLong_( test )
 
   test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ]';
   var src = _.vad.fromLong( [ 1, -2, 3, -5, 8 ] );
-  var got = _.avector.shrinkLong_( src, [ 2, 4 ] );
+  var got = _.vad.shrinkLong_( src, [ 2, 4 ] );
   var exp = [ 3, -5, 8 ];
   test.identical( got, exp );
   test.is( got !== src );
