@@ -526,6 +526,7 @@ function growLong( src, crange, val )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.vectorAdapterIs( src ) );
 
   // debugger;
   if( val === undefined )
@@ -533,6 +534,9 @@ function growLong( src, crange, val )
   if( crange === undefined )
   crange = [ 0, src.length-1 ];
   // crange = [ 0, src.length ]; // Dmytro : wrong range, should be an crange instead of orange, adds 1 element */
+
+  _.assert( _.rangeIs( crange ) );
+  _.assert( _.numberIs( val ) );
 
   if( crange[ 0 ] >= 0 )
   crange[ 0 ] = 0;
@@ -592,7 +596,7 @@ dop.modifying = false;
  * // log "2.000, 3.000, 4.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines ranges for copying.
+ * @param { Range } crange - Defines range for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
  * @function shrinkAdapter
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -631,7 +635,7 @@ dop.modifying = false;
  * // log [ 2, 3, 4 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines ranges for copying.
+ * @param { Range } crange - Defines range for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
  * @function shrinkLong
  * @throws { Error } If arguments.length is less then one or more then three.
@@ -666,6 +670,120 @@ function shrinkLong( src, crange )
 }
 
 dop = shrinkLong.operation = Object.create( null );
+dop.input = 'vr ?s';
+dop.scalarWise = false;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = 1;
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = true;
+dop.modifying = false;
+
+//
+
+/**
+ * Routine shrinkAdapter_() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * End of range included. If provided range is outside of actual it will be adjusted.
+ *
+ * @example
+ * var got = _.vectorAdapter.shrinkAdapter_( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * console.log( got );
+ * // log "2.000, 3.000, 4.000"
+ * var got = _.vectorAdapter.shrinkAdapter_( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
+ * console.log( got );
+ * // log "4.000, 5.000"
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines range for copying.
+ * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
+ * @function shrinkAdapter_
+ * @throws { Error } If arguments.length is not equal one or two.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @namespaces "wTools.avector","wTools.vectorAdapter"
+ * @module Tools/math/Vector
+ */
+
+function shrinkAdapter_( src, crange )
+{
+  let result = this.shrinkLong_.apply( this, arguments );
+  return this.fromLong( result );
+}
+
+dop = shrinkAdapter_.operation = Object.create( null );
+dop.input = 'vr ?s';
+dop.scalarWise = false;
+dop.homogeneous = false;
+dop.takingArguments = [ 1, 2 ];
+dop.takingVectors = 1;
+dop.takingVectorsOnly = false;
+dop.returningSelf = false;
+dop.returningNew = false;
+dop.returningLong = true;
+dop.modifying = false;
+
+//
+
+/**
+ * Routine shrinkLong_() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * End of range included. If provided range is outside of actual it will be adjusted.
+ *
+ * @example
+ * var got = _.avector.shrinkLong_( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ * var got = _.avector.shrinkLong_( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
+ * console.log( got );
+ * // log [ 4, 5 ]
+ *
+ * @param { Long|VectorAdapter } src - Source vector.
+ * @param { Range } crange - Defines range for copying.
+ * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
+ * @function shrinkLong_
+ * @throws { Error } If arguments.length is not equal one or two.
+ * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
+ * @throws { Error } If {-crange-} is not a Range.
+ * @namespaces "wTools.avector","wTools.vectorAdapter"
+ * @module Tools/math/Vector
+ */
+
+function shrinkLong_( src, crange )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.vectorAdapterIs( src ) );
+
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+
+  _.assert( _.rangeIs( crange ) );
+
+  if( crange[ 0 ] < 0 )
+  crange[ 0 ] = 0;
+  if( crange[ 1 ] > src.length - 1 )
+  crange[ 1 ] = src.length - 1;
+  if( crange[ 0 ] > crange[ 1 ] || src.length === 0 )
+  {
+    crange[ 1 ] = -1;
+    crange[ 0 ] = 0;
+  }
+
+  let l = crange[ 1 ] - crange[ 0 ] + 1;
+  let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
+
+  /* qqq : optimize */
+
+  let l2 = crange[ 0 ];
+  for( let i = 0 ; i < l ; i++ )
+  result[ i ] = src.eGet( i + l2 );
+
+  return result;
+
+}
+
+dop = shrinkLong_.operation = Object.create( null );
 dop.input = 'vr ?s';
 dop.scalarWise = false;
 dop.homogeneous = false;
@@ -2006,7 +2124,7 @@ function refract() // dst, src, normal, eta
 
 dop = refract.operation = Object.create( null );
 dop.input = '?vw|?n vr vr s';
-dop.scalarWise = false; // ?
+dop.scalarWise = false;
 dop.homogeneous = false;
 dop.takingArguments = [ 3, 4 ];
 dop.takingVectors = [ 2, 3 ];
@@ -4832,6 +4950,8 @@ let _routinesMathematical =
   shrink : shrinkAdapter,
   shrinkAdapter,
   shrinkLong,
+  shrinkAdapter_,
+  shrinkLong_,
 
   // resizedAdapter, /* zzz : deprecate */
   // resizedLong, /* zzz : deprecate */

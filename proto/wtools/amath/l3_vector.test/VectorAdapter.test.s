@@ -260,577 +260,302 @@ function assign( test )
 
 function growAdapter( test )
 {
-  _.vectorAdapter.contextsForTesting({ onEach : act });
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
   function act( a )
   {
     test.case = 'src - empty vectorAdapter, without crange and val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter();
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
+    var src = _.vad.fromLong( a.longMake( [] ) );
+    var got = _.vad.growAdapter( src );
+    var exp = _.vad.fromLong( a.longMake( [] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     /* - */
 
-    test.open( `different type of long, ${ a.format }` );
+    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }, src - empty` );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter([ 0, 0 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0 ]) );
+    test.case = 'crange - [ 0, 0 ], no val';
+    var src = a.vadMake( [] );
+    var got = _.vad.growAdapter( src, [ 0, 0 ] );
+    var exp = a.vadMake( [ 0 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter([ 0, 2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 0 ]) );
+    test.case = 'crange - [ 0, 2 ], no val';
+    var src = a.vadMake( [] );
+    var got = _.vad.growAdapter( src, [ 0, 2 ] );
+    var exp = a.vadMake( [ 0, 0, 0 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter([ 0, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
+    test.case = 'crange - [ 0, -2 ], no val';
+    var src = a.vadMake( [] );
+    var got = _.vad.growAdapter( src, [ 0, -2 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter([ 2, 2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 0 ]) );
+    test.case = 'crange - [ 2, 2 ], no val';
+    var src = a.vadMake( [] );
+    var got = _.vad.growAdapter( src, [ 2, 2 ] );
+    var exp = a.vadMake( [ 0, 0, 0 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter([ 2, 4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 0, 0, 0 ]) );
+    test.case = 'crange - [ 2, 4 ], no val';
+    var src = a.vadMake( [] );
+    var got = _.vad.growAdapter( src, [ 2, 4 ] );
+    var exp = a.vadMake( [ 0, 0, 0, 0, 0 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter([ 2, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
+    test.case = 'crange - [ 2, -2 ], no val';
+    var src = a.vadMake( [] );
+    var got = _.vad.growAdapter( src, [ 2, -2 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter([ -2, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0 ]) );
+    test.case = 'crange - [ -2, -2 ], no val';
+    var src = a.vadMake( [] );
+    var got = _.vad.growAdapter( src, [ -2, -2 ] );
+    var exp = a.vadMake( [ 0, 0 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter([ -2, 0 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 0 ]) );
+    test.case = 'crange - [ -2, 0 ], no val';
+    var src = a.vadMake( [] );
+    var got = _.vad.growAdapter( src, [ -2, 0 ] );
+    var exp = a.vadMake( [ 0, 0, 0 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter([ -2, -4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0 ]) );
+    test.case = 'crange - [ -2, -4 ], no val';
+    var src = a.vadMake( [] );
+    var got = _.vad.growAdapter( src, [ -2, -4 ] );
+    var exp = a.vadMake( [ 0, 0 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.close( `different type of long, ${ a.format }` );
+    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }, src - empty` );
 
     /* - */
 
-    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
+    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }, src - empty` );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 0 ], no val';
+    test.case = 'crange - [ 0, 0 ], with val';
     var src = a.vadMake( [] );
-    var got = src.growAdapter([ 0, 0 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0 ]) );
+    var got = _.vad.growAdapter( src, [ 0, 0 ], 7 );
+    var exp = a.vadMake( [ 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 2 ], no val';
+    test.case = 'crange - [ 0, 2 ], with val';
     var src = a.vadMake( [] );
-    var got = src.growAdapter([ 0, 2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 0 ]) );
+    var got = _.vad.growAdapter( src, [ 0, 2 ], 7 );
+    var exp = a.vadMake( [ 7, 7, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, -2 ], no val';
+    test.case = 'crange - [ 0, -2 ], with val';
     var src = a.vadMake( [] );
-    var got = src.growAdapter([ 0, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
+    var got = _.vad.growAdapter( src, [ 0, -2 ], 7 );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 2 ], no val';
+    test.case = 'crange - [ 2, 2 ], with val';
     var src = a.vadMake( [] );
-    var got = src.growAdapter([ 2, 2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 0 ]) );
+    var got = _.vad.growAdapter( src, [ 2, 2 ], 7 );
+    var exp = a.vadMake( [ 7, 7, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 4 ], no val';
+    test.case = 'crange - [ 2, 4 ], with val';
     var src = a.vadMake( [] );
-    var got = src.growAdapter([ 2, 4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 0, 0, 0 ]) );
+    var got = _.vad.growAdapter( src, [ 2, 4 ], 7 );
+    var exp = a.vadMake( [ 7, 7, 7, 7, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, -2 ], no val';
+    test.case = 'crange - [ 2, -2 ], with val';
     var src = a.vadMake( [] );
-    var got = src.growAdapter([ 2, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
+    var got = _.vad.growAdapter( src, [ 2, -2 ], 7 );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -2 ], no val';
+    test.case = 'crange - [ -2, -2 ], with val';
     var src = a.vadMake( [] );
-    var got = src.growAdapter([ -2, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0 ]) );
+    var got = _.vad.growAdapter( src, [ -2, -2 ], 7 );
+    var exp = a.vadMake( [ 7, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, 0 ], no val';
+    test.case = 'crange - [ -2, 0 ], with val';
     var src = a.vadMake( [] );
-    var got = src.growAdapter([ -2, 0 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 0 ]) );
+    var got = _.vad.growAdapter( src, [ -2, 0 ], 7 );
+    var exp = a.vadMake( [ 7, 7, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -4 ], no val';
+    test.case = 'crange - [ -2, -4 ], with val';
     var src = a.vadMake( [] );
-    var got = src.growAdapter([ -2, -4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0 ]) );
+    var got = _.vad.growAdapter( src, [ -2, -4 ], 7 );
+    var exp = a.vadMake( [ 7, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
-
-    /* - */
-
-    test.open( `different type of long, ${ a.format }` );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 0 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter( [ 0, 0 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter( [ 0, 2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter( [ 0, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter( [ 2, 2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 4 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter( [ 2, 4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 7, 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter( [ 2, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter( [ -2, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, 0 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter( [ -2, 0 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -4 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growAdapter( [ -2, -4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.close( `different type of long, ${ a.format }` );
-
-    /* - */
-
-    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 0 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growAdapter( [ 0, 0 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growAdapter( [ 0, 2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, -2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growAdapter( [ 0, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growAdapter( [ 2, 2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 4 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growAdapter( [ 2, 4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 7, 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, -2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growAdapter( [ 2, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growAdapter( [ -2, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, 0 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growAdapter( [ -2, 0 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -4 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growAdapter( [ -2, -4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
+    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }, src - empty` );
 
     /* - */
 
     test.case = 'src - filled vectorAdapter, without crange and val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter();
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    var src = _.vad.fromLong( a.vadMake( [ 1, -2, 3, -5 ] ) );
+    var got = _.vad.growAdapter( src );
+    var exp = _.vad.fromLong( a.vadMake( [ 1, -2, 3, -5 ] ) );
     test.identical( got, exp );
     test.is( got !== src );
 
     /* - */
 
-    test.open( `different type of long, ${ a.format }` );
+    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }, src - filled` );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter([ 0, 0 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    test.case = 'crange - [ 0, 0 ], no val';
+    var src = a.vadMake( [ 1, -2, 3, -5 ] );
+    var got = _.vad.growAdapter( src, [ 0, 0 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter([ 0, 2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    test.case = 'crange - [ 0, 2 ], no val';
+    var src = a.vadMake( [ 1, -2, 3, -5 ] );
+    var got = _.vad.growAdapter( src, [ 0, 2 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter([ 0, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    test.case = 'crange - [ 0, -2 ], no val';
+    var src = a.vadMake( [ 1, -2, 3, -5 ] );
+    var got = _.vad.growAdapter( src, [ 0, -2 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter([ 2, 2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    test.case = 'crange - [ 2, 2 ], no val';
+    var src = a.vadMake( [ 1, -2, 3, -5 ] );
+    var got = _.vad.growAdapter( src, [ 2, 2 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter([ 2, 4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5, 0 ]) );
+    test.case = 'crange - [ 2, 4 ], no val';
+    var src = a.vadMake( [ 1, -2, 3, -5 ] );
+    var got = _.vad.growAdapter( src, [ 2, 4 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5, 0 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter([ 2, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    test.case = 'crange - [ 2, -2 ], no val';
+    var src = a.vadMake( [ 1, -2, 3, -5 ] );
+    var got = _.vad.growAdapter( src, [ 2, -2 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter([ -2, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 1, -2, 3, -5 ]) );
+    test.case = 'crange - [ -2, -2 ], no val';
+    var src = a.vadMake( [ 1, -2, 3, -5 ] );
+    var got = _.vad.growAdapter( src, [ -2, -2 ] );
+    var exp = a.vadMake( [ 0, 0, 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter([ -2, 4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 1, -2, 3, -5, 0 ]) );
+    test.case = 'crange - [ -2, 0 ], no val';
+    var src = a.vadMake( [ 1, -2, 3, -5 ] );
+    var got = _.vad.growAdapter( src, [ -2, 4 ] );
+    var exp = a.vadMake( [ 0, 0, 1, -2, 3, -5, 0 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter([ -2, -4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 1, -2, 3, -5 ]) );
+    test.case = 'crange - [ -2, -4 ], no val';
+    var src = a.vadMake( [ 1, -2, 3, -5 ] );
+    var got = _.vad.growAdapter( src, [ -2, -4 ] );
+    var exp = a.vadMake( [ 0, 0, 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.close( `different type of long, ${ a.format }` );
+    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }, src - filled` );
 
     /* - */
 
-    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
+    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }, src - filled` );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 0 ], no val';
+    test.case = 'crange - [ 0, 0 ], with val';
     var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter([ 0, 0 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    var got = _.vad.growAdapter( src, [ 0, 0 ], 7 );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 2 ], no val';
+    test.case = 'crange - [ 0, 2 ], with val';
     var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter([ 0, 2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    var got = _.vad.growAdapter( src, [ 0, 2 ], 7 );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, -2 ], no val';
+    test.case = 'crange - [ 0, -2 ], with val';
     var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter([ 0, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    var got = _.vad.growAdapter( src, [ 0, -2 ], 7 );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 2 ], no val';
+    test.case = 'crange - [ 2, 2 ], with val';
     var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter([ 2, 2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    var got = _.vad.growAdapter( src, [ 2, 2 ], 7 );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ], no val';
+    test.case = 'crange - [ 2, 4 ], with val';
     var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter([ 2, 4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5, 0 ]) );
+    var got = _.vad.growAdapter( src, [ 2, 4 ], 7 );
+    var exp = a.vadMake( [ 1, -2, 3, -5, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, -2 ], no val';
+    test.case = 'crange - [ 2, -2 ], with val';
     var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter([ 2, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
+    var got = _.vad.growAdapter( src, [ 2, -2 ], 7 );
+    var exp = a.vadMake( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -2 ], no val';
+    test.case = 'crange - [ -2, -2 ], with val';
     var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter([ -2, -2 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 1, -2, 3, -5 ]) );
+    var got = _.vad.growAdapter( src, [ -2, -2 ], 7 );
+    var exp = a.vadMake( [ 7, 7, 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], no val';
+    test.case = 'crange - [ -2, 0 ], with val';
     var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter([ -2, 4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 1, -2, 3, -5, 0 ]) );
+    var got = _.vad.growAdapter( src, [ -2, 4 ], 7 );
+    var exp = a.vadMake( [ 7, 7, 1, -2, 3, -5, 7 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -4 ], no val';
+    test.case = 'crange - [ -2, -4 ], with val';
     var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter([ -2, -4 ]);
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 0, 0, 1, -2, 3, -5 ]) );
+    var got = _.vad.growAdapter( src, [ -2, -4 ], 7 );
+    var exp = a.vadMake( [ 7, 7, 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
+    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }, src - filled` );
 
-    /* - */
-
-    test.open( `different type of long, ${ a.format }` );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 0 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter( [ 0, 0 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter( [ 0, 2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter( [ 0, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter( [ 2, 2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter( [ 2, 4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter( [ 2, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter( [ -2, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter( [ -2, 4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 1, -2, 3, -5, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -4 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growAdapter( [ -2, -4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.close( `different type of long, ${ a.format }` );
-
-    /* - */
-
-    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 0 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter( [ 0, 0 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter( [ 0, 2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, -2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter( [ 0, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter( [ 2, 2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter( [ 2, 4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, -2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter( [ 2, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter( [ -2, -2 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter( [ -2, 4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 1, -2, 3, -5, 7 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -4 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growAdapter( [ -2, -4 ], 7 );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 7, 7, 1, -2, 3, -5 ]) );
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
   }
 
   /* - */
@@ -839,10 +564,13 @@ function growAdapter( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.vectorAdapter.growAdapter() );
+  test.shouldThrowErrorSync( () => _.vad.growAdapter() );
+
+  test.case = 'wrong src';
+  test.shouldThrowErrorSync( () => _.vad.growAdapter( 5, [ 1, 2 ] ) );
 
   test.case = 'extra arguments';
-  var src = _.vectorAdapter.fromLong([ 1, 2, 3 ])
+  var src = _.vad.fromLong( [ 1, 2, 3 ] )
   test.shouldThrowErrorSync( () => src.growAdapter( [ 1, 4 ], 2, 3 ) );
 
 }
@@ -851,577 +579,287 @@ function growAdapter( test )
 
 function growLong( test )
 {
-  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], with val';
+  var src = _.vad.fromLong( [ 1, -2, 3, -5 ] );
+  var got = _.vad.growLong( src, [ -2, 4 ], 7 );
+  var exp = [ 7, 7, 1, -2, 3, -5, 7 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+}
+
+//
+
+function shrinkAdapter_( test )
+{
+  _.vectorAdapter.contextsForTesting( { onEach : act } );
 
   function act( a )
   {
-    test.case = 'src - empty vectorAdapter, without crange and val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong();
-    var exp = a.longMake([]);
+    test.open( `different type of vectorAdapter, ${ a.format }, src - empty` );
+
+    test.case = 'without crange';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
     /* - */
 
-    test.open( `different type of long, ${ a.format }` );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong([ 0, 0 ]);
-    var exp = a.longMake([ 0 ]);
+    test.case = 'crange - [ 0, 0 ]';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ 0, 0 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong([ 0, 2 ]);
-    var exp = a.longMake([ 0, 0, 0 ]);
+    test.case = 'crange - [ 0, 2 ]';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ 0, 2 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong([ 0, -2 ]);
-    var exp = a.longMake([]);
+    test.case = 'crange - [ 0, -2 ]';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ 0, -2 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong([ 2, 2 ]);
-    var exp = a.longMake([ 0, 0, 0 ]);
+    test.case = 'crange - [ 2, 2 ]';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, 2 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong([ 2, 4 ]);
-    var exp = a.longMake([ 0, 0, 0, 0, 0 ]);
+    test.case = 'crange - [ 2, 4 ]';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, 4 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong([ 2, -2 ]);
-    var exp = a.longMake([]);
+    test.case = 'crange - [ 2, -2 ]';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, -2 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong([ -2, -2 ]);
-    var exp = a.longMake([ 0, 0 ]);
+    test.case = 'crange - [ -2, -2 ]';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ -2, -2 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong([ -2, 0 ]);
-    var exp = a.longMake([ 0, 0, 0 ]);
+    test.case = 'crange - [ -2, 0 ]';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ -2, 0 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong([ -2, -4 ]);
-    var exp = a.longMake([ 0, 0 ]);
+    test.case = 'crange - [ -2, -4 ]';
+    var src = a.vadMake( [] );
+    var got = _.vad.shrinkAdapter_( src, [ -2, -4 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.close( `different type of long, ${ a.format }` );
+    test.close( `different type of vectorAdapter, ${ a.format }, src - empty` );
 
     /* - */
 
-    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
+    test.open( `different type of vectorAdapter, ${ a.format }, src - filled vector` );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 0 ], no val';
-    var src = a.vadMake( [] );
-    var got = src.growLong([ 0, 0 ]);
-    var exp = a.longMake([ 0 ]);
+    test.case = 'without crange';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src );
+    var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 2 ], no val';
-    var src = a.vadMake( [] );
-    var got = src.growLong([ 0, 2 ]);
-    var exp = a.longMake([ 0, 0, 0 ]);
+    test.case = 'crange - [ -4, -4 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, -4 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 0, -2 ], no val';
-    var src = a.vadMake( [] );
-    var got = src.growLong([ 0, -2 ]);
-    var exp = a.longMake([]);
+    test.case = 'crange - [ -4, -2 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, -2 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 2 ], no val';
-    var src = a.vadMake( [] );
-    var got = src.growLong([ 2, 2 ]);
-    var exp = a.longMake([ 0, 0, 0 ]);
+    test.case = 'crange - [ -4, -1 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, -2 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 4 ], no val';
-    var src = a.vadMake( [] );
-    var got = src.growLong([ 2, 4 ]);
-    var exp = a.longMake([ 0, 0, 0, 0, 0 ]);
+    test.case = 'crange - [ -4, 0 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, 0 ] );
+    var exp = a.vadMake( [ 1 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ 2, -2 ], no val';
-    var src = a.vadMake( [] );
-    var got = src.growLong([ 2, -2 ]);
-    var exp = a.longMake([]);
+    test.case = 'crange - [ -4, 2 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, 2 ] );
+    var exp = a.vadMake( [ 1, -2, 3 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -2 ], no val';
-    var src = a.vadMake( [] );
-    var got = src.growLong([ -2, -2 ]);
-    var exp = a.longMake([ 0, 0 ]);
+    test.case = 'crange - [ -4, 4 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, 4 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, 0 ], no val';
-    var src = a.vadMake( [] );
-    var got = src.growLong([ -2, 0 ]);
-    var exp = a.longMake([ 0, 0, 0 ]);
+    test.case = 'crange - [ -4, 7 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ -4, 7 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -4 ], no val';
-    var src = a.vadMake( [] );
-    var got = src.growLong([ -2, -4 ]);
-    var exp = a.longMake([ 0, 0 ]);
+    test.case = 'crange - [ 0, 0 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 0, 0 ] );
+    var exp = a.vadMake( [ 1 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
-
-    /* - */
-
-    test.open( `different type of long, ${ a.format }` );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 0 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong( [ 0, 0 ], 7 );
-    var exp = a.longMake([ 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong( [ 0, 2 ], 7 );
-    var exp = a.longMake([ 7, 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong( [ 0, -2 ], 7 );
-    var exp = a.longMake([]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong( [ 2, 2 ], 7 );
-    var exp = a.longMake([ 7, 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 4 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong( [ 2, 4 ], 7 );
-    var exp = a.longMake([ 7, 7, 7, 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong( [ 2, -2 ], 7 );
-    var exp = a.longMake([]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong( [ -2, -2 ], 7 );
-    var exp = a.longMake([ 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, 0 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong( [ -2, 0 ], 7 );
-    var exp = a.longMake([ 7, 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -4 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([]) );
-    var got = src.growLong( [ -2, -4 ], 7 );
-    var exp = a.longMake([ 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.close( `different type of long, ${ a.format }` );
-
-    /* - */
-
-    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 0 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growLong( [ 0, 0 ], 7 );
-    var exp = a.longMake([ 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, 2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growLong( [ 0, 2 ], 7 );
-    var exp = a.longMake([ 7, 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 0, -2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growLong( [ 0, -2 ], 7 );
-    var exp = a.longMake([]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growLong( [ 2, 2 ], 7 );
-    var exp = a.longMake([ 7, 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, 4 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growLong( [ 2, 4 ], 7 );
-    var exp = a.longMake([ 7, 7, 7, 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ 2, -2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growLong( [ 2, -2 ], 7 );
-    var exp = a.longMake([]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -2 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growLong( [ -2, -2 ], 7 );
-    var exp = a.longMake([ 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, 0 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growLong( [ -2, 0 ], 7 );
-    var exp = a.longMake([ 7, 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - empty vectorAdapter, crange - [ -2, -4 ], with val';
-    var src = a.vadMake( [] );
-    var got = src.growLong( [ -2, -4 ], 7 );
-    var exp = a.longMake([ 7, 7 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
-
-    /* - */
-
-    test.case = 'src - filled vectorAdapter, without crange and val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong();
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    /* - */
-
-    test.open( `different type of long, ${ a.format }` );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 0, 0 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 0, 2 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 0, -2 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 2, 2 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 2, 4 ]);
-    var exp = a.longMake([ 1, -2, 3, -5, 0 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 2, -2 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ -2, -2 ]);
-    var exp = a.longMake([ 0, 0, 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ -2, 4 ]);
-    var exp = a.longMake([ 0, 0, 1, -2, 3, -5, 0 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ -2, -4 ]);
-    var exp = a.longMake([ 0, 0, 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.close( `different type of long, ${ a.format }` );
-
-    /* - */
-
-    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 0, 0 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 0, 2 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 0, -2 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 2, 2 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 2, 4 ]);
-    var exp = a.longMake([ 1, -2, 3, -5, 0 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ 2, -2 ]);
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -2 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ -2, -2 ]);
-    var exp = a.longMake([ 0, 0, 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ -2, 4 ]);
-    var exp = a.longMake([ 0, 0, 1, -2, 3, -5, 0 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -4 ], no val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong([ -2, -4 ]);
-    var exp = a.longMake([ 0, 0, 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
-
-    /* - */
-
-    test.open( `different type of long, ${ a.format }` );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 0 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong( [ 0, 0 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
-    test.identical( got, exp );
-    test.is( got !== src );
-
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong( [ 0, 2 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 0, 2 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 0, 2 ] );
+    var exp = a.vadMake( [ 1, -2, 3 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong( [ 0, -2 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 0, 4 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 0, 4 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong( [ 2, 2 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 0, 7 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 0, 7 ] );
+    var exp = a.vadMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong( [ 2, 4 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5, 7 ]);
+    test.case = 'crange - [ 2, 2 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, 2 ] );
+    var exp = a.vadMake( [ 3 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong( [ 2, -2 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 2, 3 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, 3 ] );
+    var exp = a.vadMake( [ 3, -5 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -2 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong( [ -2, -2 ], 7 );
-    var exp = a.longMake([ 7, 7, 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 2, 4 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, 4 ] );
+    var exp = a.vadMake( [ 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong( [ -2, 4 ], 7 );
-    var exp = a.longMake([ 7, 7, 1, -2, 3, -5, 7 ]);
+    test.case = 'crange - [ 2, 7 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, 7 ] );
+    var exp = a.vadMake( [ 3, -5, 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -4 ], with val';
-    var src = _.vectorAdapter.fromLong( a.longMake([ 1, -2, 3, -5 ]) );
-    var got = src.growLong( [ -2, -4 ], 7 );
-    var exp = a.longMake([ 7, 7, 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 4, 4 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 4, 4 ] );
+    var exp = a.vadMake( [ 8 ] );
     test.identical( got, exp );
     test.is( got !== src );
-
-    test.close( `different type of long, ${ a.format }` );
-
-    /* - */
-
-    test.open( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 0 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growLong( [ 0, 0 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 5, 7 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 5, 7 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, 2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growLong( [ 0, 2 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 7, 7 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 7, 7 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 0, -2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growLong( [ 0, -2 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 7, 9 ]';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 7, 9 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growLong( [ 2, 2 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 9, 7 ], wrong range direction';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 9, 7 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growLong( [ 2, 4 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5, 7 ]);
+    test.case = 'crange - [ 9, 4 ], wrong range direction';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 9, 4 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ 2, -2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growLong( [ 2, -2 ], 7 );
-    var exp = a.longMake([ 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 9, 0 ], wrong range direction';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 9, 0 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -2 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growLong( [ -2, -2 ], 7 );
-    var exp = a.longMake([ 7, 7, 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 9, -4 ], wrong range direction';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 9, -4 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, 0 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growLong( [ -2, 4 ], 7 );
-    var exp = a.longMake([ 7, 7, 1, -2, 3, -5, 7 ]);
+    test.case = 'crange - [ 2, 0 ], wrong range direction';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, 0 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.case = 'src - filled vectorAdapter, crange - [ -2, -4 ], with val';
-    var src = a.vadMake( [ 1, -2, 3, -5 ] );
-    var got = src.growLong( [ -2, -4 ], 7 );
-    var exp = a.longMake([ 7, 7, 1, -2, 3, -5 ]);
+    test.case = 'crange - [ 2, -4 ], wrong range direction';
+    var src = a.vadMake( [ 1, -2, 3, -5, 8 ] );
+    var got = _.vad.shrinkAdapter_( src, [ 2, -4 ] );
+    var exp = a.vadMake( [] );
     test.identical( got, exp );
     test.is( got !== src );
 
-    test.close( `different type of vectorAdapter, ${ a.format } ${ a.form }` );
+    test.close( `different type of vectorAdapter, ${ a.format }, src - filled vector` );
   }
 
   /* - */
@@ -1430,11 +868,28 @@ function growLong( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.vectorAdapter.growLong() );
+  test.shouldThrowErrorSync( () => _.vad.shrinkAdapter_() );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.vad.shrinkAdapter_( 2, _.vad.from( [ 1, 4 ] ) ) );
 
   test.case = 'extra arguments';
-  var src = _.vectorAdapter.fromLong([ 1, 2, 3 ])
-  test.shouldThrowErrorSync( () => src.growLong( [ 1, 4 ], 2, 3 ) );
+  test.shouldThrowErrorSync( () => _.vad.shrinkAdapter_( _.vad.from( [ 1, 2, 3 ] ), [ 1, 4 ], 2 ) );
+
+}
+
+//
+
+function shrinkLong_( test )
+{
+
+  test.case = 'src - filled vectorAdapter, crange - [ 2, 4 ]';
+  var src = _.vad.fromLong( [ 1, -2, 3, -5, 8 ] );
+  var got = _.vad.shrinkLong_( src, [ 2, 4 ] );
+  var exp = [ 3, -5, 8 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
 }
 
 // --
@@ -11118,6 +10573,8 @@ let Self =
 
     growAdapter,
     growLong,
+    shrinkAdapter_,
+    shrinkLong_,
 
     // exporter
 
