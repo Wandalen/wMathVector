@@ -79,19 +79,29 @@ Object.setPrototypeOf( Self.prototype, Parent.prototype );
 //
 
 /**
- * Routine fromLongLrange() creates vector from part of source Long `srcLong`.
+ * Routine fromLongLrange() creates vector from part of source Long `srcLong`. Offset and length may be passed as arguments or as range array as second argument.
  *
  * @param { Long|VectorAdapter } srcLong - Source Long or vector.
- * @param { Number } offset - Offset in source Long.
+ * @param { Number|Range } offset - Offset in source Long or range with offset and length.
  * @param { Number } length - Length of new vector.
  *
  * @example
  * var srcLong = [ 1, 2, 3 ];
- * var got = _.vectorAdapter.fromLongLrange( srcLong, 0, 2 );
+ * var got = _.vectorAdapter.fromLongLrange( srcLong, 1, 2 );
  * console.log( got.toStr() );
+ * // log "2.000, 3.000"
+ *
+ * var srcLong = [ 1, 2, 3 ];
+ * var got = _.vectorAdapter.fromLongLrange( srcLong, [ 1, 2 ] );
+ * console.log( got.toStr() );
+ * // log "2.000, 3.000"
  *
  * @returns { VectorAdapter } - Returns new VectorAdapter from part of source Long.
  * @function fromLongLrange
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-offset-} < 0.
+ * @throws { Error } If {-length-} < 0.
+ * @throws { Error } If {-offset-} + {-length-} > {-srcLong-}.length.
  * @namespace wTools.vectorAdapter
  * @module Tools/math/Vector
  */
@@ -103,18 +113,23 @@ function fromLongLrange( srcLong, offset, length )
   offset = 0;
 
   if( length === undefined )
-  length = srcLong.length-offset;
+  length = srcLong.length - offset;
 
-  if( _.rangeIs( arguments[ 1 ] ) ) /* qqq : make sure it is covered */
+  _.assert( _.numberIs( offset ) || _.rangeIs( offset ) );
+  _.assert( _.numberIs( length ) );
+
+  if( _.rangeIs( arguments[ 1 ] ) ) /* qqq : make sure it is covered */ /* Andrey: cover */
   [ offset, length ] = arguments[ 1 ];
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( !!srcLong );
+  _.assert( arguments.length >= 1 && arguments.length <= 3, 'Expects from one to three arguments' );
+  _.assert( !!srcLong ); // _.assert( _.vectorAdapterIs( srcLong ) || _.longIs( srcLong ) ); ?
+  _.assert( offset >= 0 );
+  _.assert( length >= 0 );
   _.assert( offset+length <= srcLong.length );
 
   if( _.vectorAdapterIs( srcLong ) )
   {
-    return srcLong._review([ offset, offset+length-1 ]);
+    return srcLong._review( [ offset, offset+length-1 ] );
   }
 
   let result = new Self();
