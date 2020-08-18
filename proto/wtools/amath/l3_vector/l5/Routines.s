@@ -34,20 +34,36 @@ _.assert( _.objectIs( operations ) );
 
 /**
  * Routine assign() assigns the values of second argument to the vector {-dst-}.
+ * If {-dst-}.length < src.length, then rest of {-dst-} will be filled by zeros.
+ * If {-dst-}.length > src.length, then for {-dst-} will be assigned only part of src with length same as {-dst-}.
  * If arguments.length is more then two, then routine assigns elements of pseudo array {-arguments-} to the vector {-dst-}.
  * The assigning starts from the index 1.
  *
  * @example
+ * var dst = [ 0, -1, 2 ];
+ * var got = _.avector.assign( dst, [ 3, -2, -4 ] );
+ * console.log( got );
+ * // log [ 3, -2, -4 ];
+ * console.log( dst );
+ * // log [ 3, -2, -4 ];
+ *
  * var got = _.avector.assign( [ 1, 2, 3 ], 0 );
  * console.log( got );
  * // log [ 0, 0, 0 ];
+ *
+ * var got = _.avector.assign( [ 0, -1, 2, 3, -4 ], [ 3, -2, -4 ] );
+ * console.log( got );
+ * // log [ 3, -2, -4, 0, 0 ];
+ *
+ * var got = _.avector.assign( [ 0, -1, 2 ], [ 3, -2, -4, 3, -4 ] );
+ * console.log( got );
+ * // log [ 3, -2, -4 ];
  *
  * @param { Long|VectorAdapter } dst - Destination vector.
  * @param { * } ... - Source vector. If arguments.length is 2, then source vector is second argument.
  * Otherwise, the source vector is copy of arguments starting from index 1.
  * @returns { Long|VectorAdapter } - Returns original {-dst-} vector filled by values from source vector.
  * @function assign
- * @throws { Error } If length of {-src-} and {-dst-} vectors are different.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
@@ -69,8 +85,9 @@ function assign( dst ) /* aaa2 : perfect coverage is required */ /* Dmytro : cov
     {
       src = this.fromLong( src );
       // _.assert( src.length === dst.length );
-      _.assert( src.length <= dst.length );
-      for( let i = 0, l = src.length ; i < l ; i++ )
+      // _.assert( src.length <= dst.length );
+      let l = _min( src.length, dst.length );
+      for( let i = 0 ; i < l ; i++ )
       dst.eSet( i, src.eGet( i ) );
       for( let i = src.length, l = dst.length ; i < l ; i++ )
       dst.eSet( i, 0 );
