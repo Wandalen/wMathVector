@@ -1748,6 +1748,14 @@ function assign( test )
     test.identical( got, exp );
     test.is( got === dst );
 
+    test.case = 'dst - several arguments, src.length > dst.length';
+    var dst = _.vectorAdapter.fromLong([ 0, -1, 2 ]);
+    var src = a.vadMake([ 3, -2, -4, 3, 5 ]);
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong([ 3, -2, -4 ]);
+    test.identical( got, exp );
+    test.is( got === dst );
+
     test.close( `src - vectorAdapter, ${a.format} ${a.form}` );
 
     /* - */
@@ -1775,6 +1783,14 @@ function assign( test )
     var src = a.longMake([ 3, -2, -4 ]);
     var got = dst.assign( src );
     var exp = _.vectorAdapter.fromLong([ 3, -2, -4, 0, 0 ]);
+    test.identical( got, exp );
+    test.is( got === dst );
+
+    test.case = 'dst - several arguments, src.length > dst.length';
+    var dst = _.vectorAdapter.fromLong([ 0, -1, 2 ]);
+    var src = a.longMake([ 3, -2, -4, 3, 5 ]);
+    var got = dst.assign( src );
+    var exp = _.vectorAdapter.fromLong([ 3, -2, -4 ]);
     test.identical( got, exp );
     test.is( got === dst );
 
