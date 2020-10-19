@@ -3980,7 +3980,7 @@ dop.homogeneous = true;
 function equalAre( src1, src2, opts )
 {
 
-  let it = this._equalAre.pre.call( this, this.equalAre, arguments );
+  let it = this._equalAre.head.call( this, this.equalAre, arguments );
 
   _.assert( it.srcEffective === null );
   _.assert( it.srcEffective2 === null );
@@ -4042,7 +4042,7 @@ function identicalAre( src1, src2, iterator )
 {
   // _.assert( !opts, 'not tested' );
   debugger;
-  let it = this._equalAre.pre.call( this, this.identicalAre, arguments );
+  let it = this._equalAre.head.call( this, this.identicalAre, arguments );
 
   _.assert( it.srcEffective === null );
   _.assert( it.srcEffective2 === null );
@@ -4100,7 +4100,7 @@ function equivalentAre( src1, src2, iterator )
 {
   // _.assert( !opts, 'not tested' );
   // debugger;
-  let it = this._equalAre.pre.call( this, this.equivalentAre, arguments );
+  let it = this._equalAre.head.call( this, this.equivalentAre, arguments );
 
   _.assert( it.srcEffective === null );
   _.assert( it.srcEffective2 === null );
