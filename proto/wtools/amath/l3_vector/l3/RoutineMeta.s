@@ -1489,8 +1489,8 @@ function _onScalarScalarWise_functor( dop )
   _.assert( _.arrayIs( dop.onContinue ) );
   _.assert( _.routineIs( onScalar0 ) );
   _.assert( _.routineIs( onContinue ) || !onContinue );
-  _.assert( _.rangeIs( dop.takingArguments ) );
-  _.assert( _.rangeIs( dop.takingVectors ) );
+  _.assert( _.intervalIs( dop.takingArguments ) );
+  _.assert( _.intervalIs( dop.takingVectors ) );
   _.assert( dop.onScalar.length === 1 );
 
   meta._onScalarGenBegin( dop );

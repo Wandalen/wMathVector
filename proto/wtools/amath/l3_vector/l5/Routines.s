@@ -312,12 +312,12 @@ dop.special = true;
 
 function slice( src, first, last )
 {
-  let crange = [ first, last ]
-  if( !crange[ 0 ] )
-  crange[ 0 ] = 0;
-  if( crange[ 1 ] === undefined )
-  crange[ 1 ] = src.length;
-  let result = this.shrinkLong.call( this, src, crange );
+  let cinterval = [ first, last ]
+  if( !cinterval[ 0 ] )
+  cinterval[ 0 ] = 0;
+  if( cinterval[ 1 ] === undefined )
+  cinterval[ 1 ] = src.length;
+  let result = this.shrinkLong.call( this, src, cinterval );
   return result;
 }
 
@@ -485,19 +485,19 @@ dop.modifying = false;
  * // log "1.000, 2.000, 3.000, 5.000, 5.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines length of new vector.
+ * @param { Range } cinterval - Defines length of new vector.
  * @param { * } val - To fill extra elements.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
  * If length of new vector is more then src.length, then extra elements filled by value {-val-}.
  * @function growAdapter
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
- * @throws { Error } If {-crange-} is not a Range.
+ * @throws { Error } If {-cinterval-} is not a Range.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
 
-function growAdapter( src, crange, val )
+function growAdapter( src, cinterval, val )
 {
   let result = this.growLong.apply( this, arguments );
   return this.fromLong( result );
@@ -527,19 +527,19 @@ dop.modifying = false;
  * // log [ 1, 2, 3, 5, 5 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines length of new vector.
+ * @param { Range } cinterval - Defines length of new vector.
  * @param { * } val - To fill extra elements.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
  * If length of new vector is more then src.length, then extra elements filled by value {-val-}.
  * @function growLong
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
- * @throws { Error } If {-crange-} is not a Range.
+ * @throws { Error } If {-cinterval-} is not a Range.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
 
-function growLong( src, crange, val )
+function growLong( src, cinterval, val )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
@@ -548,37 +548,37 @@ function growLong( src, crange, val )
   // debugger;
   if( val === undefined )
   val = 0;
-  if( crange === undefined )
-  crange = [ 0, src.length-1 ];
-  // crange = [ 0, src.length ]; // Dmytro : wrong range, should be an crange instead of orange, adds 1 element */
+  if( cinterval === undefined )
+  cinterval = [ 0, src.length-1 ];
+  // cinterval = [ 0, src.length ]; // Dmytro : wrong range, should be an cinterval instead of ointerval, adds 1 element */
 
-  _.assert( _.rangeIs( crange ) );
+  _.assert( _.intervalIs( cinterval ) );
   _.assert( _.numberIs( val ) );
 
-  if( crange[ 0 ] >= 0 )
-  crange[ 0 ] = 0;
-  if( crange[ 1 ] <= src.length-1 )
-  crange[ 1 ] = src.length-1;
+  if( cinterval[ 0 ] >= 0 )
+  cinterval[ 0 ] = 0;
+  if( cinterval[ 1 ] <= src.length-1 )
+  cinterval[ 1 ] = src.length-1;
 
-  let l = crange[ 1 ] - crange[ 0 ] + 1;
+  let l = cinterval[ 1 ] - cinterval[ 0 ] + 1;
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
 
   /* aaa : optimize */ /* Dmytro : used method fill instead of cycle for */
 
-  // let l2 = -crange[ 0 ];
+  // let l2 = -cinterval[ 0 ];
   // for( let i = 0 ; i < l2 ; i++ )
   // result[ i ] = val;
   //
-  // _.assert( crange[ 0 ] === 0, 'not implemented' );
-  // let l3 = src.length-crange[ 0 ];
-  // for( let i = -crange[ 0 ] ; i < l3 ; i++ )
-  // result[ i-crange[ 0 ] ] = src.eGet( i );
+  // _.assert( cinterval[ 0 ] === 0, 'not implemented' );
+  // let l3 = src.length-cinterval[ 0 ];
+  // for( let i = -cinterval[ 0 ] ; i < l3 ; i++ )
+  // result[ i-cinterval[ 0 ] ] = src.eGet( i );
   //
   // let l4 = l;
   // for( let i = src.length ; i < l4 ; i++ )
   // result[ i ] = val;
 
-  let l2 = -crange[ 0 ];
+  let l2 = -cinterval[ 0 ];
   result.fill( val, 0, l2 ); /* qqq : does it work for any kind of buffer? check please. extend test */
 
   let l3 = src.length + l2;
@@ -613,17 +613,17 @@ dop.modifying = false;
  * // log "2.000, 3.000, 4.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines range for copying.
+ * @param { Range } cinterval - Defines range for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
  * @function shrinkAdapter
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
- * @throws { Error } If {-crange-} is not a Range.
+ * @throws { Error } If {-cinterval-} is not a Range.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
 
-function shrinkAdapter( src, crange )
+function shrinkAdapter( src, cinterval )
 {
   let result = this.shrinkLong.apply( this, arguments );
   return this.fromLong( result );
@@ -652,35 +652,35 @@ dop.modifying = false;
  * // log [ 2, 3, 4 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines range for copying.
+ * @param { Range } cinterval - Defines range for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
  * @function shrinkLong
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
- * @throws { Error } If {-crange-} is not a Range.
+ * @throws { Error } If {-cinterval-} is not a Range.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
 
-function shrinkLong( src, crange )
+function shrinkLong( src, cinterval )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( crange === undefined )
-  crange = [ 0, src.length ];
-  if( crange[ 0 ] < 0 )
-  crange[ 0 ] = 0;
-  if( crange[ 1 ] > src.length-1 )
-  crange[ 1 ] = src.length-1;
+  if( cinterval === undefined )
+  cinterval = [ 0, src.length ];
+  if( cinterval[ 0 ] < 0 )
+  cinterval[ 0 ] = 0;
+  if( cinterval[ 1 ] > src.length-1 )
+  cinterval[ 1 ] = src.length-1;
 
-  let l = crange[ 1 ] - crange[ 0 ] + 1;
+  let l = cinterval[ 1 ] - cinterval[ 0 ] + 1;
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
 
   /* qqq : optimize */
 
-  let l2 = crange[ 1 ];
-  for( let i = crange[ 0 ] ; i <= l2 ; i++ )
+  let l2 = cinterval[ 1 ];
+  for( let i = cinterval[ 0 ] ; i <= l2 ; i++ )
   result[ i ] = src.eGet( i );
 
   return result;
@@ -713,17 +713,17 @@ dop.modifying = false;
  * // log "4.000, 5.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines range for copying.
+ * @param { Range } cinterval - Defines range for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
  * @function shrinkAdapter_
  * @throws { Error } If arguments.length is not equal one or two.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
- * @throws { Error } If {-crange-} is not a Range.
+ * @throws { Error } If {-cinterval-} is not a Range.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
 
-function shrinkAdapter_( src, crange )
+function shrinkAdapter_( src, cinterval )
 {
   let result = this.shrinkLong_.apply( this, arguments );
   return this.fromLong( result );
@@ -756,43 +756,43 @@ dop.modifying = false;
  * // log [ 4, 5 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range } crange - Defines range for copying.
+ * @param { Range } cinterval - Defines range for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
  * @function shrinkLong_
  * @throws { Error } If arguments.length is not equal one or two.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
- * @throws { Error } If {-crange-} is not a Range.
+ * @throws { Error } If {-cinterval-} is not a Range.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
 
-function shrinkLong_( src, crange )
+function shrinkLong_( src, cinterval )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.vectorAdapterIs( src ) );
 
-  if( crange === undefined )
-  crange = [ 0, src.length - 1 ];
+  if( cinterval === undefined )
+  cinterval = [ 0, src.length - 1 ];
 
-  _.assert( _.rangeIs( crange ) );
+  _.assert( _.intervalIs( cinterval ) );
 
-  if( crange[ 0 ] < 0 )
-  crange[ 0 ] = 0;
-  if( crange[ 1 ] > src.length - 1 )
-  crange[ 1 ] = src.length - 1;
-  if( crange[ 0 ] > crange[ 1 ] || src.length === 0 )
+  if( cinterval[ 0 ] < 0 )
+  cinterval[ 0 ] = 0;
+  if( cinterval[ 1 ] > src.length - 1 )
+  cinterval[ 1 ] = src.length - 1;
+  if( cinterval[ 0 ] > cinterval[ 1 ] || src.length === 0 )
   {
-    crange[ 1 ] = -1;
-    crange[ 0 ] = 0;
+    cinterval[ 1 ] = -1;
+    cinterval[ 0 ] = 0;
   }
 
-  let l = crange[ 1 ] - crange[ 0 ] + 1;
+  let l = cinterval[ 1 ] - cinterval[ 0 ] + 1;
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
 
   /* qqq : optimize */
 
-  let l2 = crange[ 0 ];
+  let l2 = cinterval[ 0 ];
   for( let i = 0 ; i < l ; i++ )
   result[ i ] = src.eGet( i + l2 );
 
@@ -815,7 +815,7 @@ dop.modifying = false;
 //
 
 /**
- * Routine review() reviews source vector {-src-} in defined range {-crange-}. Routine makes new instance of vector {-src-} if range defines length smaller then src.length. Otherwise, routine returns original vector. The elements of new vector filled by values of {-src-}.
+ * Routine review() reviews source vector {-src-} in defined range {-cinterval-}. Routine makes new instance of vector {-src-} if range defines length smaller then src.length. Otherwise, routine returns original vector. The elements of new vector filled by values of {-src-}.
  *
  * @example
  * var got = _.avector.review( [ 1, 2, 3 ], 0 );
@@ -823,28 +823,28 @@ dop.modifying = false;
  * // log [ 1, 2, 3 ];
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Range|Number } crange - Defines ranges for copying.
+ * @param { Range|Number } cinterval - Defines ranges for copying.
  * @returns { Long|VectorAdapter } - Returns instance of vector filled by values of original vector {-src-}. If {-src-} vector not changes, then routine returns original vector.
  * @function review
  * @throws { Error } If arguments.length is less or more then two.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
- * @throws { Error } If {-crange-} is not a Range.
+ * @throws { Error } If {-cinterval-} is not a Range.
  * @namespaces "wTools.avector","wTools.vectorAdapter"
  * @module Tools/math/Vector
  */
 
-function review( src, crange )
+function review( src, cinterval )
 {
 
-  if( _.numberIs( crange ) )
-  crange = [ crange, src.length-1 ];
+  if( _.numberIs( cinterval ) )
+  cinterval = [ cinterval, src.length-1 ];
 
   _.assert( arguments.length === 2 );
-  _.assert( _.rangeIs( crange ) );
-  _.assert( crange[ 0 ] >= 0 );
-  _.assert( crange[ 1 ] <= src.length-1 );
+  _.assert( _.intervalIs( cinterval ) );
+  _.assert( cinterval[ 0 ] >= 0 );
+  _.assert( cinterval[ 1 ] <= src.length-1 );
 
-  if( crange[ 0 ] === 0 && crange[ 1 ] === src.length-1 )
+  if( cinterval[ 0 ] === 0 && cinterval[ 1 ] === src.length-1 )
   return this.fromLong( src );
 
   src = this.fromLong( src );
@@ -858,7 +858,7 @@ function review( src, crange )
   //   result = this.fromLongLrange( src._vectorBuffer , src.offset + first , last-first );
   // }
 
-  let result = src._review( crange );
+  let result = src._review( cinterval );
 
   return result;
 }
@@ -3137,7 +3137,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 // //
 //
 // /**
-//  * @summary Limits values of vector `dst` to values in orange [min, max].
+//  * @summary Limits values of vector `dst` to values in ointerval [min, max].
 //  * @param {Long|VectorAdapter} dst Vector.
 //  * @example
 //  * var a1 = [ 1, 2, 3, 4 ];
@@ -4834,13 +4834,13 @@ function contextsForTesting( o )
   o.varyingFormat = _.arrayAs( o.varyingFormat );
 
   if( o.varyingForm && _.boolLike( o.varyingForm ) )
-  o.varyingForm = [ 'straight', 'lrange', 'stride' ];
+  o.varyingForm = [ 'straight', 'linterval', 'stride' ];
   if( o.varyingFormat && _.boolLike( o.varyingFormat ) )
   o.varyingFormat = [ 'Array', 'F32x', 'F64x', 'I16x' ];
 
   _.assert( _.routineIs( o.onEach ) );
   _.assert( arguments.length === 1 );
-  _.assert( _.longHasAll( [ 'straight', 'lrange', 'stride' ], o.varyingForm ) );
+  _.assert( _.longHasAll( [ 'straight', 'linterval', 'stride' ], o.varyingForm ) );
   _.assert( _.longHasAll( [ 'Array', 'F32x', 'F64x', 'I16x' ], o.varyingFormat ) );
 
   let defaultFormat = o.varyingFormat[ 0 ];
@@ -4894,11 +4894,11 @@ function contextsForTesting( o )
   if( !o.varyingForm )
   return;
 
-  if( _.longHas( o.varyingForm, 'lrange' ) )
+  if( _.longHas( o.varyingForm, 'linterval' ) )
   {
     let op = _.mapExtend( null, o );
     op.format = defaultFormat;
-    op.form = 'lrange';
+    op.form = 'linterval';
     op.longMake = ( src ) => _.longMake( _global_[ defaultFormat ], src );
     op.vadMake = ( src ) =>
     {

@@ -14,12 +14,12 @@ function VectorAdapterFromLongShrinked(){};
 
 //
 
-function _review( crange )
+function _review( cinterval )
 {
-  let offset = this.offset + crange[ 0 ];
-  let length = crange[ 1 ]-crange[ 0 ]+1;
-  _.assert( crange[ 0 ] >= 0 );
-  _.assert( crange[ 1 ] <= this.length );
+  let offset = this.offset + cinterval[ 0 ];
+  let length = cinterval[ 1 ]-cinterval[ 0 ]+1;
+  _.assert( cinterval[ 0 ] >= 0 );
+  _.assert( cinterval[ 1 ] <= this.length );
   _.assert( length >= 0 );
   return this.FromLongLrange( this._vectorBuffer, offset, length );
 }
@@ -115,10 +115,10 @@ function fromLongLrange( srcLong, offset, length )
   if( length === undefined )
   length = srcLong.length - offset;
 
-  _.assert( _.numberIs( offset ) || _.rangeIs( offset ) );
+  _.assert( _.numberIs( offset ) || _.intervalIs( offset ) );
   _.assert( _.numberIs( length ) );
 
-  if( _.rangeIs( arguments[ 1 ] ) ) /* qqq : make sure it is covered */ /* Andrey: cover */
+  if( _.intervalIs( arguments[ 1 ] ) ) /* qqq : make sure it is covered */ /* Andrey: cover */
   [ offset, length ] = arguments[ 1 ];
 
   _.assert( arguments.length >= 1 && arguments.length <= 3, 'Expects from one to three arguments' );

@@ -14,9 +14,9 @@ function AdapterFromNumber() {};
 
 //
 
-function _review( crange )
+function _review( cinterval )
 {
-  let l = crange[ 1 ] - crange[ 0 ] + 1;
+  let l = cinterval[ 1 ] - cinterval[ 0 ] + 1;
   _.assert( l >= 0 );
   return this.FromMaybeNumber( this._vectorBuffer[ 0 ], l );
 }

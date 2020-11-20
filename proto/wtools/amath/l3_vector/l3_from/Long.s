@@ -14,12 +14,12 @@ function VectorAdapterFromLong(){};
 
 //
 
-function _review( crange )
+function _review( cinterval )
 {
-  let offset = crange[ 0 ];
-  let length = crange[ 1 ]-crange[ 0 ]+1;
-  _.assert( crange[ 0 ] >= 0 );
-  _.assert( crange[ 1 ] <= this.length );
+  let offset = cinterval[ 0 ];
+  let length = cinterval[ 1 ]-cinterval[ 0 ]+1;
+  _.assert( cinterval[ 0 ] >= 0 );
+  _.assert( cinterval[ 1 ] <= this.length );
   _.assert( length >= 0 );
   return this.FromLongLrange( this._vectorBuffer, offset, length );
 }
