@@ -8,7 +8,7 @@ let _ = _global_.wTools;
 // structure
 // --
 
-let OperationDescriptor0 = _.blueprint
+let OperationDescriptor0 = _.Blueprint
 .define
 ({
 
@@ -38,7 +38,7 @@ let OperationDescriptor0 = _.blueprint
 
 */
 
-let OperationDescriptor1 = _.blueprint
+let OperationDescriptor1 = _.Blueprint
 .define
 ({
   extension : _.define.extension( OperationDescriptor0 ),
@@ -85,7 +85,7 @@ let OperationDescriptor1 = _.blueprint
 
 //
 
-let OperationDescriptor2 = _.blueprint
+let OperationDescriptor2 = _.Blueprint
 .define
 ({
   extension : _.define.extension( OperationDescriptor1 ),
