@@ -43,8 +43,8 @@ function _routinePostForm( theRoutine, routineName )
 
   /* adjust */
 
-  _.mapSupplement( op, _.vectorAdapter.OperationDescriptor2.fields );
-  _.assertMapHasOnly( op, _.vectorAdapter.OperationDescriptor2.fields );
+  _.mapSupplement( op, _.vectorAdapter.OperationDescriptor2.Fields );
+  _.assertMapHasOnly( op, _.vectorAdapter.OperationDescriptor2.Fields );
 
   op.returningPrimitive = !!op.returningPrimitive;
   op.returningLong = !!op.returningLong;
@@ -1140,7 +1140,7 @@ function _routineForOperation_functor( dop )
 
 _routineForOperation_functor.defaults =
 {
-  ... OperationDescriptor1.fields,
+  ... OperationDescriptor1.Fields,
   onScalar_functor : null,
   onVectors_functor : null,
 }
@@ -2276,7 +2276,7 @@ function __operationReduceToScalar_functor( operation )
 
 __operationReduceToScalar_functor.defaults =
 {
-  ... OperationDescriptor1.fields,
+  ... OperationDescriptor1.Fields,
 
   onScalar : null,
   onVectorsBegin : null,

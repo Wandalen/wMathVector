@@ -621,7 +621,7 @@ function operationNormalize1( operation )
   if( _.numberIs( operation.takingVectors ) )
   operation.takingVectors = [ operation.takingVectors, operation.takingVectors ];
 
-  _.assertMapHasOnly( operation, _.vectorAdapter.OperationDescriptor0.fields );
+  _.assertMapHasOnly( operation, _.vectorAdapter.OperationDescriptor0.Fields );
 
 }
 
@@ -643,7 +643,7 @@ function operationNormalize2( operation )
 
   _.assert( _.strIs( operation.kind ) );
 
-  // _.assertMapHasOnly( operation, _.vectorAdapter.OperationDescriptor0.fields );
+  // _.assertMapHasOnly( operation, _.vectorAdapter.OperationDescriptor0.Fields );
 
 }
 
