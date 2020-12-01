@@ -9,7 +9,6 @@ let _ = _global_.wTools;
 // --
 
 let OperationDescriptor0 = _.Blueprint
-.define
 ({
 
   name : null,
@@ -39,7 +38,6 @@ let OperationDescriptor0 = _.Blueprint
 */
 
 let OperationDescriptor1 = _.Blueprint
-.define
 ({
   extension : _.define.extension( OperationDescriptor0 ),
 
@@ -86,7 +84,6 @@ let OperationDescriptor1 = _.Blueprint
 //
 
 let OperationDescriptor2 = _.Blueprint
-.define
 ({
   extension : _.define.extension( OperationDescriptor1 ),
 
