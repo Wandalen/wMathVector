@@ -8908,11 +8908,10 @@ function randomInRange( test )
   /* */
 
   test.case = 'null + 2 scalar argument';
-
   var src1 = 0;
   var src2 = 1;
   var got = _.avector.randomInRange( null, src1, src2 );
-  test.true( _.rangeInInclusive( [ src1, src2 ], got ) );
+  test.true( _.cinterval.has( [ src1, src2 ], got ) );
 
   // /* */
 
@@ -8937,13 +8936,13 @@ function randomInRange( test )
   var src1 = [ 0 ];
   var src2 = [ 1 ];
   var got = _.avector.randomInRange( null, src1, src2 );
-  test.true( _.rangeInInclusive( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
+  test.true( _.cinterval.has( [ src1[ 0 ], src2[ 0 ] ], got[ 0 ] ) );
   test.true( src1 !== got )
 
   var src1 = vec( [ 0 ] );
   var src2 = vec( [ 1 ] );
   var got = _.vectorAdapter.randomInRange( null, src1, src2 );
-  test.true( _.rangeInInclusive( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.true( _.cinterval.has( [ src1.eGet( 0 ), src2.eGet( 0 ) ], got.eGet( 0 ) ) );
   test.true( src1 !== got )
 
   // /* */
@@ -8985,13 +8984,13 @@ function randomInRange( test )
   var src1 = [ 0 ];
   var src2 = 1;
   var got = _.avector.randomInRange( null, src1, src2 );
-  test.true( _.rangeInInclusive( [ src1[ 0 ], src2 ], got[ 0 ] ) );
+  test.true( _.cinterval.has( [ src1[ 0 ], src2 ], got[ 0 ] ) );
   test.true( src1 !== got )
 
   var src1 = vec( [ 0 ] );
   var src2 = 1;
   var got = _.vectorAdapter.randomInRange( null, src1, src2 );
-  test.true( _.rangeInInclusive( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
+  test.true( _.cinterval.has( [ src1.eGet( 0 ), src2 ], got.eGet( 0 ) ) );
   test.true( src1 !== got )
 
   /* */
@@ -9001,13 +9000,13 @@ function randomInRange( test )
   var src1 = 0;
   var src2 = [ 1 ];
   var got = _.avector.randomInRange( null, src1, src2 );
-  test.true( _.rangeInInclusive( [ src1, src2[ 0 ] ], got[ 0 ] ) );
+  test.true( _.cinterval.has( [ src1, src2[ 0 ] ], got[ 0 ] ) );
   test.true( _.numberIs( src1 ) )
 
   var src1 = 0;
   var src2 = vec( [ 1 ] );
   var got = _.vectorAdapter.randomInRange( null, src1, src2 );
-  test.true( _.rangeInInclusive( [ src1, src2.eGet( 0 ) ], got.eGet( 0 )) );
+  test.true( _.cinterval.has( [ src1, src2.eGet( 0 ) ], got.eGet( 0 )) );
   test.true( _.numberIs( src1 ) )
 
   // /* */
@@ -9036,14 +9035,14 @@ function randomInRange( test )
   var src2 = 2;
   var src3 = 3;
   var got = _.avector.randomInRange( src1, src2, src3 );
-  test.true( _.rangeInInclusive( [ src2, src3 ], got[ 0 ] ) );
+  test.true( _.cinterval.has( [ src2, src3 ], got[ 0 ] ) );
   test.true( src1 === got );
 
   var src1 = vec([ 0 ]);
   var src2 = 2;
   var src3 = 3;
   var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.true( _.rangeInInclusive( [ src2, src3 ], got.eGet( 0 ) ) );
+  test.true( _.cinterval.has( [ src2, src3 ], got.eGet( 0 ) ) );
   test.true( src1 === got );
 
   /* */
@@ -9054,14 +9053,14 @@ function randomInRange( test )
   var src2 = 2;
   var src3 = [ 3 ];
   var got = _.avector.randomInRange( src1, src2, src3 );
-  test.true( _.rangeInInclusive( [ src2, src3[ 0 ] ], got[ 0 ] ) );
+  test.true( _.cinterval.has( [ src2, src3[ 0 ] ], got[ 0 ] ) );
   test.true( src1 === got );
 
   var src1 = vec( [ 0 ] );
   var src2 = 2;
   var src3 = vec( [ 3 ] );
   var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.true( _.rangeInInclusive( [ src2, src3.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.true( _.cinterval.has( [ src2, src3.eGet( 0 ) ], got.eGet( 0 ) ) );
   test.true( src1 === got );
 
   /* */
@@ -9072,14 +9071,14 @@ function randomInRange( test )
   var src2 = [ 2 ];
   var src3 = [ 3 ];
   var got = _.avector.randomInRange( src1, src2, src3 );
-  test.true( _.rangeInInclusive( [ src2[ 0 ], src3[ 0 ] ], got[ 0 ] ) );
+  test.true( _.cinterval.has( [ src2[ 0 ], src3[ 0 ] ], got[ 0 ] ) );
   test.true( src1 === got );
 
   var src1 = vec( [ 0 ] );
   var src2 = vec( [ 2 ] );
   var src3 = vec( [ 3 ] );
   var got = _.vectorAdapter.randomInRange( src1, src2, src3 );
-  test.true( _.rangeInInclusive( [ src2.eGet( 0 ), src3.eGet( 0 ) ], got.eGet( 0 ) ) );
+  test.true( _.cinterval.has( [ src2.eGet( 0 ), src3.eGet( 0 ) ], got.eGet( 0 ) ) );
   test.true( src1 === got );
 
 
@@ -13289,8 +13288,8 @@ function allInt( test )
 
   test.identical( _.avector.allInt([ 1, 3, NaN ]), false );
   test.identical( _.avector.allInt([ 1, NaN, 3 ]), false );
-  test.identical( _.avector.allInt([ 1, 3, -Infinity ]), true );
-  test.identical( _.avector.allInt([ 1, +Infinity, 3 ]), true );
+  test.identical( _.avector.allInt([ 1, 3, -Infinity ]), false );
+  test.identical( _.avector.allInt([ 1, +Infinity, 3 ]), false );
 
   test.identical( _.avector.allInt([ 1.1, 0, 1 ]), false );
   test.identical( _.avector.allInt([ 1, 0, 1.1 ]), false );
