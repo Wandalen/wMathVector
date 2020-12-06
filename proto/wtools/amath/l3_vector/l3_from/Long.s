@@ -63,7 +63,7 @@ _.accessor.readOnly
   },
 });
 
-_.propertyConstant( Self.prototype,
+_.property.constant( Self.prototype,
 {
   offset : 0,
   stride : 1,

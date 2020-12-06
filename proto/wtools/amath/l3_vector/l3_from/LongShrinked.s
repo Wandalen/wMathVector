@@ -69,7 +69,7 @@ Self.prototype =
   _bufferConstructorGet,
 }
 
-_.propertyConstant( Self.prototype,
+_.property.constant( Self.prototype,
 {
   stride : 1,
 });
