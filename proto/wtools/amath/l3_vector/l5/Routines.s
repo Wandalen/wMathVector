@@ -2896,6 +2896,20 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
   },
 });
 
+//
+
+function addScaling( dst, src, scalar )
+{
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.vectorAdapterIs( src ) );
+  _.assert( _.numberIs( scalar ) );
+  _.assert( src.length === dst.length );
+  
+  for( let i = 0; i < dst.length; i++ )
+  dst.eSet( i, src.eGet( i ) + scalar );
+  return dst;
+}
+
 // --
 // float / vector
 // --
@@ -5409,6 +5423,8 @@ let Extension =
   _routinesMathematical,
 
   contextsForTesting, /* xxx : move out */
+  
+  addScaling
 
 }
 

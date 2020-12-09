@@ -1562,6 +1562,51 @@ function fromLongWithStride ( test )
 
 }
 
+//
+
+function updateLrange( test )
+{
+  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  function act( a )
+  {
+    test.open( `trivial ${ a.format }` );
+    
+    var src = a.longMake( [ 1, 2, 3 ] );
+    var got = _.vad.fromLongLrange( src );
+    
+    test.case = 'single';
+    _.vad.updateLrange( got, 0, 1 );
+    test.identical( got.offset, 0 );
+    test.identical( got.length, 1 );
+    var expected = [ 1 ];
+    test.equivalent( got.toLong(), expected );
+    
+    test.case = 'several';
+    _.vad.updateLrange( got, 0, 2 );
+    test.identical( got.offset, 0 );
+    test.identical( got.length, 2 );
+    var expected = [ 1, 2 ];
+    test.equivalent( got.toLong(), expected );
+    
+    test.case = 'all';
+    _.vad.updateLrange( got, 0, src.length );
+    test.identical( got.offset, 0 );
+    test.identical( got.length, src.length );
+    var expected = src;
+    test.equivalent( got.toLong(), expected );
+    
+    if( Config.debug )
+    {
+      test.shouldThrowErrorSync( () => _.vad.updateLrange( got, 1, src.length ) );
+      test.shouldThrowErrorSync( () => _.vad.updateLrange( got, 1, src.length ) );
+    }
+    
+    test.close( `trivial ${ a.format }` );
+    
+  }
+}
+
 // --
 // is
 // --
@@ -12124,6 +12169,10 @@ let Self =
     fromLongLrange,
     fromLongLrangeAndStride,
     fromLongWithStride,
+    
+    //update
+    
+    updateLrange,
 
     // is
 

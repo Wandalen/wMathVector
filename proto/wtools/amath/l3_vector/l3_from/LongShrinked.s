@@ -137,8 +137,20 @@ function fromLongLrange( srcLong, offset, length )
   result.length = length;
   result.offset = offset;
 
-  Object.freeze( result );
+  // Object.freeze( result );
   return result;
+}
+
+//
+
+function updateLrange( srcVad, offset, length )
+{
+  _.assert( offset+length <= srcVad._vectorBuffer.length );
+  
+  srcVad.length = length;
+  srcVad.offset = offset;
+  
+  return srcVad;
 }
 
 // --
@@ -154,7 +166,7 @@ let _routinesFrom =
 
 let VectorExtension =
 {
-
+  updateLrange
 }
 
 _.mapSupplement( VectorExtension, _routinesFrom );
