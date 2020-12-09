@@ -1862,6 +1862,42 @@ function assign( test )
 
 //
 
+function assignScaling( test )
+{
+
+  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  function act( a )
+  {
+
+    test.case = `${a.format} ${a.form} - routine`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 2, 3, 4 ]);
+    var got = _.vectorAdapter.assignScaling( v1, v2, 0 );
+    var exp = a.vadMake([ 2, 3, 4 ]);
+    test.identical( got, exp );
+    test.true( got === v1 );
+    
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 2, 3, 4 ]);
+    var got = _.vectorAdapter.assignScaling( v1, v2, 1 );
+    var exp = a.vadMake([ 3, 4, 5 ]);
+    test.identical( got, exp );
+    test.true( got === v1 );
+    
+    if( !Config.debug )
+    return;
+    
+    test.shouldThrowErrorSync( () => _.vectorAdapter.assignScaling( null, a.vadMake([ 1 ]), 1 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter.assignScaling( a.vadMake([ 1, 2 ]), a.vadMake([ 1 ]), 1 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter.assignScaling( a.vadMake([ 1, 2 ]), a.vadMake([ 1, 2 ]), null ) );
+    
+  }
+
+}
+
+//
+
 function growAdapter( test )
 {
   _.vectorAdapter.contextsForTesting( { onEach : act } );
@@ -3021,6 +3057,41 @@ function add( test )
     test.identical( got, exp );
     test.true( got === v1 );
 
+  }
+
+}
+
+//
+
+function addScaling( test )
+{
+
+  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  function act( a )
+  {
+
+    test.case = `${a.format} ${a.form} - routine`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 2, 3, 4 ]);
+    var got = _.vectorAdapter.addScaling( v1, v2, 0 );
+    var exp = a.vadMake([ 3, 5, 7 ]);
+    test.identical( got, exp );
+    test.true( got === v1 );
+    
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 2, 3, 4 ]);
+    var got = _.vectorAdapter.addScaling( v1, v2, 1 );
+    var exp = a.vadMake([ 4, 6, 8 ]);
+    test.identical( got, exp );
+    test.true( got === v1 );
+    
+    if( !Config.debug )
+    return;
+    
+    test.shouldThrowErrorSync( () => _.vectorAdapter.addScaling( null, a.vadMake([ 1 ]), 1 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter.addScaling( a.vadMake([ 1, 2 ]), a.vadMake([ 1 ]), 1 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter.addScaling( a.vadMake([ 1, 2 ]), a.vadMake([ 1, 2 ]), null ) );
   }
 
 }
@@ -12184,6 +12255,7 @@ let Self =
     //
 
     assign,
+    assignScaling,
 
     growAdapter,
     growLong,
@@ -12206,6 +12278,7 @@ let Self =
 
     // experiment1,
     add,
+    addScaling,
     subScaled,
 
     // review

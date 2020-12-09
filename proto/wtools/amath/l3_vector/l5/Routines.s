@@ -2898,7 +2898,7 @@ let normalize = meta._operationTakingDstSrcReturningSelfComponentWise_functor
 
 //
 
-function addScaling( dst, src, scalar )
+function assignScaling( dst, src, scalar )
 {
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.vectorAdapterIs( src ) );
@@ -2907,6 +2907,20 @@ function addScaling( dst, src, scalar )
   
   for( let i = 0; i < dst.length; i++ )
   dst.eSet( i, src.eGet( i ) + scalar );
+  return dst;
+}
+
+//
+
+function addScaling( dst, src, scalar )
+{
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.vectorAdapterIs( src ) );
+  _.assert( _.numberIs( scalar ) );
+  _.assert( src.length === dst.length );
+  
+  for( let i = 0; i < dst.length; i++ )
+  dst.eSet( i, dst.eGet( i ) + src.eGet( i ) + scalar );
   return dst;
 }
 
@@ -5423,6 +5437,8 @@ let Extension =
   _routinesMathematical,
 
   contextsForTesting, /* xxx : move out */
+  
+  assignScaling,
   
   addScaling
 
