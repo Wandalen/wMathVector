@@ -49,7 +49,7 @@ Self.prototype =
   _bufferConstructorGet,
 }
 
-_.propertyConstant( Self.prototype,
+_.property.constant( Self.prototype,
 {
   offset : 0,
   stride : 0,
@@ -100,7 +100,7 @@ function fromNumber( number, length )
   //   result._vectorBuffer[ 0 ] = number;
   // }
 
-  _.propertyConstant( result, { length } );
+  _.property.constant( result, { length } );
 
   return result;
 }
