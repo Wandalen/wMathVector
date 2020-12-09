@@ -1562,6 +1562,51 @@ function fromLongWithStride ( test )
 
 }
 
+//
+
+function updateLrange( test )
+{
+  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  function act( a )
+  {
+    test.open( `trivial ${ a.format }` );
+    
+    var src = a.longMake( [ 1, 2, 3 ] );
+    var got = _.vad.fromLongLrange( src );
+    
+    test.case = 'single';
+    _.vad.updateLrange( got, 0, 1 );
+    test.identical( got.offset, 0 );
+    test.identical( got.length, 1 );
+    var expected = [ 1 ];
+    test.equivalent( got.toLong(), expected );
+    
+    test.case = 'several';
+    _.vad.updateLrange( got, 0, 2 );
+    test.identical( got.offset, 0 );
+    test.identical( got.length, 2 );
+    var expected = [ 1, 2 ];
+    test.equivalent( got.toLong(), expected );
+    
+    test.case = 'all';
+    _.vad.updateLrange( got, 0, src.length );
+    test.identical( got.offset, 0 );
+    test.identical( got.length, src.length );
+    var expected = src;
+    test.equivalent( got.toLong(), expected );
+    
+    if( Config.debug )
+    {
+      test.shouldThrowErrorSync( () => _.vad.updateLrange( got, 1, src.length ) );
+      test.shouldThrowErrorSync( () => _.vad.updateLrange( got, 1, src.length ) );
+    }
+    
+    test.close( `trivial ${ a.format }` );
+    
+  }
+}
+
 // --
 // is
 // --
@@ -1813,6 +1858,42 @@ function assign( test )
   test.case = 'wrong type of src';
   var dst = _.vectorAdapter.fromLong([ 1, 2, 3 ]);
   test.shouldThrowErrorSync( () => dst.assign( { a : 1, b : 2, c : 3 } ) );
+}
+
+//
+
+function addVectorScalar( test )
+{
+
+  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  function act( a )
+  {
+
+    test.case = `${a.format} ${a.form} - routine`;
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 2, 3, 4 ]);
+    var got = _.vectorAdapter.addVectorScalar( v1, v2, 0 );
+    var exp = a.vadMake([ 2, 3, 4 ]);
+    test.identical( got, exp );
+    test.true( got === v1 );
+    
+    var v1 = a.vadMake([ 1, 2, 3 ]);
+    var v2 = a.vadMake([ 2, 3, 4 ]);
+    var got = _.vectorAdapter.addVectorScalar( v1, v2, 1 );
+    var exp = a.vadMake([ 3, 4, 5 ]);
+    test.identical( got, exp );
+    test.true( got === v1 );
+    
+    if( !Config.debug )
+    return;
+    
+    test.shouldThrowErrorSync( () => _.vectorAdapter.addVectorScalar( null, a.vadMake([ 1 ]), 1 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter.addVectorScalar( a.vadMake([ 1, 2 ]), a.vadMake([ 1 ]), 1 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter.addVectorScalar( a.vadMake([ 1, 2 ]), a.vadMake([ 1, 2 ]), null ) );
+    
+  }
+
 }
 
 //
@@ -12124,6 +12205,10 @@ let Self =
     fromLongLrange,
     fromLongLrangeAndStride,
     fromLongWithStride,
+    
+    //update
+    
+    updateLrange,
 
     // is
 
@@ -12135,6 +12220,7 @@ let Self =
     //
 
     assign,
+    addVectorScalar,
 
     growAdapter,
     growLong,
