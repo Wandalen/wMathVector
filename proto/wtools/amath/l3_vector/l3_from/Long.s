@@ -12,6 +12,7 @@ let Parent = _.VectorAdapter;
 let Self = VectorAdapterFromLong;
 function VectorAdapterFromLong(){};
 
+
 //
 
 function _review( cinterval )
