@@ -1862,6 +1862,31 @@ function assign( test )
 
 //
 
+function assignScalar( test )
+{
+
+  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  function act( a )
+  {
+
+    test.case = `${a.format} ${a.form} - routine`;
+    var v1 = a.vadMake([ 2, 3, 4 ]);
+    var got = _.vectorAdapter.assignScalar( v1, 1 );
+    var exp = a.vadMake([ 1, 1, 1 ]);
+    test.identical( got, exp );
+    test.true( got === v1 );
+    
+    if( !Config.debug )
+    return;
+    
+    test.shouldThrowErrorSync( () => _.vectorAdapter.assignScalar( null, 1 ) );
+    test.shouldThrowErrorSync( () => _.vectorAdapter.assignScalar( a.vadMake([ 1, 2 ]), null ) );
+    
+  }
+
+}
+
 function addVectorScalar( test )
 {
 
@@ -12220,6 +12245,7 @@ let Self =
     //
 
     assign,
+    assignScalar,
     addVectorScalar,
 
     growAdapter,
