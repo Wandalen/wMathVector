@@ -170,6 +170,18 @@ dop.special = true;
 
 //
 
+function assignScalar( dst, scalar )
+{
+  _.assert( _.vectorAdapterIs( dst ) );
+  _.assert( _.numberIs( scalar ) );
+  
+  for( let i = 0; i < dst.length ; i++ )
+  dst.eSet( i, scalar );
+  return dst;
+}
+
+//
+
 /**
  * Routine clone() makes copy of source vector {-src-}.
  *
@@ -5423,6 +5435,8 @@ let Extension =
   _routinesMathematical,
 
   contextsForTesting, /* xxx : move out */
+  
+  assignScalar,
   
   addVectorScalar
 
