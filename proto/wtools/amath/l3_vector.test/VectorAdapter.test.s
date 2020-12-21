@@ -23,7 +23,74 @@ let _ = _global_.wTools.withDefaultLong.Fx;
 // from
 // --
 
-function fromLong ( test )
+function fromWithLong( test )
+{
+  _.vectorAdapter.contextsForTesting({ onEach : act });
+
+  function act( a )
+  {
+    test.open( `different type of long, ${ a.format }` );
+
+    test.case = 'from empty long';
+    var src = a.longMake( [] );
+    var got = _.vad.from( src );
+    var expected = [];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.true( got._vectorBuffer === src );
+
+    /* */
+
+    test.case = 'from filled long';
+    var src = a.longMake([ 1, 2, 3 ]);
+    var got = _.vad.from( src );
+    var expected = [ 1, 2, 3 ];
+    for( let i = 0 ; i < expected.length ; i++ )
+    test.identical( got.eGet( i ), expected[ i ] );
+    test.identical( got.length, expected.length );
+    test.true( got._vectorBuffer === src );
+
+    test.close( `different type of long, ${ a.format }` );
+  }
+
+  /* */
+
+  test.case = 'from empty vectorAdapter';
+  var src = _.vad.make( 0 );
+  var got = _.vad.from( src );
+  test.identical( got.length, 0 );
+  test.true( got._vectorBuffer === src._vectorBuffer );
+
+  test.case = 'from filled vectorAdapter';
+  var longSrc = [ 1, 2, 3 ];
+  var src = _.vad.make( longSrc.length );
+  for( let i = 0 ; i < longSrc.length ; i++ )
+  src.eSet( i, longSrc[ i ] );
+  var got = _.vad.from( src );
+  var expected = [ 1, 2, 3 ];
+  for( let i = 0 ; i < expected.length ; i++ )
+  test.identical( got.eGet( i ), expected[ i ] );
+  test.identical( got.length, expected.length );
+  test.true( got._vectorBuffer === src._vectorBuffer );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vad.from() );
+
+  test.case = 'wrong type of src';
+  let onError = ( err, arg ) => test.identical( _.strCount( err.message, /\s+Can't make VectorAdapter from/ ), 1 );
+  test.shouldThrowErrorSync( () => _.vad.from( false ), onError );
+  test.shouldThrowErrorSync( () => _.vad.from( 5 ), onError );
+}
+
+//
+
+function fromLong( test )
 {
   _.vectorAdapter.contextsForTesting({ onEach : act });
 
@@ -90,7 +157,7 @@ function fromLong ( test )
 
 //
 
-function fromLongLrange ( test )
+function fromLongLrange( test )
 {
 
   _.vectorAdapter.contextsForTesting({ onEach : act });
@@ -760,7 +827,7 @@ function fromLongLrange ( test )
 
 //
 
-function fromLongLrangeAndStride ( test )
+function fromLongLrangeAndStride( test )
 {
   _.vectorAdapter.contextsForTesting({ onEach : act });
 
@@ -1437,7 +1504,7 @@ function fromLongLrangeAndStride ( test )
 
 //
 
-function fromLongWithStride ( test )
+function fromLongWithStride( test )
 {
   _.vectorAdapter.contextsForTesting({ onEach : act });
 
@@ -1571,39 +1638,39 @@ function updateLrange( test )
   function act( a )
   {
     test.open( `trivial ${ a.format }` );
-    
+
     var src = a.longMake( [ 1, 2, 3 ] );
     var got = _.vad.fromLongLrange( src );
-    
+
     test.case = 'single';
     _.vad.updateLrange( got, 0, 1 );
     test.identical( got.offset, 0 );
     test.identical( got.length, 1 );
     var expected = [ 1 ];
     test.equivalent( got.toLong(), expected );
-    
+
     test.case = 'several';
     _.vad.updateLrange( got, 0, 2 );
     test.identical( got.offset, 0 );
     test.identical( got.length, 2 );
     var expected = [ 1, 2 ];
     test.equivalent( got.toLong(), expected );
-    
+
     test.case = 'all';
     _.vad.updateLrange( got, 0, src.length );
     test.identical( got.offset, 0 );
     test.identical( got.length, src.length );
     var expected = src;
     test.equivalent( got.toLong(), expected );
-    
+
     if( Config.debug )
     {
       test.shouldThrowErrorSync( () => _.vad.updateLrange( got, 1, src.length ) );
       test.shouldThrowErrorSync( () => _.vad.updateLrange( got, 1, src.length ) );
     }
-    
+
     test.close( `trivial ${ a.format }` );
-    
+
   }
 }
 
@@ -1876,13 +1943,13 @@ function assignScalar( test )
     var exp = a.vadMake([ 1, 1, 1 ]);
     test.identical( got, exp );
     test.true( got === v1 );
-    
+
     if( !Config.debug )
     return;
-    
+
     test.shouldThrowErrorSync( () => _.vectorAdapter.assignScalar( null, 1 ) );
     test.shouldThrowErrorSync( () => _.vectorAdapter.assignScalar( a.vadMake([ 1, 2 ]), null ) );
-    
+
   }
 
 }
@@ -1902,21 +1969,21 @@ function addVectorScalar( test )
     var exp = a.vadMake([ 2, 3, 4 ]);
     test.identical( got, exp );
     test.true( got === v1 );
-    
+
     var v1 = a.vadMake([ 1, 2, 3 ]);
     var v2 = a.vadMake([ 2, 3, 4 ]);
     var got = _.vectorAdapter.addVectorScalar( v1, v2, 1 );
     var exp = a.vadMake([ 3, 4, 5 ]);
     test.identical( got, exp );
     test.true( got === v1 );
-    
+
     if( !Config.debug )
     return;
-    
+
     test.shouldThrowErrorSync( () => _.vectorAdapter.addVectorScalar( null, a.vadMake([ 1 ]), 1 ) );
     test.shouldThrowErrorSync( () => _.vectorAdapter.addVectorScalar( a.vadMake([ 1, 2 ]), a.vadMake([ 1 ]), 1 ) );
     test.shouldThrowErrorSync( () => _.vectorAdapter.addVectorScalar( a.vadMake([ 1, 2 ]), a.vadMake([ 1, 2 ]), null ) );
-    
+
   }
 
 }
@@ -12227,12 +12294,13 @@ let Self =
     // from
 
     fromLong,
+    fromWithLong,
     fromLongLrange,
     fromLongLrangeAndStride,
     fromLongWithStride,
-    
+
     //update
-    
+
     updateLrange,
 
     // is
