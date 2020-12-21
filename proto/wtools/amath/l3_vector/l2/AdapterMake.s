@@ -136,7 +136,7 @@ function from( src )
   //   else
   //   return srcLong.colGet( 0 );
   // }
-  else _.assert( 0, 'Cant make VectorAdapter from', _.strType( srcLong ) );
+  else _.assert( 0, `Can't make VectorAdapter from ${ _.strType( src ) }` );
 
 }
 
