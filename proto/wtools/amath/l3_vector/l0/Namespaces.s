@@ -49,7 +49,7 @@ _.mapExtend( _.avector, AvectorExtension );
 _.longDescriptorProducer.applyTo( _.avector, 'Fx' );
 _.assert( Object.getPrototypeOf( _.avector.withDefaultLong.Array ) === _.avector );
 
-_.assert( _.mapOwnKey( _.avector, 'withDefaultLong' ) );
+_.assert( _.mapOnlyOwnKey( _.avector, 'withDefaultLong' ) );
 _.assert( _.objectIs( _.avector.withDefaultLong ) );
 _.assert( _.objectIs( _.avector.withDefaultLong.Array ) );
 _.assert( _.objectIs( _.avector.withDefaultLong.F32x ) );

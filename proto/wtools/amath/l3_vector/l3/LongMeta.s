@@ -181,7 +181,7 @@ function _routinesLongWrap_functor()
   for( let r in routines )
   {
 
-    if( _.mapOwnKey( _.avector, r ) )
+    if( _.mapOnlyOwnKey( _.avector, r ) )
     {
       debugger;
       continue;

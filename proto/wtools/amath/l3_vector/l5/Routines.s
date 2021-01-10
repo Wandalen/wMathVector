@@ -5451,7 +5451,7 @@ _.vectorAdapter._meta._routinesLongWrap_functor();
 
 //
 
-_.assert( _.mapOwnKey( _.avector, 'withDefaultLong' ) );
+_.assert( _.mapOnlyOwnKey( _.avector, 'withDefaultLong' ) );
 _.assert( _.objectIs( _.avector.withDefaultLong ) );
 _.assert( _.objectIs( _.avector.withDefaultLong.Array ) );
 _.assert( _.objectIs( _.avector.withDefaultLong.F32x ) );
