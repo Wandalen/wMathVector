@@ -174,7 +174,7 @@ function assignScalar( dst, scalar )
 {
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.numberIs( scalar ) );
-  
+
   for( let i = 0; i < dst.length ; i++ )
   dst.eSet( i, scalar );
   return dst;
@@ -329,7 +329,7 @@ function slice( src, first, last )
   cinterval[ 0 ] = 0;
   if( cinterval[ 1 ] === undefined )
   cinterval[ 1 ] = src.length;
-  let result = this.shrinkLong.call( this, src, cinterval );
+  let result = this.onlyLong.call( this, src, cinterval );
   return result;
 }
 
@@ -557,12 +557,10 @@ function growLong( src, cinterval, val )
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.vectorAdapterIs( src ) );
 
-  // debugger;
   if( val === undefined )
   val = 0;
   if( cinterval === undefined )
-  cinterval = [ 0, src.length-1 ];
-  // cinterval = [ 0, src.length ]; // Dmytro : wrong range, should be an cinterval instead of ointerval, adds 1 element */
+  cinterval = [ 0, src.length - 1 ];
 
   _.assert( _.intervalIs( cinterval ) );
   _.assert( _.numberIs( val ) );
@@ -617,17 +615,17 @@ dop.modifying = false;
 //
 
 /**
- * Routine shrinkAdapter() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * Routine onlyAdapter() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
  *
  * @example
- * var got = _.vectorAdapter.shrinkAdapter( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * var got = _.vectorAdapter.onlyAdapter( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got.toStr() );
  * // log "2.000, 3.000, 4.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Range } cinterval - Defines range for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
- * @function shrinkAdapter
+ * @function onlyAdapter
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-cinterval-} is not a Range.
@@ -635,13 +633,13 @@ dop.modifying = false;
  * @module Tools/math/Vector
  */
 
-function shrinkAdapter( src, cinterval )
+function onlyAdapter( src, cinterval )
 {
-  let result = this.shrinkLong.apply( this, arguments );
+  let result = this.onlyLong.apply( this, arguments );
   return this.fromLong( result );
 }
 
-dop = shrinkAdapter.operation = Object.create( null );
+dop = onlyAdapter.operation = Object.create( null );
 dop.input = 'vr ?s';
 dop.scalarWise = false;
 dop.homogeneous = false;
@@ -656,17 +654,17 @@ dop.modifying = false;
 //
 
 /**
- * Routine shrinkLong() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * Routine onlyLong() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
  *
  * @example
- * var got = _.avector.shrinkLong( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * var got = _.avector.onlyLong( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got );
  * // log [ 2, 3, 4 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Range } cinterval - Defines range for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
- * @function shrinkLong
+ * @function onlyLong
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-cinterval-} is not a Range.
@@ -674,17 +672,17 @@ dop.modifying = false;
  * @module Tools/math/Vector
  */
 
-function shrinkLong( src, cinterval )
+function onlyLong( src, cinterval )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( cinterval === undefined )
-  cinterval = [ 0, src.length ];
+  cinterval = [ 0, src.length - 1 ];
   if( cinterval[ 0 ] < 0 )
   cinterval[ 0 ] = 0;
-  if( cinterval[ 1 ] > src.length-1 )
-  cinterval[ 1 ] = src.length-1;
+  if( cinterval[ 1 ] > src.length - 1 )
+  cinterval[ 1 ] = src.length - 1;
 
   let l = cinterval[ 1 ] - cinterval[ 0 ] + 1;
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
@@ -698,7 +696,7 @@ function shrinkLong( src, cinterval )
   return result;
 }
 
-dop = shrinkLong.operation = Object.create( null );
+dop = onlyLong.operation = Object.create( null );
 dop.input = 'vr ?s';
 dop.scalarWise = false;
 dop.homogeneous = false;
@@ -713,21 +711,21 @@ dop.modifying = false;
 //
 
 /**
- * Routine shrinkAdapter_() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * Routine onlyAdapter_() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
  * End of range included. If provided range is outside of actual it will be adjusted.
  *
  * @example
- * var got = _.vectorAdapter.shrinkAdapter_( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * var got = _.vectorAdapter.onlyAdapter_( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got );
  * // log "2.000, 3.000, 4.000"
- * var got = _.vectorAdapter.shrinkAdapter_( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
+ * var got = _.vectorAdapter.onlyAdapter_( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
  * console.log( got );
  * // log "4.000, 5.000"
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Range } cinterval - Defines range for copying.
  * @returns { VectorAdapter } - Returns instance of VectorAdapter filled by values of original vector {-src-}.
- * @function shrinkAdapter_
+ * @function onlyAdapter_
  * @throws { Error } If arguments.length is not equal one or two.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-cinterval-} is not a Range.
@@ -735,13 +733,13 @@ dop.modifying = false;
  * @module Tools/math/Vector
  */
 
-function shrinkAdapter_( src, cinterval )
+function onlyAdapter_( src, cinterval )
 {
-  let result = this.shrinkLong_.apply( this, arguments );
+  let result = this.onlyLong_.apply( this, arguments );
   return this.fromLong( result );
 }
 
-dop = shrinkAdapter_.operation = Object.create( null );
+dop = onlyAdapter_.operation = Object.create( null );
 dop.input = 'vr ?s';
 dop.scalarWise = false;
 dop.homogeneous = false;
@@ -756,21 +754,21 @@ dop.modifying = false;
 //
 
 /**
- * Routine shrinkLong_() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
+ * Routine onlyLong_() makes new instance of source vector {-src-} with length equal to src.length or less. The elements of new vector filled by values of {-src-}.
  * End of range included. If provided range is outside of actual it will be adjusted.
  *
  * @example
- * var got = _.avector.shrinkLong_( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
+ * var got = _.avector.onlyLong_( [ 1, 2, 3, 4, 5 ], [ 1, 3 ] );
  * console.log( got );
  * // log [ 2, 3, 4 ]
- * var got = _.avector.shrinkLong_( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
+ * var got = _.avector.onlyLong_( [ 1, 2, 3, 4, 5 ], [ 3, 7 ] );
  * console.log( got );
  * // log [ 4, 5 ]
  *
  * @param { Long|VectorAdapter } src - Source vector.
  * @param { Range } cinterval - Defines range for copying.
  * @returns { Long } - Returns instance of source Long filled by values of original vector {-src-}.
- * @function shrinkLong_
+ * @function onlyLong_
  * @throws { Error } If arguments.length is not equal one or two.
  * @throws { Error } If {-src-} is not a Long, not a VectorAdapter.
  * @throws { Error } If {-cinterval-} is not a Range.
@@ -778,7 +776,7 @@ dop.modifying = false;
  * @module Tools/math/Vector
  */
 
-function shrinkLong_( src, cinterval )
+function onlyLong_( src, cinterval )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -812,7 +810,7 @@ function shrinkLong_( src, cinterval )
 
 }
 
-dop = shrinkLong_.operation = Object.create( null );
+dop = onlyLong_.operation = Object.create( null );
 dop.input = 'vr ?s';
 dop.scalarWise = false;
 dop.homogeneous = false;
@@ -1350,7 +1348,7 @@ function filter( dst, src, onEach )
       dsti += 1;
     }
     if( dst.length !== dsti )
-    dst = dst.shrinkAdapter([ 0, dsti-1 ]);
+    dst = dst.onlyAdapter([ 0, dsti-1 ]);
   }
 
   return dst;
@@ -1448,7 +1446,7 @@ function _while( dst, src, onEach )
       dsti += 1;
     }
     if( dst.length !== dsti )
-    dst = dst.shrinkAdapter([ 0, dsti-1 ]);
+    dst = dst.onlyAdapter([ 0, dsti-1 ]);
   }
 
   return dst;
@@ -2916,7 +2914,7 @@ function addVectorScalar( dst, src, scalar )
   _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.numberIs( scalar ) );
   _.assert( src.length === dst.length );
-  
+
   for( let i = 0; i < dst.length; i++ )
   dst.eSet( i, src.eGet( i ) + scalar );
   return dst;
@@ -4981,8 +4979,8 @@ let _routinesMathematical =
   // slicedAdapter, /* zzz : deprecate */
   // slicedLong, /* zzz : deprecate */
 
-  /* qqq : implement routine shrinkLong and cover */
-  /* qqq : implement routine shrinkAdapter and cover */
+  /* qqq : implement routine onlyLong and cover */
+  /* qqq : implement routine onlyAdapter and cover */
   /* aaa : implement routine growLong and cover */ /* Dmytro : covered */
   /* aaa : implement routine growAdapter and cover */ /* Dmytro : covered */
 
@@ -4990,11 +4988,11 @@ let _routinesMathematical =
   growAdapter,
   growLong, /* aaa2 : implement good coverage, does not work properly */ /* Dmytro : covered, routine had some bugs with indexes */
 
-  shrink : shrinkAdapter,
-  shrinkAdapter,
-  shrinkLong,
-  shrinkAdapter_,
-  shrinkLong_,
+  only : onlyAdapter,
+  onlyAdapter,
+  onlyLong,
+  onlyAdapter_,
+  onlyLong_,
 
   // resizedAdapter, /* zzz : deprecate */
   // resizedLong, /* zzz : deprecate */
@@ -5435,9 +5433,9 @@ let Extension =
   _routinesMathematical,
 
   contextsForTesting, /* xxx : move out */
-  
+
   assignScalar,
-  
+
   addVectorScalar
 
 }
