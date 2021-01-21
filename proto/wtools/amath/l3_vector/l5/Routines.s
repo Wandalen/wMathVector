@@ -174,7 +174,7 @@ function assignScalar( dst, scalar )
 {
   _.assert( _.vectorAdapterIs( dst ) );
   _.assert( _.numberIs( scalar ) );
-  
+
   for( let i = 0; i < dst.length ; i++ )
   dst.eSet( i, scalar );
   return dst;
@@ -557,12 +557,10 @@ function growLong( src, cinterval, val )
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.vectorAdapterIs( src ) );
 
-  // debugger;
   if( val === undefined )
   val = 0;
   if( cinterval === undefined )
-  cinterval = [ 0, src.length-1 ];
-  // cinterval = [ 0, src.length ]; // Dmytro : wrong range, should be an cinterval instead of ointerval, adds 1 element */
+  cinterval = [ 0, src.length - 1 ];
 
   _.assert( _.intervalIs( cinterval ) );
   _.assert( _.numberIs( val ) );
@@ -680,11 +678,11 @@ function shrinkLong( src, cinterval )
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( cinterval === undefined )
-  cinterval = [ 0, src.length ];
+  cinterval = [ 0, src.length - 1 ];
   if( cinterval[ 0 ] < 0 )
   cinterval[ 0 ] = 0;
-  if( cinterval[ 1 ] > src.length-1 )
-  cinterval[ 1 ] = src.length-1;
+  if( cinterval[ 1 ] > src.length - 1 )
+  cinterval[ 1 ] = src.length - 1;
 
   let l = cinterval[ 1 ] - cinterval[ 0 ] + 1;
   let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
@@ -2916,7 +2914,7 @@ function addVectorScalar( dst, src, scalar )
   _.assert( _.vectorAdapterIs( src ) );
   _.assert( _.numberIs( scalar ) );
   _.assert( src.length === dst.length );
-  
+
   for( let i = 0; i < dst.length; i++ )
   dst.eSet( i, src.eGet( i ) + scalar );
   return dst;
@@ -5435,9 +5433,9 @@ let Extension =
   _routinesMathematical,
 
   contextsForTesting, /* xxx : move out */
-  
+
   assignScalar,
-  
+
   addVectorScalar
 
 }
