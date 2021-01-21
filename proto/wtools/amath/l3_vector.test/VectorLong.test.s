@@ -524,7 +524,7 @@ function growLong( test )
 
 //
 
-function shrinkLong_( test )
+function onlyLong_( test )
 {
   _.vectorAdapter.contextsForTesting( { onEach : act } );
 
@@ -534,7 +534,7 @@ function shrinkLong_( test )
 
     test.case = 'without cinterval';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src );
+    var got = _.avector.onlyLong_( src );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
@@ -543,63 +543,63 @@ function shrinkLong_( test )
 
     test.case = 'cinterval - [ 0, 0 ]';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src, [ 0, 0 ] );
+    var got = _.avector.onlyLong_( src, [ 0, 0 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 2 ]';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src, [ 0, 2 ] );
+    var got = _.avector.onlyLong_( src, [ 0, 2 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, -2 ]';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src, [ 0, -2 ] );
+    var got = _.avector.onlyLong_( src, [ 0, -2 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 2 ]';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src, [ 2, 2 ] );
+    var got = _.avector.onlyLong_( src, [ 2, 2 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 4 ]';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src, [ 2, 4 ] );
+    var got = _.avector.onlyLong_( src, [ 2, 4 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, -2 ]';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src, [ 2, -2 ] );
+    var got = _.avector.onlyLong_( src, [ 2, -2 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -2 ]';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src, [ -2, -2 ] );
+    var got = _.avector.onlyLong_( src, [ -2, -2 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, 0 ]';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src, [ -2, 0 ] );
+    var got = _.avector.onlyLong_( src, [ -2, 0 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -4 ]';
     var src = a.longMake( [] );
-    var got = _.avector.shrinkLong_( src, [ -2, -4 ] );
+    var got = _.avector.onlyLong_( src, [ -2, -4 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
@@ -612,182 +612,182 @@ function shrinkLong_( test )
 
     test.case = 'without cinterval';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src );
+    var got = _.avector.onlyLong_( src );
     var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, -4 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ -4, -4 ] );
+    var got = _.avector.onlyLong_( src, [ -4, -4 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, -2 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ -4, -2 ] );
+    var got = _.avector.onlyLong_( src, [ -4, -2 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, -1 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ -4, -2 ] );
+    var got = _.avector.onlyLong_( src, [ -4, -2 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, 0 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ -4, 0 ] );
+    var got = _.avector.onlyLong_( src, [ -4, 0 ] );
     var exp = a.longMake( [ 1 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, 2 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ -4, 2 ] );
+    var got = _.avector.onlyLong_( src, [ -4, 2 ] );
     var exp = a.longMake( [ 1, -2, 3 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, 4 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ -4, 4 ] );
+    var got = _.avector.onlyLong_( src, [ -4, 4 ] );
     var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, 7 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ -4, 7 ] );
+    var got = _.avector.onlyLong_( src, [ -4, 7 ] );
     var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 0 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 0, 0 ] );
+    var got = _.avector.onlyLong_( src, [ 0, 0 ] );
     var exp = a.longMake( [ 1 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 2 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 0, 2 ] );
+    var got = _.avector.onlyLong_( src, [ 0, 2 ] );
     var exp = a.longMake( [ 1, -2, 3 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 4 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 0, 4 ] );
+    var got = _.avector.onlyLong_( src, [ 0, 4 ] );
     var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 7 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 0, 7 ] );
+    var got = _.avector.onlyLong_( src, [ 0, 7 ] );
     var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 2 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 2, 2 ] );
+    var got = _.avector.onlyLong_( src, [ 2, 2 ] );
     var exp = a.longMake( [ 3 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 3 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 2, 3 ] );
+    var got = _.avector.onlyLong_( src, [ 2, 3 ] );
     var exp = a.longMake( [ 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 4 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 2, 4 ] );
+    var got = _.avector.onlyLong_( src, [ 2, 4 ] );
     var exp = a.longMake( [ 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 7 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 2, 7 ] );
+    var got = _.avector.onlyLong_( src, [ 2, 7 ] );
     var exp = a.longMake( [ 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 4, 4 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 4, 4 ] );
+    var got = _.avector.onlyLong_( src, [ 4, 4 ] );
     var exp = a.longMake( [ 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 5, 7 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 5, 7 ] );
+    var got = _.avector.onlyLong_( src, [ 5, 7 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 7, 7 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 7, 7 ] );
+    var got = _.avector.onlyLong_( src, [ 7, 7 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 7, 9 ]';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 7, 9 ] );
+    var got = _.avector.onlyLong_( src, [ 7, 9 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 9, 7 ], wrong range direction';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 9, 7 ] );
+    var got = _.avector.onlyLong_( src, [ 9, 7 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 9, 4 ], wrong range direction';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 9, 4 ] );
+    var got = _.avector.onlyLong_( src, [ 9, 4 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 9, 0 ], wrong range direction';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 9, 0 ] );
+    var got = _.avector.onlyLong_( src, [ 9, 0 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 9, -4 ], wrong range direction';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 9, -4 ] );
+    var got = _.avector.onlyLong_( src, [ 9, -4 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 0 ], wrong range direction';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 2, 0 ] );
+    var got = _.avector.onlyLong_( src, [ 2, 0 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, -4 ], wrong range direction';
     var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
-    var got = _.avector.shrinkLong_( src, [ 2, -4 ] );
+    var got = _.avector.onlyLong_( src, [ 2, -4 ] );
     var exp = a.longMake( [] );
     test.identical( got, exp );
     test.true( got !== src );
@@ -801,13 +801,13 @@ function shrinkLong_( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.avector.shrinkLong_() );
+  test.shouldThrowErrorSync( () => _.avector.onlyLong_() );
 
   test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.avector.shrinkLong_( 2, [ 1, 4 ] ) );
+  test.shouldThrowErrorSync( () => _.avector.onlyLong_( 2, [ 1, 4 ] ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.avector.shrinkLong_( [ 1, 2, 3 ], [ 1, 4 ], 2 ) );
+  test.shouldThrowErrorSync( () => _.avector.onlyLong_( [ 1, 2, 3 ], [ 1, 4 ], 2 ) );
 
 }
 
@@ -16591,7 +16591,7 @@ let Self =
     assign,
 
     growLong,
-    shrinkLong_,
+    onlyLong_,
 
     reviewSrcIsSimpleVector,
     reviewSrcIsAdapterRoutineFrom,
