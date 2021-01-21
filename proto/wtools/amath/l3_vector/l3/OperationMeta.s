@@ -164,7 +164,8 @@ function operationNormalizeInput( operation, routineName )
   _.assert( _.strDefined( routineName ) );
   _.assert( _.longIs( operation.input ), () => `Routine::${routineName} does not have operation.input` );
 
-  operation.input = _.longShrink( operation.input );
+  operation.input = _.longSlice( operation.input );
+  // operation.input = _.longOnly( operation.input );
 
   // logger.log( `operationNormalizeInput ${routineName}` );
 
