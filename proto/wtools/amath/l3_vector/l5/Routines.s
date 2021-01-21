@@ -4988,7 +4988,7 @@ let _routinesMathematical =
   growAdapter,
   growLong, /* aaa2 : implement good coverage, does not work properly */ /* Dmytro : covered, routine had some bugs with indexes */
 
-  shrink : onlyAdapter,
+  only : onlyAdapter,
   onlyAdapter,
   onlyLong,
   onlyAdapter_,
