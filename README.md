@@ -351,7 +351,7 @@ console.log( _.strType( long2 ) );
 
 ```
 npm install
-node sample/Sample.s
+node sample/trivial/Sample.s
 ```
 
 ## To add to your project
