@@ -3926,10 +3926,12 @@ function _equalAre( it )
   it.continue = false;
 
   if( !( it.srcEffective.length >= 0 ) )
-  return false;
+  return end( false );
+  // return false;
 
   if( !( it.srcEffective2.length >= 0 ) )
-  return false;
+  return end( false );
+  // return false;
 
   if( !it.strictContainer )
   {
@@ -3941,29 +3943,35 @@ function _equalAre( it )
   else
   {
     if( !_.vectorAdapterIs( it.srcEffective ) )
-    return false;
+    return end( false );
     if( !_.vectorAdapterIs( it.srcEffective2 ) )
-    return false;
+    return end( false );
   }
 
   if( it.strictTyping )
   if( it.srcEffective._vectorBuffer.constructor !== it.srcEffective2._vectorBuffer.constructor )
-  return false;
+  return end( false );
 
   if( !it.containing )
   if( it.srcEffective.length !== length )
-  return false;
+  return end( false );
 
   if( !length )
-  return true;
+  return end( true );
 
   for( let i = 0 ; i < length ; i++ )
   {
     if( !it.onNumbersAreEqual( it.srcEffective.eGet( i ), it.srcEffective2.eGet( i ) ) )
-    return false;
+    return end( false );
   }
 
-  return true;
+  return end( true );
+
+  function end( result )
+  {
+    it.result = result;
+  }
+
 }
 
 _.routineExtend( _equalAre, _.equaler._equal );
@@ -4012,8 +4020,8 @@ function equalAre( src1, src2, opts )
   it.srcEffective = it.src;
   it.srcEffective2 = it.src2;
 
-  let result = this._equalAre( it );
-  return result;
+  let r = this._equalAre( it );
+  return it.result;
 
   // it = equalAre.lookContinue( equalAre, arguments );
   // let result = this._equalAre( it );
@@ -4074,8 +4082,8 @@ function identicalAre( src1, src2, iterator )
   it.srcEffective = it.src;
   it.srcEffective2 = it.src2;
 
-  let result = this._equalAre( it );
-  return result;
+  let r = this._equalAre( it );
+  return it.result;
 
   // debugger;
   // let it = identicalAre.lookContinue( identicalAre, arguments );
@@ -4132,8 +4140,8 @@ function equivalentAre( src1, src2, iterator )
   it.srcEffective = it.src;
   it.srcEffective2 = it.src2;
 
-  let result = this._equalAre( it );
-  return result;
+  let r = this._equalAre( it );
+  return it.result;
   // let it = equivalentAre.lookContinue( identicalAre, arguments );
   // let result = this._equalAre( it );
   // return result;
