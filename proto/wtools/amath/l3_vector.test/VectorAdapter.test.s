@@ -8677,7 +8677,8 @@ function forOf( test )
   test.case = 'long, e';
 
   var array1 = [ 10, 11, 12 ];
-  test.true( _.iterableIs( array1 ) );
+  // test.true( _.iterableIs( array1 ) );
+  test.true( !!_.methodIteratorOf( array1 ) );
 
   var got = [];
   for( let e of array1 )
@@ -8706,7 +8707,8 @@ function forOf( test )
     test.case = `${a.format} ${a.form} vad from long, e`;
 
     var vector1 = a.vadMake([ 10, 11, 12 ]);
-    test.true( _.iterableIs( vector1 ) );
+    // test.true( _.iterableIs( vector1 ) );
+    test.true( !!_.methodIteratorOf( vector1 ) );
 
     var got = [];
     for( let e of vector1 )
