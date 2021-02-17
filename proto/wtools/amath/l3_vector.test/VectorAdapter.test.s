@@ -2889,10 +2889,10 @@ function compare( test )
   test.identical( _.equivalent( src2, src1 ), false );
   test.identical( _.identical( src1, src2 ), false );
   test.identical( _.identical( src2, src1 ), false );
-  test.ne( src1, src2 );
-  test.ne( src2, src1 );
-  test.ni( src1, src2 );
-  test.ni( src2, src1 );
+  test.neq( src1, src2 );
+  test.neq( src2, src1 );
+  test.nil( src1, src2 );
+  test.nil( src2, src1 );
 
   /* */
 
@@ -2903,10 +2903,10 @@ function compare( test )
   test.identical( _.equivalent( src2, src1 ), false );
   test.identical( _.identical( src1, src2 ), false );
   test.identical( _.identical( src2, src1 ), false );
-  test.ne( src1, src2 );
-  test.ne( src2, src1 );
-  test.ni( src1, src2 );
-  test.ni( src2, src1 );
+  test.neq( src1, src2 );
+  test.neq( src2, src1 );
+  test.nil( src1, src2 );
+  test.nil( src2, src1 );
 
   /* */
 
@@ -2936,8 +2936,8 @@ function compare( test )
   test.identical( _.identical( src2, src1 ), false );
   test.equivalent( src1, src2 );
   test.equivalent( src2, src1 );
-  test.ni( src1, src2 );
-  test.ni( src2, src1 );
+  test.nil( src1, src2 );
+  test.nil( src2, src1 );
 
   /* - */
 
@@ -2976,10 +2976,10 @@ function compare( test )
   test.identical( _.equivalent( src2, src1 ), false );
   test.identical( _.identical( src1, src2 ), false );
   test.identical( _.identical( src2, src1 ), false );
-  test.ne( src1, src2 );
-  test.ne( src2, src1 );
-  test.ni( src1, src2 );
-  test.ni( src2, src1 );
+  test.neq( src1, src2 );
+  test.neq( src2, src1 );
+  test.nil( src1, src2 );
+  test.nil( src2, src1 );
 
   /* - */
 
@@ -3006,8 +3006,8 @@ function compare( test )
   test.identical( _.identical( long, vad ), false );
   test.equivalent( vad, long );
   test.equivalent( long, vad );
-  test.ni( vad, long );
-  test.ni( long, vad );
+  test.nil( vad, long );
+  test.nil( long, vad );
 
   /* */
 
@@ -3020,8 +3020,8 @@ function compare( test )
   test.identical( _.identical( long, vad ), false );
   test.equivalent( vad, long );
   test.equivalent( long, vad );
-  test.ni( vad, long );
-  test.ni( long, vad );
+  test.nil( vad, long );
+  test.nil( long, vad );
 
   /* - */
 
@@ -3034,8 +3034,8 @@ function compare( test )
   test.identical( _.identical( long, vad ), false );
   test.equivalent( vad, long );
   test.equivalent( long, vad );
-  test.ni( vad, long );
-  test.ni( long, vad );
+  test.nil( vad, long );
+  test.nil( long, vad );
 
   /* */
 
@@ -3048,8 +3048,8 @@ function compare( test )
   test.identical( _.identical( long, vad ), false );
   test.equivalent( vad, long );
   test.equivalent( long, vad );
-  test.ni( vad, long );
-  test.ni( long, vad );
+  test.nil( vad, long );
+  test.nil( long, vad );
 
   /* - */
 
@@ -3062,8 +3062,8 @@ function compare( test )
   test.identical( _.identical( long, vad ), false );
   test.equivalent( vad, long );
   test.equivalent( long, vad );
-  test.ni( vad, long );
-  test.ni( long, vad );
+  test.nil( vad, long );
+  test.nil( long, vad );
 
   /* */
 
@@ -3076,8 +3076,8 @@ function compare( test )
   test.identical( _.identical( long, vad ), false );
   test.equivalent( vad, long );
   test.equivalent( long, vad );
-  test.ni( vad, long );
-  test.ni( long, vad );
+  test.nil( vad, long );
+  test.nil( long, vad );
 
   /* - */
 
