@@ -8678,7 +8678,7 @@ function forOf( test )
 
   var array1 = [ 10, 11, 12 ];
   // test.true( _.iterableIs( array1 ) );
-  test.true( !!_.methodIteratorOf( array1 ) );
+  test.true( !!_.entity.methodIteratorOf( array1 ) );
 
   var got = [];
   for( let e of array1 )
@@ -8708,7 +8708,7 @@ function forOf( test )
 
     var vector1 = a.vadMake([ 10, 11, 12 ]);
     // test.true( _.iterableIs( vector1 ) );
-    test.true( !!_.methodIteratorOf( vector1 ) );
+    test.true( !!_.entity.methodIteratorOf( vector1 ) );
 
     var got = [];
     for( let e of vector1 )
