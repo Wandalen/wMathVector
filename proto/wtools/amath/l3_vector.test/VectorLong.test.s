@@ -16082,6 +16082,15 @@ function momentCentral( test )
   test.shouldThrowErrorSync( () => _.momentCentralConditional( [ 1 ], [ 1 ], () => true ) );
 }
 
+function strEntityShortVector( test )
+{
+  test.case = 'string representation of vector';
+  var vector = _.vector.make( [ 1, 2, 3, 4 ] );
+  var expected = '{- F32x with 4 elements -}';
+  var got = _.strEntityShort( vector )
+  test.equivalent( got, expected );
+}
+
 //
 
 function experiment( test )
@@ -16768,6 +16777,10 @@ let Self =
 
     median,
     momentCentral,
+
+    //
+
+    strEntityShortVector,
 
     // experiment
 
