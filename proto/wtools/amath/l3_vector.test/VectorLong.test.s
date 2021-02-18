@@ -16085,7 +16085,7 @@ function momentCentral( test )
 function strEntityShortVector( test )
 {
   test.case = 'string representation of vector';
-  var vector = _.vector.make( [ 1, 2, 3, 4 ] );
+  var vector = _.vector.make([ 1, 2, 3, 4 ]);
   var expected = '{- F32x with 4 elements -}';
   var got = _.strEntityShort( vector )
   test.equivalent( got, expected );
