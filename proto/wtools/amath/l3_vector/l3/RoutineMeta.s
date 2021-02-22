@@ -1992,7 +1992,7 @@ function _operationReduceNormalizeFunctions( operationMake, operation )
     else if( operation[ name ] === undefined || operation[ name ] === null )
     operation[ name ] = [];
     else if( !_.arrayIs( operation[ name ] ) )
-    _.assert( 0, 'unexpected type of operation function', name, _.strType( operation[ name ] ) );
+    _.assert( 0, 'unexpected type of operation function', name, _.entity.strType( operation[ name ] ) );
 
     if( operation[ name ][ 0 ] )
     if( operation[ name ][ 0 ].defaults === scalarDefaults )

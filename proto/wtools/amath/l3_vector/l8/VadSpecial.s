@@ -68,7 +68,7 @@ function to( cls )
     return _.Matrix.MakeCol( this )
   }
 
-  _.assert( 0, 'unknown class to convert to', _.strType( cls ) );
+  _.assert( 0, 'unknown class to convert to', _.entity.strType( cls ) );
 }
 
 //

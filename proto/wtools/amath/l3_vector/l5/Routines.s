@@ -92,7 +92,7 @@ function assign( dst ) /* aaa2 : perfect coverage is required */ /* Dmytro : cov
       for( let i = src.length, l = dst.length ; i < l ; i++ )
       dst.eSet( i, 0 );
     }
-    else _.assert( 0, 'Unknown type of argument', _.strType( src ) );
+    else _.assert( 0, 'Unknown type of argument', _.entity.strType( src ) );
     // if( _.numberIs( arguments[ 1 ] ) )
     // this.assignScalar( dst, arguments[ 1 ] );
     // else if( _.hasLength( arguments[ 1 ] ) )
@@ -1099,7 +1099,7 @@ dop.modifying = false;
 
 function headExport( src )
 {
-  let result = `VectorAdapter.x${src.length}.${_.strType( src._vectorBuffer )}`;
+  let result = `VectorAdapter.x${src.length}.${_.entity.strType( src._vectorBuffer )}`;
   return result;
 }
 

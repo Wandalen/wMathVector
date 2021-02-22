@@ -19,7 +19,7 @@ function toStr( src )
   if( _.vadIs( src ) )
   return src.toStr();
 
-  return _.toStr( src );
+  return _.entity.exportString( src );
 }
 
 // --
