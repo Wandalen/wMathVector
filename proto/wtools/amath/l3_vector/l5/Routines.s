@@ -1025,7 +1025,7 @@ dop.modifying = false;
  * // log "1.000, 2.000, 3.000";
  *
  * @param { Long|VectorAdapter } src - Source vector.
- * @param { Map|MapLike } o - Options map.
+ * @param { Map|Aux } o - Options map.
  * @param { Number } o.precision - The precision of numbers in returned string. Default value is 4.
  * @returns { String } - Returns string with elements of source vector.
  * @function _toStr
@@ -3466,7 +3466,7 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
 /**
  * Routine distributionRangeSummary() finds the biggest and the lowest values in source vector {-src-} and the median between them.
  *
- * @param { MapLike } o - Map.
+ * @param { Aux } o - Map.
  * @example
  * var got = _.avector.distributionRangeSummary( [ 1, 2, 3 ] );
  * console.log( got );
