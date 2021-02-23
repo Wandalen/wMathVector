@@ -343,7 +343,7 @@ var long2 = _.vector.toLong( vector1 );
 
 console.log( long2 );
 /* log : [ 1, 3, 5 ] */
-console.log( _.strType( long2 ) );
+console.log( _.entity.strType( long2 ) );
 /* log : Float32Array */
 ```
 
