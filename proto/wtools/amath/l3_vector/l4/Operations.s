@@ -891,7 +891,7 @@ meta.operationHomogeneousAdjust();
 meta.operationHeterogeneousAdjust();
 meta.operationReducingAdjust();
 
-_.assert( _.entity.identicalShallow( vad.operations, Routines ) );
-// _.assert( _.entityIdentical( vad.operations, Routines ) );
+// _.assert( _.entity.identicalShallow( vad.operations, Routines ) );
+_.assert( _.entityIdentical( vad.operations, Routines ) );
 
 })();
