@@ -362,7 +362,7 @@ function _methodsDeclare()
 //     return false;
 //     if( _.longIs( it.src ) )
 //     {
-//       it.srcEffective = it.src = _.vectorAdapter.from( it.src );
+//       it./*srcEffective*/src = it.src = _.vectorAdapter.from( it.src );
 //       return true;
 //     }
 //     else if( _.longIs( it.src2 ) )

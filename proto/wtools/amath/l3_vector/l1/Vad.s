@@ -99,7 +99,7 @@ _metaDefine( 'field', Symbol.iterator, _iterate );
 _metaDefine( 'get', Symbol.toStringTag, _toStringTag );
 _metaDefine( 'field', Symbol.toPrimitive, _toPrimitive );
 _metaDefine( 'field', Symbol.for( 'nodejs.util.inspect.custom' ), _inspectCustom );
-_metaDefine( 'field', Symbol.for( 'notLong' ), true );
+// _metaDefine( 'field', Symbol.for( 'notLong' ), true );
 
 // --
 // declare

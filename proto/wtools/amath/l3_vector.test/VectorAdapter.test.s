@@ -1734,6 +1734,7 @@ function vectorIs( test )
 
 //
 
+/* qqq : wrote similar test in module::wTools, emulating vad */
 function longIs( test )
 {
 

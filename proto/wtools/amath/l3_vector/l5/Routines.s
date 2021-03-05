@@ -3897,7 +3897,7 @@ dop.modifying = false;
 // --
 
 /**
- * Routine _equalAre() checks that two vectors {-it.srcEffective-} and {-it.srcEffective2-} are equivalent.
+ * Routine _equalAre() checks that two vectors {-it.src-} and {-it.src2-} are equivalent.
  *
  * @example
  * var got = _.avector._equalAre( { src : [ 1, -4, 2 ], src1 : [ 1, -4.0000001, 2 ], strictTyping : 1, containing : 'all' } );
@@ -3905,7 +3905,7 @@ dop.modifying = false;
  * // log true
  *
  * @param { Map } it - Options map.
- * @returns { Boolean|BoolLike } - If vectors {-it.srcEffective-} and {-it.srcEffective2-} are equivalent, returns true. Otherwise, returns false.
+ * @returns { Boolean|BoolLike } - If vectors {-it.src-} and {-it.src2-} are equivalent, returns true. Otherwise, returns false.
  * @function _equalAre
  * @throws { Error } If arguments.length is less or more then one.
  * @throws { Error } If {-it.strictTyping-} is undefined.
@@ -3917,7 +3917,7 @@ dop.modifying = false;
 
 function _equalAre( it )
 {
-  let length = it.srcEffective2.length;
+  let length = it.src2.length;
 
   _.assert( arguments.length === 1 );
   _.assert( it.strictTyping !== undefined );
@@ -3925,35 +3925,35 @@ function _equalAre( it )
 
   it.continue = false;
 
-  if( !( it.srcEffective.length >= 0 ) )
+  if( !( it.src.length >= 0 ) )
   return end( false );
   // return false;
 
-  if( !( it.srcEffective2.length >= 0 ) )
+  if( !( it.src2.length >= 0 ) )
   return end( false );
   // return false;
 
   if( !it.strictContainer )
   {
-    if( !_.vectorAdapterIs( it.srcEffective ) && _.longIs( it.srcEffective ) )
-    it.srcEffective = this.fromLong( it.srcEffective );
-    if( !_.vectorAdapterIs( it.srcEffective2 ) && _.longIs( it.srcEffective2 ) )
-    it.srcEffective2 = this.fromLong( it.srcEffective2 );
+    if( !_.vectorAdapterIs( it.src ) && _.longIs( it.src ) )
+    it.src = this.fromLong( it.src );
+    if( !_.vectorAdapterIs( it.src2 ) && _.longIs( it.src2 ) )
+    it.src2 = this.fromLong( it.src2 );
   }
   else
   {
-    if( !_.vectorAdapterIs( it.srcEffective ) )
+    if( !_.vectorAdapterIs( it.src ) )
     return end( false );
-    if( !_.vectorAdapterIs( it.srcEffective2 ) )
+    if( !_.vectorAdapterIs( it.src2 ) )
     return end( false );
   }
 
   if( it.strictTyping )
-  if( it.srcEffective._vectorBuffer.constructor !== it.srcEffective2._vectorBuffer.constructor )
+  if( it.src._vectorBuffer.constructor !== it.src2._vectorBuffer.constructor )
   return end( false );
 
   if( !it.containing )
-  if( it.srcEffective.length !== length )
+  if( it.src.length !== length )
   return end( false );
 
   if( !length )
@@ -3961,7 +3961,7 @@ function _equalAre( it )
 
   for( let i = 0 ; i < length ; i++ )
   {
-    if( !it.onNumbersAreEqual( it.srcEffective.eGet( i ), it.srcEffective2.eGet( i ) ) )
+    if( !it.onNumbersAreEqual( it.src.eGet( i ), it.src2.eGet( i ) ) )
     return end( false );
   }
 
@@ -4014,11 +4014,11 @@ function equalAre( src1, src2, opts )
 
   let it = this._equalAre.head.call( this, this.equalAre, arguments );
 
-  _.assert( it.srcEffective === null );
-  _.assert( it.srcEffective2 === null );
-
-  it.srcEffective = it.src;
-  it.srcEffective2 = it.src2;
+  // _.assert( it.src === null );
+  // _.assert( it.src2 === null );
+  //
+  // it.src = it.src;
+  // it.src2 = it.src2;
 
   let r = this._equalAre( it );
   return it.result;
@@ -4076,11 +4076,11 @@ function identicalAre( src1, src2, iterator )
   debugger;
   let it = this._equalAre.head.call( this, this.identicalAre, arguments );
 
-  _.assert( it.srcEffective === null );
-  _.assert( it.srcEffective2 === null );
-
-  it.srcEffective = it.src;
-  it.srcEffective2 = it.src2;
+  // _.assert( it.src === null );
+  // _.assert( it.src2 === null );
+  //
+  // it.src = it.src;
+  // it.src2 = it.src2;
 
   let r = this._equalAre( it );
   return it.result;
@@ -4134,11 +4134,11 @@ function equivalentAre( src1, src2, iterator )
   // debugger;
   let it = this._equalAre.head.call( this, this.equivalentAre, arguments );
 
-  _.assert( it.srcEffective === null );
-  _.assert( it.srcEffective2 === null );
-
-  it.srcEffective = it.src;
-  it.srcEffective2 = it.src2;
+  // _.assert( it.src === null );
+  // _.assert( it.src2 === null );
+  //
+  // it.src = it.src;
+  // it.src2 = it.src2;
 
   let r = this._equalAre( it );
   return it.result;
