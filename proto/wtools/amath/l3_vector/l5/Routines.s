@@ -3927,11 +3927,9 @@ function _equalAre( it )
 
   if( !( it.src.length >= 0 ) )
   return end( false );
-  // return false;
 
   if( !( it.src2.length >= 0 ) )
   return end( false );
-  // return false;
 
   if( !it.strictContainer )
   {
@@ -3989,64 +3987,50 @@ dop.homogeneous = true;
 
 //
 
-/**
- * Routine equalAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
- *
- * @example
- * var got = _.avector.equalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 'all' } );
- * console.log( got );
- * // log true
- *
- * @param { Long|VectorAdapter } src1 - First vector.
- * @param { Long|VectorAdapter } src2 - Second vector.
- * @param { Map } opts - Options map.
- * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
- * @function equalAre
- * @throws { Error } If arguments.length is less or more then one.
- * @throws { Error } If {-opts.strictTyping-} is undefined.
- * @throws { Error } If {-opts.containing-} is undefined.
- * @namespaces "wTools.avector","wTools.vectorAdapter"
- * @module Tools/math/Vector
- */
-
-function equalAre( src1, src2, opts )
-{
-
-  let it = this._equalAre.head.call( this, this.equalAre, arguments );
-
-  // _.assert( it.src === null );
-  // _.assert( it.src2 === null );
-  //
-  // it.src = it.src;
-  // it.src2 = it.src2;
-
-  let r = this._equalAre( it );
-  return it.result;
-
-  // it = equalAre.lookContinue( equalAre, arguments );
-  // let result = this._equalAre( it );
-  // return result;
-
-  // _entityEqualIteratorMake
-
-}
-
-_.routineExtend( equalAre, _.equaler._equal );
-
-// _.assert( _.objectIs( equalAre.defaults ) );
-// _.assert( _.routineIs( equalAre.body ) );
-// _.assert( _.routineIs( equalAre.lookContinue ) );
-
-dop = equalAre.operation = Object.create( null );
-dop.input = 'vr vr ?!v';
-dop.takingArguments = [ 2, 3 ];
-dop.takingVectors = 2;
-dop.takingVectorsOnly = false;
-dop.returningSelf = false;
-dop.returningNew = false;
-dop.modifying = false;
-dop.reducing = true;
-dop.homogeneous = true;
+// /**
+//  * Routine equalAre() checks that two vectors {-src1-} and {-src2-} are equivalent.
+//  *
+//  * @example
+//  * var got = _.avector.equalAre( [ 1, -4, 2 ], [ 1, -4.0000001, 2 ], { strictTyping : 1, containing : 'all' } );
+//  * console.log( got );
+//  * // log true
+//  *
+//  * @param { Long|VectorAdapter } src1 - First vector.
+//  * @param { Long|VectorAdapter } src2 - Second vector.
+//  * @param { Map } opts - Options map.
+//  * @returns { Boolean|BoolLike } - If vectors {-src1-} and {-src2-} are equivalent, returns true. Otherwise, returns false.
+//  * @function equalAre
+//  * @throws { Error } If arguments.length is less or more then one.
+//  * @throws { Error } If {-opts.strictTyping-} is undefined.
+//  * @throws { Error } If {-opts.containing-} is undefined.
+//  * @namespaces "wTools.avector","wTools.vectorAdapter"
+//  * @module Tools/math/Vector
+//  */
+//
+// function equalAre( src1, src2, opts )
+// {
+//   let it = this._equalAre.head.call( this, this.equalAre, arguments );
+//   let r = this._equalAre( it );
+//   return it.result;
+// }
+//
+// _.routineExtend( equalAre, { defaults : _._equal } );
+//
+// // _.routineExtend( equalAre, _.equaler._equal );
+// // _.assert( _.objectIs( equalAre.defaults ) );
+// // _.assert( _.routineIs( equalAre.body ) );
+// // _.assert( _.routineIs( equalAre.lookContinue ) );
+//
+// dop = equalAre.operation = Object.create( null );
+// dop.input = 'vr vr ?!v';
+// dop.takingArguments = [ 2, 3 ];
+// dop.takingVectors = 2;
+// dop.takingVectorsOnly = false;
+// dop.returningSelf = false;
+// dop.returningNew = false;
+// dop.modifying = false;
+// dop.reducing = true;
+// dop.homogeneous = true;
 
 //
 
@@ -4072,27 +4056,16 @@ dop.homogeneous = true;
 
 function identicalAre( src1, src2, iterator )
 {
-  // _.assert( !opts, 'not tested' );
   debugger;
   let it = this._equalAre.head.call( this, this.identicalAre, arguments );
-
-  // _.assert( it.src === null );
-  // _.assert( it.src2 === null );
-  //
-  // it.src = it.src;
-  // it.src2 = it.src2;
-
   let r = this._equalAre( it );
   return it.result;
-
-  // debugger;
-  // let it = identicalAre.lookContinue( identicalAre, arguments );
-  // let result = this._equalAre( it );
-  // return result;
-  // _entityEqualIteratorMake
 }
 
-_.routineExtend( identicalAre, _.entityIdentical );
+_.routine.extendInheriting( identicalAre, { defaults : _.entityIdentical.defaults } );
+identicalAre.defaults.Looker = identicalAre.defaults;
+
+// _.routineExtend( identicalAre, _.entityIdentical );
 
 dop = identicalAre.operation = Object.create( null );
 dop.input = 'vr vr ?!v';
@@ -4130,25 +4103,13 @@ dop.homogeneous = true;
 
 function equivalentAre( src1, src2, iterator )
 {
-  // _.assert( !opts, 'not tested' );
-  // debugger;
   let it = this._equalAre.head.call( this, this.equivalentAre, arguments );
-
-  // _.assert( it.src === null );
-  // _.assert( it.src2 === null );
-  //
-  // it.src = it.src;
-  // it.src2 = it.src2;
-
   let r = this._equalAre( it );
   return it.result;
-  // let it = equivalentAre.lookContinue( identicalAre, arguments );
-  // let result = this._equalAre( it );
-  // return result;
-  // // _entityEqualIteratorMake
 }
 
-_.routineExtend( equivalentAre, _.entityEquivalent );
+_.routine.extendInheriting( equivalentAre, { defaults : _.entityEquivalent.defaults } );
+equivalentAre.defaults.Looker = equivalentAre.defaults;
 
 dop = equivalentAre.operation = Object.create( null );
 dop.input = 'vr vr ?!v';
@@ -5368,7 +5329,7 @@ let _routinesMathematical =
 
   // [ Symbol.for( 'equalAre' ) ] : _equalAre,
   _equalAre,
-  equalAre,
+  // equalAre,
   identicalAre, /* aaa2 : cover please */ /* Dmytro : covered */
   equivalentAre, /* aaa2 : cover please */ /* Dmytro : covered */
 

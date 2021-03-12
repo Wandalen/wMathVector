@@ -11134,7 +11134,9 @@ function equalentAreIdenticalAreEquivalentWithIdenticalWith( test )
   test.case = 'empty vectors';
   var src1 = _.vectorAdapter.fromLong([]);
   var src2 = _.vectorAdapter.fromLong([]);
+  debugger;
   test.identical( _.vectorAdapter.equivalentAre( src1, src2 ), true );
+  debugger;
   test.identical( _.vectorAdapter.equivalentAre( src2, src1 ), true );
   test.identical( _.vectorAdapter.identicalAre( src1, src2 ), true );
   test.identical( _.vectorAdapter.identicalAre( src2, src1 ), true );
