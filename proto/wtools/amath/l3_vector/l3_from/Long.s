@@ -2,14 +2,14 @@
 
 'use strict';
 
-let _ = _global_.wTools;
-let Parent = _.VectorAdapter;
+const _ = _global_.wTools;
+const Parent = _.VectorAdapter;
 
 // --
 //
 // --
 
-let Self = VectorAdapterFromLong;
+const Self = VectorAdapterFromLong;
 function VectorAdapterFromLong(){};
 
 

@@ -2,7 +2,7 @@
 
 'use strict';
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _min = Math.min;
 let _max = Math.max;

@@ -2,7 +2,7 @@
 
 'use strict';
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let _min = Math.min;
 let _max = Math.max;
 let _arraySlice = Array.prototype.slice;

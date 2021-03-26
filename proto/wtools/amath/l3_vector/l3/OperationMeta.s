@@ -2,7 +2,7 @@
 
 'use strict';
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
 let _sqr = _.math.sqr;
@@ -622,7 +622,7 @@ function operationNormalize1( operation )
   if( _.numberIs( operation.takingVectors ) )
   operation.takingVectors = [ operation.takingVectors, operation.takingVectors ];
 
-  _.assertMapHasOnly( operation, _.vectorAdapter.OperationDescriptor0.propsExtension );
+  _.map.assertHasOnly( operation, _.vectorAdapter.OperationDescriptor0.propsExtension );
 
 }
 
@@ -644,7 +644,7 @@ function operationNormalize2( operation )
 
   _.assert( _.strIs( operation.kind ) );
 
-  // _.assertMapHasOnly( operation, _.vectorAdapter.OperationDescriptor0.propsExtension );
+  // _.map.assertHasOnly( operation, _.vectorAdapter.OperationDescriptor0.propsExtension );
 
 }
 

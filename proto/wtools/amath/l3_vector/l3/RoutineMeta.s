@@ -2,7 +2,7 @@
 
 'use strict';
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
 let _sqr = _.math.sqr;
@@ -44,7 +44,7 @@ function _routinePostForm( theRoutine, routineName )
   /* adjust */
 
   _.mapSupplement( op, _.vectorAdapter.OperationDescriptor2.propsExtension );
-  _.assertMapHasOnly( op, _.vectorAdapter.OperationDescriptor2.propsExtension );
+  _.map.assertHasOnly( op, _.vectorAdapter.OperationDescriptor2.propsExtension );
 
   op.returningPrimitive = !!op.returningPrimitive;
   op.returningLong = !!op.returningLong;
@@ -1073,7 +1073,7 @@ function _routineForOperation_functor( dop )
 
   /* */
 
-  _.assertMapHasOnly( dop, _routineForOperation_functor.defaults );
+  _.map.assertHasOnly( dop, _routineForOperation_functor.defaults );
   _.assert( _.objectIs( dop.scalarOperation ) );
   _.assert( _.routineIs( onScalar ) );
   _.assert( dop.onScalar.length === 1 );
@@ -2309,7 +2309,7 @@ function _operationReduceToScalar_functor( o )
 
   _.assert( _.strDefined( o.name ) );
   _.assert( _.objectIs( o ) );
-  _.assertMapHasOnly( o, _operationReduceToScalar_functor.defaults );
+  _.map.assertHasOnly( o, _operationReduceToScalar_functor.defaults );
 
   {
     let operation = meta.operationSupplement( null, o );

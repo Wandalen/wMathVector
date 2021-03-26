@@ -8,7 +8,7 @@
   @module Tools/math/Vector
 */
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 _.vectorAdapter = _.vad = _.vectorAdapter || _.vad || Object.create( null );
 _.avector = _.vector = _.avector || _.vector || Object.create( null );

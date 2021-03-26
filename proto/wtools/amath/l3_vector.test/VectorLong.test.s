@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 
 //
 
-let _ = _global_.wTools.withDefaultLong.Fx;
+const _ = _global_.wTools.withDefaultLong.Fx;
 var Space = _.Matrix;
 var vad = _.vectorAdapter;
 var vec = _.vectorAdapter.fromLong;
@@ -16084,48 +16084,48 @@ function momentCentral( test )
 
 //
 
-function exportStringShortDiagnostic( test )
+function exportStringShallowDiagnostic( test )
 {
 
   test.case = 'string representation of vector long';
   var vector = _.vector.make([ 1, 2, 3, 4 ]);
   var expected = '{- F32x with 4 elements -}';
-  var got = _.entity.exportStringShortDiagnostic( vector )
+  var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter from';
   var long = _.longMake([ 1, 2, 3 ]);
   var vector = _.vad.from( long );
   var expected = '{- VectorAdapterFromLong.countable with 3 elements -}';
-  var got = _.entity.exportStringShortDiagnostic( vector )
+  var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLong';
   var long = _.longMake([ 1, 2, 3 ]);
   var vector = _.vad.fromLong( long );
   var expected = '{- VectorAdapterFromLong.countable with 3 elements -}';
-  var got = _.entity.exportStringShortDiagnostic( vector )
+  var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLongLrange';
   var long = _.longMake([ 1, 2, 3, -4, -5 ]);
   var vector = _.vad.fromLongLrange( long );
   var expected = '{- VectorAdapterFromLongShrinked.countable with 5 elements -}';
-  var got = _.entity.exportStringShortDiagnostic( vector )
+  var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLongWithStride';
   var long = _.longMake([ 1, 2 ]);
   var vector = _.vad.fromLongWithStride( long, 1 );
   var expected = '{- VectorAdapterFromLongShrinked.countable with 2 elements -}';
-  var got = _.entity.exportStringShortDiagnostic( vector )
+  var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLongLrangeAndStride';
   var long = _.longMake([ 1, 2 ]);
   var vector = _.vad.fromLongLrangeAndStride( long, 0, 0, 0 );
   var expected = '{- VectorAdapterFromLongShrinkedWithStrideNumberShrinkView.countable with 0 elements -}';
-  var got = _.entity.exportStringShortDiagnostic( vector )
+  var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
 }
@@ -16603,7 +16603,7 @@ experiment.experimental = 1;
 // proto
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.Math.Vector.Long',
@@ -16819,7 +16819,7 @@ let Self =
 
     //
 
-    exportStringShortDiagnostic,
+    exportStringShallowDiagnostic,
 
     // experiment
 
@@ -16837,7 +16837,7 @@ let Self =
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

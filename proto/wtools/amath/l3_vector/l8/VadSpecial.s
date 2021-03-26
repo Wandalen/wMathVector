@@ -2,7 +2,7 @@
 
 'use strict';
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 let _hasLength = _.hasLength;
 let _arraySlice = _.longSlice;
 let _sqr = _.math.sqr;
@@ -17,8 +17,8 @@ let _abs = Math.abs;
 let accuracy = _.accuracy;
 let accuracySqr = _.accuracySqr;
 
-let Parent = null;
-let Self = _.VectorAdapter;
+const Parent = null;
+const Self = _.VectorAdapter;
 let meta = _.vectorAdapter._meta;
 
 // --

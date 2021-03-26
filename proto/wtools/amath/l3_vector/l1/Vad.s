@@ -2,13 +2,13 @@
 
 'use strict';
 
-let _ = _global_.wTools;
+const _ = _global_.wTools;
 
 // --
 // class
 // --
 
-let Self = VectorAdapter;
+const Self = VectorAdapter;
 function VectorAdapter()
 {
   throw _.err( 'should not be called' )

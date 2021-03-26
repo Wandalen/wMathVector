@@ -16,8 +16,8 @@ if( typeof module !== 'undefined' )
 
 //
 
-let Parent = wTester;
-let _ = _global_.wTools.withDefaultLong.Fx;
+const Parent = wTester;
+const _ = _global_.wTools.withDefaultLong.Fx;
 
 // --
 // from
@@ -8679,7 +8679,7 @@ function forOf( test )
 
   var array1 = [ 10, 11, 12 ];
   // test.true( _.iterableIs( array1 ) );
-  test.true( !!_.entity.methodIteratorOf( array1 ) );
+  test.true( !!_.class.methodIteratorOf( array1 ) );
 
   var got = [];
   for( let e of array1 )
@@ -8709,7 +8709,7 @@ function forOf( test )
 
     var vector1 = a.vadMake([ 10, 11, 12 ]);
     // test.true( _.iterableIs( vector1 ) );
-    test.true( !!_.entity.methodIteratorOf( vector1 ) );
+    test.true( !!_.class.methodIteratorOf( vector1 ) );
 
     var got = [];
     for( let e of vector1 )
@@ -12283,7 +12283,7 @@ function areParallelNotDefaultAccuracy( test )
 // proto
 // --
 
-let Self =
+const Proto =
 {
 
   name : 'Tools.Math.Vector.Adapter',
@@ -12424,7 +12424,7 @@ let Self =
 
 //
 
-Self = wTestSuite( Self );
+const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 

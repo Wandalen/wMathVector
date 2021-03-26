@@ -2,8 +2,8 @@
 
 'use strict';
 
-let _ = _global_.wTools;
-let Self = _.vector;
+const _ = _global_.wTools;
+const Self = _.vector;
 let meta = _.vectorAdapter._meta;
 
 // --
