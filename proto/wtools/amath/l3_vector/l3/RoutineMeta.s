@@ -13,8 +13,8 @@ let _routineIs = _.routineIs;
 let _min = Math.min;
 let _max = Math.max;
 let _pow = Math.pow;
-let sqrt = Math.sqrt;
-let abs = Math.abs;
+const sqrt = Math.sqrt;
+const abs = Math.abs;
 
 let OperationDescriptor1 = _.vectorAdapter.OperationDescriptor1;
 let meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
