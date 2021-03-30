@@ -3,16 +3,16 @@
 'use strict';
 
 const _ = _global_.wTools;
-let _hasLength = _.hasLength;
-let _arraySlice = _.longSlice;
-let _sqr = _.math.sqr;
-let _sqrt = _.math.sqrt;
-let _assertMapHasOnly = _.assertMapHasOnly;
-let _routineIs = _.routineIs;
+const _hasLength = _.hasLength;
+const _longSlice = _.longSlice;
+const _sqr = _.math.sqr;
+const _sqrt = _.math.sqrt;
+// let _assertMapHasOnly = _.map.assertHasOnly;
+const _routineIs = _.routineIs;
 
-let _min = Math.min;
-let _max = Math.max;
-let _pow = Math.pow;
+const _min = Math.min;
+const _max = Math.max;
+const _pow = Math.pow;
 const sqrt = Math.sqrt;
 const abs = Math.abs;
 

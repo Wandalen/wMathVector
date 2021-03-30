@@ -3,13 +3,13 @@
 'use strict';
 
 const _ = _global_.wTools;
-let _hasLength = _.hasLength;
-let _min = Math.min;
-let _max = Math.max;
-let _arraySlice = _.longSlice;
+const _hasLength = _.hasLength;
+const _min = Math.min;
+const _max = Math.max;
+const _longSlice = _.longSlice;
 let _sqrt = Math.sqrt;
 let _abs = Math.abs;
-let _sqr = _.math.sqr;
+const _sqr = _.math.sqr;
 
 let vectorAdapter = _.vectorAdapter;
 let VectorAdapter = _.VectorAdapter;
