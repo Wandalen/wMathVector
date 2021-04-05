@@ -86,8 +86,8 @@ path:
       raw: compiled
       content: prime
   npm.proto.entry:
-    - /pro/module/wMathVector/proto/wtools/amath/l3_vector/Include.s
-    - /pro/module/wMathVector/proto/node_modules/wmathvector
+    - proto/wtools/amath/l3_vector/Include.s
+    - proto/node_modules/wmathvector
 reflector:
   reflect.proto:
     inherit: predefined.*
