@@ -92,7 +92,7 @@ let OperationDescriptor2 = _.Blueprint
 })
 
 // --
-// routines
+// implementation
 // --
 
 
@@ -105,6 +105,6 @@ let VectorExtension =
 
 }
 
-_.mapExtend( _.vectorAdapter, VectorExtension );
+_.props.extend( _.vectorAdapter, VectorExtension );
 
 })();

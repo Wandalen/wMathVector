@@ -31,7 +31,7 @@ function _toLong()
   let result;
   if( this.stride !== 1 || this.offset !== 0 || this.length !== this._vectorBuffer.length )
   {
-    result = this.vectorAdapter.longMake( this._vectorBuffer, this.length );
+    result = this.vectorAdapter.long.make( this._vectorBuffer, this.length );
     for( let i = 0 ; i < this.length ; i++ )
     result[ i ] = this.eGet( i );
   }
@@ -189,8 +189,8 @@ let VectorExtension =
 {
 
 }
-_.mapSupplement( VectorExtension, _routinesFrom );
-_.mapSupplement( _.vectorAdapter._routinesFrom, _routinesFrom );
-_.mapSupplement( _.vectorAdapter, VectorExtension );
+_.props.supplement( VectorExtension, _routinesFrom );
+_.props.supplement( _.vectorAdapter._routinesFrom, _routinesFrom );
+_.props.supplement( _.vectorAdapter, VectorExtension );
 
 })();

@@ -12,7 +12,7 @@ if( typeof module !== 'undefined' )
 
 //
 
-const _ = _global_.wTools.withDefaultLong.Fx;
+const _ = _global_.wTools.withLong.Fx;
 var Space = _.Matrix;
 var vad = _.vectorAdapter;
 var vec = _.vectorAdapter.fromLong;
@@ -34,34 +34,34 @@ function assign( test )
     test.open( `dst - long, ${a.format}` );
 
     test.case = 'dst - empty, without src';
-    var dst = a.longMake([]);
+    var dst = a.long.make([]);
     var got = _.avector.assign( dst );
-    var exp = a.longMake([]);
+    var exp = a.long.make([]);
     test.identical( got, exp );
     test.true( got === dst );
 
     test.case = 'dst - several elements, src - arguments';
-    var dst = a.longMake([ 0, -1, 2 ]);
+    var dst = a.long.make([ 0, -1, 2 ]);
     var got = _.avector.assign( dst, -1, -2, 0 );
-    var exp = a.longMake([ -1, -2, 0 ]);
+    var exp = a.long.make([ -1, -2, 0 ]);
     test.identical( got, exp );
     test.true( got === dst );
 
     /* */
 
     test.case = 'dst - empty, src - number';
-    var dst = a.longMake([]);
+    var dst = a.long.make([]);
     var src = 5;
     var got = _.avector.assign( dst, src );
-    var exp = a.longMake([]);
+    var exp = a.long.make([]);
     test.identical( got, exp );
     test.true( got === dst );
 
     test.case = 'dst - several elements, src - number';
-    var dst = a.longMake([ 0, -1, 2 ]);
+    var dst = a.long.make([ 0, -1, 2 ]);
     var src = 5;
     var got = _.avector.assign( dst, src );
-    var exp = a.longMake([ 5, 5, 5 ]);
+    var exp = a.long.make([ 5, 5, 5 ]);
     test.identical( got, exp );
     test.true( got === dst );
 
@@ -74,14 +74,14 @@ function assign( test )
     test.case = 'dst - empty, without src';
     var dst = a.vadMake([]);
     var got = _.avector.assign( dst );
-    var exp = a.longMake([]);
+    var exp = a.long.make([]);
     test.identical( got, exp );
     test.true( got !== dst );
 
     test.case = 'dst - several elements, src - arguments';
     var dst = a.vadMake([ 0, -1, 2 ]);
     var got = _.avector.assign( dst, -1, -2, 0 );
-    var exp = a.longMake([ -1, -2, 0 ]);
+    var exp = a.long.make([ -1, -2, 0 ]);
     test.identical( got, exp );
     test.true( got !== dst );
 
@@ -91,7 +91,7 @@ function assign( test )
     var dst = a.vadMake([]);
     var src = 5;
     var got = _.avector.assign( dst, src );
-    var exp = a.longMake([]);
+    var exp = a.long.make([]);
     test.identical( got, exp );
     test.true( got !== dst );
 
@@ -99,7 +99,7 @@ function assign( test )
     var dst = a.vadMake([ 0, -1, 2 ]);
     var src = 5;
     var got = _.avector.assign( dst, src );
-    var exp = a.longMake([ 5, 5, 5 ]);
+    var exp = a.long.make([ 5, 5, 5 ]);
     test.identical( got, exp );
     test.true( got !== dst );
 
@@ -154,7 +154,7 @@ function assign( test )
 
     test.case = 'dst - empty, src - empty';
     var dst = [];
-    var src = a.longMake([]);
+    var src = a.long.make([]);
     var got = _.avector.assign( dst, src );
     var exp = [];
     test.identical( got, exp );
@@ -162,7 +162,7 @@ function assign( test )
 
     test.case = 'dst - several arguments, src.length === dst.length';
     var dst = [ 0, -1, 2 ];
-    var src = a.longMake([ 3, -2, -4 ]);
+    var src = a.long.make([ 3, -2, -4 ]);
     var got = _.avector.assign( dst, src );
     var exp = [ 3, -2, -4 ];
     test.identical( got, exp );
@@ -170,7 +170,7 @@ function assign( test )
 
     test.case = 'dst - several arguments, src.length < dst.length';
     var dst = [ 0, -1, 2, 3, 3 ];
-    var src = a.longMake([ 3, -2, -4 ]);
+    var src = a.long.make([ 3, -2, -4 ]);
     var got = _.avector.assign( dst, src );
     var exp = [ 3, -2, -4, 0, 0 ];
     test.identical( got, exp );
@@ -178,7 +178,7 @@ function assign( test )
 
     test.case = 'dst - several arguments, src.length > dst.length';
     var dst = [ 0, -1, 2 ];
-    var src = a.longMake([ 3, -2, -4, 3, 5 ]);
+    var src = a.long.make([ 3, -2, -4, 3, 5 ]);
     var got = _.avector.assign( dst, src );
     var exp = [ 3, -2, -4 ];
     test.identical( got, exp );
@@ -214,9 +214,9 @@ function growLong( test )
   function act( a )
   {
     test.case = 'src - empty long, without cinterval and val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src );
-    var exp = a.longMake( [] ) ;
+    var exp = a.long.make( [] ) ;
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -225,65 +225,65 @@ function growLong( test )
     test.open( `different type of long, ${ a.format }, src - empty` );
 
     test.case = 'cinterval - [ 0, 0 ], no val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 0, 0 ] );
-    var exp = a.longMake( [ 0 ] );
+    var exp = a.long.make( [ 0 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 2 ], no val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 0, 2 ] );
-    var exp = a.longMake( [ 0, 0, 0 ] );
+    var exp = a.long.make( [ 0, 0, 0 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, -2 ], no val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 0, -2 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 2 ], no val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 2, 2 ] );
-    var exp = a.longMake( [ 0, 0, 0 ] );
+    var exp = a.long.make( [ 0, 0, 0 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 4 ], no val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 2, 4 ] );
-    var exp = a.longMake( [ 0, 0, 0, 0, 0 ] );
+    var exp = a.long.make( [ 0, 0, 0, 0, 0 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, -2 ], no val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 2, -2 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -2 ], no val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ -2, -2 ] );
-    var exp = a.longMake( [ 0, 0 ] );
+    var exp = a.long.make( [ 0, 0 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, 0 ], no val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ -2, 0 ] );
-    var exp = a.longMake( [ 0, 0, 0 ] );
+    var exp = a.long.make( [ 0, 0, 0 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -4 ], no val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ -2, -4 ] );
-    var exp = a.longMake( [ 0, 0 ] );
+    var exp = a.long.make( [ 0, 0 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -294,65 +294,65 @@ function growLong( test )
     test.open( `different type of long, ${ a.format }, src - empty` );
 
     test.case = 'cinterval - [ 0, 0 ], with val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 0, 0 ], 7 );
-    var exp = a.longMake( [ 7 ] );
+    var exp = a.long.make( [ 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 2 ], with val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 0, 2 ], 7 );
-    var exp = a.longMake( [ 7, 7, 7 ] );
+    var exp = a.long.make( [ 7, 7, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, -2 ], with val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 0, -2 ], 7 );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 2 ], with val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 2, 2 ], 7 );
-    var exp = a.longMake( [ 7, 7, 7 ] );
+    var exp = a.long.make( [ 7, 7, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 4 ], with val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 2, 4 ], 7 );
-    var exp = a.longMake( [ 7, 7, 7, 7, 7 ] );
+    var exp = a.long.make( [ 7, 7, 7, 7, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, -2 ], with val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ 2, -2 ], 7 );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -2 ], with val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ -2, -2 ], 7 );
-    var exp = a.longMake( [ 7, 7 ] );
+    var exp = a.long.make( [ 7, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, 0 ], with val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ -2, 0 ], 7 );
-    var exp = a.longMake( [ 7, 7, 7 ] );
+    var exp = a.long.make( [ 7, 7, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -4 ], with val';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.growLong( src, [ -2, -4 ], 7 );
-    var exp = a.longMake( [ 7, 7 ] );
+    var exp = a.long.make( [ 7, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -361,9 +361,9 @@ function growLong( test )
     /* - */
 
     test.case = 'src - filled, without cinterval and val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -372,65 +372,65 @@ function growLong( test )
     test.open( `different type of long, ${ a.format }, src - filled` );
 
     test.case = 'cinterval - [ 0, 0 ], no val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 0, 0 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 2 ], no val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 0, 2 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, -2 ], no val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 0, -2 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 2 ], no val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 2, 2 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 4 ], no val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 2, 4 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5, 0 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5, 0 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, -2 ], no val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 2, -2 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -2 ], no val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ -2, -2 ] );
-    var exp = a.longMake( [ 0, 0, 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 0, 0, 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, 0 ], no val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ -2, 4 ] );
-    var exp = a.longMake( [ 0, 0, 1, -2, 3, -5, 0 ] );
+    var exp = a.long.make( [ 0, 0, 1, -2, 3, -5, 0 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -4 ], no val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ -2, -4 ] );
-    var exp = a.longMake( [ 0, 0, 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 0, 0, 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -441,65 +441,65 @@ function growLong( test )
     test.open( `different type of long, ${ a.format }, src - filled` );
 
     test.case = 'cinterval - [ 0, 0 ], with val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 0, 0 ], 7 );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 2 ], with val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 0, 2 ], 7 );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, -2 ], with val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 0, -2 ], 7 );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 2 ], with val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 2, 2 ], 7 );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 4 ], with val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 2, 4 ], 7 );
-    var exp = a.longMake( [ 1, -2, 3, -5, 7 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, -2 ], with val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ 2, -2 ], 7 );
-    var exp = a.longMake( [ 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -2 ], with val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ -2, -2 ], 7 );
-    var exp = a.longMake( [ 7, 7, 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 7, 7, 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, 0 ], with val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ -2, 4 ], 7 );
-    var exp = a.longMake( [ 7, 7, 1, -2, 3, -5, 7 ] );
+    var exp = a.long.make( [ 7, 7, 1, -2, 3, -5, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -4 ], with val';
-    var src = a.longMake( [ 1, -2, 3, -5 ] );
+    var src = a.long.make( [ 1, -2, 3, -5 ] );
     var got = _.avector.growLong( src, [ -2, -4 ], 7 );
-    var exp = a.longMake( [ 7, 7, 1, -2, 3, -5 ] );
+    var exp = a.long.make( [ 7, 7, 1, -2, 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -533,74 +533,74 @@ function onlyLong_( test )
     test.open( `different type of long, ${ a.format }, src - empty` );
 
     test.case = 'without cinterval';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     /* - */
 
     test.case = 'cinterval - [ 0, 0 ]';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src, [ 0, 0 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 2 ]';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src, [ 0, 2 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, -2 ]';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src, [ 0, -2 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 2 ]';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src, [ 2, 2 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 4 ]';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src, [ 2, 4 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, -2 ]';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src, [ 2, -2 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -2 ]';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src, [ -2, -2 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, 0 ]';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src, [ -2, 0 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -2, -4 ]';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.avector.onlyLong_( src, [ -2, -4 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -611,184 +611,184 @@ function onlyLong_( test )
     test.open( `different type of long, ${ a.format }, src - filled vector` );
 
     test.case = 'without cinterval';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src );
-    var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, -4 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ -4, -4 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, -2 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ -4, -2 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, -1 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ -4, -2 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, 0 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ -4, 0 ] );
-    var exp = a.longMake( [ 1 ] );
+    var exp = a.long.make( [ 1 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, 2 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ -4, 2 ] );
-    var exp = a.longMake( [ 1, -2, 3 ] );
+    var exp = a.long.make( [ 1, -2, 3 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, 4 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ -4, 4 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ -4, 7 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ -4, 7 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 0 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 0, 0 ] );
-    var exp = a.longMake( [ 1 ] );
+    var exp = a.long.make( [ 1 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 2 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 0, 2 ] );
-    var exp = a.longMake( [ 1, -2, 3 ] );
+    var exp = a.long.make( [ 1, -2, 3 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 4 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 0, 4 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 0, 7 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 0, 7 ] );
-    var exp = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var exp = a.long.make( [ 1, -2, 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 2 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 2, 2 ] );
-    var exp = a.longMake( [ 3 ] );
+    var exp = a.long.make( [ 3 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 3 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 2, 3 ] );
-    var exp = a.longMake( [ 3, -5 ] );
+    var exp = a.long.make( [ 3, -5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 4 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 2, 4 ] );
-    var exp = a.longMake( [ 3, -5, 8 ] );
+    var exp = a.long.make( [ 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 7 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 2, 7 ] );
-    var exp = a.longMake( [ 3, -5, 8 ] );
+    var exp = a.long.make( [ 3, -5, 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 4, 4 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 4, 4 ] );
-    var exp = a.longMake( [ 8 ] );
+    var exp = a.long.make( [ 8 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 5, 7 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 5, 7 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 7, 7 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 7, 7 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 7, 9 ]';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 7, 9 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 9, 7 ], wrong range direction';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 9, 7 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 9, 4 ], wrong range direction';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 9, 4 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 9, 0 ], wrong range direction';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 9, 0 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 9, -4 ], wrong range direction';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 9, -4 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, 0 ], wrong range direction';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 2, 0 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - [ 2, -4 ], wrong range direction';
-    var src = a.longMake( [ 1, -2, 3, -5, 8 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, 8 ] );
     var got = _.avector.onlyLong_( src, [ 2, -4 ] );
-    var exp = a.longMake( [] );
+    var exp = a.long.make( [] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -817,7 +817,7 @@ function reviewSrcIsSimpleVector( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -945,7 +945,7 @@ function reviewSrcIsAdapterRoutineFrom( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -1041,7 +1041,7 @@ function reviewSrcIsAdapterRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -1137,7 +1137,7 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -1233,7 +1233,7 @@ function reviewSrcIsAdapterRoutineFromLongLrange( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -1329,7 +1329,7 @@ function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -1425,7 +1425,7 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -1519,28 +1519,28 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
   test.case = 'src - empty vector, cinterval - 0';
   var src = vad.fromNumber( 5, 0 );
   var got = _.avector.review( src, 0 );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval - 0';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, 0 );
-  var exp = _.longDescriptor.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval > 0 && cinterval < src.length - 1';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, 2 );
-  var exp = _.longDescriptor.from( [ 5, 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval - src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, 6 );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
@@ -1549,42 +1549,42 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
   test.case = 'src - empty vector, cinterval[ 0 ] and cinterval[ 1 ] - -1';
   var src = vad.fromNumber( 5, 0 );
   var got = _.avector.review( src, [ 0, -1 ] );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval[ 1 ] - src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 0, 5 ] );
-  var exp = _.longDescriptor.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval < src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 0, 3 ] );
-  var exp = _.longDescriptor.from( [ 5, 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > 0, cinterval < src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 1, 3 ] );
-  var exp = _.longDescriptor.from( [ 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] and cinterval[ 1 ] - src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 6, 5 ] );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > cinterval[ 1 ]';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 3, 2 ] );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 }
@@ -1595,7 +1595,7 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -1763,28 +1763,28 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
   test.case = 'src - empty vector, cinterval - 0';
   var src = vad.fromMaybeNumber( 5, 0 );
   var got = _.avector.review( src, 0 );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval - 0';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, 0 );
-  var exp = _.longDescriptor.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval > 0 && cinterval < src.length - 1';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, 2 );
-  var exp = _.longDescriptor.from( [ 5, 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval - src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, 6 );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
@@ -1793,42 +1793,42 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
   test.case = 'src - empty vector, cinterval[ 0 ] and cinterval[ 1 ] - -1';
   var src = vad.fromMaybeNumber( 5, 0 );
   var got = _.avector.review( src, [ 0, -1 ] );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval[ 1 ] - src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 0, 5 ] );
-  var exp = _.longDescriptor.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval < src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 0, 3 ] );
-  var exp = _.longDescriptor.from( [ 5, 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > 0, cinterval < src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 1, 3 ] );
-  var exp = _.longDescriptor.from( [ 5, 5, 5 ] );
+  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] and cinterval[ 1 ] - src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 6, 5 ] );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > cinterval[ 1 ]';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 3, 2 ] );
-  var exp = _.longDescriptor.from( [] );
+  var exp = _./*longDescriptor*/defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 }
@@ -1839,7 +1839,7 @@ function mapDstIsNullSimpleVector( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -1892,7 +1892,7 @@ function mapDstIsNullSimpleVector( test )
     var dst = null;
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, null );
-    var exp = _.longDescriptor.from( 5 );
+    var exp = _./*longDescriptor*/defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -1982,7 +1982,7 @@ function mapDstIsNullSimpleVector( test )
     var dst = null;
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 5 );
+    var exp = _./*longDescriptor*/defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2028,7 +2028,7 @@ function mapDstIsNullRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -2056,7 +2056,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, null );
-    var exp = _.longDescriptor.from( 5 );
+    var exp = _./*longDescriptor*/defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2146,7 +2146,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 5 );
+    var exp = _./*longDescriptor*/defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
   }
@@ -2158,7 +2158,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -2186,7 +2186,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.avector.map( dst, src, null );
-    var exp = _.longDescriptor.from( 3 );
+    var exp = _./*longDescriptor*/defaultLong.from( 3 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2276,7 +2276,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 3 );
+    var exp = _./*longDescriptor*/defaultLong.from( 3 );
     test.identical( got, exp );
     test.true( got !== src );
   }
@@ -2288,7 +2288,7 @@ function mapDstIsNullRoutineFromNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -2318,7 +2318,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = _.avector.map( dst, src, null );
-    var exp = _.longDescriptor.from( 5 );
+    var exp = _./*longDescriptor*/defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2408,7 +2408,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 5 );
+    var exp = _./*longDescriptor*/defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2430,7 +2430,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.avector.map( dst, src, null );
-    var exp = _.longDescriptor.from( 5 );
+    var exp = _./*longDescriptor*/defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2520,7 +2520,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 5 );
+    var exp = _./*longDescriptor*/defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2534,7 +2534,7 @@ function mapOnlyDstSimpleVector( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -2755,7 +2755,7 @@ function mapOnlyDstRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -2873,7 +2873,7 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -2991,7 +2991,7 @@ function mapDstIsVectorSimpleVector( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3261,7 +3261,7 @@ function mapDstIsVectorRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3403,7 +3403,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3545,7 +3545,7 @@ function mapDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3687,7 +3687,7 @@ function mapDstIsVectorRoutineFromNumberWithNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3829,7 +3829,7 @@ function filterDstIsNullSimpleVector( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3882,7 +3882,7 @@ function filterDstIsNullSimpleVector( test )
     var dst = null;
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.filter( dst, src, null );
-    var exp = _.longDescriptor.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _./*longDescriptor*/defaultLong.from( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -3972,7 +3972,7 @@ function filterDstIsNullSimpleVector( test )
     var dst = null;
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 0 );
+    var exp = _./*longDescriptor*/defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4017,7 +4017,7 @@ function filterDstIsNullRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4045,7 +4045,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.filter( dst, src, null );
-    var exp = _.longDescriptor.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _./*longDescriptor*/defaultLong.from( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4135,7 +4135,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 0 );
+    var exp = _./*longDescriptor*/defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
   }
@@ -4147,7 +4147,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4175,7 +4175,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.avector.filter( dst, src, null );
-    var exp = _.longDescriptor.from( [ 1, 3, 5 ] );
+    var exp = _./*longDescriptor*/defaultLong.from( [ 1, 3, 5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4265,7 +4265,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 0 );
+    var exp = _./*longDescriptor*/defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
   }
@@ -4277,7 +4277,7 @@ function filterDstIsNullRoutineFromNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4307,7 +4307,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = _.avector.filter( dst, src, null );
-    var exp = _.longDescriptor.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _./*longDescriptor*/defaultLong.from( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4397,7 +4397,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 0 );
+    var exp = _./*longDescriptor*/defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4419,7 +4419,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.avector.filter( dst, src, null );
-    var exp = _.longDescriptor.from( [ 7, 7, 7, 7, 7 ] );
+    var exp = _./*longDescriptor*/defaultLong.from( [ 7, 7, 7, 7, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4509,7 +4509,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.longDescriptor.from( 0 );
+    var exp = _./*longDescriptor*/defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4523,7 +4523,7 @@ function filterOnlyDstSimpleVector( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4744,7 +4744,7 @@ function filterOnlyDstRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4862,7 +4862,7 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4980,7 +4980,7 @@ function filterDstIsVectorSimpleVector( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -5290,7 +5290,7 @@ function filterDstIsVectorRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -5452,7 +5452,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -5613,7 +5613,7 @@ function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -5775,7 +5775,7 @@ function filterDstIsVectorRoutineFromNumberWithNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -6735,22 +6735,22 @@ function inv( test )
     test.open( `src - long, ${a.format}` );
 
     test.case = 'empty';
-    var exp = a.longMake( [] );
-    var src = a.longMake( [] );
+    var exp = a.long.make( [] );
+    var src = a.long.make( [] );
     var got = _.avector.inv( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'zero';
-    var exp = a.longMake( [ Infinity, Infinity, Infinity ] );
-    var src = a.longMake( [ 0, 0, 0 ] );
+    var exp = a.long.make( [ Infinity, Infinity, Infinity ] );
+    var src = a.long.make( [ 0, 0, 0 ] );
     var got = _.avector.inv( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'ones';
-    var exp = a.longMake( [ 1, 1, 1 ] );
-    var src = a.longMake( [ 1, 1, 1 ] );
+    var exp = a.long.make( [ 1, 1, 1 ] );
+    var src = a.long.make( [ 1, 1, 1 ] );
     var got = _.avector.inv( src );
     test.identical( got, exp );
     test.true( got === src );
@@ -6816,22 +6816,22 @@ function invOrOne( test )
     test.open( `src - long, ${a.format}` );
 
     test.case = 'empty';
-    var exp = a.longMake( [] );
-    var src = a.longMake( [] );
+    var exp = a.long.make( [] );
+    var src = a.long.make( [] );
     var got = _.avector.invOrOne( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'zero';
-    var exp = a.longMake( [ 1, 1, 1 ] );
-    var src = a.longMake( [ 0, 0, 0 ] );
+    var exp = a.long.make( [ 1, 1, 1 ] );
+    var src = a.long.make( [ 0, 0, 0 ] );
     var got = _.avector.invOrOne( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'ones';
-    var exp = a.longMake( [ 1, 1, 1 ] );
-    var src = a.longMake( [ 1, 1, 1 ] );
+    var exp = a.long.make( [ 1, 1, 1 ] );
+    var src = a.long.make( [ 1, 1, 1 ] );
     var got = _.avector.invOrOne( src );
     test.identical( got, exp );
     test.true( got === src );
@@ -6897,33 +6897,33 @@ function abs( test )
     test.open( `src - long, ${a.format}` );
 
     test.case = 'empty';
-    var exp = a.longMake( [] );
-    var src = a.longMake( [] );
+    var exp = a.long.make( [] );
+    var src = a.long.make( [] );
     var got = _.avector.abs( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'src is dst';
-    var exp = a.longMake( [ 1, 2, 3, 5, 3.1415, 1.4142 ] );
-    var src = a.longMake( [ 1, -2, 3, -5, -3.1415, 1.4142 ] );
+    var exp = a.long.make( [ 1, 2, 3, 5, 3.1415, 1.4142 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, -3.1415, 1.4142 ] );
     var got = _.avector.abs( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'new dst';
-    var exp = a.longMake( [ 1, 2, 3, 5, 3.1415, 1.4142 ] );
-    var src = a.longMake( [ 1, -2, 3, -5, -3.1415, 1.4142 ] );
+    var exp = a.long.make( [ 1, 2, 3, 5, 3.1415, 1.4142 ] );
+    var src = a.long.make( [ 1, -2, 3, -5, -3.1415, 1.4142 ] );
     var got = _.avector.abs( null, src );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'first argument is dst';
-    var exp = a.longMake( [ 0, 1, 2, 3, 5, 100 ] );
-    var dst = a.longMake( [ 5, 0, 0, 0, 0, 0 ] );
-    var src = a.longMake( [ 0, -1, 2, -3, 5, -100 ] );
+    var exp = a.long.make( [ 0, 1, 2, 3, 5, 100 ] );
+    var dst = a.long.make( [ 5, 0, 0, 0, 0, 0 ] );
+    var src = a.long.make( [ 0, -1, 2, -3, 5, -100 ] );
     var got = _.avector.abs( dst, src );
     test.identical( got, exp );
-    test.identical( src, a.longMake( [ 0, -1, 2, -3, 5, -100 ] ) );
+    test.identical( src, a.long.make( [ 0, -1, 2, -3, 5, -100 ] ) );
     test.true( got === dst );
 
     test.close( `src - long, ${a.format}` );
@@ -6958,22 +6958,22 @@ function floor( test )
     test.open( `src - long, ${a.format}` );
 
     test.case = 'empty';
-    var exp = a.longMake( [] );
-    var src = a.longMake( [] );
+    var exp = a.long.make( [] );
+    var src = a.long.make( [] );
     var got = _.avector.floor( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'zero';
-    var exp = a.longMake( [ 0, 0, 0 ] );
-    var src = a.longMake( [ 0, 0, 0 ] );
+    var exp = a.long.make( [ 0, 0, 0 ] );
+    var src = a.long.make( [ 0, 0, 0 ] );
     var got = _.avector.floor( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'ones';
-    var exp = a.longMake( [ 1, 1, 1 ] );
-    var src = a.longMake( [ 1, 1, 1 ] );
+    var exp = a.long.make( [ 1, 1, 1 ] );
+    var src = a.long.make( [ 1, 1, 1 ] );
     var got = _.avector.floor( src );
     test.identical( got, exp );
     test.true( got === src );
@@ -7039,22 +7039,22 @@ function ceil( test )
     test.open( `src - long, ${a.format}` );
 
     test.case = 'empty';
-    var exp = a.longMake( [] );
-    var src = a.longMake( [] );
+    var exp = a.long.make( [] );
+    var src = a.long.make( [] );
     var got = _.avector.ceil( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'zero';
-    var exp = a.longMake( [ 0, 0, 0 ] );
-    var src = a.longMake( [ 0, 0, 0 ] );
+    var exp = a.long.make( [ 0, 0, 0 ] );
+    var src = a.long.make( [ 0, 0, 0 ] );
     var got = _.avector.ceil( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'ones';
-    var exp = a.longMake( [ 1, 1, 1 ] );
-    var src = a.longMake( [ 1, 1, 1 ] );
+    var exp = a.long.make( [ 1, 1, 1 ] );
+    var src = a.long.make( [ 1, 1, 1 ] );
     var got = _.avector.ceil( src );
     test.identical( got, exp );
     test.true( got === src );
@@ -7120,22 +7120,22 @@ function round( test )
     test.open( `src - long, ${a.format}` );
 
     test.case = 'empty';
-    var exp = a.longMake( [] );
-    var src = a.longMake( [] );
+    var exp = a.long.make( [] );
+    var src = a.long.make( [] );
     var got = _.avector.round( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'zero';
-    var exp = a.longMake( [ 0, 0, 0 ] );
-    var src = a.longMake( [ 0, 0, 0 ] );
+    var exp = a.long.make( [ 0, 0, 0 ] );
+    var src = a.long.make( [ 0, 0, 0 ] );
     var got = _.avector.round( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'ones';
-    var exp = a.longMake( [ 1, 1, 1 ] );
-    var src = a.longMake( [ 1, 1, 1 ] );
+    var exp = a.long.make( [ 1, 1, 1 ] );
+    var src = a.long.make( [ 1, 1, 1 ] );
     var got = _.avector.round( src );
     test.identical( got, exp );
     test.true( got === src );
@@ -7201,33 +7201,33 @@ function ceilToPowerOfTwo( test )
     test.open( `src - long, ${a.format}` );
 
     test.case = 'empty';
-    var exp = a.longMake( [] );
-    var src = a.longMake( [] );
+    var exp = a.long.make( [] );
+    var src = a.long.make( [] );
     var got = _.avector.ceilToPowerOfTwo( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'src is dst';
-    var exp = a.longMake( [ 1, 2, 4, 8 ] );
-    var src = a.longMake( [ 1, 2, 3, 5 ] );
+    var exp = a.long.make( [ 1, 2, 4, 8 ] );
+    var src = a.long.make( [ 1, 2, 3, 5 ] );
     var got = _.avector.ceilToPowerOfTwo( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'new dst';
-    var exp = a.longMake( [ 1, 2, 4, 8 ] );
-    var src = a.longMake( [ 1, 2, 3, 5 ] );
+    var exp = a.long.make( [ 1, 2, 4, 8 ] );
+    var src = a.long.make( [ 1, 2, 3, 5 ] );
     var got = _.avector.ceilToPowerOfTwo( null, src );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'first argument is dst';
-    var exp = a.longMake( [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ] );
-    var dst = a.longMake( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
-    var src = a.longMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] );
+    var exp = a.long.make( [ 0, 1024, 1, 2, 4, 4, 8, 64, 0 ] );
+    var dst = a.long.make( [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
+    var src = a.long.make( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] );
     var got = _.avector.ceilToPowerOfTwo( dst, src );
     test.identical( got, exp );
-    test.identical( src, a.longMake( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] ) );
+    test.identical( src, a.long.make( [ 0, 1000, 1, 2, 3, 4, 5, 50, 0 ] ) );
     test.true( got === dst );
 
     test.close( `src - long, ${a.format}` );
@@ -7276,22 +7276,22 @@ function normalize( test )
     test.open( `src - long, ${a.format}` );
 
     test.case = 'empty';
-    var exp = a.longMake( [] );
-    var src = a.longMake( [] );
+    var exp = a.long.make( [] );
+    var src = a.long.make( [] );
     var got = _.avector.normalize( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'zero';
-    var exp = a.longMake( [ 0, 0, 0 ] );
-    var src = a.longMake( [ 0, 0, 0 ] );
+    var exp = a.long.make( [ 0, 0, 0 ] );
+    var src = a.long.make( [ 0, 0, 0 ] );
     var got = _.avector.normalize( src );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'unit';
-    var exp = a.longMake( [ 0, 1, 0 ] );
-    var src = a.longMake( [ 0, 1, 0 ] );
+    var exp = a.long.make( [ 0, 1, 0 ] );
+    var src = a.long.make( [ 0, 1, 0 ] );
     var got = _.avector.normalize( src );
     test.identical( got, exp );
     test.true( got === src );
@@ -9920,17 +9920,17 @@ function isIdentical( test )
 
   this._isIdentical( test, 'isIdentical', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._isIdentical( test, 'isIdentical', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._isIdentical( test, 'isIdentical', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
 }
@@ -9942,17 +9942,17 @@ function isNotIdentical( test )
 
   this._isIdentical( test, 'isNotIdentical', false, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._isIdentical( test, 'isNotIdentical', false, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._isIdentical( test, 'isNotIdentical', false, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
 }
@@ -9964,17 +9964,17 @@ function isEquivalent( test )
 
   this._isIdentical( test, 'isEquivalent', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._isIdentical( test, 'isEquivalent', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._isIdentical( test, 'isEquivalent', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
 }
@@ -9986,17 +9986,17 @@ function isNotEquivalent( test )
 
   this._isIdentical( test, 'isNotEquivalent', false, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._isIdentical( test, 'isNotEquivalent', false, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._isIdentical( test, 'isNotEquivalent', false, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
 }
@@ -10166,17 +10166,17 @@ function isNotEquivalent( test )
 // //
 // //   this._isEquivalent( test, 'isEquivalent', true, Array, function()
 // //   {
-// //     return _.longMake( Array, arguments );
+// //     return _.long.make( Array, arguments );
 // //   });
 // //
 // //   this._isEquivalent( test, 'isEquivalent', true, F32x, function()
 // //   {
-// //     return _.longMake( F32x, arguments );
+// //     return _.long.make( F32x, arguments );
 // //   });
 // //
 // //   this._isEquivalent( test, 'isEquivalent', true, U32x, function()
 // //   {
-// //     return _.longMake( U32x, arguments );
+// //     return _.long.make( U32x, arguments );
 // //   });
 // //
 // // }
@@ -10334,32 +10334,32 @@ function isGreater( test )
 
   this._isGreater( test, 'isGreater', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._isGreater( test, 'isGreater', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._isGreater( test, 'isGreater', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   this._isGreater( test, 'gt', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._isGreater( test, 'gt', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._isGreater( test, 'gt', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
 }
@@ -10371,32 +10371,32 @@ function isLessEqual( test )
 
   this._isGreater( test, 'isLessEqual', false, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._isGreater( test, 'isLessEqual', false, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._isGreater( test, 'isLessEqual', false, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   this._isGreater( test, 'le', false, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._isGreater( test, 'le', false, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._isGreater( test, 'le', false, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
 }
@@ -11069,7 +11069,7 @@ function isZero( test )
 
   _isZero( test, 'isZero', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -11080,7 +11080,7 @@ function isZero( test )
 
   _isZero( test, 'isZero', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -11091,7 +11091,7 @@ function isZero( test )
 
   _isZero( test, 'isZero', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -11286,7 +11286,7 @@ function logical2ArgsZipperWithBadArguments( test, r, t, array )
     // if( !op.returningBoolean )
     // continue;
 
-    if( !_.longIdentical( op.takingArguments, [ 2, 3 ] ) )
+    if( !_.long.identical( op.takingArguments, [ 2, 3 ] ) )
     continue;
 
     forRoutine( r );
@@ -11335,7 +11335,7 @@ function allSimpleVector( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -11626,7 +11626,7 @@ function allRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -11767,7 +11767,7 @@ function allRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -11908,7 +11908,7 @@ function allRoutineFromNumberWithVectorAdapter( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -12049,7 +12049,7 @@ function allRoutineFromNumberWithNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -12474,7 +12474,7 @@ function allEquivalent( test )
 
   _allEquivalent( test, 'allEquivalent', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -12485,7 +12485,7 @@ function allEquivalent( test )
 
   _allEquivalent( test, 'allEquivalent', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -12496,7 +12496,7 @@ function allEquivalent( test )
 
   _allEquivalent( test, 'allEquivalent', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x' );
@@ -12611,17 +12611,17 @@ function allGreater( test )
 {
   _allGreater( test, 'allGreater', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   _allGreater( test, 'allGreater', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   _allGreater( test, 'allGreater', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   /* - */
@@ -12706,7 +12706,7 @@ function allGreaterEqualAprox( test )
 
   _allGreaterEqualAprox( test, 'allGreaterEqualAprox', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -12717,7 +12717,7 @@ function allGreaterEqualAprox( test )
 
   _allGreaterEqualAprox( test, 'allGreaterEqualAprox', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -12728,7 +12728,7 @@ function allGreaterEqualAprox( test )
 
   _allGreaterEqualAprox( test, 'allGreaterEqualAprox', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -12829,7 +12829,7 @@ function allGreaterAprox( test )
 
   _allGreaterAprox( test, 'allGreaterAprox', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -12840,7 +12840,7 @@ function allGreaterAprox( test )
 
   _allGreaterAprox( test, 'allGreaterAprox', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -12940,7 +12940,7 @@ function allLessEqualAprox( test )
 
   _allLessEqualAprox( test, 'allLessEqualAprox', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -12951,7 +12951,7 @@ function allLessEqualAprox( test )
 
   _allLessEqualAprox( test, 'allLessEqualAprox', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -12962,7 +12962,7 @@ function allLessEqualAprox( test )
 
   _allLessEqualAprox( test, 'allLessEqualAprox', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -13063,7 +13063,7 @@ function allLessAprox( test )
 
   _allLessAprox( test, 'allLessAprox', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -13074,7 +13074,7 @@ function allLessAprox( test )
 
   _allLessAprox( test, 'allLessAprox', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -13085,7 +13085,7 @@ function allLessAprox( test )
 
   _allLessAprox( test, 'allLessAprox', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -13178,7 +13178,7 @@ function allZero( test )
 
   _allZero( test, 'allZero', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -13189,7 +13189,7 @@ function allZero( test )
 
   _allZero( test, 'allZero', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -13200,7 +13200,7 @@ function allZero( test )
 
   _allZero( test, 'allZero', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -13353,17 +13353,17 @@ function anyNotIdentical( test )
 {
   this._anyNotIdentical( test, 'anyNotIdentical', false, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._anyNotIdentical( test, 'anyNotIdentical', false, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._anyNotIdentical( test, 'anyNotIdentical', false, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 }
 
@@ -13377,7 +13377,7 @@ function anyEquivalent( test )
 
   _anyEquivalent( test, 'anyEquivalent', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -13388,7 +13388,7 @@ function anyEquivalent( test )
 
   _anyEquivalent( test, 'anyEquivalent', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -13399,7 +13399,7 @@ function anyEquivalent( test )
 
   _anyEquivalent( test, 'anyEquivalent', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -13486,17 +13486,17 @@ function anyEquivalent( test )
 // {
 //   this._anyIdentical( test, 'anyEquivalent', true, function()
 //   {
-//     return _.longMake( Array, arguments );
+//     return _.long.make( Array, arguments );
 //   });
 //
 //   this._anyIdentical( test, 'anyEquivalent', true, function()
 //   {
-//     return _.longMake( F32x, arguments );
+//     return _.long.make( F32x, arguments );
 //   });
 //
 //   this._anyIdentical( test, 'anyEquivalent', true, function()
 //   {
-//     return _.longMake( U32x, arguments );
+//     return _.long.make( U32x, arguments );
 //   });
 // }
 //
@@ -13508,17 +13508,17 @@ function anyNotEquivalent( test )
 {
   this._anyNotIdentical( test, 'anyNotEquivalent', false, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._anyNotIdentical( test, 'anyNotEquivalent', false, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._anyNotIdentical( test, 'anyNotEquivalent', false, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 }
 
@@ -13532,7 +13532,7 @@ function anyGreater( test )
 
   _anyGreater( test, 'anyGreater', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -13543,7 +13543,7 @@ function anyGreater( test )
 
   _anyGreater( test, 'anyGreater', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -13554,7 +13554,7 @@ function anyGreater( test )
 
   _anyGreater( test, 'anyGreater', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -13643,7 +13643,7 @@ function anyGreaterEqualAprox( test )
 
   _anyGreaterEqualAprox( test, 'anyGreaterEqualAprox', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -13654,7 +13654,7 @@ function anyGreaterEqualAprox( test )
 
   _anyGreaterEqualAprox( test, 'anyGreaterEqualAprox', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -13665,7 +13665,7 @@ function anyGreaterEqualAprox( test )
 
   _anyGreaterEqualAprox( test, 'anyGreaterEqualAprox', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -13760,7 +13760,7 @@ function anyGreaterAprox( test )
 
   _anyGreaterAprox( test, 'anyGreaterAprox', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -13771,7 +13771,7 @@ function anyGreaterAprox( test )
 
   _anyGreaterAprox( test, 'anyGreaterAprox', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -13782,7 +13782,7 @@ function anyGreaterAprox( test )
 
   _anyGreaterAprox( test, 'anyGreaterAprox', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -13873,7 +13873,7 @@ function anyLessEqualAprox( test )
 
   _anyLessEqualAprox( test, 'anyLessEqualAprox', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -13884,7 +13884,7 @@ function anyLessEqualAprox( test )
 
   _anyLessEqualAprox( test, 'anyLessEqualAprox', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -13895,7 +13895,7 @@ function anyLessEqualAprox( test )
 
   _anyLessEqualAprox( test, 'anyLessEqualAprox', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -13989,7 +13989,7 @@ function anyLessAprox( test )
 
   _anyLessAprox( test, 'anyLessAprox', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -14000,7 +14000,7 @@ function anyLessAprox( test )
 
   _anyLessAprox( test, 'anyLessAprox', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -14011,7 +14011,7 @@ function anyLessAprox( test )
 
   _anyLessAprox( test, 'anyLessAprox', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -14102,7 +14102,7 @@ function anyZero( test )
 
   _anyZero( test, 'anyZero', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -14113,7 +14113,7 @@ function anyZero( test )
 
   _anyZero( test, 'anyZero', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -14124,7 +14124,7 @@ function anyZero( test )
 
   _anyZero( test, 'anyZero', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -14211,17 +14211,17 @@ function noneIdentical( test )
 {
   this._noneIdentical( test, 'noneIdentical', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._noneIdentical( test, 'noneIdentical', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._noneIdentical( test, 'noneIdentical', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 }
 
@@ -14231,17 +14231,17 @@ function noneNotIdentical( test )
 {
   this._allIdentical( test, 'noneNotIdentical', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._allIdentical( test, 'noneNotIdentical', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._allIdentical( test, 'noneNotIdentical', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 }
 
@@ -14415,7 +14415,7 @@ function noneEquivalent( test )
 
   _noneEquivalent( test, 'noneEquivalent', true, Array, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -14426,7 +14426,7 @@ function noneEquivalent( test )
 
   _noneEquivalent( test, 'noneEquivalent', true, U32x, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -14437,7 +14437,7 @@ function noneEquivalent( test )
 
   _noneEquivalent( test, 'noneEquivalent', true, F32x, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -14532,17 +14532,17 @@ function noneEquivalent( test )
 // {
 //   this._noneIdentical( test, 'noneIdentical', true, function()
 //   {
-//     return _.longMake( Array, arguments );
+//     return _.long.make( Array, arguments );
 //   });
 //
 //   this._noneIdentical( test, 'noneIdentical', true, function()
 //   {
-//     return _.longMake( F32x, arguments );
+//     return _.long.make( F32x, arguments );
 //   });
 //
 //   this._noneIdentical( test, 'noneIdentical', true, function()
 //   {
-//     return _.longMake( U32x, arguments );
+//     return _.long.make( U32x, arguments );
 //   });
 // }
 //
@@ -14554,17 +14554,17 @@ function noneNotEquivalent( test )
 {
   this._allIdentical( test, 'noneNotEquivalent', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   this._allIdentical( test, 'noneNotEquivalent', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   this._allIdentical( test, 'noneNotEquivalent', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 }
 
@@ -14578,7 +14578,7 @@ function noneGreater( test )
 
   _noneGreater( test, 'noneGreater', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -14589,7 +14589,7 @@ function noneGreater( test )
 
   _noneGreater( test, 'noneGreater', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -14600,7 +14600,7 @@ function noneGreater( test )
 
   _noneGreater( test, 'noneGreater', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -14775,7 +14775,7 @@ function noneZero( test )
 
   _noneZero( test, 'noneZero', true, function()
   {
-    return _.longMake( Array, arguments );
+    return _.long.make( Array, arguments );
   });
 
   test.close( 'Array constructor' );
@@ -14786,7 +14786,7 @@ function noneZero( test )
 
   _noneZero( test, 'noneZero', true, function()
   {
-    return _.longMake( U32x, arguments );
+    return _.long.make( U32x, arguments );
   });
 
   test.close( 'U32x constructor' );
@@ -14797,7 +14797,7 @@ function noneZero( test )
 
   _noneZero( test, 'noneZero', true, function()
   {
-    return _.longMake( F32x, arguments );
+    return _.long.make( F32x, arguments );
   });
 
   test.close( 'F32x constructor' );
@@ -14942,7 +14942,7 @@ function logical2ArgsReducerWithBadArguments( test, r, t, array )
     if( !op.returningBoolean )
     continue;
 
-    if( !_.longIdentical( op.takingArguments, [ 2, 2 ] ) )
+    if( !_.long.identical( op.takingArguments, [ 2, 2 ] ) )
     continue;
 
     forRoutine( r );
@@ -15009,7 +15009,7 @@ function logical1ArgsSinglerWithBadArguments( test, r, t, array )
     if( !op.returningBoolean )
     continue;
 
-    if( !_.longIdentical( op.takingArguments, [ 1, 2 ] ) )
+    if( !_.long.identical( op.takingArguments, [ 1, 2 ] ) )
     continue;
 
     forRoutine( r );
@@ -15075,7 +15075,7 @@ function logical1ArgsReducerWithBadArguments( test, r, t, array )
     if( !op.returningBoolean )
     continue;
 
-    if( !_.longIdentical( op.takingArguments, [ 1, 1 ] ) )
+    if( !_.long.identical( op.takingArguments, [ 1, 1 ] ) )
     continue;
 
     forRoutine( r );
@@ -16094,35 +16094,35 @@ function exportStringShallowDiagnostic( test )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter from';
-  var long = _.longMake([ 1, 2, 3 ]);
+  var long = _.long.make([ 1, 2, 3 ]);
   var vector = _.vad.from( long );
   var expected = '{- VectorAdapterFromLong.countable with 3 elements -}';
   var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLong';
-  var long = _.longMake([ 1, 2, 3 ]);
+  var long = _.long.make([ 1, 2, 3 ]);
   var vector = _.vad.fromLong( long );
   var expected = '{- VectorAdapterFromLong.countable with 3 elements -}';
   var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLongLrange';
-  var long = _.longMake([ 1, 2, 3, -4, -5 ]);
+  var long = _.long.make([ 1, 2, 3, -4, -5 ]);
   var vector = _.vad.fromLongLrange( long );
   var expected = '{- VectorAdapterFromLongShrinked.countable with 5 elements -}';
   var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLongWithStride';
-  var long = _.longMake([ 1, 2 ]);
+  var long = _.long.make([ 1, 2 ]);
   var vector = _.vad.fromLongWithStride( long, 1 );
   var expected = '{- VectorAdapterFromLongShrinked.countable with 2 elements -}';
   var got = _.entity.exportStringShallowDiagnostic( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLongLrangeAndStride';
-  var long = _.longMake([ 1, 2 ]);
+  var long = _.long.make([ 1, 2 ]);
   var vector = _.vad.fromLongLrangeAndStride( long, 0, 0, 0 );
   var expected = '{- VectorAdapterFromLongShrinkedWithStrideNumberShrinkView.countable with 0 elements -}';
   var got = _.entity.exportStringShallowDiagnostic( vector )

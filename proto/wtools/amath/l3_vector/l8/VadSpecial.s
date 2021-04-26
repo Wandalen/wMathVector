@@ -3,7 +3,7 @@
 'use strict';
 
 const _ = _global_.wTools;
-const _hasLength = _.hasLength;
+const _hasLength = _.vector.hasLength;
 const _longSlice = _.longSlice;
 const _sqr = _.math.sqr;
 // let _assertMapHasOnly = _.map.assertHasOnly;
@@ -289,7 +289,7 @@ let Extension =
 
 }
 
-_.mapExtend( Self.prototype, Extension );
+_.props.extend( Self.prototype, Extension );
 
 Self.prototype[ Symbol.for( 'equalAre' ) ] = _equalAre;
 

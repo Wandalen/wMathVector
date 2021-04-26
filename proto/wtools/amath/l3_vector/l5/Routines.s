@@ -95,7 +95,7 @@ function assign( dst ) /* aaa2 : perfect coverage is required */ /* Dmytro : cov
     else _.assert( 0, 'Unknown type of argument', _.entity.strType( src ) );
     // if( _.numberIs( arguments[ 1 ] ) )
     // this.assignScalar( dst, arguments[ 1 ] );
-    // else if( _.hasLength( arguments[ 1 ] ) )
+    // else if( _.vector.hasLength( arguments[ 1 ] ) )
     // this.assignVector( dst, this.fromLong( arguments[ 1 ] ) );
     // else _.assert( 0, 'unknown arguments' );
   }
@@ -571,7 +571,7 @@ function growLong( src, cinterval, val )
   cinterval[ 1 ] = src.length-1;
 
   let l = cinterval[ 1 ] - cinterval[ 0 ] + 1;
-  let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
+  let result = this.long.makeUndefined( this.bufferConstructorOf( src ), l );
 
   /* aaa : optimize */ /* Dmytro : used method fill instead of cycle for */
 
@@ -685,7 +685,7 @@ function onlyLong( src, cinterval )
   cinterval[ 1 ] = src.length - 1;
 
   let l = cinterval[ 1 ] - cinterval[ 0 ] + 1;
-  let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
+  let result = this.long.makeUndefined( this.bufferConstructorOf( src ), l );
 
   /* qqq : optimize */
 
@@ -798,7 +798,7 @@ function onlyLong_( src, cinterval )
   }
 
   let l = cinterval[ 1 ] - cinterval[ 0 ] + 1;
-  let result = this.longMakeUndefined( this.bufferConstructorOf( src ), l );
+  let result = this.long.makeUndefined( this.bufferConstructorOf( src ), l );
 
   /* qqq : optimize */
 
@@ -1645,7 +1645,7 @@ function crossWithPoints( dst, a, b, c )
 
   //_.assert( 0, 'not tested' );
   dst = dst || this.make( 3 );
-  // dst = dst || this.longType.longMake( 3 );
+  // dst = dst || this.longType.long.make( 3 );
 
   let ax = a.eGet( 0 )-c.eGet( 0 ), ay = a.eGet( 1 )-c.eGet( 1 ), az = a.eGet( 2 )-c.eGet( 2 );
   let bx = b.eGet( 0 )-c.eGet( 0 ), by = b.eGet( 1 )-c.eGet( 1 ), bz = b.eGet( 2 )-c.eGet( 2 );
@@ -1743,7 +1743,7 @@ function cross3( dst, src1, src2 )
   return this._cross3( dst, src1, src2 );
 }
 
-dop = cross3.operation = _.mapExtend( null, _cross3.operation );
+dop = cross3.operation = _.props.extend( null, _cross3.operation );
 
 //
 
@@ -4257,7 +4257,7 @@ function mag( v )
   return this.reduceToMag( v );
 }
 
-dop = mag.operation = _.mapExtend( null , Routines.reduceToMag.operation );
+dop = mag.operation = _.props.extend( null , Routines.reduceToMag.operation );
 dop.input = 'vr';
 dop.takingArguments = [ 1, 1 ];
 dop.takingVectors = [ 1, 1 ];
@@ -4288,7 +4288,7 @@ function magSqr( v )
   return this.reduceToMagSqr( v );
 }
 
-dop = magSqr.operation = _.mapExtend( null , Routines.reduceToMagSqr.operation );
+dop = magSqr.operation = _.props.extend( null , Routines.reduceToMagSqr.operation );
 dop.input = 'vr';
 dop.takingArguments = [ 1, 1 ];
 dop.takingVectors = [ 1, 1 ];
@@ -4451,7 +4451,7 @@ function median( v )
   return result;
 }
 
-dop = median.operation = _.mapExtend( null , distributionRangeSummary.trivial.operation );
+dop = median.operation = _.props.extend( null , distributionRangeSummary.trivial.operation );
 
 //
 
@@ -4483,7 +4483,7 @@ function momentCentral( v, degree, mean )
   return this._momentCentral( v, degree, mean );
 }
 
-dop = momentCentral.operation = _.mapExtend( null , Routines._momentCentral.operation );
+dop = momentCentral.operation = _.props.extend( null , Routines._momentCentral.operation );
 dop.input = 'vr s ?s';
 dop.takingArguments = [ 2, 3 ];
 
@@ -4526,7 +4526,7 @@ function momentCentralConditional( v, degree, mean, filter )
   return this._momentCentralConditional( v, degree, mean, filter );
 }
 
-dop = momentCentralConditional.operation = _.mapExtend( null , Routines._momentCentralConditional.operation );
+dop = momentCentralConditional.operation = _.props.extend( null , Routines._momentCentralConditional.operation );
 dop.input = 'vr s ?s !v';
 dop.takingArguments = [ 3, 4 ];
 
@@ -4562,7 +4562,7 @@ function distributionSummary( v )
   return result;
 }
 
-dop = distributionSummary.operation = _.mapExtend( null , Routines._momentCentral.operation );
+dop = distributionSummary.operation = _.props.extend( null , Routines._momentCentral.operation );
 // dop.input = 'vr';
 // dop.takingArguments = [ 1, 1 ];
 
@@ -4592,7 +4592,7 @@ function variance( v, mean )
   return this.momentCentral( v, degree, mean );
 }
 
-dop = variance.operation = _.mapExtend( null , momentCentral.operation );
+dop = variance.operation = _.props.extend( null , momentCentral.operation );
 dop.input = 'vr ?s';
 dop.takingArguments = [ 1, 2 ];
 
@@ -4632,7 +4632,7 @@ function varianceConditional( v, mean, filter )
   return this.momentCentralConditional( v, degree, mean, filter );
 }
 
-dop = varianceConditional.operation = _.mapExtend( null , momentCentralConditional.operation );
+dop = varianceConditional.operation = _.props.extend( null , momentCentralConditional.operation );
 dop.input = 'vr ?s !v';
 dop.takingArguments = [ 2, 3 ];
 
@@ -4659,7 +4659,7 @@ function standardDeviation()
   return _sqrt( result );
 }
 
-dop = standardDeviation.operation = _.mapExtend( null , variance.operation );
+dop = standardDeviation.operation = _.props.extend( null , variance.operation );
 dop.input = 'vr ?s';
 
 //
@@ -4693,7 +4693,7 @@ function standardDeviationNormalized( v, mean )
   return _sqrt( result ) / mean;
 }
 
-dop = standardDeviationNormalized.operation = _.mapExtend( null , variance.operation );
+dop = standardDeviationNormalized.operation = _.props.extend( null , variance.operation );
 dop.input = 'vr ?s';
 
 //
@@ -4728,7 +4728,7 @@ function kurtosis( v, mean )
   return result / _pow( variance, 2 );
 }
 
-dop = kurtosis.operation = _.mapExtend( null , variance.operation );
+dop = kurtosis.operation = _.props.extend( null , variance.operation );
 dop.input = 'vr ?s';
 
 //
@@ -4758,7 +4758,7 @@ function kurtosisNormalized( v, mean )
   return result - 3;
 }
 
-dop = kurtosisNormalized.operation = _.mapExtend( null , variance.operation );
+dop = kurtosisNormalized.operation = _.props.extend( null , variance.operation );
 dop.input = 'vr ?s';
 
 //
@@ -4794,7 +4794,7 @@ function skewness( v, mean )
   return moment / _pow( std, 3 );
 }
 
-dop = skewness.operation = _.mapExtend( null , variance.operation );
+dop = skewness.operation = _.props.extend( null , variance.operation );
 dop.input = 'vr ?s';
 
 //
@@ -4804,7 +4804,7 @@ function contextsForTesting( o )
 
   if( _.routineIs( arguments[ 0 ] ) )
   o = { onEach : arguments[ 0 ] }
-  o = _.routineOptions( contextsForTesting, o );
+  o = _.routine.options_( contextsForTesting, o );
 
   if( o.single )
   {
@@ -4841,11 +4841,11 @@ function contextsForTesting( o )
   if( _.longHas( o.varyingForm, 'straight' ) )
   // if( _.longHas( o.varyingFormat, 'Array' ) )
   {
-    let op = _.mapExtend( null, o );
+    let op = _.props.extend( null, o );
     op.format = defaultFormat;
     op.form = 'straight';
-    op.vadMake = ( src ) => this.fromLong( _.longMake( _global_[ defaultFormat ], src ) );
-    op.longMake = ( src ) => _.longMake( _global_[ defaultFormat ], src );
+    op.vadMake = ( src ) => this.fromLong( _.long.make( _global_[ defaultFormat ], src ) );
+    op.longMake = ( src ) => _.long.make( _global_[ defaultFormat ], src );
     o.onEach( op );
   }
 
@@ -4854,7 +4854,7 @@ function contextsForTesting( o )
 
     if( _.longHas( o.varyingFormat, 'F32x' ) )
     {
-      let op = _.mapExtend( null, o );
+      let op = _.props.extend( null, o );
       op.format = 'F32x';
       op.form = 'straight';
       op.vadMake = ( src ) => this.fromLong( new F32x( src ) );
@@ -4864,7 +4864,7 @@ function contextsForTesting( o )
 
     if( _.longHas( o.varyingFormat, 'F64x' ) )
     {
-      let op = _.mapExtend( null, o );
+      let op = _.props.extend( null, o );
       op.format = 'F64x';
       op.form = 'straight';
       op.vadMake = ( src ) => this.fromLong( new F64x( src ) );
@@ -4874,7 +4874,7 @@ function contextsForTesting( o )
 
     if( _.longHas( o.varyingFormat, 'I16x' ) )
     {
-      let op = _.mapExtend( null, o );
+      let op = _.props.extend( null, o );
       op.format = 'I16x';
       op.form = 'straight';
       op.vadMake = ( src ) => this.fromLong( new I16x( src ) );
@@ -4889,10 +4889,10 @@ function contextsForTesting( o )
 
   if( _.longHas( o.varyingForm, 'linterval' ) )
   {
-    let op = _.mapExtend( null, o );
+    let op = _.props.extend( null, o );
     op.format = defaultFormat;
     op.form = 'linterval';
-    op.longMake = ( src ) => _.longMake( _global_[ defaultFormat ], src );
+    op.longMake = ( src ) => _.long.make( _global_[ defaultFormat ], src );
     op.vadMake = ( src ) =>
     {
       let dst = _.longMakeZeroed( _global_[ defaultFormat ], src.length + 2 );
@@ -4905,10 +4905,10 @@ function contextsForTesting( o )
 
   if( _.longHas( o.varyingForm, 'stride' ) )
   {
-    let op = _.mapExtend( null, o );
+    let op = _.props.extend( null, o );
     op.format = defaultFormat;
     op.form = 'stride';
-    op.longMake = ( src ) => _.longMake( _global_[ defaultFormat ], src );
+    op.longMake = ( src ) => _.long.make( _global_[ defaultFormat ], src );
     op.vadMake = ( src ) =>
     {
       let dst = _.longMakeZeroed( _global_[ defaultFormat ], src.length*2 + 2 );
@@ -4930,7 +4930,7 @@ contextsForTesting.defaults =
 }
 
 // --
-// routines
+// implementation
 // --
 
 let _routinesMathematical =
@@ -5409,8 +5409,8 @@ let Extension =
 
 }
 
-_.mapExtend( Extension, _routinesMathematical );
-_.mapExtend( _.vectorAdapter, Extension );
+_.props.extend( Extension, _routinesMathematical );
+_.props.extend( _.vectorAdapter, Extension );
 
 //
 
@@ -5418,10 +5418,10 @@ _.vectorAdapter._meta._routinesLongWrap_functor();
 
 //
 
-_.assert( _.mapOnlyOwnKey( _.avector, 'withDefaultLong' ) );
-_.assert( _.objectIs( _.avector.withDefaultLong ) );
-_.assert( _.objectIs( _.avector.withDefaultLong.Array ) );
-_.assert( _.objectIs( _.avector.withDefaultLong.F32x ) );
+_.assert( _.mapOnlyOwnKey( _.avector, 'withLong' ) );
+_.assert( _.objectIs( _.avector.withLong ) );
+_.assert( _.objectIs( _.avector.withLong.Array ) );
+_.assert( _.objectIs( _.avector.withLong.F32x ) );
 _.assert( Object.getPrototypeOf( _.avector ) === wTools );
 _.assert( _.objectIs( _.vectorAdapter._routinesMathematical ) );
 _.assert( !_.avector.isValid );
@@ -5439,7 +5439,7 @@ _.assert( _.routineIs( _.vectorAdapter.abs ) );
 _.assert( _.routineIs( _.vectorAdapter.round ) );
 _.assert( _.routineIs( _.vectorAdapter.allIdentical ) );
 _.assert( _.routineIs( _.vectorAdapter.isZero ) );
-_.assert( _.longIdentical( _.vectorAdapter.allIdentical.operation.takingArguments, [ 2, 2 ] ) );
+_.assert( _.long.identical( _.vectorAdapter.allIdentical.operation.takingArguments, [ 2, 2 ] ) );
 _.assert( _.vectorAdapter.accuracy >= 0 );
 _.assert( _.vectorAdapter.accuracySqr >= 0 );
 _.assert( _.numberIs( _.vectorAdapter.accuracy ) );

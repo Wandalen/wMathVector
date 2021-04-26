@@ -3,7 +3,7 @@
 'use strict';
 
 const _ = _global_.wTools;
-const _hasLength = _.hasLength;
+const _hasLength = _.vector.hasLength;
 const _min = Math.min;
 const _max = Math.max;
 const _longSlice = _.longSlice;
@@ -35,7 +35,7 @@ function make( length )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = new self.longDescriptor.make( length );
+  let srcLong = new self./*longDescriptor*/defaultLong.make( length );
   return srcLong;
 }
 
@@ -62,7 +62,7 @@ function makeFilling( length, value )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = new self.longDescriptor.make( length );
+  let srcLong = new self./*longDescriptor*/defaultLong.make( length );
   for( let i = 0 ; i < length ; i++ )
   srcLong[ i ] = value;
   return srcLong;
@@ -87,7 +87,7 @@ let AvectorExtension =
 
 }
 
-_.mapExtend( AvectorExtension, _routinesFrom );
-_.mapExtend( _.avector, AvectorExtension );
+_.props.extend( AvectorExtension, _routinesFrom );
+_.props.extend( _.avector, AvectorExtension );
 
 })();

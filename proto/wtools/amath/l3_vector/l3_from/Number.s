@@ -49,7 +49,7 @@ Self.prototype =
   _bufferConstructorGet,
 }
 
-_.property.constant( Self.prototype,
+_.props.constant( Self.prototype,
 {
   offset : 0,
   stride : 0,
@@ -91,16 +91,16 @@ function fromNumber( number, length )
   }
 
   let result = new Self();
-  result._vectorBuffer = this.longType.longMake( 1 );
+  result._vectorBuffer = this.longType.long.make( 1 );
   result._vectorBuffer[ 0 ] = number;
 
   // if( result._vectorBuffer[ 0 ] !== number )
   // {
-  //   result._vectorBuffer = this.withDefaultLong.F64x.longMake( 1 )
+  //   result._vectorBuffer = this.withLong.F64x.long.make( 1 )
   //   result._vectorBuffer[ 0 ] = number;
   // }
 
-  _.property.constant( result, { length } );
+  _.props.constant( result, { length } );
 
   return result;
 }
@@ -158,8 +158,8 @@ let VectorExtension =
 
 }
 
-_.mapSupplement( VectorExtension, _routinesFrom );
-_.mapSupplement( _.vectorAdapter._routinesFrom, _routinesFrom );
-_.mapSupplement( _.vectorAdapter, VectorExtension );
+_.props.supplement( VectorExtension, _routinesFrom );
+_.props.supplement( _.vectorAdapter._routinesFrom, _routinesFrom );
+_.props.supplement( _.vectorAdapter, VectorExtension );
 
 })();

@@ -3,7 +3,7 @@
 'use strict';
 
 const _ = _global_.wTools;
-const _hasLength = _.hasLength;
+const _hasLength = _.vector.hasLength;
 const _longSlice = _.longSlice;
 const _sqr = _.math.sqr;
 // let _assertMapHasOnly = _.map.assertHasOnly;
@@ -196,7 +196,7 @@ let isEquivalent = dop = Object.create( null );
 
 dop.onScalar = function isEquivalent( o )
 {
-  o.dstElement = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+  o.dstElement = _.number.equivalent( o.dstElement, o.srcElement );
 }
 
 //
@@ -208,9 +208,9 @@ dop.onScalar = function isEquivalent( o )
 //   _.assert( o.args.length <= 4 );
 //
 //   if( o.args.length === 4 )
-//   o.dstElement = _.numbersAreEquivalent( o.srcContainers[ 0 ].eGet( o.key ), o.srcContainers[ 1 ].eGet( o.key ), o.srcContainers[ 2 ].eGet( o.key ) );
+//   o.dstElement = _.number.equivalent( o.srcContainers[ 0 ].eGet( o.key ), o.srcContainers[ 1 ].eGet( o.key ), o.srcContainers[ 2 ].eGet( o.key ) );
 //   else
-//   o.dstElement = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+//   o.dstElement = _.number.equivalent( o.dstElement, o.srcElement );
 // }
 //
 // dop.takingArguments = [ 2, 4 ];
@@ -224,7 +224,7 @@ let isNotEquivalent = dop = Object.create( null );
 
 dop.onScalar = function isNotEquivalent( o )
 {
-  o.dstElement = !_.numbersAreEquivalent( o.dstElement, o.srcElement );
+  o.dstElement = !_.number.equivalent( o.dstElement, o.srcElement );
 }
 
 //
@@ -253,7 +253,7 @@ dop.onScalar = function isGreaterEqualAprox( o )
 {
   let result = o.dstElement >= o.srcElement;
   if( !result )
-  result = _.numbersAreEquivalent( o.dstElement, o.srcElement )
+  result = _.number.equivalent( o.dstElement, o.srcElement )
   o.dstElement = result;
 }
 
@@ -265,7 +265,7 @@ dop.onScalar = function isGreaterAprox( o )
 {
   let result = o.dstElement > o.srcElement;
   if( !result )
-  result = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+  result = _.number.equivalent( o.dstElement, o.srcElement );
   o.dstElement = result;
 }
 
@@ -295,7 +295,7 @@ dop.onScalar = function isLessEqualAprox( o )
 {
   let result = o.dstElement <= o.srcElement;
   if( !result )
-  result = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+  result = _.number.equivalent( o.dstElement, o.srcElement );
   o.dstElement = result;
 }
 
@@ -307,7 +307,7 @@ dop.onScalar = function isLessAprox( o )
 {
   let result = o.dstElement < o.srcElement;
   if( !result )
-  result = _.numbersAreEquivalent( o.dstElement, o.srcElement );
+  result = _.number.equivalent( o.dstElement, o.srcElement );
   o.dstElement = result;
 }
 
@@ -735,7 +735,7 @@ dop.onScalarsBegin = function( o )
 
 //
 
-let reduceToMag = dop = _.mapExtend( null, reduceToMagSqr );
+let reduceToMag = dop = _.props.extend( null, reduceToMagSqr );
 
 dop.onScalarsEnd = function reduceToMag( o )
 {

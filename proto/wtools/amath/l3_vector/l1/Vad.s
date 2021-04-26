@@ -110,8 +110,8 @@ let AdapterClassExtension =
   vectorAdapter : _.vectorAdapter,
 }
 
-_.mapExtend( _.VectorAdapter, AdapterClassExtension );
-_.mapExtend( _.VectorAdapter.prototype, AdapterClassExtension );
+_.props.extend( _.VectorAdapter, AdapterClassExtension );
+_.props.extend( _.VectorAdapter.prototype, AdapterClassExtension );
 
 //
 

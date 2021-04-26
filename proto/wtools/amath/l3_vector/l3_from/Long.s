@@ -64,7 +64,7 @@ _.accessor.readOnly
   },
 });
 
-_.property.constant( Self.prototype,
+_.props.constant( Self.prototype,
 {
   offset : 0,
   stride : 1,
@@ -124,8 +124,8 @@ let VectorExtension =
 {
 }
 
-_.mapSupplement( VectorExtension, _routinesFrom );
-_.mapSupplement( _.vectorAdapter._routinesFrom, _routinesFrom );
-_.mapSupplement( _.vectorAdapter, VectorExtension );
+_.props.supplement( VectorExtension, _routinesFrom );
+_.props.supplement( _.vectorAdapter._routinesFrom, _routinesFrom );
+_.props.supplement( _.vectorAdapter, VectorExtension );
 
 })();

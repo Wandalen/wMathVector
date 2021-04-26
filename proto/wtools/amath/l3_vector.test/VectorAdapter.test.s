@@ -17,7 +17,7 @@ if( typeof module !== 'undefined' )
 //
 
 const Parent = wTester;
-const _ = _global_.wTools.withDefaultLong.Fx;
+const _ = _global_.wTools.withLong.Fx;
 
 // --
 // from
@@ -32,7 +32,7 @@ function fromWithLong( test )
     test.open( `different type of long, ${ a.format }` );
 
     test.case = 'from empty long';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.vad.from( src );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -43,7 +43,7 @@ function fromWithLong( test )
     /* */
 
     test.case = 'from filled long';
-    var src = a.longMake([ 1, 2, 3 ]);
+    var src = a.long.make([ 1, 2, 3 ]);
     var got = _.vad.from( src );
     var expected = [ 1, 2, 3 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -99,7 +99,7 @@ function fromLong( test )
     test.open( `different type of long, ${ a.format }` );
 
     test.case = 'from empty long';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.vad.fromLong( src );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -110,7 +110,7 @@ function fromLong( test )
     /* */
 
     test.case = 'from filled long';
-    var src = a.longMake([ 1, 2, 3 ]);
+    var src = a.long.make([ 1, 2, 3 ]);
     var got = _.vad.fromLong( src );
     var expected = [ 1, 2, 3 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -167,7 +167,7 @@ function fromLongLrange( test )
     test.open( `from empty ${ a.format }` );
 
     test.case = 'offset is undefined, length is undefined';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.vad.fromLongLrange( src );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -176,7 +176,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length is undefined';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.vad.fromLongLrange( src, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -185,7 +185,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 0';
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.vad.fromLongLrange( src, 0, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -200,7 +200,7 @@ function fromLongLrange( test )
     test.open( `from filled ${ a.format }` );
 
     test.case = 'offset is undefined, length is undefined';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src );
     var expected = [ 1, 2, 3, -4, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -209,7 +209,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length is undefined';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 0 );
     var expected = [ 1, 2, 3, -4, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -218,7 +218,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 0';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 0, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -227,7 +227,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 1';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 0, 1 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -236,7 +236,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 5';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 0, 5 );
     var expected = [ 1, 2, 3, -4, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -245,7 +245,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length is undefined';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 1 );
     var expected = [ 2, 3, -4, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -254,7 +254,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 0';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 1, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -263,7 +263,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 1';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 1, 1 );
     var expected = [ 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -272,7 +272,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 4';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 1, 4 );
     var expected = [ 2, 3, -4, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -281,7 +281,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 2, length = 2';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 2, 2 );
     var expected = [ 3, -4 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -290,7 +290,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 4, length is undefined';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 4 );
     var expected = [ -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -299,7 +299,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 4, length = 0';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 4, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -308,7 +308,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 4, length = 1';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 4, 1 );
     var expected = [ -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -317,7 +317,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 5, length = 0';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, 5, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -330,7 +330,7 @@ function fromLongLrange( test )
     /* */
 
     test.case = `from empty ${ a.format }, offset and length passed as range, offset = 0, length = 0`;
-    var src = a.longMake( [] );
+    var src = a.long.make( [] );
     var got = _.vad.fromLongLrange( src, [ 0, 0 ] );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -343,7 +343,7 @@ function fromLongLrange( test )
     test.open( `from filled ${ a.format }, offset and length passed as range` );
 
     test.case = 'offset = 0, length = 0';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 0, 0 ] );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -352,7 +352,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 1';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 0, 1 ] );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -361,7 +361,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 5';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 0, 5 ] );
     var expected = [ 1, 2, 3, -4, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -370,7 +370,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 0';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 1, 0 ] );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -379,7 +379,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 1';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 1, 1 ] );
     var expected = [ 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -388,7 +388,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 4';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 1, 4 ] );
     var expected = [ 2, 3, -4, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -397,7 +397,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 2, length = 2';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 2, 2 ] );
     var expected = [ 3, -4 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -406,7 +406,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 4, length = 0';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 4, 0 ] );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -415,7 +415,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 4, length = 1';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 4, 1 ] );
     var expected = [ -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -424,7 +424,7 @@ function fromLongLrange( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 5, length = 0';
-    var src = a.longMake([ 1, 2, 3, -4, -5 ]);
+    var src = a.long.make([ 1, 2, 3, -4, -5 ]);
     var got = _.vad.fromLongLrange( src, [ 5, 0 ] );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -837,7 +837,7 @@ function fromLongLrangeAndStride( test )
     test.open( `one-element ${ a.format }` );
 
     test.case = 'offset = 0, length = 0, stride = 0';
-    var src = a.longMake([ 1 ]);
+    var src = a.long.make([ 1 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 0, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -846,7 +846,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 1, stride = 1';
-    var src = a.longMake([ 1 ]);
+    var src = a.long.make([ 1 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 1, 1 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -855,7 +855,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 1, stride = -1';
-    var src = a.longMake([ 1 ]);
+    var src = a.long.make([ 1 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 1, -1 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -870,7 +870,7 @@ function fromLongLrangeAndStride( test )
     test.open( `two-element ${ a.format }` );
 
     test.case = 'offset = 0, length = 0, stride = 0';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 0, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -879,7 +879,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 1, stride = 1';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 0, 1 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -888,7 +888,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 1, stride = 2';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 0, 2 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -897,7 +897,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 1, stride = 1';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 1, 1 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -906,7 +906,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 1, stride = 2';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 1, 2 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -915,7 +915,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 2, stride = 1';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 2, 1 );
     var expected = [ 1, 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -924,7 +924,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 1, stride = -1';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 1, -1 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -933,7 +933,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 0, stride = 0';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 0, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -942,7 +942,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 0, stride = 1';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 0, 1 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -951,7 +951,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 0, stride = 2';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 0, 2 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -960,7 +960,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 0, stride = -2';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 0, 2 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -969,7 +969,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 1, stride = 1';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, 1 );
     var expected = [ 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -978,7 +978,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 1, stride = 2';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, 2 );
     var expected = [ 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -987,7 +987,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 1, stride = -1';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, -1 );
     var expected = [ 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -996,7 +996,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 2, stride = -1';
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 2, -1 );
     var expected = [ 2, 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1011,7 +1011,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 0, length = 2, positive stride` );
 
     test.case = 'stride = 0';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 2, 0 );
     var expected = [ 0, 0 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1020,7 +1020,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 2, 1 );
     var expected = [ 0, 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1029,7 +1029,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 2, 2 );
     var expected = [ 0, 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1038,7 +1038,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 7';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 2, 7 );
     var expected = [ 0, 7 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1053,7 +1053,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 0, length = 3, positive stride` );
 
     test.case = 'stride = 0';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 3, 0 );
     var expected = [ 0, 0, 0 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1062,7 +1062,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 3, 1 );
     var expected = [ 0, 1, 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1071,7 +1071,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 3, 2 );
     var expected = [ 0, 2, -4 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1080,7 +1080,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 3';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 3, 3 );
     var expected = [ 0, 3, -6 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1093,7 +1093,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 0, length = 8, positive stride` );
 
     test.case = 'stride = 0';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 8, 0 );
     var expected = [ 0, 0, 0, 0, 0, 0, 0, 0 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1102,7 +1102,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 0, 8, 1 );
     var expected = [ 0, 1, 2, 3, -4, -5, -6, 7 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1116,7 +1116,7 @@ function fromLongLrangeAndStride( test )
     /* */
 
     test.case = 'offset = 1, length = 0, stride = 0';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 0, 0 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1125,7 +1125,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 1, length = 0, stride = -1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 0, -1 );
     var expected = [];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1138,7 +1138,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 1, length = 1, positive stride` );
 
     test.case = 'stride = 0';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, 0 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1147,7 +1147,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, 1 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1156,7 +1156,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, 2 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1165,7 +1165,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 3';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, 3 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1174,7 +1174,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 8';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, 8 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1189,7 +1189,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 1, length = 1, negative stride` );
 
     test.case = 'stride = -1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, -1 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1198,7 +1198,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = -2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 1, -2 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1213,7 +1213,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 1, length = 2, positive stride` );
 
     test.case = 'stride = 0';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 2, 0 );
     var expected = [ 1, 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1222,7 +1222,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 2, 1 );
     var expected = [ 1, 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1231,7 +1231,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 2, 2 );
     var expected = [ 1, 3 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1240,7 +1240,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 3';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 2, 3 );
     var expected = [ 1, -4 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1249,7 +1249,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 6';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 2, 6 );
     var expected = [ 1, 7 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1262,7 +1262,7 @@ function fromLongLrangeAndStride( test )
     /* */
 
     test.case = 'offset = 1, length = 2, stride = -1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 2, -1 );
     var expected = [ 1, 0 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1275,7 +1275,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 1, length = 3, positive stride` );
 
     test.case = 'stride = 0';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 3, 0 );
     var expected = [ 1, 1, 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1284,7 +1284,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 3, 1 );
     var expected = [ 1, 2, 3 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1293,7 +1293,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 3, 2 );
     var expected = [ 1, 3, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1308,7 +1308,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 1, length = 7, positive stride` );
 
     test.case = 'stride = 0';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 7, 0 );
     var expected = [ 1, 1, 1, 1, 1, 1, 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1317,7 +1317,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 1, 7, 1 );
     var expected = [ 1, 2, 3, -4, -5, -6, 7 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1332,7 +1332,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 4, length = 2, positive stride` );
 
     test.case = 'stride = 0';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 4, 2, 0 );
     var expected = [ -4, -4 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1341,7 +1341,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 4, 2, 1 );
     var expected = [ -4, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1350,7 +1350,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = 2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 4, 2, 2 );
     var expected = [ -4, -6 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1363,7 +1363,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 4, length = 2, negative stride` );
 
     test.case = 'stride = -1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 4, 2, -1 );
     var expected = [ -4, 3 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1372,7 +1372,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = -2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 4, 2, -2 );
     var expected = [ -4, 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1387,7 +1387,7 @@ function fromLongLrangeAndStride( test )
     test.open( `filled ${ a.format }, offset = 7, length = 3, negative stride` );
 
     test.case = 'stride = -1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 7, 3, -1 );
     var expected = [ 7, -6, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1396,7 +1396,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'stride = -2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 7, 3, -2 );
     var expected = [ 7, -5, 3 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1409,7 +1409,7 @@ function fromLongLrangeAndStride( test )
     /* */
 
     test.case = 'offset = src.length - 1, length = src.length, stride = -1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, 7, 8, -1 );
     var expected = [ 7, -6, -5, -4, 3, 2, 1, 0 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1422,7 +1422,7 @@ function fromLongLrangeAndStride( test )
     test.open( 'offset and length passed as range' );
 
     test.case = 'offset = 3, length = 2, stride = 2';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, [ 3, 2 ], 2 );
     var expected = [ 3, -5 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1431,7 +1431,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 3, length = 3, stride = -1';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, [ 3, 3 ], -1 );
     var expected = [ 3, 2, 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1440,7 +1440,7 @@ function fromLongLrangeAndStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = 'offset = 0, length = 3, stride = 3';
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongLrangeAndStride( src, [ 0, 3 ], 3 );
     var expected = [ 0, 3, -6 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1512,7 +1512,7 @@ function fromLongWithStride( test )
   {
 
     test.case = `one-element ${ a.format }, stride = 1`;
-    var src = a.longMake([ 1 ]);
+    var src = a.long.make([ 1 ]);
     var got = _.vad.fromLongWithStride( src, 1 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1523,7 +1523,7 @@ function fromLongWithStride( test )
     /* */
 
     test.case = `two-element ${ a.format }, stride = 1`;
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongWithStride( src, 1 );
     var expected = [ 1, 2 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1532,7 +1532,7 @@ function fromLongWithStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = `two-element ${ a.format }, stride = 2`;
-    var src = a.longMake([ 1, 2 ]);
+    var src = a.long.make([ 1, 2 ]);
     var got = _.vad.fromLongWithStride( src, 2 );
     var expected = [ 1 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1543,7 +1543,7 @@ function fromLongWithStride( test )
     /* */
 
     test.case = `filled ${ a.format }, stride = 1`;
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongWithStride( src, 1 );
     var expected = [ 0, 1, 2, 3, -4, -5, -6, 7 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1552,7 +1552,7 @@ function fromLongWithStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = `filled ${ a.format }, stride = 2`;
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongWithStride( src, 2 );
     var expected = [ 0, 2, -4, -6 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1561,7 +1561,7 @@ function fromLongWithStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = `filled ${ a.format }, stride = 3`;
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongWithStride( src, 3 );
     var expected = [ 0, 3, -6 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1570,7 +1570,7 @@ function fromLongWithStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = `filled ${ a.format }, stride = 6`;
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongWithStride( src, 6 );
     var expected = [ 0, -6 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1579,7 +1579,7 @@ function fromLongWithStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = `filled ${ a.format }, stride = 7`;
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongWithStride( src, 7 );
     var expected = [ 0, 7 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1588,7 +1588,7 @@ function fromLongWithStride( test )
     test.true( got._vectorBuffer === src );
 
     test.case = `filled ${ a.format }, stride = 10`;
-    var src = a.longMake([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
+    var src = a.long.make([ 0, 1, 2, 3, -4, -5, -6, 7 ]);
     var got = _.vad.fromLongWithStride( src, 10 );
     var expected = [ 0 ];
     for( let i = 0 ; i < expected.length ; i++ )
@@ -1639,7 +1639,7 @@ function updateLrange( test )
   {
     test.open( `trivial ${ a.format }` );
 
-    var src = a.longMake( [ 1, 2, 3 ] );
+    var src = a.long.make( [ 1, 2, 3 ] );
     var got = _.vad.fromLongLrange( src );
 
     test.case = 'single';
@@ -1795,34 +1795,34 @@ function assign( test )
     test.open( `dst - vectorAdapter from ${a.format}` );
 
     test.case = 'dst - empty, without src';
-    var dst = _.vectorAdapter.fromLong( a.longMake([]) );
+    var dst = _.vectorAdapter.fromLong( a.long.make([]) );
     var got = dst.assign();
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
+    var exp = _.vectorAdapter.fromLong( a.long.make([]) );
     test.identical( got, exp );
     test.true( got === dst );
 
     test.case = 'dst - several elements, src - arguments';
-    var dst = _.vectorAdapter.fromLong( a.longMake([ 0, -1, 2 ]) );
+    var dst = _.vectorAdapter.fromLong( a.long.make([ 0, -1, 2 ]) );
     var got = dst.assign( -1, -2, 0 );
-    var exp = _.vectorAdapter.fromLong( a.longMake( [ -1, -2, 0 ] ) );
+    var exp = _.vectorAdapter.fromLong( a.long.make( [ -1, -2, 0 ] ) );
     test.identical( got, exp );
     test.true( got === dst );
 
     /* */
 
     test.case = 'dst - empty, src - number';
-    var dst = _.vectorAdapter.fromLong( a.longMake([]) );
+    var dst = _.vectorAdapter.fromLong( a.long.make([]) );
     var src = 5;
     var got = dst.assign( src );
-    var exp = _.vectorAdapter.fromLong( a.longMake([]) );
+    var exp = _.vectorAdapter.fromLong( a.long.make([]) );
     test.identical( got, exp );
     test.true( got === dst );
 
     test.case = 'dst - several elements, src - number';
-    var dst = _.vectorAdapter.fromLong( a.longMake([ 0, -1, 2 ]) );
+    var dst = _.vectorAdapter.fromLong( a.long.make([ 0, -1, 2 ]) );
     var src = 5;
     var got = dst.assign( src );
-    var exp = _.vectorAdapter.fromLong( a.longMake([ 5, 5, 5 ]) );
+    var exp = _.vectorAdapter.fromLong( a.long.make([ 5, 5, 5 ]) );
     test.identical( got, exp );
     test.true( got === dst );
 
@@ -1877,7 +1877,7 @@ function assign( test )
 
     test.case = 'dst - empty, src - empty';
     var dst = _.vectorAdapter.fromLong([]);
-    var src = a.longMake([]);
+    var src = a.long.make([]);
     var got = dst.assign( src );
     var exp = _.vectorAdapter.fromLong([]);
     test.identical( got, exp );
@@ -1885,7 +1885,7 @@ function assign( test )
 
     test.case = 'dst - several arguments, src.length === dst.length';
     var dst = _.vectorAdapter.fromLong([ 0, -1, 2 ]);
-    var src = a.longMake([ 3, -2, -4 ]);
+    var src = a.long.make([ 3, -2, -4 ]);
     var got = dst.assign( src );
     var exp = _.vectorAdapter.fromLong([ 3, -2, -4 ]);
     test.identical( got, exp );
@@ -1893,7 +1893,7 @@ function assign( test )
 
     test.case = 'dst - several arguments, src.length < dst.length';
     var dst = _.vectorAdapter.fromLong([ 0, -1, 2, 3, 3 ]);
-    var src = a.longMake([ 3, -2, -4 ]);
+    var src = a.long.make([ 3, -2, -4 ]);
     var got = dst.assign( src );
     var exp = _.vectorAdapter.fromLong([ 3, -2, -4, 0, 0 ]);
     test.identical( got, exp );
@@ -1901,7 +1901,7 @@ function assign( test )
 
     test.case = 'dst - several arguments, src.length > dst.length';
     var dst = _.vectorAdapter.fromLong([ 0, -1, 2 ]);
-    var src = a.longMake([ 3, -2, -4, 3, 5 ]);
+    var src = a.long.make([ 3, -2, -4, 3, 5 ]);
     var got = dst.assign( src );
     var exp = _.vectorAdapter.fromLong([ 3, -2, -4 ]);
     test.identical( got, exp );
@@ -1998,9 +1998,9 @@ function growAdapter( test )
   function act( a )
   {
     test.case = 'src - empty vectorAdapter, without cinterval and val';
-    var src = _.vad.fromLong( a.longMake( [] ) );
+    var src = _.vad.fromLong( a.long.make( [] ) );
     var got = _.vad.growAdapter( src );
-    var exp = _.vad.fromLong( a.longMake( [] ) );
+    var exp = _.vad.fromLong( a.long.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2760,7 +2760,7 @@ function toStr( test )
     var got = _.vector.toStr( vad1 );
     test.identical( got, exp );
     var exp = '[]';
-    var got = _.vector.toStr( a.longMake([]) );
+    var got = _.vector.toStr( a.long.make([]) );
     test.identical( got, exp );
 
     /* */
@@ -2775,7 +2775,7 @@ function toStr( test )
     var got = _.vector.toStr( vad1 );
     test.identical( got, exp );
     var exp = '[ 1, 2, 3 ]';
-    var got = _.vector.toStr( a.longMake([ 1, 2, 3 ]) );
+    var got = _.vector.toStr( a.long.make([ 1, 2, 3 ]) );
     test.identical( got, exp );
 
     /* */
@@ -2797,7 +2797,7 @@ function toStr( test )
     var got = _.vector.toStr( vad1 );
     test.identical( got, exp );
     var exp = '( new Int16Array([  ]) )';
-    var got = _.vector.toStr( a.longMake([]) );
+    var got = _.vector.toStr( a.long.make([]) );
     test.identical( got, exp );
 
     /* */
@@ -2812,7 +2812,7 @@ function toStr( test )
     var got = _.vector.toStr( vad1 );
     test.identical( got, exp );
     var exp = '( new Int16Array([ 1, 2, 3 ]) )';
-    var got = _.vector.toStr( a.longMake([ 1, 2, 3 ]) );
+    var got = _.vector.toStr( a.long.make([ 1, 2, 3 ]) );
     test.identical( got, exp );
 
     /* */
@@ -3221,7 +3221,7 @@ function reviewSrcIsSimpleVector( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3349,7 +3349,7 @@ function reviewSrcIsAdapterRoutineFrom( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3445,7 +3445,7 @@ function reviewSrcIsAdapterRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3541,7 +3541,7 @@ function reviewSrcIsAdapterRoutineFromLongWithStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3637,7 +3637,7 @@ function reviewSrcIsAdapterRoutineFromLongLrange( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3733,7 +3733,7 @@ function reviewSrcIsAdapterRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3829,7 +3829,7 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -3923,28 +3923,28 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
     test.case = 'src - empty vector, cinterval - 0';
     var src = _.vad.fromNumber( 5, 0 );
     var got = _.vad.review( src, 0 );
-    var exp = _.vad.from( _.longDescriptor.make( [] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'cinterval - 0';
     var src = _.vad.fromNumber( 5, 6 );
     var got = _.vad.review( src, 0 );
-    var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'cinterval > 0 && cinterval < src.length - 1';
     var src = _.vad.fromNumber( 5, 6 );
     var got = _.vad.review( src, 2 );
-    var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5, 5 ] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval - src.length';
     var src = _.vad.fromNumber( 5, 6 );
     var got = _.vad.review( src, 6 );
-    var exp = _.vad.from( _.longDescriptor.make( [] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -3953,42 +3953,42 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
     test.case = 'src - empty vector, cinterval[ 0 ] and cinterval[ 1 ] - -1';
     var src = _.vad.fromNumber( 5, 0 );
     var got = _.vad.review( src, [ 0, -1 ] );
-    var exp = _.vad.from( _.longDescriptor.make( [] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'cinterval[ 0 ] - 0, cinterval[ 1 ] - src.length';
     var src = _.vad.fromNumber( 5, 6 );
     var got = _.vad.review( src, [ 0, 5 ] );
-    var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got === src );
 
     test.case = 'cinterval[ 0 ] - 0, cinterval < src.length';
     var src = _.vad.fromNumber( 5, 6 );
     var got = _.vad.review( src, [ 0, 3 ] );
-    var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5, 5 ] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval[ 0 ] > 0, cinterval < src.length';
     var src = _.vad.fromNumber( 5, 6 );
     var got = _.vad.review( src, [ 1, 3 ] );
-    var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5 ] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval[ 0 ] and cinterval[ 1 ] - src.length';
     var src = _.vad.fromNumber( 5, 6 );
     var got = _.vad.review( src, [ 6, 5 ] );
-    var exp = _.vad.from( _.longDescriptor.make( [] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
     test.case = 'cinterval[ 0 ] > cinterval[ 1 ]';
     var src = _.vad.fromNumber( 5, 6 );
     var got = _.vad.review( src, [ 3, 2 ] );
-    var exp = _.vad.from( _.longDescriptor.make( [] ) );
+    var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 }
@@ -3999,7 +3999,7 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4167,28 +4167,28 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
   test.case = 'src - empty vector, cinterval - 0';
   var src = _.vad.fromMaybeNumber( 5, 0 );
   var got = _.vad.review( src, 0 );
-  var exp = _.vad.from( _.longDescriptor.make( [] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
   test.identical( got, exp );
   test.true( got === src );
 
   test.case = 'cinterval - 0';
   var src = _.vad.fromMaybeNumber( 5, 6 );
   var got = _.vad.review( src, 0 );
-  var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5, 5 ] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.true( got === src );
 
   test.case = 'cinterval > 0 && cinterval < src.length - 1';
   var src = _.vad.fromMaybeNumber( 5, 6 );
   var got = _.vad.review( src, 2 );
-  var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5, 5 ] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval - src.length';
   var src = _.vad.fromMaybeNumber( 5, 6 );
   var got = _.vad.review( src, 6 );
-  var exp = _.vad.from( _.longDescriptor.make( [] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
   test.identical( got, exp );
   test.true( got !== src );
 
@@ -4197,42 +4197,42 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
   test.case = 'src - empty vector, cinterval[ 0 ] and cinterval[ 1 ] - -1';
   var src = _.vad.fromMaybeNumber( 5, 0 );
   var got = _.vad.review( src, [ 0, -1 ] );
-  var exp = _.vad.from( _.longDescriptor.make( [] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
   test.identical( got, exp );
   test.true( got === src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval[ 1 ] - src.length';
   var src = _.vad.fromMaybeNumber( 5, 6 );
   var got = _.vad.review( src, [ 0, 5 ] );
-  var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5, 5 ] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.true( got === src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval < src.length';
   var src = _.vad.fromMaybeNumber( 5, 6 );
   var got = _.vad.review( src, [ 0, 3 ] );
-  var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5, 5 ] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > 0, cinterval < src.length';
   var src = _.vad.fromMaybeNumber( 5, 6 );
   var got = _.vad.review( src, [ 1, 3 ] );
-  var exp = _.vad.from( _.longDescriptor.make( [ 5, 5, 5 ] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5 ] ) );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] and cinterval[ 1 ] - src.length';
   var src = _.vad.fromMaybeNumber( 5, 6 );
   var got = _.vad.review( src, [ 6, 5 ] );
-  var exp = _.vad.from( _.longDescriptor.make( [] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > cinterval[ 1 ]';
   var src = _.vad.fromMaybeNumber( 5, 6 );
   var got = _.vad.review( src, [ 3, 2 ] );
-  var exp = _.vad.from( _.longDescriptor.make( [] ) );
+  var exp = _.vad.from( _./*longDescriptor*/defaultLong.make( [] ) );
   test.identical( got, exp );
   test.true( got !== src );
 }
@@ -4245,7 +4245,7 @@ function mapDstIsNullRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4290,7 +4290,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4298,7 +4298,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4308,7 +4308,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4316,7 +4316,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4326,7 +4326,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4334,7 +4334,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4344,7 +4344,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4352,7 +4352,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4362,7 +4362,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4370,7 +4370,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4380,7 +4380,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4388,7 +4388,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4436,7 +4436,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4481,7 +4481,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4489,7 +4489,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4499,7 +4499,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4507,7 +4507,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 3, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4517,7 +4517,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 1 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4525,7 +4525,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4535,7 +4535,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4543,7 +4543,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 3, 3, 3 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4553,7 +4553,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4561,7 +4561,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 3, 3, 3 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4571,7 +4571,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4579,7 +4579,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4593,7 +4593,7 @@ function mapDstIsNullRoutineFromNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -4615,7 +4615,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4623,7 +4623,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4633,7 +4633,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4641,7 +4641,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4651,7 +4651,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4659,7 +4659,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4669,7 +4669,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4677,7 +4677,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4687,7 +4687,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4695,7 +4695,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4705,7 +4705,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4713,7 +4713,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4727,7 +4727,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4735,7 +4735,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, null );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4745,7 +4745,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4753,7 +4753,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 7, 7, 7, 7, 7 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 7, 7, 7, 7, 7 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4763,7 +4763,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4771,7 +4771,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4781,7 +4781,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 10, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4789,7 +4789,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4799,7 +4799,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4807,7 +4807,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4817,7 +4817,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4825,7 +4825,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 0, 0, 0, 0 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4839,7 +4839,7 @@ function mapOnlyDstRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -5060,7 +5060,7 @@ function mapOnlyDstRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -5281,7 +5281,7 @@ function mapDstIsVectorRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -5551,7 +5551,7 @@ function mapDstIsVectorRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -5821,7 +5821,7 @@ function mapDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -6091,7 +6091,7 @@ function mapDstIsVectorRoutineFromNumberWithNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -6361,7 +6361,7 @@ function filterDstIsNullRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -6406,7 +6406,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6414,7 +6414,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6424,7 +6424,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6432,7 +6432,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6442,7 +6442,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6450,7 +6450,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6460,7 +6460,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6468,7 +6468,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6478,7 +6478,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6486,7 +6486,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6496,7 +6496,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6504,7 +6504,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6551,7 +6551,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -6596,7 +6596,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6604,7 +6604,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 3, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6614,7 +6614,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6622,7 +6622,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 3, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 1, 3, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6632,7 +6632,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 1 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6640,7 +6640,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 1, 2 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6650,7 +6650,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6658,7 +6658,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 3, 3, 3 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6668,7 +6668,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6676,7 +6676,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 3, 3, 3 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 3, 3, 3 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6686,7 +6686,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [] ), 0, 0, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6694,7 +6694,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6708,7 +6708,7 @@ function filterDstIsNullRoutineFromNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -6730,7 +6730,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6738,7 +6738,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6748,7 +6748,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6756,7 +6756,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6766,7 +6766,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6774,7 +6774,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6784,7 +6784,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6792,7 +6792,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6802,7 +6802,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6810,7 +6810,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6820,7 +6820,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [] ) ), 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6828,7 +6828,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vad.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) ), 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6842,7 +6842,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6850,7 +6850,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, null );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make([ 7, 7, 7, 7, 7 ]) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make([ 7, 7, 7, 7, 7 ]) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6860,7 +6860,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6868,7 +6868,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e ) => e );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 7, 7, 7, 7, 7 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 7, 7, 7, 7, 7 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6878,7 +6878,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6886,7 +6886,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k ) => k );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 0, 1, 2, 3, 4 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 0, 1, 2, 3, 4 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6896,7 +6896,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 10, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6904,7 +6904,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s ) => s.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6914,7 +6914,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6922,7 +6922,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => d.length );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [ 5, 5, 5, 5, 5 ] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [ 5, 5, 5, 5, 5 ] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6932,7 +6932,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 5, 0 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6940,7 +6940,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.vectorAdapter.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _.vectorAdapter.from( _.longDescriptor.make( [] ) );
+    var exp = _.vectorAdapter.from( _./*longDescriptor*/defaultLong.make( [] ) );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -6954,7 +6954,7 @@ function filterOnlyDstRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -7175,7 +7175,7 @@ function filterOnlyDstRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -7396,7 +7396,7 @@ function filterDstIsVectorRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -7707,7 +7707,7 @@ function filterDstIsVectorRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -8016,7 +8016,7 @@ function filterDstIsVectorRoutineFromNumberWithVectorAdapter( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -8327,7 +8327,7 @@ function filterDstIsVectorRoutineFromNumberWithNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -9870,7 +9870,7 @@ function allRoutineFromLong( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -10162,7 +10162,7 @@ function allRoutineFromLongLrangeAndStride( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -10430,7 +10430,7 @@ function allRoutineFromNumberWithVectorAdapter( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];
@@ -10698,7 +10698,7 @@ function allRoutineFromNumberWithNumber( test )
 {
   var list =
   [
-    _.arrayMake,
+    _.array.make,
     I16x,
     F32x
   ];

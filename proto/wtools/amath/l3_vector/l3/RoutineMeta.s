@@ -3,7 +3,7 @@
 'use strict';
 
 const _ = _global_.wTools;
-const _hasLength = _.hasLength;
+const _hasLength = _.vector.hasLength;
 const _longSlice = _.longSlice;
 const _sqr = _.math.sqr;
 const _sqrt = _.math.sqrt;
@@ -43,7 +43,7 @@ function _routinePostForm( theRoutine, routineName )
 
   /* adjust */
 
-  _.mapSupplement( op, _.vectorAdapter.OperationDescriptor2.propsExtension );
+  _.props.supplement( op, _.vectorAdapter.OperationDescriptor2.propsExtension );
   _.map.assertHasOnly( op, _.vectorAdapter.OperationDescriptor2.propsExtension );
 
   op.returningPrimitive = !!op.returningPrimitive;
@@ -617,7 +617,7 @@ function _vectorizeDst( o, dop )
     if( dst === null )
     {
       if( dop.returningBoolean )
-      dst = o.dstContainer = this.vectorAdapter.withDefaultLong.Array.makeFilling( 1 , false );
+      dst = o.dstContainer = this.vectorAdapter.withLong.Array.makeFilling( 1 , false );
       else
       dst = o.dstContainer = this.vectorAdapter.makeFilling( 1 , 0 );
       o.dstContainer.assign( o.args[ 1 ] );
@@ -625,7 +625,7 @@ function _vectorizeDst( o, dop )
     else
     {
       if( dop.returningBoolean )
-      dst = o.dstContainer = this.vectorAdapter.withDefaultLong.Array.makeFilling( 1 , dst );
+      dst = o.dstContainer = this.vectorAdapter.withLong.Array.makeFilling( 1 , dst );
       else
       dst = o.dstContainer = this.vectorAdapter.makeFilling( 1 , dst );
     }
@@ -1060,9 +1060,9 @@ function _routineForOperation_functor( dop )
   _.assert( _.mapIs( dop ) );
 
   if( _.routineIs( dop ) )
-  dop = _.mapExtend( null, { onScalar : dop } );
+  dop = _.props.extend( null, { onScalar : dop } );
   else
-  dop = _.mapExtend( null, dop );
+  dop = _.props.extend( null, dop );
 
   let onScalar = dop.onScalar[ 0 ];
 
@@ -1152,7 +1152,7 @@ _routineForOperation_functor.defaults =
 function _operationTakingDstSrcReturningSelfComponentWise_functor( o )
 {
 
-  _.routineOptions( _operationTakingDstSrcReturningSelfComponentWise_functor, o );
+  _.routine.options_( _operationTakingDstSrcReturningSelfComponentWise_functor, o );
 
   let onEach = o.onEach;
   let onVectorsBegin0 = o.onVectorsBegin || function(){};
@@ -1224,11 +1224,11 @@ function _operationReturningSelfTakingVariantsComponentWise_functor( operation )
   _.assert( operation.assigning === undefined );
   _.assert( _.strIs( operation.input ) );
 
-  let operationForFunctor = _.mapExtend( null, operation );
+  let operationForFunctor = _.props.extend( null, operation );
   operationForFunctor.assigning = 1;
   result.assigning = this._operationReturningSelfTakingVariantsComponentWiseAct_functor( operationForFunctor );
 
-  operationForFunctor = _.mapExtend( null, operation );
+  operationForFunctor = _.props.extend( null, operation );
   operationForFunctor.assigning = 0;
   result.copying = this._operationReturningSelfTakingVariantsComponentWiseAct_functor( operationForFunctor );
 
@@ -1251,7 +1251,7 @@ _operationReturningSelfTakingVariantsComponentWise_functor.defaults =
 function _operationReturningSelfTakingVariantsComponentWiseAct_functor( operation )
 {
 
-  _.routineOptions( _operationReturningSelfTakingVariantsComponentWiseAct_functor, operation );
+  _.routine.options_( _operationReturningSelfTakingVariantsComponentWiseAct_functor, operation );
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( operation ) );
   _.assert( _.routineIs( operation.onEach ) );
@@ -1919,7 +1919,7 @@ function routinesHomogeneousDeclare()
 
   _.assert( _.routineIs( routines.add ) );
   _.assert( routines.add.operation.usingDstAsSrc );
-  _.assert( _.longIdentical( routines.add.operation.takingVectors, [ 0, Infinity ] ) );
+  _.assert( _.long.identical( routines.add.operation.takingVectors, [ 0, Infinity ] ) );
   _.assert( _.routineIs( routines.min ) );
   _.assert( _.routineIs( routines.max ) );
 
@@ -2011,7 +2011,7 @@ function __operationReduceToScalar_functor( operation )
   meta.operationNormalizeInput( operation );
   meta.operationNormalizeArity( operation );
 
-  _.routineOptions( __operationReduceToScalar_functor, operation );
+  _.routine.options_( __operationReduceToScalar_functor, operation );
   this._operationReduceNormalizeFunctions( __operationReduceToScalar_functor, operation );
 
   operation.generator = __operationReduceToScalar_functor;
@@ -2237,10 +2237,10 @@ function __operationReduceToScalar_functor( operation )
     _.assert( arguments.length === 1, 'Expects single argument' );
 
     let op = Object.create( null );
-    _.mapExtend( op , scalarDefaults );
+    _.props.extend( op , scalarDefaults );
     Object.preventExtensions( op );
 
-    _.mapExtend( op, o );
+    _.props.extend( op, o );
     _.assert( !!op.args );
 
     if( onVectorsBegin0 )
@@ -2387,7 +2387,7 @@ function declareReducingRoutines()
 function _operationReduceToExtremal_functor( operation )
 {
 
-  _.routineOptions( _operationReduceToExtremal_functor, operation );
+  _.routine.options_( _operationReduceToExtremal_functor, operation );
   _.assert( _.strDefined( operation.name ) );
   _.assert( _.objectIs( operation ) );
   _.assert( _.routineIs( operation.onDistance ) );
@@ -2516,7 +2516,7 @@ function _declareHomogeneousLogical2ReducingRoutine( operation, scalarOperation,
 
     meta.operationNormalizeInput( operation );
 
-    if( _.longIdentical( operation.input.args[ 0 ].times, [ 0, 1 ] ) )
+    if( _.long.identical( operation.input.args[ 0 ].times, [ 0, 1 ] ) )
     {
       operation.input = operation.input.args.slice( 1 ).map( ( arg ) => arg.definition ).join( ' ' );
       delete operation.takingArguments;
@@ -2550,7 +2550,7 @@ function _declareHomogeneousLogical2ReducingRoutine( operation, scalarOperation,
       input : 'vr|s vr|s',
     }
 
-    _.mapExtend( operation, def );
+    _.props.extend( operation, def );
 
   }
 
@@ -2692,8 +2692,8 @@ function declareHomogeneousLogical2Routines()
   _.assert( !routines.any );
   _.assert( !routines.none );
 
-  _.assert( _.longIdentical( routines.isIdentical.operation.takingArguments, [ 2, 3 ] ) );
-  _.assert( _.longIdentical( routines.allIdentical.operation.takingArguments, [ 2, 2 ] ) );
+  _.assert( _.long.identical( routines.isIdentical.operation.takingArguments, [ 2, 3 ] ) );
+  _.assert( _.long.identical( routines.allIdentical.operation.takingArguments, [ 2, 2 ] ) );
 
 }
 
@@ -2727,7 +2727,7 @@ function _declareLogic1SinglerRoutine( operation, scalarOperation, routineName )
     input : '?vw|?n vr|s',
   }
 
-  _.mapExtend( operation, def );
+  _.props.extend( operation, def );
 
   return meta._routineHomogeneousDeclare( operation, scalarOperation, routineName );
 }
@@ -2753,7 +2753,7 @@ function _declareLogic1ReducingSinglerRoutine( operation, scalarOperation, routi
     input : [ 'vr|s' ],
   }
 
-  _.mapExtend( operation, def );
+  _.props.extend( operation, def );
 
   return meta._routineHomogeneousDeclare( operation, scalarOperation, routineName );
 }
@@ -2879,8 +2879,8 @@ function declareLogic1Routines()
   _.assert( _.routineIs( routines.anyZero ) );
   _.assert( _.routineIs( routines.noneZero ) );
 
-  _.assert( _.longIdentical( routines.isZero.operation.takingArguments, [ 1, 2 ] ) );
-  _.assert( _.longIdentical( routines.allZero.operation.takingArguments, [ 1, 1 ] ) );
+  _.assert( _.long.identical( routines.isZero.operation.takingArguments, [ 1, 2 ] ) );
+  _.assert( _.long.identical( routines.allZero.operation.takingArguments, [ 1, 1 ] ) );
 
 }
 
@@ -2984,6 +2984,6 @@ let MetaExtension =
 
 }
 
-_.mapExtend( _.vectorAdapter._meta, MetaExtension );
+_.props.extend( _.vectorAdapter._meta, MetaExtension );
 
 })();

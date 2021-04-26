@@ -3,7 +3,7 @@
 'use strict';
 
 const _ = _global_.wTools;
-const _hasLength = _.hasLength;
+const _hasLength = _.vector.hasLength;
 const _longSlice = _.longSlice;
 const _sqr = _.math.sqr;
 const _sqrt = _.math.sqrt;
@@ -25,7 +25,7 @@ _.vectorAdapter._meta.routines = _.vectorAdapter._meta.routines || Object.create
 
 function operationSupplement( operation, scalarOperation )
 {
-  operation = _.mapSupplement( operation, scalarOperation );
+  operation = _.props.supplement( operation, scalarOperation );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -126,7 +126,7 @@ function _operationLogicalReducerAdjust( operation )
     modifying : 0,
   }
 
-  _.mapExtend( operation, def );
+  _.props.extend( operation, def );
 
 }
 
@@ -895,6 +895,6 @@ let MetaExtension =
 
 }
 
-_.mapExtend( _.vectorAdapter._meta, MetaExtension );
+_.props.extend( _.vectorAdapter._meta, MetaExtension );
 
 })();

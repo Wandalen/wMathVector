@@ -18,14 +18,14 @@ let meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null 
 function _routineLongWrap_functor( o )
 {
 
-  o = _.routineOptions( _routineLongWrap_functor, arguments );
+  o = _.routine.options_( _routineLongWrap_functor, arguments );
 
   if( _.objectIs( o.routine ) )
   {
     let result = Object.create( null );
     for( let r in o.routine )
     {
-      let optionsForWrapper = _.mapExtend( null, o );
+      let optionsForWrapper = _.props.extend( null, o );
       optionsForWrapper.routine = o.routine[ r ];
       result[ r ] = _routineLongWrap_functor( optionsForWrapper );
     }
@@ -211,6 +211,6 @@ let MetaExtension =
 
 }
 
-_.mapExtend( _.vectorAdapter._meta, MetaExtension );
+_.props.extend( _.vectorAdapter._meta, MetaExtension );
 
 })();
