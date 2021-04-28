@@ -39,7 +39,7 @@ function make( length )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = new self./*longDescriptor*/defaultLong.make( length );
+  let srcLong = new self.defaultLong.make( length );
   return self.fromLong( srcLong );
 }
 
@@ -67,7 +67,7 @@ function makeFilling( length, value )
   _.assert( _.numberIs( length ) );
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = new self./*longDescriptor*/defaultLong.make( length );
+  let srcLong = new self.defaultLong.make( length );
   for( let i = 0 ; i < length ; i++ )
   srcLong[ i ] = value;
   return self.fromLong( srcLong );

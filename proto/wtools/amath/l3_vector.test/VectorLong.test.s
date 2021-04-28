@@ -1519,28 +1519,28 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
   test.case = 'src - empty vector, cinterval - 0';
   var src = vad.fromNumber( 5, 0 );
   var got = _.avector.review( src, 0 );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval - 0';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, 0 );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval > 0 && cinterval < src.length - 1';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, 2 );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval - src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, 6 );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
@@ -1549,42 +1549,42 @@ function reviewSrcIsAdapterRoutineFromNumber( test )
   test.case = 'src - empty vector, cinterval[ 0 ] and cinterval[ 1 ] - -1';
   var src = vad.fromNumber( 5, 0 );
   var got = _.avector.review( src, [ 0, -1 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval[ 1 ] - src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 0, 5 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval < src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 0, 3 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > 0, cinterval < src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 1, 3 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] and cinterval[ 1 ] - src.length';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 6, 5 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > cinterval[ 1 ]';
   var src = vad.fromNumber( 5, 6 );
   var got = _.avector.review( src, [ 3, 2 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 }
@@ -1763,28 +1763,28 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
   test.case = 'src - empty vector, cinterval - 0';
   var src = vad.fromMaybeNumber( 5, 0 );
   var got = _.avector.review( src, 0 );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval - 0';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, 0 );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval > 0 && cinterval < src.length - 1';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, 2 );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval - src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, 6 );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
@@ -1793,42 +1793,42 @@ function reviewSrcIsAdapterRoutineFromMaybeNumber( test )
   test.case = 'src - empty vector, cinterval[ 0 ] and cinterval[ 1 ] - -1';
   var src = vad.fromMaybeNumber( 5, 0 );
   var got = _.avector.review( src, [ 0, -1 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval[ 1 ] - src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 0, 5 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] - 0, cinterval < src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 0, 3 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > 0, cinterval < src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 1, 3 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [ 5, 5, 5 ] );
+  var exp = _.defaultLong.from( [ 5, 5, 5 ] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] and cinterval[ 1 ] - src.length';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 6, 5 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 
   test.case = 'cinterval[ 0 ] > cinterval[ 1 ]';
   var src = vad.fromMaybeNumber( 5, 6 );
   var got = _.avector.review( src, [ 3, 2 ] );
-  var exp = _./*longDescriptor*/defaultLong.from( [] );
+  var exp = _.defaultLong.from( [] );
   test.identical( got, exp );
   test.true( got !== src );
 }
@@ -1892,7 +1892,7 @@ function mapDstIsNullSimpleVector( test )
     var dst = null;
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( 5 );
+    var exp = _.defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -1982,7 +1982,7 @@ function mapDstIsNullSimpleVector( test )
     var dst = null;
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 5 );
+    var exp = _.defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2056,7 +2056,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( 5 );
+    var exp = _.defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2146,7 +2146,7 @@ function mapDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 5 );
+    var exp = _.defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
   }
@@ -2186,7 +2186,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.avector.map( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( 3 );
+    var exp = _.defaultLong.from( 3 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2276,7 +2276,7 @@ function mapDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 3 );
+    var exp = _.defaultLong.from( 3 );
     test.identical( got, exp );
     test.true( got !== src );
   }
@@ -2318,7 +2318,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = _.avector.map( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( 5 );
+    var exp = _.defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2408,7 +2408,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 5 );
+    var exp = _.defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2430,7 +2430,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.avector.map( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( 5 );
+    var exp = _.defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -2520,7 +2520,7 @@ function mapDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.avector.map( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 5 );
+    var exp = _.defaultLong.from( 5 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -3882,7 +3882,7 @@ function filterDstIsNullSimpleVector( test )
     var dst = null;
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.filter( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.defaultLong.from( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -3972,7 +3972,7 @@ function filterDstIsNullSimpleVector( test )
     var dst = null;
     var src = _.avector.make( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 0 );
+    var exp = _.defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4045,7 +4045,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.filter( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.defaultLong.from( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4135,7 +4135,7 @@ function filterDstIsNullRoutineFromLong( test )
     var dst = null;
     var src = _.vectorAdapter.fromLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 0 );
+    var exp = _.defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
   }
@@ -4175,7 +4175,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.avector.filter( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( [ 1, 3, 5 ] );
+    var exp = _.defaultLong.from( [ 1, 3, 5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4265,7 +4265,7 @@ function filterDstIsNullRoutineFromLongLrangeAndStride( test )
     var dst = null;
     var src = _.vectorAdapter.fromLongLrangeAndStride( new makeLong( [ 1, 2, 3, 4, 5 ] ), 0, 3, 2 );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 0 );
+    var exp = _.defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
   }
@@ -4307,7 +4307,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = _.avector.filter( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( [ 1, 2, 3, 4, 5 ] );
+    var exp = _.defaultLong.from( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4397,7 +4397,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( _.vectorAdapter.from( [ 1, 2, 3, 4, 5 ] ), 5 );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 0 );
+    var exp = _.defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4419,7 +4419,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.avector.filter( dst, src, null );
-    var exp = _./*longDescriptor*/defaultLong.from( [ 7, 7, 7, 7, 7 ] );
+    var exp = _.defaultLong.from( [ 7, 7, 7, 7, 7 ] );
     test.identical( got, exp );
     test.true( got !== src );
 
@@ -4509,7 +4509,7 @@ function filterDstIsNullRoutineFromNumber( test )
     var dst = null;
     var src = _.vectorAdapter.fromNumber( 7, 5 );
     var got = _.avector.filter( dst, src, ( e, k, s, d ) => undefined );
-    var exp = _./*longDescriptor*/defaultLong.from( 0 );
+    var exp = _.defaultLong.from( 0 );
     test.identical( got, exp );
     test.true( got !== src );
 
