@@ -28,10 +28,10 @@ Object.setPrototypeOf( _.vectorAdapter, wTools );
 _.longDescriptorProducer.applyTo( _.vectorAdapter, 'Fx' );
 _.assert( Object.getPrototypeOf( _.vectorAdapter.withLong.Array ) === _.vectorAdapter );
 
-_.assert( _.objectIs( _.withLong.Fx ) );
+_.assert( _.object.isBasic( _.withLong.Fx ) );
 _.assert( _.vectorAdapter.longType === undefined );
 _.vectorAdapter.longType = _.withLong.Fx;
-_.assert( _.objectIs( _.vectorAdapter.longType ) );
+_.assert( _.object.isBasic( _.vectorAdapter.longType ) );
 _.assert( _.routineIs( _.vectorAdapter.longType.longFrom ) );
 _.assert( _.numberDefined( _.accuracy ) );
 _.assert( _.numberDefined( _.accuracySqr ) );
@@ -50,9 +50,9 @@ _.longDescriptorProducer.applyTo( _.avector, 'Fx' );
 _.assert( Object.getPrototypeOf( _.avector.withLong.Array ) === _.avector );
 
 _.assert( _.mapOnlyOwnKey( _.avector, 'withLong' ) );
-_.assert( _.objectIs( _.avector.withLong ) );
-_.assert( _.objectIs( _.avector.withLong.Array ) );
-_.assert( _.objectIs( _.avector.withLong.F32x ) );
+_.assert( _.object.isBasic( _.avector.withLong ) );
+_.assert( _.object.isBasic( _.avector.withLong.Array ) );
+_.assert( _.object.isBasic( _.avector.withLong.F32x ) );
 _.assert( Object.getPrototypeOf( _.avector ) === wTools );
 
 //

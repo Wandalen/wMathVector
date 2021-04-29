@@ -27,7 +27,7 @@ _.vectorAdapter._meta.routines = _.vectorAdapter._meta.routines || Object.create
 function _routinePostForm( theRoutine, routineName )
 {
 
-  if( _.objectIs( theRoutine ) )
+  if( _.object.isBasic( theRoutine ) )
   {
     for( let r in theRoutine )
     _routinePostForm( theRoutine[ r ], r );
@@ -221,7 +221,7 @@ function _routinesDeclare()
 function _staticRoutinesDeclare()
 {
 
-  _.assert( _.objectIs( _.vectorAdapter._routinesFrom ) );
+  _.assert( _.object.isBasic( _.vectorAdapter._routinesFrom ) );
 
   for( let name in _.vectorAdapter._routinesFrom )
   {
@@ -1074,7 +1074,7 @@ function _routineForOperation_functor( dop )
   /* */
 
   _.map.assertHasOnly( dop, _routineForOperation_functor.defaults );
-  _.assert( _.objectIs( dop.scalarOperation ) );
+  _.assert( _.object.isBasic( dop.scalarOperation ) );
   _.assert( _.routineIs( onScalar ) );
   _.assert( dop.onScalar.length === 1 );
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1253,7 +1253,7 @@ function _operationReturningSelfTakingVariantsComponentWiseAct_functor( operatio
 
   _.routine.options_( _operationReturningSelfTakingVariantsComponentWiseAct_functor, operation );
   _.assert( arguments.length === 1 );
-  _.assert( _.objectIs( operation ) );
+  _.assert( _.object.isBasic( operation ) );
   _.assert( _.routineIs( operation.onEach ) );
   _.assert( _.routineIs( operation.onVectorsBegin ) );
   _.assert( _.routineIs( operation.onVectorsEnd ) );
@@ -1974,7 +1974,7 @@ function _operationReduceNormalizeFunctions( operationMake, operation )
   let scalarDefaults = operationMake.scalarDefaults;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.objectIs( scalarDefaults ) );
+  _.assert( _.object.isBasic( scalarDefaults ) );
 
   normalize( 'onScalar' );
   normalize( 'onVectorsBegin' );
@@ -2041,7 +2041,7 @@ function __operationReduceToScalar_functor( operation )
   _.assert( takingArguments.length === 2 );
   _.assert( _.strDefined( operation.name ) );
 
-  _.assert( _.objectIs( operation ) );
+  _.assert( _.object.isBasic( operation ) );
   _.assert( operation.onVectors.length === 0 );
   _.assert( _.routineIs( onScalar0 ) );
   _.assert( _.routineIs( onScalarsBegin0 ) );
@@ -2308,7 +2308,7 @@ function _operationReduceToScalar_functor( o )
   let conditional = o.conditional;
 
   _.assert( _.strDefined( o.name ) );
-  _.assert( _.objectIs( o ) );
+  _.assert( _.object.isBasic( o ) );
   _.map.assertHasOnly( o, _operationReduceToScalar_functor.defaults );
 
   {
@@ -2389,7 +2389,7 @@ function _operationReduceToExtremal_functor( operation )
 
   _.routine.options_( _operationReduceToExtremal_functor, operation );
   _.assert( _.strDefined( operation.name ) );
-  _.assert( _.objectIs( operation ) );
+  _.assert( _.object.isBasic( operation ) );
   _.assert( _.routineIs( operation.onDistance ) );
   _.assert( _.routineIs( operation.onIsGreater ) );
   _.assert( _.numberIs( operation.distanceOnBegin ) );

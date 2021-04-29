@@ -26,7 +26,7 @@ let Routines = meta.routines;
 
 */
 
-_.assert( _.objectIs( operations ) );
+_.assert( _.object.isBasic( operations ) );
 
 // --
 // basic
@@ -1572,7 +1572,7 @@ function randomInRadius( dst, radius )
   let length = dst.length;
   let o = Object.create( null );
 
-  if( _.objectIs( radius ) )
+  if( _.object.isBasic( radius ) )
   {
     o = radius;
     radius = o.radius;
@@ -3668,7 +3668,7 @@ dop.reducing = true;
 //
 // debugger;
 // dop = gt.operation = Routines.isGreater.operation;
-// _.assert( _.objectIs( dop ) );
+// _.assert( _.object.isBasic( dop ) );
 //
 // //
 //
@@ -3678,7 +3678,7 @@ dop.reducing = true;
 // }
 //
 // dop = ge.operation = Routines.isGreaterEqual.operation;
-// _.assert( _.objectIs( dop ) );
+// _.assert( _.object.isBasic( dop ) );
 //
 // //
 //
@@ -3688,7 +3688,7 @@ dop.reducing = true;
 // }
 //
 // dop = lt.operation = Routines.isLess.operation;
-// _.assert( _.objectIs( dop ) );
+// _.assert( _.object.isBasic( dop ) );
 //
 // //
 //
@@ -3698,7 +3698,7 @@ dop.reducing = true;
 // }
 //
 // dop = le.operation = Routines.isLessEqual.operation;
-// _.assert( _.objectIs( dop ) );
+// _.assert( _.object.isBasic( dop ) );
 
 //
 
@@ -4017,7 +4017,7 @@ dop.homogeneous = true;
 // _.routineExtend( equalAre, { defaults : _._equal } );
 //
 // // _.routineExtend( equalAre, _.equaler._equal );
-// // _.assert( _.objectIs( equalAre.defaults ) );
+// // _.assert( _.object.isBasic( equalAre.defaults ) );
 // // _.assert( _.routineIs( equalAre.body ) );
 // // _.assert( _.routineIs( equalAre.lookContinue ) );
 //
@@ -5386,7 +5386,7 @@ let Forbidden =
 // --
 
 _.assert( _.routineIs( _routinesMathematical.assign ) );
-_.assert( _.objectIs( _routinesMathematical.assign.operation ) );
+_.assert( _.object.isBasic( _routinesMathematical.assign.operation ) );
 _.assert( _.arrayIs( _routinesMathematical.assign.operation.takingArguments ) );
 
 for( let r in _routinesMathematical )
@@ -5419,11 +5419,11 @@ _.vectorAdapter._meta._routinesLongWrap_functor();
 //
 
 _.assert( _.mapOnlyOwnKey( _.avector, 'withLong' ) );
-_.assert( _.objectIs( _.avector.withLong ) );
-_.assert( _.objectIs( _.avector.withLong.Array ) );
-_.assert( _.objectIs( _.avector.withLong.F32x ) );
+_.assert( _.object.isBasic( _.avector.withLong ) );
+_.assert( _.object.isBasic( _.avector.withLong.Array ) );
+_.assert( _.object.isBasic( _.avector.withLong.F32x ) );
 _.assert( Object.getPrototypeOf( _.avector ) === wTools );
-_.assert( _.objectIs( _.vectorAdapter._routinesMathematical ) );
+_.assert( _.object.isBasic( _.vectorAdapter._routinesMathematical ) );
 _.assert( !_.avector.isValid );
 _.assert( _.routineIs( _.avector.allFinite ) );
 

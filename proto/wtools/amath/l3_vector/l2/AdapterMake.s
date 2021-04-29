@@ -115,7 +115,7 @@ function from( src )
     return this.fromLongLrangeAndStride( ... arguments );
     else _.assert( 0 );
   }
-  else if( _.objectIs( src ) && _.routineIs( src.toVad ) )
+  else if( _.object.isBasic( src ) && _.routineIs( src.toVad ) )
   {
     _.assert( arguments.length === 1 );
     return src.toVad();

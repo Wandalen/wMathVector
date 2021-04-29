@@ -20,7 +20,7 @@ function _routineLongWrap_functor( o )
 
   o = _.routine.options_( _routineLongWrap_functor, arguments );
 
-  if( _.objectIs( o.routine ) )
+  if( _.object.isBasic( o.routine ) )
   {
     let result = Object.create( null );
     for( let r in o.routine )
