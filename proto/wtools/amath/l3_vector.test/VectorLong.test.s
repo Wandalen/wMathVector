@@ -16084,48 +16084,48 @@ function momentCentral( test )
 
 //
 
-function exportStringShallowDiagnostic( test )
+function exportStringDiagnosticShallow( test )
 {
 
   test.case = 'string representation of vector long';
   var vector = _.vector.make([ 1, 2, 3, 4 ]);
   var expected = '{- F32x with 4 elements -}';
-  var got = _.entity.exportStringShallowDiagnostic( vector )
+  var got = _.entity.exportStringDiagnosticShallow( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter from';
   var long = _.long.make([ 1, 2, 3 ]);
   var vector = _.vad.from( long );
   var expected = '{- VectorAdapterFromLong.countable with 3 elements -}';
-  var got = _.entity.exportStringShallowDiagnostic( vector )
+  var got = _.entity.exportStringDiagnosticShallow( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLong';
   var long = _.long.make([ 1, 2, 3 ]);
   var vector = _.vad.fromLong( long );
   var expected = '{- VectorAdapterFromLong.countable with 3 elements -}';
-  var got = _.entity.exportStringShallowDiagnostic( vector )
+  var got = _.entity.exportStringDiagnosticShallow( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLongLrange';
   var long = _.long.make([ 1, 2, 3, -4, -5 ]);
   var vector = _.vad.fromLongLrange( long );
   var expected = '{- VectorAdapterFromLongShrinked.countable with 5 elements -}';
-  var got = _.entity.exportStringShallowDiagnostic( vector )
+  var got = _.entity.exportStringDiagnosticShallow( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLongWithStride';
   var long = _.long.make([ 1, 2 ]);
   var vector = _.vad.fromLongWithStride( long, 1 );
   var expected = '{- VectorAdapterFromLongShrinked.countable with 2 elements -}';
-  var got = _.entity.exportStringShallowDiagnostic( vector )
+  var got = _.entity.exportStringDiagnosticShallow( vector )
   test.equivalent( got, expected );
 
   test.case = 'string representation of vector adapter fromLongLrangeAndStride';
   var long = _.long.make([ 1, 2 ]);
   var vector = _.vad.fromLongLrangeAndStride( long, 0, 0, 0 );
   var expected = '{- VectorAdapterFromLongShrinkedWithStrideNumberShrinkView.countable with 0 elements -}';
-  var got = _.entity.exportStringShallowDiagnostic( vector )
+  var got = _.entity.exportStringDiagnosticShallow( vector )
   test.equivalent( got, expected );
 
 }
@@ -16819,7 +16819,7 @@ const Proto =
 
     //
 
-    exportStringShallowDiagnostic,
+    exportStringDiagnosticShallow,
 
     // experiment
 
