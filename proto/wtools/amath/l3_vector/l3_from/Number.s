@@ -26,7 +26,8 @@ function _review( cinterval )
 function _toLong()
 {
   let result;
-  result = this.vectorAdapter.longMakeFilling( this._vectorBuffer[ 0 ], this.length );
+  // result = this.vectorAdapter.longMakeFilling( this._vectorBuffer[ 0 ], this.length );
+  result = this.vectorAdapter.long.makeFilling( this._vectorBuffer[ 0 ], this.length );
   return result;
 }
 

@@ -26,6 +26,7 @@ let AdapterExtension =
   TypeName : 'VectorAdapter',
   SecondTypeName : 'VectorAdapter',
   InstanceConstructor : null,
+  IsFixedLength : true,
   tools : _,
 
 }
@@ -69,6 +70,7 @@ let AvectorExtension =
   TypeName : 'Vector',
   SecondTypeName : 'Vector',
   InstanceConstructor : null,
+  IsFixedLength : true,
   tools : _,
 }
 
