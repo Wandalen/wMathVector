@@ -35,7 +35,7 @@ function make( length )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = new self.defaultLong.make( length );
+  let srcLong = self.defaultLong.make( length );
   return srcLong;
 }
 
