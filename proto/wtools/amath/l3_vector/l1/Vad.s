@@ -113,6 +113,4 @@ let AdapterClassExtension =
 _.props.extend( _.VectorAdapter, AdapterClassExtension );
 _.props.extend( _.VectorAdapter.prototype, AdapterClassExtension );
 
-//
-
 })();

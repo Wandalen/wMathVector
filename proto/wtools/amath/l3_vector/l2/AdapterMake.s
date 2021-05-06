@@ -39,7 +39,7 @@ function make( length )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = new self.long.default.make( length );
+  let srcLong = self.long.default.make( length );
   return self.fromLong( srcLong );
 }
 
@@ -67,9 +67,20 @@ function makeFilling( length, value )
   _.assert( _.numberIs( length ) );
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = new self.long.default.make( length );
+  let srcLong = self.long.default.make( length );
   for( let i = 0 ; i < length ; i++ )
   srcLong[ i ] = value;
+  return self.defaultVad.fromLong( srcLong );
+}
+
+//
+
+function makeUndefined( src, length )
+{
+  let self = this;
+  if( _.routineIs( self ) )
+  self = self.prototype;
+  let srcLong = self.long.default.makeUndefined( ... arguments );
   return self.defaultVad.fromLong( srcLong );
 }
 
@@ -149,6 +160,8 @@ let _routinesFrom =
 
   make, /*makeArrayOfLength*/
   makeFilling,
+
+  makeUndefined,
 
   from,
 
