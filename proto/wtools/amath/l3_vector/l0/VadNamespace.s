@@ -21,7 +21,6 @@ function IsResizable()
   _.assert( arguments.length === 0 );
   return false;
 }
-
 // --
 // declare
 // --
@@ -41,8 +40,11 @@ let AdapterExtension =
   IsFixedLength : true,
   tools : _,
 
-  IsResizable
+  IsResizable,
 
+  _elementSet : _.countable._elementSet,
+  elementSet : _.countable.elementSet,
+  _lengthOf : _.countable._lengthOf,
 }
 
 Object.setPrototypeOf( _.vectorAdapter, wTools );

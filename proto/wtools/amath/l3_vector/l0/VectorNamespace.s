@@ -52,7 +52,12 @@ let AvectorExtension =
 
   IsResizable,
 
-  namespaceOf
+  namespaceOf,
+
+  _elementSet : _.countable._elementSet,
+  elementSet : _.countable.elementSet,
+  _lengthOf : _.countable._lengthOf,
+
 }
 
 Object.setPrototypeOf( _.avector, wTools );
