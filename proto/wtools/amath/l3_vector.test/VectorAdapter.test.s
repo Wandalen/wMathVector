@@ -2871,7 +2871,7 @@ function entityDiff( test )
 
   console.log( diff );
 
-  test.identical.apply( test, _.strLinesStrip( diff, expected ) );
+  test.identical.apply( test, _.str.lines.strip( diff, expected ) );
   test.notIdentical( v1, v2 );
 
 }
