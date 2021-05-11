@@ -21,7 +21,8 @@ if( typeof module !== 'undefined' )
 if( module !== 'undefined' )
 {
 
-  require( './l0/Namespaces.s' );
+  require( './l0/VadNamespace.s' );
+  require( './l0/VectorNamespace.s' );
   require( './l1/Vad.s' );
 
   require( './l2/AdapterMake.s' );

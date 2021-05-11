@@ -101,7 +101,7 @@ function assign( dst ) /* aaa2 : perfect coverage is required */ /* Dmytro : cov
   }
   else if( alength === 1 + length )
   {
-    this.assign.call( this, dst, this.fromLong( _arraySlice( arguments, 1, alength ) ) );
+    this.assign.call( this, dst, this.fromLong( _longSlice( arguments, 1, alength ) ) );
   }
   else _.assert( 0, 'assign :', 'unknown arguments' );
 

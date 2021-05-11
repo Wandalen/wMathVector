@@ -35,7 +35,7 @@ function make( length )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = new self.long.default.make( length );
+  let srcLong = self.long.default.make( length );
   return srcLong;
 }
 
@@ -62,7 +62,7 @@ function makeFilling( length, value )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = new self.long.default.make( length );
+  let srcLong = self.long.default.make( length );
   for( let i = 0 ; i < length ; i++ )
   srcLong[ i ] = value;
   return srcLong;

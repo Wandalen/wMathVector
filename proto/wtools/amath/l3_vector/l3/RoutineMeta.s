@@ -617,7 +617,7 @@ function _vectorizeDst( o, dop )
     if( dst === null )
     {
       if( dop.returningBoolean )
-      dst = o.dstContainer = this.vectorAdapter.withLong.Array.makeFilling( 1 , false );
+      dst = o.dstContainer = this.vectorAdapter.withLong.Array.defaultVad.makeFilling.call( this.vectorAdapter.withLong.Array, 1 , false );
       else
       dst = o.dstContainer = this.vectorAdapter.makeFilling( 1 , 0 );
       o.dstContainer.assign( o.args[ 1 ] );
@@ -625,7 +625,7 @@ function _vectorizeDst( o, dop )
     else
     {
       if( dop.returningBoolean )
-      dst = o.dstContainer = this.vectorAdapter.withLong.Array.makeFilling( 1 , dst );
+      dst = o.dstContainer = this.vectorAdapter.withLong.Array.defaultVad.makeFilling.call( this.vectorAdapter.withLong.Array, 1 , dst );
       else
       dst = o.dstContainer = this.vectorAdapter.makeFilling( 1 , dst );
     }
@@ -2011,7 +2011,8 @@ function __operationReduceToScalar_functor( operation )
   meta.operationNormalizeInput( operation );
   meta.operationNormalizeArity( operation );
 
-  _.routine.options_( __operationReduceToScalar_functor, operation );
+  // _.routine.options_( __operationReduceToScalar_functor, operation );
+  _.routine.optionsTollerant( __operationReduceToScalar_functor, operation );
   this._operationReduceNormalizeFunctions( __operationReduceToScalar_functor, operation );
 
   operation.generator = __operationReduceToScalar_functor;
