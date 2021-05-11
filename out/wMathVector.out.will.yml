@@ -189,7 +189,8 @@ module:
           - ../proto/wtools/amath/l3_vector
           - ../proto/wtools/amath/l3_vector/Include.s
           - ../proto/wtools/amath/l3_vector/l0
-          - ../proto/wtools/amath/l3_vector/l0/Namespaces.s
+          - ../proto/wtools/amath/l3_vector/l0/VadNamespace.s
+          - ../proto/wtools/amath/l3_vector/l0/VectorNamespace.s
           - ../proto/wtools/amath/l3_vector/l1
           - ../proto/wtools/amath/l3_vector/l1/Vad.s
           - ../proto/wtools/amath/l3_vector/l2
