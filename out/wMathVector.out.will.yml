@@ -2,12 +2,9 @@ format: outwillfile-2.0
 root:
   - wMathVector.out
 consistency:
-  ../.ex.will.yml: &ref_0
-    hash: 0697ae42446fce63111490cd356682c3
-    size: 2960
-  ../.im.will.yml: &ref_1
-    hash: 3bec2920e1ab6e09bd3ed45f8f2ab8f7
-    size: 5159
+  ../will.yml: &ref_0
+    hash: c08389e9d72bb019c0b4db9692a35b69
+    size: 7947
 module:
   wMathVector.out:
     about:
@@ -33,24 +30,24 @@ module:
         constrained with storage format.
       enabled: 1
       version: 0.4.0
-      interpreters: &ref_2
-        - njs >= 10.0.0
-        - chrome >= 60.0.0
-        - firefox >= 60.0.0
-      keywords: &ref_3
+      license: MIT
+      npm.name: wmathvector
+      author: Kostiantyn Wandalen <wanalen@01.school>
+      keywords: &ref_1
         - wTools
         - math
         - vector
         - dot product
         - convolution
-      license: MIT
-      author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: &ref_4
+      contributors: &ref_2
         - Kostiantyn Wandalen <wanalen@01.school>
         - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
         - Volodymyr M. <volodymyr.migdal@gmail.com>
-      npm.name: wmathvector
-      npm.scripts: &ref_5
+      interpreters: &ref_3
+        - njs >= 10.0.0
+        - chrome >= 60.0.0
+        - firefox >= 60.0.0
+      npm.scripts: &ref_4
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -65,15 +62,11 @@ module:
       module.original.willfiles:
         criterion:
           predefined: 1
-        path:
-          - ../.ex.will.yml
-          - ../.im.will.yml
+        path: ../will.yml
       module.peer.willfiles:
         criterion:
           predefined: 1
-        path:
-          - ../.ex.will.yml
-          - ../.im.will.yml
+        path: ../will.yml
       module.peer.in:
         criterion:
           predefined: 1
@@ -227,11 +220,11 @@ module:
         path: 'npm:///wProto'
         autoExporting: 0
         enabled: 0
-      wMathScalar:
+      wmathscalar:
         path: 'npm:///wmathscalar'
         autoExporting: 0
         enabled: 0
-      wEqualer:
+      wequaler:
         path: 'npm:///wequaler'
         autoExporting: 0
         enabled: 0
@@ -848,8 +841,7 @@ module:
           content: proto
           export: 1
     consistency:
-      ../.ex.will.yml: *ref_0
-      ../.im.will.yml: *ref_1
+      ../will.yml: *ref_0
   ../:
     about:
       name: wMathVector
@@ -874,26 +866,22 @@ module:
         constrained with storage format.
       enabled: 1
       version: 0.4.0
-      interpreters: *ref_2
-      keywords: *ref_3
       license: MIT
-      author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: *ref_4
       npm.name: wmathvector
-      npm.scripts: *ref_5
+      author: Kostiantyn Wandalen <wanalen@01.school>
+      keywords: *ref_1
+      contributors: *ref_2
+      interpreters: *ref_3
+      npm.scripts: *ref_4
     path:
       module.willfiles:
         criterion:
           predefined: 1
-        path:
-          - .ex.will.yml
-          - .im.will.yml
+        path: will.yml
       module.original.willfiles:
         criterion:
           predefined: 1
-        path:
-          - .ex.will.yml
-          - .im.will.yml
+        path: will.yml
       module.peer.willfiles:
         criterion:
           predefined: 1
@@ -1003,11 +991,11 @@ module:
         path: 'npm:///wProto'
         autoExporting: 0
         enabled: 0
-      wMathScalar:
+      wmathscalar:
         path: 'npm:///wmathscalar'
         autoExporting: 0
         enabled: 0
-      wEqualer:
+      wequaler:
         path: 'npm:///wequaler'
         autoExporting: 0
         enabled: 0
@@ -1560,9 +1548,6 @@ module:
           - 'build::release'
           - 'build::npm'
     consistency:
-      ../.ex.will.yml:
-        hash: 0697ae42446fce63111490cd356682c3
-        size: 2960
-      ../.im.will.yml:
-        hash: 3bec2920e1ab6e09bd3ed45f8f2ab8f7
-        size: 5159
+      ../will.yml:
+        hash: c08389e9d72bb019c0b4db9692a35b69
+        size: 7947
