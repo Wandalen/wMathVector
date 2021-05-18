@@ -4822,9 +4822,9 @@ function contextsForTesting( o )
   }
 
   if( _.strIs( o.varyingForm ) )
-  o.varyingForm = _.arrayAs( o.varyingForm );
+  o.varyingForm = _.array.as( o.varyingForm );
   if( _.strIs( o.varyingFormat ) )
-  o.varyingFormat = _.arrayAs( o.varyingFormat );
+  o.varyingFormat = _.array.as( o.varyingFormat );
 
   if( o.varyingForm && _.boolLike( o.varyingForm ) )
   o.varyingForm = [ 'straight', 'linterval', 'stride' ];
