@@ -4063,7 +4063,7 @@ function identicalAre( src1, src2, iterator )
 }
 
 _.routine.extendInheriting( identicalAre, { defaults : _.entityIdentical.defaults } );
-identicalAre.defaults.Looker = identicalAre.defaults;
+identicalAre.defaults.Seeker = identicalAre.defaults;
 
 // _.routineExtend( identicalAre, _.entityIdentical );
 
@@ -4109,7 +4109,7 @@ function equivalentAre( src1, src2, iterator )
 }
 
 _.routine.extendInheriting( equivalentAre, { defaults : _.entityEquivalent.defaults } );
-equivalentAre.defaults.Looker = equivalentAre.defaults;
+equivalentAre.defaults.Seeker = equivalentAre.defaults;
 
 dop = equivalentAre.operation = Object.create( null );
 dop.input = 'vr vr ?!v';
