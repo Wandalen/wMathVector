@@ -48,7 +48,7 @@ let AdapterExtension =
 }
 
 Object.setPrototypeOf( _.vectorAdapter, wTools );
-_.props.extend( _.vectorAdapter, AdapterExtension );
+/* _.props.extend */Object.assign( _.vectorAdapter, AdapterExtension );
 
 _.assert( !!_.fx );
 

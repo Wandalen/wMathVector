@@ -3253,7 +3253,7 @@ let reduceToClosest = meta._operationReduceToExtremal_functor
   onDistance : function( o )
   {
     debugger;
-    _.assert( o.container.length, 'not tested' );
+    _.assert( o.container.length > 0, 'not tested' );
     _.assert( 0, 'not tested' );
     return abs( o.result.instance - o.element );
   },
@@ -3292,7 +3292,7 @@ let reduceToFurthest = meta._operationReduceToExtremal_functor
   onDistance : function( o )
   {
     debugger;
-    _.assert( o.container.length, 'not tested' );
+    _.assert( o.container.length > 0, 'not tested' );
     _.assert( 0, 'not tested' );
     return abs( o.result.instance - o.element );
   },
@@ -3330,7 +3330,7 @@ let reduceToMin = meta._operationReduceToExtremal_functor
   onDistance : function( o )
   {
     debugger;
-    _.assert( o.container.length, 'not tested' );
+    _.assert( o.container.length > 0, 'not tested' );
     _.assert( 0, 'not tested' );
     return o.element;
   },
@@ -3370,7 +3370,7 @@ let reduceToMinAbs = meta._operationReduceToExtremal_functor
 ({
   onDistance : function( o )
   {
-    _.assert( o.container.length, 'not tested' );
+    _.assert( o.container.length > 0, 'not tested' );
     return abs( o.element );
   },
   onIsGreater : function( a, b )
@@ -3409,7 +3409,7 @@ let reduceToMax = meta._operationReduceToExtremal_functor
 ({
   onDistance : function( o )
   {
-    _.assert( o.container.length, 'not tested' );
+    _.assert( o.container.length > 0, 'not tested' );
     return o.element;
   },
   onIsGreater : function( a, b )
@@ -3448,7 +3448,7 @@ let reduceToMaxAbs = meta._operationReduceToExtremal_functor
 ({
   onDistance : function( o )
   {
-    _.assert( o.container.length, 'not tested' );
+    _.assert( o.container.length > 0, 'not tested' );
     return abs( o.element );
   },
   onIsGreater : function( a, b )
@@ -3505,7 +3505,7 @@ function _distributionRangeSummaryBegin( o )
 function _distributionRangeSummaryEach( o )
 {
 
-  _.assert( o.container.length, 'not tested' );
+  _.assert( o.container.length > 0, 'not tested' );
 
   if( o.element > o.result.max.value )
   {
@@ -4169,7 +4169,9 @@ function areParallel( src1, src2, accuracy )
     let isZero1 = Math.abs( e1 ) < accuracy;
     let isZero2 = Math.abs( e2 ) < accuracy;
 
-    if( isZero1 ^ isZero2 )
+    debugger;
+    // if( isZero1 ^ isZero2 )
+    if( isZero1 !== isZero2 )
     return false;
 
     if( isZero1 )
@@ -5410,7 +5412,7 @@ let Extension =
 }
 
 _.props.extend( Extension, _routinesMathematical );
-_.props.extend( _.vectorAdapter, Extension );
+/* _.props.extend */Object.assign( _.vectorAdapter, Extension );
 
 //
 

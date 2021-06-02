@@ -175,6 +175,6 @@ let VectorExtension =
 }
 
 _.props.extend( VectorExtension, _routinesFrom );
-_.props.extend( _.vectorAdapter, VectorExtension );
+/* _.props.extend */Object.assign( _.vectorAdapter, VectorExtension );
 
 })();

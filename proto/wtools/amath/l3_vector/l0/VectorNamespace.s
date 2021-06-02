@@ -61,7 +61,7 @@ let AvectorExtension =
 }
 
 Object.setPrototypeOf( _.avector, wTools );
-_.props.extend( _.avector, AvectorExtension );
+/* _.props.extend */Object.assign( _.avector, AvectorExtension );
 
 _.avector.long = Object.create( _.long );
 _.avector.long.namespaces = Object.create( _.long.namespaces );

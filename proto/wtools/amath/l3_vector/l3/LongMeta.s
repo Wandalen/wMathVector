@@ -9,7 +9,7 @@ let _arraySlice = Array.prototype.slice;
 let _sqrt = Math.sqrt;
 const _sqr = _.math.sqr;
 
-let meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
+const meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
 
 // --
 // declare
@@ -211,6 +211,6 @@ let MetaExtension =
 
 }
 
-_.props.extend( _.vectorAdapter._meta, MetaExtension );
+/* _.props.extend */Object.assign( _.vectorAdapter._meta, MetaExtension );
 
 })();

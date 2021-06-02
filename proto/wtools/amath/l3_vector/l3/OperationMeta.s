@@ -16,7 +16,7 @@ const _pow = Math.pow;
 const sqrt = Math.sqrt;
 const abs = Math.abs;
 
-let meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
+const meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
 _.vectorAdapter._meta.routines = _.vectorAdapter._meta.routines || Object.create( null );
 
 // --
@@ -895,6 +895,6 @@ let MetaExtension =
 
 }
 
-_.props.extend( _.vectorAdapter._meta, MetaExtension );
+/* _.props.extend */Object.assign( _.vectorAdapter._meta, MetaExtension );
 
 })();

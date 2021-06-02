@@ -3,8 +3,7 @@
 'use strict';
 
 const _ = _global_.wTools;
-const Self = _.vector;
-let meta = _.vectorAdapter._meta;
+const meta = _.vectorAdapter._meta;
 
 // --
 //
@@ -33,7 +32,7 @@ let Extension =
 
 }
 
-_.props.extend( Self, Extension );
+/* _.props.extend */Object.assign( _.vector, Extension );
 
 // --
 // declare

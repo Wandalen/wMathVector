@@ -88,6 +88,6 @@ let AvectorExtension =
 }
 
 _.props.extend( AvectorExtension, _routinesFrom );
-_.props.extend( _.avector, AvectorExtension );
+/* _.props.extend */Object.assign( _.avector, AvectorExtension );
 
 })();

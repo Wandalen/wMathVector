@@ -17,7 +17,7 @@ const sqrt = Math.sqrt;
 const abs = Math.abs;
 
 let OperationDescriptor1 = _.vectorAdapter.OperationDescriptor1;
-let meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
+const meta = _.vectorAdapter._meta = _.vectorAdapter._meta || Object.create( null );
 _.vectorAdapter._meta.routines = _.vectorAdapter._meta.routines || Object.create( null );
 
 // --
@@ -1351,7 +1351,7 @@ function _operationReturningSelfTakingVariantsComponentWiseAct_functor( operatio
     }
 
     let length = dst.length;
-    _.assert( takingArguments[ 0 ] <= args.length && args.length <= takingArguments[ 1 ], args.length, operation.assigning );
+    _.assert( takingArguments[ 0 ] <= args.length && args.length <= takingArguments[ 1 ], args.length > 0, operation.assigning );
     _.assert( _.vectorAdapterIs( dst ) );
 
     onVectorsBegin.apply( args, args, length );
@@ -2051,8 +2051,8 @@ function __operationReduceToScalar_functor( operation )
   _.assert( onScalarsBegin0.length === 1 );
   _.assert( onScalarsEnd0.length === 1 );
 
-  _.assert( !operation.onVectorsBegin.length, 'not tested' );
-  _.assert( !operation.onVectorsEnd.length, 'not tested' );
+  _.assert( !operation.onVectorsBegin.length > 0, 'not tested' );
+  _.assert( !operation.onVectorsEnd.length > 0, 'not tested' );
   _.assert( _.boolLike( operation.interruptible ) );
   _.assert( !!operation.input, () => `Operation of routine::${operation.name} deos not have defined input` );
 
@@ -2415,7 +2415,7 @@ function _operationReduceToExtremal_functor( operation )
     onScalar : function( o )
     {
 
-      _.assert( o.container.length, 'not tested' );
+      _.assert( o.container.length > 0, 'not tested' );
 
       let distance = onDistance( o );
       if( onIsGreater( distance, o.result.value ) )
@@ -2985,6 +2985,6 @@ let MetaExtension =
 
 }
 
-_.props.extend( _.vectorAdapter._meta, MetaExtension );
+/* _.props.extend */Object.assign( _.vectorAdapter._meta, MetaExtension );
 
 })();

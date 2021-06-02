@@ -19,7 +19,7 @@ let accuracySqr = _.accuracySqr;
 
 const Parent = null;
 const Self = _.VectorAdapter;
-let meta = _.vectorAdapter._meta;
+const meta = _.vectorAdapter._meta;
 
 // --
 // etc
