@@ -1,4 +1,5 @@
-( function _VectorAdapter_test_s_( ) {
+( function _VectorAdapter_test_s_()
+{
 
 'use strict';
 
