@@ -21,7 +21,7 @@ let avector = _.avector;
 
 /**
 * @summary Creates vector from long of length `length`.
-* @param {Number} length Length of long.
+* @param { Number } length Length of long.
 *
 * @example
 * var vec = wTools.vector.make( 3 );
@@ -33,15 +33,29 @@ let avector = _.avector;
 * @module Tools/math/Vector
 */
 
-function make( length )
+function make( src, length )
 {
   let self = this;
-  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( arguments.length === 1 || src === null );
+  _.assert( arguments.length === 2 || length === undefined );
+
+  src = src === null ? length : src;
+
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = self.long.default.make( length );
+  let srcLong = self.long.default.make( src );
   return self.fromLong( srcLong );
 }
+
+// function make( length )
+// {
+//   let self = this;
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   if( _.routineIs( self ) )
+//   self = self.prototype;
+//   let srcLong = self.long.default.make( length );
+//   return self.fromLong( srcLong );
+// }
 
 //
 
