@@ -20,18 +20,24 @@ let avector = _.avector;
 // --
 
 /**
-* @summary Creates vector from long of length `length`.
-* @param { Number } length Length of long.
-*
-* @example
-* var vec = wTools.vector.make( 3 );
-* console.log( 'vec:', vec );
-* console.log( 'vec.toStr():', vec.toStr() );
-*
-* @function make
-* @namespace wTools.vectorAdapter
-* @module Tools/math/Vector
-*/
+ * Creates vector of default vector type from long {-src-} or length {-length-}.
+ *
+ * @example
+ * var vec = _.avector.make( 3 );
+ * console.log( `vec : ${ vec }` );
+ * console.log( `vec.toStr() : ${ vec.toStr() }` );
+ *
+ * @param { Number|Long|VectorAdapter|Null } src - Source long to make vector.
+ * @param { Number|Long|VectorAdapter } length - Length of long.
+ * @returns { VectorAdapter } - Returns instance of VectorAdapter made from arguments.
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If arguments.length is one and {-src-} has incompatible type.
+ * @throws { Error } If arguments.length is two and {-src-} is not null.
+ * @throws { Error } If arguments.length is two and {-length-} has incompatible type.
+ * @function make
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
+ */
 
 function make( src, length )
 {
