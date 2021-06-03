@@ -20,28 +20,48 @@ let avector = _.avector;
 // --
 
 /**
-* @summary Creates vector from long of length `length`.
-* @param {Number} length Length of long.
-*
-* @example
-* var vec = wTools.vector.make( 3 );
-* console.log( 'vec:', vec );
-* console.log( 'vec.toStr():', vec.toStr() );
-*
-* @function make
-* @namespace wTools.vectorAdapter
-* @module Tools/math/Vector
-*/
+ * Creates vector of default vector type from long {-src-} or length {-length-}.
+ *
+ * @example
+ * var vec = _.avector.make( 3 );
+ * console.log( `vec : ${ vec }` );
+ * console.log( `vec.toStr() : ${ vec.toStr() }` );
+ *
+ * @param { Number|Long|VectorAdapter|Null } src - Source long to make vector.
+ * @param { Number|Long|VectorAdapter } length - Length of long.
+ * @returns { VectorAdapter } - Returns instance of VectorAdapter made from arguments.
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If arguments.length is one and {-src-} has incompatible type.
+ * @throws { Error } If arguments.length is two and {-src-} is not null.
+ * @throws { Error } If arguments.length is two and {-length-} has incompatible type.
+ * @function make
+ * @namespace wTools.vectorAdapter
+ * @module Tools/math/Vector
+ */
 
-function make( length )
+function make( src, length )
 {
   let self = this;
-  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( arguments.length === 1 || src === null );
+  _.assert( arguments.length === 2 || length === undefined );
+
+  src = src === null ? length : src;
+
   if( _.routineIs( self ) )
   self = self.prototype;
-  let srcLong = self.long.default.make( length );
+  let srcLong = self.long.default.make( src );
   return self.fromLong( srcLong );
 }
+
+// function make( length )
+// {
+//   let self = this;
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   if( _.routineIs( self ) )
+//   self = self.prototype;
+//   let srcLong = self.long.default.make( length );
+//   return self.fromLong( srcLong );
+// }
 
 //
 

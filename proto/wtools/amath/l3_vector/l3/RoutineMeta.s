@@ -2537,7 +2537,7 @@ function _declareHomogeneousLogical2ReducingRoutine( operation, scalarOperation,
     operationAdjust( operation );
   }
 
-  _.assert( _.arrayIs( operation.onContinue ) && operation.onContinue.length );
+  _.assert( _.arrayIs( operation.onContinue ) && operation.onContinue.length > 0 );
 
   return meta._routineHomogeneousDeclare( operation, scalarOperation, routineName );
 
