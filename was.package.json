@@ -12,7 +12,7 @@
   ],
   "license" : "MIT",
   "main" : "proto/node_modules/wmathvector",
-  "files" : [ "proto/wtools/amath/l3_vector", "out", "proto/node_modules" ],
+  "files" : [ "proto/wtools/amath/l3_vector", "out", "proto/node_modules", "proto/node_modules/Tools", "proto/node_modules/wmathvector" ],
   "scripts" : { "test" : "wtest .run 'proto/**' rapidity:-1", "docgen" : "wdocgen proto" },
   "repository" :
   {
