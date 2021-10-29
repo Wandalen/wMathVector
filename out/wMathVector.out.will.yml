@@ -3,8 +3,8 @@ root:
   - wMathVector.out
 consistency:
   ../will.yml: &ref_0
-    hash: c08389e9d72bb019c0b4db9692a35b69
-    size: 7947
+    hash: 117c563d735af1ef5bcfe15ec12d22c9
+    size: 7806
 module:
   wMathVector.out:
     about:
@@ -427,9 +427,6 @@ module:
           content: npm
         inherit:
           - module.export
-      npm.publish:
-        opts:
-          shell: npm publish
       npm.generate.debug.raw:
         opts:
           entryPath: 'path::entry.out.*=1'
@@ -765,12 +762,6 @@ module:
           - 'step::doc.export'
         criterion:
           content: doc
-          export: 1
-      npm.export:
-        steps:
-          - 'step::npm.publish'
-        criterion:
-          content: npm
           export: 1
       export:
         steps:
@@ -1147,9 +1138,6 @@ module:
           content: npm
         inherit:
           - module.export
-      npm.publish:
-        opts:
-          shell: npm publish
       npm.generate.debug.raw:
         opts:
           entryPath: 'path::entry.out.*=1'
@@ -1486,12 +1474,6 @@ module:
         criterion:
           content: doc
           export: 1
-      npm.export:
-        steps:
-          - 'step::npm.publish'
-        criterion:
-          content: npm
-          export: 1
       export:
         steps:
           - 'build::proto.export'
@@ -1549,5 +1531,5 @@ module:
           - 'build::npm'
     consistency:
       ../will.yml:
-        hash: c08389e9d72bb019c0b4db9692a35b69
-        size: 7947
+        hash: 117c563d735af1ef5bcfe15ec12d22c9
+        size: 7806
